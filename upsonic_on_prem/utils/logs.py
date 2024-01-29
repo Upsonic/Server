@@ -8,3 +8,6 @@ def failed(message):
 
 def info(message):
     rich.print(f"[bold blue]ℹ[/bold blue] {message}")
+
+def warning(message):
+    rich.print(f"[bold yellow]⚠[/bold yellow] {message}")
