@@ -15,6 +15,9 @@ COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
 
 COPY On-Prem/run.sh /
 
+WORKDIR /app/On-Prem
+RUN pip3 install .
+
 EXPOSE 5000
 
 
