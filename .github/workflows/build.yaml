@@ -1,0 +1,70 @@
+name: Deploys
+
+on:
+  workflow_dispatch:  
+
+permissions:
+  packages: write      
+
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event }}
+  cancel-in-progress: true
+jobs:
+
+  tagext:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: '3.8'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}  
+          repository: 'Upsonic/Upsonic'
+          fetch-depth: 0
+      - name: Getting Tag
+        id: tag_extractor
+        run: echo "latest_tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      tag: ${{ steps.tag_extractor.outputs.latest_tag }}              
+
+
+
+  docker:
+    needs: tagext
+    runs-on: ubuntu-latest
+    environment: Deploys
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GH_PAT }} 
+        fetch-depth: 0
+
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        platforms: linux/amd64,linux/arm64
+
+
+    - name: Build and Publish Docker Images
+      env:
+        VERSION: ${{ needs.tagext.outputs.tag }}
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+        cd ..
+
+
+        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/upsonic/on-prem:latest -f On-Prem/Dockerfile --push .
