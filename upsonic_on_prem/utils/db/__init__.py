@@ -12,8 +12,9 @@ from upsonic_on_prem.utils.logs import *
 
 
 
-
+info("Connecting to Redis")
 redis_config()
+info("Redis configured")
 storage = redis_client_()
 if storage.status():
     successfully("Redis connection established")
