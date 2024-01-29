@@ -1,7 +1,8 @@
-name: Deploys
+name: Build
 
 on:
-  workflow_dispatch:  
+  release:
+    types: [created]
 
 permissions:
   packages: write      
