@@ -3,7 +3,7 @@ import sys
 import re
 
 def read_version():
-    with open('src/__init__.py', 'r') as file:
+    with open('upsonic_on_prem/__init__.py', 'r') as file:
         for line in file:
             match = re.search(r"__version__ = '(.*)'", line)
             if match:
@@ -23,7 +23,7 @@ def increment_version(part, version):
     return f'{major}.{minor}.{patch}'
 
 def write_version(version):
-    with open('src/__init__.py', 'r+') as file:
+    with open('upsonic_on_prem/__init__.py', 'r+') as file:
         content = file.read()
         content = re.sub(r"__version__ = '.*'", f"__version__ = '{version}'", content)
         file.seek(0)
