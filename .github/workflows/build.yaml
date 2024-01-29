@@ -1,8 +1,10 @@
 name: Build
 
 on:
-  release:
-    types: [created]
+  workflow_run:
+    workflows: ["Release Generator"]
+    types:
+      - completed  
 
 permissions:
   packages: write      
