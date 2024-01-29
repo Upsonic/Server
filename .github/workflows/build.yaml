@@ -27,8 +27,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_PAT }}  
-          repository: 'Upsonic/Upsonic'
+          token: ${{ secrets.GITHUB_TOKEN }}  
+          repository: 'Upsonic/On-Prem'
           fetch-depth: 0
       - name: Getting Tag
         id: tag_extractor
@@ -50,7 +50,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GH_PAT }} 
+        token: ${{ secrets.GITHUB_TOKEN }} 
         fetch-depth: 0
 
 
