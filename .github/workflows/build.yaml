@@ -30,6 +30,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}  
+          repository: 'Upsonic/On-Prem'
           fetch-depth: 0
       - name: Getting Tag
         id: tag_extractor
