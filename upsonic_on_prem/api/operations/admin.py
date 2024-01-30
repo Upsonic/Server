@@ -1,11 +1,9 @@
-from upsonic_on_prem.api import app
-
-from upsonic_on_prem.api.urls import *
-
-from upsonic_on_prem.utils import storage, AccessKey
-
 from flask import jsonify
 from flask import request
+
+from upsonic_on_prem.api import app
+from upsonic_on_prem.api.urls import *
+from upsonic_on_prem.utils import AccessKey
 
 
 @app.route(get_admins_url, methods=["get"])
@@ -75,3 +73,12 @@ def disable_admin():
 
     return jsonify(True)
 
+
+@app.route(delete_user_url, methods=["POST"])
+def delete_user():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    user.delete()
+
+    return jsonify(True)

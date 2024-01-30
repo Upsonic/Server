@@ -16,3 +16,5 @@ disable_user_url = "/disable_user"
 enable_admin_url = "/enable_admin"
 
 disable_admin_url = "/disable_admin"
+
+delete_user_url = "/delete_user"
