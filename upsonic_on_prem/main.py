@@ -36,3 +36,6 @@ class _cli:
 
 def cli():
     fire.Fire(_cli)
+
+if __name__ == "__main__":
+    cli()

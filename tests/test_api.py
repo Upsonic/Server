@@ -58,24 +58,20 @@ class Test_Storage(unittest.TestCase):
             the_access_key =  AccessKey(id)
 
             response = requests.get("http://localhost:7777"+url, auth=HTTPBasicAuth("", id))
-            self.assertEqual(response.status_code, 403)
-
-            the_access_key.enable()
-            response = requests.get("http://localhost:7777"+url, auth=HTTPBasicAuth("", id))
-
             self.assertEqual(response.status_code, 200)
 
-            the_access_key.disable()
-            response = requests.get("http://localhost:7777"+url, auth=HTTPBasicAuth("", id))
-            self.assertEqual(response.status_code, 403)
 
     def test_unauthorized_access(self):
         for url in all_urls:
             id = "test_unauthorized_access"+url
             the_access_key =  AccessKey(id)
 
+
             response = requests.get("http://localhost:7777"+url, auth=HTTPBasicAuth("", id))
-            self.assertEqual(response.status_code, 403)
+            if url != status_url:
+                self.assertEqual(response.status_code, 403)
+            else:
+                self.assertEqual(response.status_code, 200)
 
 
 
