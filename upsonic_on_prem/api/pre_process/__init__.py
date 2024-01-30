@@ -14,6 +14,17 @@ from upsonic_on_prem.utils import AccessKey
 def check():
     
 
+
+    the_endpoint = request.endpoint
+    if request.endpoint == None:
+        the_endpoint = ""
+    endpoint = "/"+the_endpoint
+
+    if endpoint == status_url:
+        return
+
+
+
     auth = request.authorization
     if not auth:
         return Response(
@@ -26,13 +37,6 @@ def check():
     the_access_key = AccessKey(auth.password)
     
 
-    the_endpoint = request.endpoint
-    if request.endpoint == None:
-        the_endpoint = ""
-    endpoint = "/"+the_endpoint
-
-    if endpoint == status_url:
-        return
 
 
     if not the_access_key.is_enable:
