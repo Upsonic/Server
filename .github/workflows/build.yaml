@@ -2,7 +2,7 @@ name: Build
 
 on:
   workflow_run:
-    workflows: ["Release Generator"]
+    workflows: ["Release"]
     types:
       - completed  
 
