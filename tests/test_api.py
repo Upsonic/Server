@@ -1,14 +1,10 @@
-import contextlib
-import requests
-import time
-import unittest
 import os
 import sys
-import shutil
-import copy
-from unittest.mock import patch
-import cloudpickle
 import threading
+import unittest
+
+import cloudpickle
+import requests
 from waitress.server import create_server
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -276,6 +272,27 @@ class Test_Storage(unittest.TestCase):
         response = requests.post("http://localhost:7777" + disable_admin_url, auth=HTTPBasicAuth("", id_admin),
                                  data=data)
 
+        self.assertEqual(the_user.is_admin, False)
+
+    def test_delete_user(self):
+        id = "test_delete_user"
+        the_user = AccessKey(id)
+        the_user.enable()
+
+        self.assertEqual(the_user.is_enable, True)
+        self.assertEqual(the_user.is_admin, False)
+
+        id_admin = "test_delete_user_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        # Adding the id as user with add_admin_url endpoint
+        data = {"key": id}
+        response = requests.post("http://localhost:7777" + delete_user_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.is_enable, False)
         self.assertEqual(the_user.is_admin, False)
 
 
