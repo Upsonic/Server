@@ -28,3 +28,26 @@ def add_user():
     return jsonify(True)
 
 
+
+@app.route(enable_user_url, methods=["POST"])
+def enable_user():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    user.enable()
+
+
+    return jsonify(True)
+
+
+
+
+@app.route(disable_user_url, methods=["POST"])
+def disable_user():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    user.disable()
+
+
+    return jsonify(True)
