@@ -16,9 +16,19 @@ import time
 info("Connecting to Redis")
 
 
-threading.Thread(target=redis_config).start()
 
-time.sleep(5)
+#Check if sudo is used
+
+def can_access_to_config():
+    try:
+        os.listdir("/etc/redis/")
+        return True
+    except:
+        return False
+
+if can_access_to_config():
+    threading.Thread(target=redis_config).start()
+    time.sleep(5)
 
 succed = False
 
