@@ -6,4 +6,4 @@ load_url = "/load"
 
 get_admins_url = "/get_admins"
 
-add_admin_url = "/add_admin"
+add_user_url = "/add_user"
