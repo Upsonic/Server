@@ -17,14 +17,13 @@ def get_admins():
 
 
 
-@app.route(add_admin_url, methods=["POST"])
-def add_admin():
+@app.route(add_user_url, methods=["POST"])
+def add_user():
     key = request.form.get("key")
 
     user = AccessKey(key)
     user.enable()
 
-    user.set_is_admin(True)
 
     return jsonify(True)
 

@@ -172,28 +172,28 @@ class Test_Storage(unittest.TestCase):
 
 
 
-    def test_add_admin(self):
-        id = "test_add_admin"
-        id_admin = "test_add_admin_admin"
+    def test_add_user(self):
+        id = "test_add_user"
+        the_user = AccessKey(id)
+
+        self.assertEqual(the_user.is_enable, False)
+
+        id_admin = "test_add_user_admin"
         the_admin_access_key =  AccessKey(id_admin)
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        
-        # Testing to access get_admins_url and expected to get 403
-        response = requests.get("http://localhost:7777"+get_admins_url, auth=HTTPBasicAuth("", id), )
-        self.assertEqual(response.status_code, 403)
-
 
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://localhost:7777"+add_admin_url, auth=HTTPBasicAuth("", id_admin), data=data)
+        response = requests.post("http://localhost:7777"+add_user_url, auth=HTTPBasicAuth("", id_admin), data=data)
+        
 
 
 
-        # Testing to access get_admins_url and expected to get 200
-        response = requests.get("http://localhost:7777"+get_admins_url, auth=HTTPBasicAuth("", id), )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(the_user.is_enable, True)
+
+
 
 
 
