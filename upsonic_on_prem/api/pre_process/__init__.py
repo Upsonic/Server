@@ -25,13 +25,7 @@ def check():
 
     the_access_key = AccessKey(auth.password)
     
-    if not the_access_key.is_enable:
-        return Response(
-            "You don't have register to access this URL.\n"
-            "You have to login with proper credentials",
-            403,
-            {"WWW-Authenticate": 'Basic realm="Login Required"'},
-        )
+
     the_endpoint = request.endpoint
     if request.endpoint == None:
         the_endpoint = ""
@@ -39,6 +33,15 @@ def check():
 
     if endpoint == status_url:
         return
+
+
+    if not the_access_key.is_enable:
+        return Response(
+            "You don't have register to access this URL.\n"
+            "You have to login with proper credentials",
+            403,
+            {"WWW-Authenticate": 'Basic realm="Login Required"'},
+        )
 
 
 
