@@ -21,6 +21,12 @@ class AccessKey:
     def is_enable(self):
         return storage.get(self.key) == True
 
+    def set_is_admin(self, is_admin):
+        return storage.set(self.key+":is_admin", is_admin)
+    @property
+    def is_admin(self):
+        return storage.get(self.key+":is_admin") == True
+
     @staticmethod
     def get_admins():
         keys = storage.keys()
@@ -46,9 +52,7 @@ class AccessKey:
     def scopes_read(self):
         return storage.get(self.key+":scopes_read") or []
 
-    @property
-    def is_admin(self):
-        return storage.get(self.key+":is_admin")
+
 
         
     def set_name(self, name):
@@ -65,8 +69,7 @@ class AccessKey:
         return storage.set(self.key+":scopes_read", currently_list)
 
 
-    def set_is_admin(self, is_admin):
-        return storage.set(self.key+":is_admin", is_admin)
+
     
     def delete(self):
         storage.delete(self.key+":name")

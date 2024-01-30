@@ -51,3 +51,27 @@ def disable_user():
 
 
     return jsonify(True)
+
+
+
+@app.route(enable_admin_url, methods=["POST"])
+def enable_admin():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    user.set_is_admin(True)
+
+
+    return jsonify(True)
+
+
+@app.route(disable_admin_url, methods=["POST"])
+def disable_admin():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    user.set_is_admin(False)
+
+
+    return jsonify(True)
+

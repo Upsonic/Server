@@ -240,7 +240,43 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(the_user.is_enable, False)
 
+    def test_enable_admin(self):
+        id = "test_enable_admin"
+        the_user = AccessKey(id)
 
+        self.assertEqual(the_user.is_admin, False)
+
+        id_admin = "test_enable_admin_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        # Adding the id as user with add_admin_url endpoint
+        data = {"key": id}
+        response = requests.post("http://localhost:7777" + enable_admin_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.is_admin, True)
+
+
+    def test_disable_admin(self):
+        id = "test_disable_admin"
+        the_user = AccessKey(id)
+        the_user.set_is_admin(True)
+
+        self.assertEqual(the_user.is_admin, True)
+
+        id_admin = "test_disable_admin_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        # Adding the id as user with add_admin_url endpoint
+        data = {"key": id}
+        response = requests.post("http://localhost:7777" + disable_admin_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.is_admin, False)
 
 
 
