@@ -11,3 +11,8 @@ add_user_url = "/add_user"
 enable_user_url = "/enable_user"
 
 disable_user_url = "/disable_user"
+
+
+enable_admin_url = "/enable_admin"
+
+disable_admin_url = "/disable_admin"

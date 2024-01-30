@@ -85,7 +85,7 @@ class Test_Accesskey(unittest.TestCase):
     def test_is_admin(self):
         id = "test_is_admin"
         accesskey = AccessKey(id)
-        self.assertEqual(accesskey.is_admin, None)
+        self.assertEqual(accesskey.is_admin, False)
         accesskey.set_is_admin(True)
         self.assertEqual(accesskey.is_admin, True)
 
@@ -186,7 +186,8 @@ class Test_Accesskey(unittest.TestCase):
         accesskey.delete()
         self.assertEqual(accesskey.can_access_write("onur.*"), False)
         self.assertEqual(accesskey.name, None)
-        self.assertEqual(accesskey.is_admin, None)
+        self.assertEqual(accesskey.is_admin, False)
+        self.assertEqual(accesskey.is_enable, False)
         self.assertEqual(accesskey.scopes_write, [])
         self.assertEqual(accesskey.scopes_read, [])
 
