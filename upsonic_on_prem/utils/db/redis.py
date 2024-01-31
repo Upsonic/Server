@@ -62,6 +62,10 @@ class redis_config:
     
         self.config_dump()
         self.service_restart()
+        self.service_status()
+
+    def service_status(self):
+        os.system("service redis-server status")
 
         
     def password_override(self):
