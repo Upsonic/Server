@@ -17,6 +17,11 @@ from upsonic_on_prem.utils.configs import threads, url_scheme
 
 class _cli:
 
+
+    def app(self, host, port):
+        global threads
+
+
     def api(sef, host, port):
         global threads
 

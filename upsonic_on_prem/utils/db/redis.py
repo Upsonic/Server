@@ -82,9 +82,9 @@ class redis_config:
           
                     f.write(f"port {self.port}\n")
                 
-                    f.write(f"dbfilename dump.rdb\n")
+                    f.write(f"dbfilename storage.rdb\n")
               
-                    f.write(f"dir /var/lib/redis/\n")
+                    f.write(f"dir /data/\n")
       
                     f.write(f"requirepass {self.password}\n")
                     
