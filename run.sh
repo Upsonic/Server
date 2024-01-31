@@ -1,8 +1,6 @@
 #!/bin/bash
 
-mkdir -p /keys
-
-openssl req -x509 -newkey rsa:4096 -keyout /keys/upsonic.private.pem -out /keys/upsonic.origin.pem -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.upsonic.co"
+python3 /app/On-Prem/ssl_setting.py
 
 service nginx start 
 
