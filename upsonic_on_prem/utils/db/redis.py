@@ -1,11 +1,9 @@
-import redis
-import random
 import os
-import traceback
+import random
 
+import redis
 
-from upsonic_on_prem.utils.configs import redis_password, redis_host, redis_port
-from upsonic_on_prem.utils.logs import *
+from upsonic_on_prem.utils.configs import redis_host, redis_port
 from upsonic_on_prem.utils.db.serialization import *
 
 
@@ -75,6 +73,18 @@ class redis_config:
         os.system("service redis-server restart")           
 
     def config_dump(self):
+        system_conf = "/etc/systemd/system/redis.service.d/override.conf"
+        # if not create a file
+        if not os.path.exists(system_conf):
+            os.makedirs(os.path.dirname(system_conf), exist_ok=True)
+            open(system_conf, "w").close()
+
+        with open(system_conf, "w") as f:
+            f.write(f"[Service]\n")
+            f.write(f"ReadWriteDirectories=-/data/\n")
+
+        os.system("systemctl daemon-reload")
+
         conf = "/etc/redis/redis.conf"
         with open(conf, "w") as f:
 
