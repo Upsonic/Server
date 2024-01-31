@@ -77,17 +77,6 @@ class redis_config:
         os.system("service redis-server restart")           
 
     def config_dump(self):
-        system_conf = "/etc/systemd/system/redis.service.d/override.conf"
-        # if not create a file
-        if not os.path.exists(system_conf):
-            os.makedirs(os.path.dirname(system_conf), exist_ok=True)
-            open(system_conf, "w").close()
-
-        with open(system_conf, "w") as f:
-            f.write(f"[Service]\n")
-            f.write(f"ReadWriteDirectories=-/data/\n")
-
-        os.system("systemctl daemon-reload")
 
         conf = "/etc/redis/redis.conf"
         with open(conf, "w") as f:
@@ -97,8 +86,8 @@ class redis_config:
                     f.write(f"port {self.port}\n")
                 
                     f.write(f"dbfilename storage.rdb\n")
-              
-                    f.write(f"dir /data/\n")
+
+                    f.write(f"dir /var/lib/redis/\n")
       
                     f.write(f"requirepass {self.password}\n")
                     

@@ -78,7 +78,7 @@ WSGI_APPLICATION = "dash.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "/data/dash.sqlite3",
+        "NAME": "/var/lib/redis/dash.sqlite3",
     }
 }
 
