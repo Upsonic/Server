@@ -34,4 +34,5 @@ jobs:
         cd tests
         sudo mkdir -p /data
         sudo pytest -v
+        systemctl status redis-server.service
 
