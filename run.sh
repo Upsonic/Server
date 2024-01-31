@@ -13,7 +13,7 @@ python3 /app/On-Prem/upsonic_on_prem/dash/manage.py collectstatic --noinput
 
 cd /app/On-Prem/upsonic_on_prem/dash/
 
-echo "from app import models; models.User.objects.create_superuser('$admin_user', 'onprem@upsonic.co', '$admin_pass')" | python3 manage.py shell
+echo "from app import models; models.User.objects.create_superuser('$admin_username', 'onprem@upsonic.co', '$admin_pass')" | python3 manage.py shell
 
 
 gunicorn --bind localhost:3001 dash.wsgi:application
