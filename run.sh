@@ -2,6 +2,9 @@
 
 mkdir -p /keys
 mkdir -p /data
+sudo chown -R redis /data
+
+sudo setenforce 0
 
 openssl req -x509 -newkey rsa:4096 -keyout /keys/upsonic.private.pem -out /keys/upsonic.origin.pem -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.upsonic.co"
 
