@@ -1,5 +1,7 @@
 .idea
 
+upsonic_on_prem/dash/staticfiles/*
+
 Upsonic-*/
 upsonic_cache/
 .vscode
