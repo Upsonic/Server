@@ -1,15 +1,8 @@
-name: Release
+name: Patch Release
 
 on:
   workflow_dispatch:
-    inputs:
-      release_type:
-        required: true
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
+
 
 permissions:
   contents: write
@@ -35,5 +28,5 @@ jobs:
           git config user.email "<>"          
 
       - name: Run Version Bump Script
-        run: python bump.py ${{ github.event.inputs.release_type }}
+        run: python bump.py patch
 

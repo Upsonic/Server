@@ -2,7 +2,7 @@ name: Build
 
 on:
   workflow_run:
-    workflows: ["Release"]
+    workflows: [ "Major Release", "Minor Release", "Patch Release" ]
     types:
       - completed  
 
