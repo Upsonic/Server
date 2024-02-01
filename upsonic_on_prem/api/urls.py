@@ -18,3 +18,5 @@ enable_admin_url = "/enable_admin"
 disable_admin_url = "/disable_admin"
 
 delete_user_url = "/delete_user"
+
+total_size_url = "/total_size"

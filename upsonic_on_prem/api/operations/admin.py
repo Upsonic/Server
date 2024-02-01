@@ -3,7 +3,7 @@ from flask import request
 
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
-from upsonic_on_prem.utils import AccessKey
+from upsonic_on_prem.utils import AccessKey, storage
 
 
 @app.route(get_admins_url, methods=["get"])
@@ -82,3 +82,8 @@ def delete_user():
     user.delete()
 
     return jsonify(True)
+
+
+@app.route(total_size_url, methods=["GET"])
+def total_size():
+    return jsonify(storage.total_size())
