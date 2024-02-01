@@ -30,6 +30,9 @@ class Test_Storage(unittest.TestCase):
         storage.set("test", "test")
         self.assertEqual(storage.get("test"), "test")
 
+    def test_total_size(self):
+        self.assertTrue(storage.total_size() > 0)
+
 
     def test_delete(self):
         storage.delete("test")

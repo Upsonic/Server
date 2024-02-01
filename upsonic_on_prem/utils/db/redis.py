@@ -26,6 +26,16 @@ class redis_client_():
 
         return condition_1 and condition_2
 
+    def total_size(self):
+        # Calculate the size of /var/lib/redis/ folder
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk("/var/lib/redis/"):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+
+        total_size = total_size / 1000000
+        return total_size
 
     def get(self, key):
         result = self.redis.get(key)
