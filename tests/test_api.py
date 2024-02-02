@@ -296,8 +296,28 @@ class Test_Storage(unittest.TestCase):
         self.assertEqual(the_user.is_admin, False)
 
 
+    def test_total_size(self):
+        id = "test_total_size"
+        the_user = AccessKey(id)
+        the_user.enable()
+
+        id_admin = "test_total_size_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        response = requests.get("http://localhost:7777" + total_size_url, auth=HTTPBasicAuth("", id_admin),)
+
+        mb = response.json()
+
+        self.assertGreater(mb, 0)
+
+
+
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
 unittest.main(exit=False)
 sys.argv = backup
+
