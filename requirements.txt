@@ -12,3 +12,5 @@ cryptography==41.0.3
 django==4.2.9
 gunicorn==20.1.0
 tzdata==2023.3
+sentry-sdk[flask]==1.40.0
+sentry-sdk[django]==1.40.0
