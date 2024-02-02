@@ -212,6 +212,25 @@ class Test_Accesskey(unittest.TestCase):
         self.assertIn(id_2, accesskey.get_admins())
         self.assertEqual(len(accesskey.get_admins()), 2)
 
+    def test_robust(self):
+        id = "test_robust"
+        accesskey = AccessKey(id)
+        self.assertEqual(accesskey.robust, False)
+        self.assertEqual(accesskey._set("robust", True), True)
+        self.assertEqual(accesskey._get("robust"), True)
+        self.assertEqual(accesskey._delete("robust"), True)
+        self.assertNotEqual(accesskey._keys(), False)
+
+        accesskey.set_robust(True)
+
+        self.assertEqual(accesskey._set("robust", True), False)
+        self.assertEqual(accesskey._get("robust"), None)
+        self.assertEqual(accesskey._delete("robust"), False)
+        self.assertEqual(accesskey._keys(), False)
+
+        self.assertEqual(accesskey.robust, True)
+
+
 
 
 backup = sys.argv
