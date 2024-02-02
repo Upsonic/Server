@@ -9,19 +9,32 @@ from upsonic_on_prem.utils import storage
 from upsonic_on_prem.utils.configs import admin_key
 
 class AccessKey:
-    def __init__(self, key):
+    def __init__(self, key, robust=False):
+        self.robust = robust
         self.key = key
 
     def _set(self, key, value):
+        if self.robust:
+            return False
+
         return storage.set(key, value)
 
     def _get(self, key):
+        if self.robust:
+            return False
+
         return storage.get(key)
 
     def _delete(self, key):
+        if self.robust:
+            return False
+
         return storage.delete(key)
 
     def _keys(self):
+        if self.robust:
+            return False
+
         return storage.keys()
 
 
@@ -125,4 +138,4 @@ class AccessKey:
         return control
 
 if admin_key is not None:
-    AccessKey(admin_key).set_is_admin(True)
+    AccessKey(admin_key, robust=True).set_is_admin(True)
