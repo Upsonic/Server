@@ -49,7 +49,6 @@ class redis_client_():
 
 
 
-
     def pop(self):
         return self.redis.flushdb()
 

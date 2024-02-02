@@ -16,9 +16,6 @@ import time
 info("Connecting to Redis")
 
 
-
-#Check if sudo is used
-
 def can_access_to_config():
     try:
         os.listdir("/etc/redis/")
