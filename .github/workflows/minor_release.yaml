@@ -28,5 +28,5 @@ jobs:
           git config user.email "<>"          
 
       - name: Run Version Bump Script
-        run: python bump.py patch
+        run: python bump.py minor
 

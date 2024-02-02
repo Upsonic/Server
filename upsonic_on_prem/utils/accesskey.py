@@ -12,20 +12,32 @@ class AccessKey:
     def __init__(self, key):
         self.key = key
 
+    def _set(self, key, value):
+        return storage.set(key, value)
+
+    def _get(self, key):
+        return storage.get(key)
+
+    def _delete(self, key):
+        return storage.delete(key)
+
+    def _keys(self):
+        return storage.keys()
+
 
     def enable(self):
-        storage.set(self.key, True)
+        self._set(self.key, True)
     def disable(self):
-        storage.set(self.key, False)
+        self._set(self.key, False)
     @property
     def is_enable(self):
-        return storage.get(self.key) == True
+        return self._get(self.key) == True
 
     def set_is_admin(self, is_admin):
-        return storage.set(self.key+":is_admin", is_admin)
+        return self._set(self.key + ":is_admin", is_admin)
     @property
     def is_admin(self):
-        return storage.get(self.key+":is_admin") == True
+        return self._get(self.key + ":is_admin") == True
 
     @staticmethod
     def get_admins():
@@ -42,41 +54,41 @@ class AccessKey:
 
     @property
     def name(self):
-        return storage.get(self.key+":name")
+        return self._get(self.key + ":name")
     @property
     def scopes_write(self):
 
-        return storage.get(self.key+":scopes_write") or []
+        return self._get(self.key + ":scopes_write") or []
         
     @property
     def scopes_read(self):
-        return storage.get(self.key+":scopes_read") or []
+        return self._get(self.key + ":scopes_read") or []
 
 
 
         
     def set_name(self, name):
-        return storage.set(self.key+":name", name)
+        return self._set(self.key + ":name", name)
     
     def set_scope_write(self, scope):
         currently_list = self.scopes_write
         currently_list.append(scope)
-        return storage.set(self.key+":scopes_write", currently_list)
+        return self._set(self.key + ":scopes_write", currently_list)
     
     def set_scope_read(self, scope):
         currently_list = self.scopes_read
         currently_list.append(scope)
-        return storage.set(self.key+":scopes_read", currently_list)
+        return self._set(self.key + ":scopes_read", currently_list)
 
 
 
     
     def delete(self):
-        storage.delete(self.key+":name")
-        storage.delete(self.key+":scopes_write")
-        storage.delete(self.key+":scopes_read")
-        storage.delete(self.key+":is_admin")
-        storage.delete(self.key)
+        self._delete(self.key + ":name")
+        self._delete(self.key + ":scopes_write")
+        self._delete(self.key + ":scopes_read")
+        self._delete(self.key + ":is_admin")
+        self._delete(self.key)
 
     
 
