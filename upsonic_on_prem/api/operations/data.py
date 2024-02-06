@@ -15,7 +15,7 @@ def dump():
 
     storage.set(scope, data)
 
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 
@@ -23,4 +23,4 @@ def dump():
 def load():
     scope = request.form.get("scope")
 
-    return jsonify(storage.get(scope))
+    return jsonify({"status": True, "result": storage.get(scope)})
