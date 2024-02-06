@@ -16,19 +16,23 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=".env")
-# settings.py
-import sentry_sdk
 
-sentry_sdk.init(
-    dsn="https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176",
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
-    profiles_sample_rate=1.0,
-)
+sentry = os.environ.get("sentry", "false").lower() == "true"
+
+# settings.py
+if sentry:
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn="https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176",
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        traces_sample_rate=1.0,
+        # Set profiles_sample_rate to 1.0 to profile 100%
+        # of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=1.0,
+    )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
