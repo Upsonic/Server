@@ -43,12 +43,12 @@ class AccessKey:
 
 
     def enable(self):
-        self._set(self.key, True)
+        self._set(self.key + ":enable", True)
     def disable(self):
-        self._set(self.key, False)
+        self._set(self.key + ":enable", False)
     @property
     def is_enable(self):
-        return self._get(self.key) == True
+        return self._get(self.key + ":enable") == True
 
     def set_is_admin(self, is_admin):
         return self._set(self.key + ":is_admin", is_admin)
@@ -115,7 +115,7 @@ class AccessKey:
         self._delete(self.key + ":scopes_write")
         self._delete(self.key + ":scopes_read")
         self._delete(self.key + ":is_admin")
-        self._delete(self.key)
+        self._delete(self.key + ":enable")
 
     
 
