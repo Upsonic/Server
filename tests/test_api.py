@@ -312,7 +312,47 @@ class Test_Storage(unittest.TestCase):
 
         self.assertGreater(mb, 0)
 
+    def test_scope_write(self):
+        id = "test_scope_write"
+        the_user = AccessKey(id)
+        the_user.enable()
 
+        id_admin = "test_scope_write_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, "scope": "onur.*"}
+        response = requests.post("http://localhost:7777" + scope_write_add_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_write("onur.ulusoy"), True)
+
+        response = requests.post("http://localhost:7777" + scope_write_delete_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_write("onur.ulusoy"), False)
+
+    def test_scope_read(self):
+        id = "test_scope_read"
+        the_user = AccessKey(id)
+        the_user.enable()
+
+        id_admin = "test_scope_read_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, "scope": "onur.*"}
+        response = requests.post("http://localhost:7777" + scope_read_add_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_read("onur.ulusoy"), True)
+
+        response = requests.post("http://localhost:7777" + scope_read_delete_url, auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_read("onur.ulusoy"), False)
 
 
 

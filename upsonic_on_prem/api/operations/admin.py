@@ -89,6 +89,45 @@ def total_size():
     return jsonify(storage.total_size())
 
 
+@app.route(scope_write_add_url, methods=["POST"])
+def scope_write_add():
+    key = request.form.get("key")
+    scope = request.form.get("scope")
+
+    user = AccessKey(key)
+    user.set_scope_write(scope)
+
+    return jsonify(True)
 
 
+@app.route(scope_write_delete_url, methods=["POST"])
+def scope_write_delete():
+    key = request.form.get("key")
+    scope = request.form.get("scope")
 
+    user = AccessKey(key)
+    user.delete_scope_write(scope)
+
+    return jsonify(True)
+
+
+@app.route(scope_read_add_url, methods=["POST"])
+def scope_read_add():
+    key = request.form.get("key")
+    scope = request.form.get("scope")
+
+    user = AccessKey(key)
+    user.set_scope_read(scope)
+
+    return jsonify(True)
+
+
+@app.route(scope_read_delete_url, methods=["POST"])
+def scope_read_delete():
+    key = request.form.get("key")
+    scope = request.form.get("scope")
+
+    user = AccessKey(key)
+    user.delete_scope_read(scope)
+
+    return jsonify(True)
