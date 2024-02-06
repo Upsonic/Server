@@ -98,6 +98,16 @@ class AccessKey:
         return self._set(self.key + ":scopes_read", currently_list)
 
 
+    def delete_scope_write(self, scope):
+        currently_list = self.scopes_write
+        currently_list.remove(scope)
+        return self._set(self.key + ":scopes_write", currently_list)
+
+    def delete_scope_read(self, scope):
+        currently_list = self.scopes_read
+        currently_list.remove(scope)
+        return self._set(self.key + ":scopes_read", currently_list)
+
 
     
     def delete(self):
