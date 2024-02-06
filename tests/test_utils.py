@@ -74,6 +74,11 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(accesskey.scopes_write, ["onur.*", "onur.mehmet.*"])
 
+        accesskey.delete_scope_write("onur.*")
+        self.assertEqual(accesskey.scopes_write, ["onur.mehmet.*"])
+        accesskey.delete_scope_write("onur.mehmet.*")
+        self.assertEqual(accesskey.scopes_write, [])
+
 
     def test_scope_read(self):
         id = "test_scope"
@@ -83,6 +88,12 @@ class Test_Accesskey(unittest.TestCase):
         accesskey.set_scope_read("onur.mehmet.*")
 
         self.assertEqual(accesskey.scopes_read, ["onur.*", "onur.mehmet.*"])
+
+        accesskey.delete_scope_read("onur.*")
+        self.assertEqual(accesskey.scopes_read, ["onur.mehmet.*"])
+        accesskey.delete_scope_read("onur.mehmet.*")
+        self.assertEqual(accesskey.scopes_read, [])
+
 
 
     def test_is_admin(self):

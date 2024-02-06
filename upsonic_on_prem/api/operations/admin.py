@@ -87,3 +87,8 @@ def delete_user():
 @app.route(total_size_url, methods=["GET"])
 def total_size():
     return jsonify(storage.total_size())
+
+
+
+
+
