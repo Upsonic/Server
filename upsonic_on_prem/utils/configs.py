@@ -73,3 +73,5 @@ redis_port = os.environ.get("redis_port", 6379)
 admin_key = os.environ.get("admin_key")
 
 debugging = os.environ.get("debugging", "false").lower() == "true"
+
+sentry = os.environ.get("sentry", "false").lower() == "true"
