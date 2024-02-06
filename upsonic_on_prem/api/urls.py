@@ -20,3 +20,8 @@ disable_admin_url = "/disable_admin"
 delete_user_url = "/delete_user"
 
 total_size_url = "/total_size"
+
+scope_write_add_url = "/scope_write_add"
+scope_write_delete_url = "/scope_write_delete"
+scope_read_add_url = "/scope_read_add"
+scope_read_delete_url = "/scope_read_delete"
