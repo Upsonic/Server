@@ -154,7 +154,7 @@ class Test_Storage(unittest.TestCase):
         
             response = requests.post("http://localhost:7777"+url, auth=HTTPBasicAuth("", id), data=data)
 
-            loaded_data = response.content
+            loaded_data = response.json()["result"]
 
             loaded_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).decrypt(loaded_data)
 
@@ -308,7 +308,7 @@ class Test_Storage(unittest.TestCase):
 
         response = requests.get("http://localhost:7777" + total_size_url, auth=HTTPBasicAuth("", id_admin),)
 
-        mb = response.json()
+        mb = response.json()["result"]
 
         self.assertGreater(mb, 0)
 

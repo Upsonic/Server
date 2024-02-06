@@ -8,7 +8,7 @@ from upsonic_on_prem.utils import AccessKey, storage
 
 @app.route(get_admins_url, methods=["get"])
 def get_admins():
-    return jsonify(AccessKey.get_admins())
+    return jsonify({"status": True, "result": AccessKey.get_admins()})
 
 
 
@@ -22,8 +22,7 @@ def add_user():
     user = AccessKey(key)
     user.enable()
 
-
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 
@@ -34,8 +33,7 @@ def enable_user():
     user = AccessKey(key)
     user.enable()
 
-
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 
@@ -47,8 +45,7 @@ def disable_user():
     user = AccessKey(key)
     user.disable()
 
-
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 
@@ -59,8 +56,7 @@ def enable_admin():
     user = AccessKey(key)
     user.set_is_admin(True)
 
-
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 @app.route(disable_admin_url, methods=["POST"])
@@ -70,8 +66,7 @@ def disable_admin():
     user = AccessKey(key)
     user.set_is_admin(False)
 
-
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 @app.route(delete_user_url, methods=["POST"])
@@ -81,12 +76,13 @@ def delete_user():
     user = AccessKey(key)
     user.delete()
 
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 @app.route(total_size_url, methods=["GET"])
 def total_size():
-    return jsonify(storage.total_size())
+    return jsonify({"status": True, "result": storage.total_size()})
+
 
 
 @app.route(scope_write_add_url, methods=["POST"])
@@ -97,7 +93,7 @@ def scope_write_add():
     user = AccessKey(key)
     user.set_scope_write(scope)
 
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 @app.route(scope_write_delete_url, methods=["POST"])
@@ -108,7 +104,7 @@ def scope_write_delete():
     user = AccessKey(key)
     user.delete_scope_write(scope)
 
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 @app.route(scope_read_add_url, methods=["POST"])
@@ -119,7 +115,7 @@ def scope_read_add():
     user = AccessKey(key)
     user.set_scope_read(scope)
 
-    return jsonify(True)
+    return jsonify({"status": True})
 
 
 @app.route(scope_read_delete_url, methods=["POST"])
@@ -130,4 +126,4 @@ def scope_read_delete():
     user = AccessKey(key)
     user.delete_scope_read(scope)
 
-    return jsonify(True)
+    return jsonify({"status": True})
