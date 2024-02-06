@@ -241,6 +241,21 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(accesskey.robust, True)
 
+    def test_get_users(self):
+        id = "test_get_users"
+        id_2 = "test_get_users_"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        self.assertEqual(accesskey.get_users(), [id])
+        accesskey.delete()
+        self.assertEqual(accesskey.get_users(), [])
+        accesskey.enable()
+        self.assertEqual(accesskey.get_users(), [id])
+        accesskey_2 = AccessKey(id_2)
+        accesskey_2.enable()
+        self.assertIn(id, accesskey.get_users())
+        self.assertIn(id_2, accesskey.get_users())
+        self.assertEqual(len(accesskey.get_users()), 2)
 
 
 

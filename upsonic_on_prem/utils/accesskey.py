@@ -65,9 +65,16 @@ class AccessKey:
                 admins.append(i[:-9])
 
         return admins
-    
 
+    @staticmethod
+    def get_users():
+        keys = storage.keys()
+        users = []
+        for i in keys:
+            if i.endswith(":enable"):
+                users.append(i[:-7])
 
+        return users
 
     @property
     def name(self):
