@@ -280,6 +280,40 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(AccessKey.get_len_of_admins(), the_first + 1)
         storage.pop()
 
+    def test_events(self):
+        storage.pop()
+
+        id = "test_events"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+
+        accesskey.event("Test a")
+
+        the_events = [value for value in accesskey.events.values()]
+
+        self.assertEqual(the_events, ["Test a"])
+
+        storage.pop()
+
+    def test_events_get_x(self):
+        storage.pop()
+
+        id = "test_events"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+
+        accesskey.event("Test a")
+        accesskey.event("Test b")
+        accesskey.event("Test c")
+        accesskey.event("Test d")
+
+        the_events = [value for value in accesskey.get_last_x_events(2).values()]
+
+        self.assertEqual(the_events, ["Test d", "Test c"])
+
+        storage.pop()
+
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]

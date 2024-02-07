@@ -1,3 +1,5 @@
+import time
+
 import redis
 import random
 import os
@@ -98,9 +100,26 @@ class AccessKey:
     def scopes_read(self):
         return self._get(self.key + ":scopes_read") or []
 
+    @property
+    def events(self):
+        return self._get(self.key + ":events") or {}
 
+    def event(self, event):
+        currently = self.events
+        the_time = str(time.time()) + "_" + str(random.randint(0, 100000))
+        currently[the_time] = event
+        self._set(self.key + ":events", currently)
 
-        
+    def get_last_x_events(self, x):
+        # get last x element of dict but return should be a dict
+        all_events = self.events
+        last_x_events = {}
+        for i in list(all_events.keys())[-x:]:
+            last_x_events[i] = all_events[i]
+
+        last_x_events = dict(reversed(list(last_x_events.items())))
+
+        return last_x_events
     def set_name(self, name):
         return self._set(self.key + ":name", name)
     
@@ -133,6 +152,9 @@ class AccessKey:
         self._delete(self.key + ":scopes_read")
         self._delete(self.key + ":is_admin")
         self._delete(self.key + ":enable")
+        self._delete(self.key + ":robust")
+        self._delete(self.key + ":events")
+
 
     
 

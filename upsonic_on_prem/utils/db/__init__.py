@@ -25,7 +25,7 @@ def can_access_to_config():
 
 if can_access_to_config():
     threading.Thread(target=redis_config).start()
-    time.sleep(5)
+    time.sleep(2)
 
 succed = False
 
