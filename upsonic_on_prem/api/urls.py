@@ -5,6 +5,7 @@ dump_url = "/dump"
 load_url = "/load"
 
 get_admins_url = "/get_admins"
+get_users_url = "/get_users"
 
 add_user_url = "/add_user"
 

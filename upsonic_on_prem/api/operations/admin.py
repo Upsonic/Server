@@ -11,6 +11,9 @@ def get_admins():
     return jsonify({"status": True, "result": AccessKey.get_admins()})
 
 
+@app.route(get_users_url, methods=["get"])
+def get_users():
+    return jsonify({"status": True, "result": AccessKey.get_users()})
 
 
 
