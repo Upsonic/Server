@@ -354,6 +354,27 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(the_user.can_access_read("onur.ulusoy"), False)
 
+    def test_get_admins(self):
+        id_admin = "test_get_admins_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        response = requests.get("http://localhost:7777" + get_admins_url, auth=HTTPBasicAuth("", id_admin))
+
+        the_admins_list = response.json()["result"]
+        self.assertEqual(the_admins_list, AccessKey.get_admins())
+
+    def test_get_users(self):
+        id_admin = "test_get_users_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        response = requests.get("http://localhost:7777" + get_users_url, auth=HTTPBasicAuth("", id_admin))
+
+        the_admins_list = response.json()["result"]
+        self.assertEqual(the_admins_list, AccessKey.get_users())
 
 
 backup = sys.argv
