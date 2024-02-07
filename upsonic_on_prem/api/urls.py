@@ -32,3 +32,6 @@ get_write_scopes_of_user_url = "/get_write_scopes_of_user"
 
 can_access_read_user_url = "/can_access_read_user"
 can_access_write_user_url = "/can_access_write_user"
+
+get_read_scopes_of_me_url = "/get_read_scopes_of_me"
+get_write_scopes_of_me_url = "/get_write_scopes_of_me"

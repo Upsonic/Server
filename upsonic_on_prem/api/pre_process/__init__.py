@@ -50,7 +50,8 @@ def check():
 
 
     if not the_access_key.is_admin:
-        if not (endpoint == dump_url or endpoint == load_url):
+        if not (
+                endpoint == dump_url or endpoint == load_url or endpoint == get_read_scopes_of_me_url or endpoint == get_write_scopes_of_me_url):
             print("endpoint", endpoint)
             print(request.endpoint)
             return Response(

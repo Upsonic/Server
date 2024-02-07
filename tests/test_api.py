@@ -393,6 +393,10 @@ class Test_Storage(unittest.TestCase):
                                  data=data)
         self.assertEqual(the_user.scopes_write, response.json()["result"])
 
+        response_2 = requests.get("http://localhost:7777" + get_write_scopes_of_me_url,
+                                  auth=HTTPBasicAuth("", id))
+        self.assertEqual(response.json()["result"], response_2.json()["result"])
+
     def test_get_read_scopes_of_user(self):
         id = "test_get_read_scopes_of_user"
         the_user = AccessKey(id)
@@ -409,6 +413,11 @@ class Test_Storage(unittest.TestCase):
                                  auth=HTTPBasicAuth("", id_admin),
                                  data=data)
         self.assertEqual(the_user.scopes_read, response.json()["result"])
+
+        response_2 = requests.get("http://localhost:7777" + get_read_scopes_of_me_url,
+                                  auth=HTTPBasicAuth("", id))
+        self.assertEqual(response.json()["result"], response_2.json()["result"])
+
 
     def test_can_access_read(self):
         id = "test_can_access_read"
