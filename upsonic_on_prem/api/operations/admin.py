@@ -146,3 +146,21 @@ def get_read_scopes_of_user():
 
     user = AccessKey(key)
     return jsonify({"status": True, "result": user.scopes_read})
+
+
+@app.route(can_access_read_user_url, methods=["post"])
+def can_access_read_user():
+    key = request.form.get("key")
+    scope = request.form.get("scope")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.can_access_read(scope)})
+
+
+@app.route(can_access_write_user_url, methods=["post"])
+def can_access_write_user():
+    key = request.form.get("key")
+    scope = request.form.get("scope")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.can_access_write(scope)})

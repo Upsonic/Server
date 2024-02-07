@@ -29,3 +29,6 @@ scope_read_delete_url = "/scope_read_delete"
 
 get_read_scopes_of_user_url = "/get_read_scopes_of_user"
 get_write_scopes_of_user_url = "/get_write_scopes_of_user"
+
+can_access_read_user_url = "/can_access_read_user"
+can_access_write_user_url = "/can_access_write_user"

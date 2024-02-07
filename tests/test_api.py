@@ -410,6 +410,56 @@ class Test_Storage(unittest.TestCase):
                                  data=data)
         self.assertEqual(the_user.scopes_read, response.json()["result"])
 
+    def test_can_access_read(self):
+        id = "test_can_access_read"
+        the_user = AccessKey(id)
+        the_user.enable()
+        the_user.set_scope_read("onur.atakan")
+
+        id_admin = "test_can_access_read_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, "scope": "onur.atakan"}
+        response = requests.post("http://localhost:7777" + can_access_read_user_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_read("onur.atakan"), response.json()["result"])
+
+        data = {"key": id, "scope": "ahmet.atakan"}
+        response = requests.post("http://localhost:7777" + can_access_read_user_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_read("ahmet.atakan"), response.json()["result"])
+
+    def test_can_access_write(self):
+        id = "test_can_access_write"
+        the_user = AccessKey(id)
+        the_user.enable()
+        the_user.set_scope_write("onur.atakan")
+
+        id_admin = "test_can_access_write_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, "scope": "onur.atakan"}
+        response = requests.post("http://localhost:7777" + can_access_write_user_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_write("onur.atakan"), response.json()["result"])
+
+        data = {"key": id, "scope": "ahmet.atakan"}
+        response = requests.post("http://localhost:7777" + can_access_write_user_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(the_user.can_access_write("ahmet.atakan"), response.json()["result"])
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
