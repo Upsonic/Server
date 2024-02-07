@@ -130,3 +130,19 @@ def scope_read_delete():
     user.delete_scope_read(scope)
 
     return jsonify({"status": True})
+
+
+@app.route(get_write_scopes_of_user_url, methods=["post"])
+def get_write_scopes_of_user():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.scopes_write})
+
+
+@app.route(get_read_scopes_of_user_url, methods=["post"])
+def get_read_scopes_of_user():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.scopes_read})
