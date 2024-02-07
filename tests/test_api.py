@@ -376,6 +376,29 @@ class Test_Storage(unittest.TestCase):
         the_admins_list = response.json()["result"]
         self.assertEqual(the_admins_list, AccessKey.get_users())
 
+    def test_get_users_len(self):
+        id_admin = "test_get_users_len"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        response = requests.get("http://localhost:7777" + get_len_of_users_url, auth=HTTPBasicAuth("", id_admin))
+
+        the_admins_list = response.json()["result"]
+        self.assertEqual(the_admins_list, AccessKey.get_len_of_users())
+
+    def test_get_admins_len(self):
+        id_admin = "test_get_admins_len"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        response = requests.get("http://localhost:7777" + get_len_of_admins_url, auth=HTTPBasicAuth("", id_admin))
+
+        the_admins_list = response.json()["result"]
+        self.assertEqual(the_admins_list, AccessKey.get_len_of_admins())
+
+
     def test_get_write_scopes_of_user(self):
         id = "test_get_write_scopes_of_user"
         the_user = AccessKey(id)

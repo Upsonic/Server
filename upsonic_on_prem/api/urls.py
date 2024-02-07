@@ -37,3 +37,5 @@ get_read_scopes_of_me_url = "/get_read_scopes_of_me"
 get_write_scopes_of_me_url = "/get_write_scopes_of_me"
 
 get_len_of_users_url = "/get_len_of_users"
+
+get_len_of_admins_url = "/get_len_of_admins"

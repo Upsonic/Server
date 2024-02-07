@@ -257,6 +257,28 @@ class Test_Accesskey(unittest.TestCase):
         self.assertIn(id_2, accesskey.get_users())
         self.assertEqual(len(accesskey.get_users()), 2)
 
+    def test_get_users_len(self):
+        storage.pop()
+        id = "test_get_users_len"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        self.assertEqual(AccessKey.get_len_of_users(), 1)
+        storage.pop()
+
+    def test_get_admins_len(self):
+        storage.pop()
+        the_first = AccessKey.get_len_of_admins()
+        id = "test_get_admins_len"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        accesskey.set_is_admin(True)
+
+        id_2 = "test_get_admins_len_"
+        accesskey_2 = AccessKey(id_2)
+        accesskey_2.enable()
+
+        self.assertEqual(AccessKey.get_len_of_admins(), the_first + 1)
+        storage.pop()
 
 
 backup = sys.argv
