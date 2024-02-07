@@ -164,3 +164,13 @@ def can_access_write_user():
 
     user = AccessKey(key)
     return jsonify({"status": True, "result": user.can_access_write(scope)})
+
+
+@app.route(get_len_of_users_url, methods=["get"])
+def get_len_of_users():
+    return jsonify({"status": True, "result": AccessKey.get_len_of_users()})
+
+
+@app.route(get_len_of_admins_url, methods=["get"])
+def get_len_of_admins():
+    return jsonify({"status": True, "result": AccessKey.get_len_of_admins()})
