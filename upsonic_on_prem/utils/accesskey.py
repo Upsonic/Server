@@ -76,6 +76,10 @@ class AccessKey:
 
         return users
 
+    @staticmethod
+    def get_len_of_users():
+        users = AccessKey.get_users()
+        return len(users)
     @property
     def name(self):
         return self._get(self.key + ":name")
