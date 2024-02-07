@@ -376,6 +376,40 @@ class Test_Storage(unittest.TestCase):
         the_admins_list = response.json()["result"]
         self.assertEqual(the_admins_list, AccessKey.get_users())
 
+    def test_get_write_scopes_of_user(self):
+        id = "test_get_write_scopes_of_user"
+        the_user = AccessKey(id)
+        the_user.enable()
+        the_user.set_scope_write("onur.atakan")
+
+        id_admin = "test_get_write_scopes_of_user_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id}
+        response = requests.post("http://localhost:7777" + get_write_scopes_of_user_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+        self.assertEqual(the_user.scopes_write, response.json()["result"])
+
+    def test_get_read_scopes_of_user(self):
+        id = "test_get_read_scopes_of_user"
+        the_user = AccessKey(id)
+        the_user.enable()
+        the_user.set_scope_read("onur.atakan")
+
+        id_admin = "test_get_read_scopes_of_user_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id}
+        response = requests.post("http://localhost:7777" + get_read_scopes_of_user_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+        self.assertEqual(the_user.scopes_read, response.json()["result"])
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
