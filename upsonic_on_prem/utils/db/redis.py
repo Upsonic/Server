@@ -8,11 +8,11 @@ from upsonic_on_prem.utils.db.serialization import *
 
 
 class redis_client_():
-    def __init__(self):
+    def __init__(self, db=0):
         self.host = redis_host
         self.port = redis_port
         self.password = redis_password
-        self.redis = redis.Redis(host=self.host, port=self.port, password=self.password)
+        self.redis = redis.Redis(host=self.host, port=self.port, password=self.password, db=db)
     
 
     def status(self):

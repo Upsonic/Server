@@ -33,6 +33,7 @@ while not succed:
     try:
         info("Redis configured")
         storage = redis_client_()
+        storage_2 = redis_client_(db=1)
         succed = True
     except:
         warning("Redis configuration failed retrying in 5 seconds")
