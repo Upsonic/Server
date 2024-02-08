@@ -91,6 +91,18 @@ class AccessKey:
     @property
     def name(self):
         return self._get(self.key + ":name")
+
+
+def scopes_write_clear(self):
+    return self._set(self.key + ":scopes_write", [])
+
+
+def scopes_read_clear(self):
+    return self._set(self.key + ":scopes_read", [])
+
+
+
+
     @property
     def scopes_write(self):
 
