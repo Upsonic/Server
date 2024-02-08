@@ -93,12 +93,12 @@ class AccessKey:
         return self._get(self.key + ":name")
 
 
-def scopes_write_clear(self):
-    return self._set(self.key + ":scopes_write", [])
+    def scopes_write_clear(self):
+        return self._set(self.key + ":scopes_write", [])
 
 
-def scopes_read_clear(self):
-    return self._set(self.key + ":scopes_read", [])
+    def scopes_read_clear(self):
+        return self._set(self.key + ":scopes_read", [])
 
 
 
