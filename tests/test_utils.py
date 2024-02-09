@@ -94,7 +94,29 @@ class Test_Accesskey(unittest.TestCase):
         accesskey.delete_scope_read("onur.mehmet.*")
         self.assertEqual(accesskey.scopes_read, [])
 
+    def test_scope_read_clear(self):
+        id = "test_scope_read_clear"
+        accesskey = AccessKey(id)
+        self.assertEqual(accesskey.scopes_read, [])
+        accesskey.set_scope_read("onur.*")
+        accesskey.set_scope_read("onur.mehmet.*")
 
+        self.assertEqual(accesskey.scopes_read, ["onur.*", "onur.mehmet.*"])
+
+        accesskey.scopes_read_clear()
+        self.assertEqual(accesskey.scopes_read, [])
+
+    def test_scope_write_clear(self):
+        id = "test_scope_write_clear"
+        accesskey = AccessKey(id)
+        self.assertEqual(accesskey.scopes_write, [])
+        accesskey.set_scope_write("onur.*")
+        accesskey.set_scope_write("onur.mehmet.*")
+
+        self.assertEqual(accesskey.scopes_write, ["onur.*", "onur.mehmet.*"])
+
+        accesskey.scopes_write_clear()
+        self.assertEqual(accesskey.scopes_write, [])
 
     def test_is_admin(self):
         id = "test_is_admin"
