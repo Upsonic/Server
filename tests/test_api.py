@@ -534,6 +534,57 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(accesskey.scopes_write, [])
 
+    def test_events_api(self):
+        storage.pop()
+
+        id = "test_events_api"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+
+        id_admin = "test_events_api_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, "event": "Test a"}
+        response = requests.post("http://localhost:7777" + event_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        the_events = [value for value in accesskey.events.values()]
+
+        self.assertEqual(the_events, ["Test a"])
+
+        storage.pop()
+
+    def test_events_get_x_api(self):
+        storage.pop()
+
+        id = "test_events_get_x_api"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+
+        accesskey.event("Test a")
+        accesskey.event("Test b")
+        accesskey.event("Test c")
+        accesskey.event("Test d")
+
+        id_admin = "test_events_get_x_api_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, "x": 2}
+        response = requests.post("http://localhost:7777" + get_last_x_event_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(response.json()["result"], accesskey.get_last_x_events(2))
+
+        storage.pop()
+
+
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]

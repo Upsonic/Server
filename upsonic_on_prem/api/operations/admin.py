@@ -204,5 +204,5 @@ def event():
 def get_last_x_event():
     key = request.form.get("key")
     user = AccessKey(key)
-    x = request.form.get("x")
+    x = request.form.get("x", type=int)
     return jsonify({"status": True, "result": user.get_last_x_events(x)})
