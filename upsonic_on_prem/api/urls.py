@@ -43,3 +43,7 @@ get_len_of_admins_url = "/get_len_of_admins"
 scopes_write_clear_url = "/scopes_write_clear"
 
 scopes_read_clear_url = "/scopes_read_clear"
+
+event_url = "/event"
+
+get_last_x_event_url = "/get_last_x_event"

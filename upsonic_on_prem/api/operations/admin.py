@@ -190,3 +190,19 @@ def scopes_read_clear():
 
     user = AccessKey(key)
     return jsonify({"status": True, "result": user.scopes_read_clear()})
+
+
+@app.route(event_url, methods=["post"])
+def event():
+    key = request.form.get("key")
+    event = request.form.get("event")
+    user = AccessKey(key)
+    return jsonify({"status": True, "resul": user.event(event)})
+
+
+@app.route(get_last_x_event_url, methods=["post"])
+def get_last_x_event():
+    key = request.form.get("key")
+    user = AccessKey(key)
+    x = request.form.get("x", type=int)
+    return jsonify({"status": True, "result": user.get_last_x_events(x)})
