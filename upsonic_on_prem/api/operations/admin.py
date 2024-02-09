@@ -174,3 +174,19 @@ def get_len_of_users():
 @app.route(get_len_of_admins_url, methods=["get"])
 def get_len_of_admins():
     return jsonify({"status": True, "result": AccessKey.get_len_of_admins()})
+
+
+@app.route(scopes_write_clear_url, methods=["post"])
+def scopes_write_clear_url():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.scopes_write_clear()})
+
+
+@app.route(scopes_read_clear_url, methods=["post"])
+def scopes_read_clear():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.scopes_read_clear()})
