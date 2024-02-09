@@ -492,6 +492,48 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(the_user.can_access_write("ahmet.atakan"), response.json()["result"])
 
+    def test_scope_read_clear(self):
+        id = "test_scope_read_clear"
+        accesskey = AccessKey(id)
+        self.assertEqual(accesskey.scopes_read, [])
+        accesskey.set_scope_read("onur.*")
+        accesskey.set_scope_read("onur.mehmet.*")
+
+        self.assertEqual(accesskey.scopes_read, ["onur.*", "onur.mehmet.*"])
+
+        id_admin = "test_scope_read_clear_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, }
+        response = requests.post("http://localhost:7777" + scopes_read_clear_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(accesskey.scopes_read, [])
+
+    def test_scope_write_clear(self):
+        id = "test_scope_write_clear"
+        accesskey = AccessKey(id)
+        self.assertEqual(accesskey.scopes_write, [])
+        accesskey.set_scope_write("onur.*")
+        accesskey.set_scope_write("onur.mehmet.*")
+
+        self.assertEqual(accesskey.scopes_write, ["onur.*", "onur.mehmet.*"])
+
+        id_admin = "test_scope_write_clear_admin"
+        the_admin_access_key = AccessKey(id_admin)
+        the_admin_access_key.enable()
+        the_admin_access_key.set_is_admin(True)
+
+        data = {"key": id, }
+        response = requests.post("http://localhost:7777" + scopes_write_clear_url,
+                                 auth=HTTPBasicAuth("", id_admin),
+                                 data=data)
+
+        self.assertEqual(accesskey.scopes_write, [])
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
