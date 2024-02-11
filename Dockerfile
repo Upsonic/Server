@@ -14,6 +14,9 @@ WORKDIR /app/
 COPY On-Prem/requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
 
+COPY On-Prem/requirements_2.txt /requirements_2.txt
+RUN pip3 install -r /requirements_2.txt
+
 COPY On-Prem On-Prem
 COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
 

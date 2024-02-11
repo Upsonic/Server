@@ -31,6 +31,7 @@ jobs:
         sudo python -m pip install --upgrade pip
         sudo pip install pytest
         sudo pip3 install -r requirements.txt
+        sudo pip3 install -r requirements_2.txt
     - name: Test with pytest
       run: |
         cd tests
