@@ -8,6 +8,7 @@ RUN apt-get update
 RUN apt-get install python3 python3-pip -y
 RUN apt-get install nginx redis-server -y
 RUN apt-get install openssl -y
+RUN apt-get install git-lfs -y
 WORKDIR /app/
 
 COPY On-Prem/requirements.txt /requirements.txt
