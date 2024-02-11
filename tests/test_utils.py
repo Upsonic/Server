@@ -13,6 +13,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from upsonic_on_prem.utils import storage
 from upsonic_on_prem.utils import AccessKey
+from upsonic_on_prem.utils import Scope
+import cloudpickle
+import dill
+
+from cryptography.fernet import Fernet
+import base64
+import hashlib
 
 
 class Test_Storage(unittest.TestCase):
@@ -335,6 +342,74 @@ class Test_Accesskey(unittest.TestCase):
 
         storage.pop()
 
+    def test_scope_dump_source(self):
+        storage.pop()
+        id = "test_scope_dump_source"
+
+        def my_function():
+            return True
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data)
+
+        self.assertEqual(the_scope.source, dumped_data)
+
+        storage.pop()
+
+    def test_scope_python(self):
+        storage.pop()
+        id = "test_scope_dump_source"
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data)
+
+        self.assertEqual(the_scope.python(), my_function())
+
+        storage.pop()
+
+    def test_scope_type(self):
+        storage.pop()
+        id = "test_scope_dump_source"
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data)
+
+        self.assertEqual(the_scope.type, "function")
+
+        storage.pop()
+
+    def test_scope_code(self):
+        storage.pop()
+        id = "test_scope_dump_source"
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data)
+
+        print(the_scope.code)
+        self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
+
+        storage.pop()
 
 
 backup = sys.argv
