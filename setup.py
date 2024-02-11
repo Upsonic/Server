@@ -26,6 +26,7 @@ setup(
     author_email="onur.atakan.ulusoy@upsonic.co",
     license="MIT",
     packages=find_packages(),
+    include_package_data=True,
     #install_requires=install_requires,
     entry_points={
         "console_scripts": ["upsonic_on_prem=upsonic_on_prem.main:cli"],
