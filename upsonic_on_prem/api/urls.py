@@ -54,7 +54,6 @@ create_document_of_scope_url = "/create_document_of_scope"
 get_type_of_scope_url = "/get_type_of_scope"
 
 user_urs = [load_url, dump_url, get_read_scopes_of_me_url, get_write_scopes_of_me_url, get_document_of_scope_url,
-            get_type_of_scope_url,
-            create_document_of_scope_url]
+            get_type_of_scope_url, create_document_of_scope_url]
 user_write_urls = [dump_url, create_document_of_scope_url]
 user_read_urls = [load_url, get_document_of_scope_url, get_type_of_scope_url]
