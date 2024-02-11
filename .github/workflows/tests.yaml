@@ -16,7 +16,7 @@ jobs:
       OS: ${{ matrix.os }}
       PYTHON: '3.8'
     steps:
-    - uses: actions/checkout@v2
+    - uses: nschloe/action-cached-lfs-checkout@v1
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -24,8 +24,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install redis-server git-lfs
-        git lfs pull
+        sudo apt-get install redis-server
         sudo python -m pip install --upgrade pip
         sudo pip install pytest
         sudo pip3 install -r requirements.txt
