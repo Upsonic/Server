@@ -49,10 +49,7 @@ jobs:
         python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GH_PAT }} # Will change after public release
-        fetch-depth: 0
+    - uses: nschloe/action-cached-lfs-checkout@v1
 
 
     - name: Set up QEMU
@@ -84,9 +81,7 @@ jobs:
       env:
         VERSION: ${{ needs.tagext.outputs.tag }}
       run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-        sudo apt-get install git-lfs
-        git lfs pull        
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin      
         cd ..
 
         docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile --push -t ghcr.io/upsonic/on-prem:latest \
