@@ -14,7 +14,7 @@ from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
 
 from upsonic_on_prem.utils import AccessKey
-from upsonic_on_prem.utils import storage
+from upsonic_on_prem.utils import storage, storage_2, Scope
 
 
 
@@ -583,6 +583,73 @@ class Test_Storage(unittest.TestCase):
 
         storage.pop()
 
+    def test_scope_documentation(self):
+        storage_2.pop()
+        id = "test_scope_documentation"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        accesskey.set_scope_read("onur.my_function")
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope("onur.my_function")
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        def get_document():
+            data = {"scope": "onur.my_function", }
+            response = requests.post("http://localhost:7777" + get_document_of_scope_url,
+                                     auth=HTTPBasicAuth("", id),
+                                     data=data)
+            return response.json()["result"]
+
+        the_scope.dump(dumped_data)
+        self.assertEqual(get_document(), the_scope.documentation)
+        the_scope.create_documentation()
+
+        print(the_scope.documentation)
+        self.assertEqual(get_document(), the_scope.documentation)
+
+        storage_2.pop()
+
+    def test_scope_documentation_create(self):
+        storage_2.pop()
+        id = "test_scope_documentation_create"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        accesskey.set_scope_read("onur.my_function")
+        accesskey.set_scope_write("onur.my_function")
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope("onur.my_function")
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        def get_document():
+            data = {"scope": "onur.my_function", }
+            response = requests.post("http://localhost:7777" + get_document_of_scope_url,
+                                     auth=HTTPBasicAuth("", id),
+                                     data=data)
+            return response.json()["result"]
+
+        def create_document():
+            data = {"scope": "onur.my_function", }
+            response = requests.post("http://localhost:7777" + create_document_of_scope_url,
+                                     auth=HTTPBasicAuth("", id),
+                                     data=data)
+            return response.json()
+
+        the_scope.dump(dumped_data)
+        first = get_document()
+        self.assertEqual(first, the_scope.documentation)
+        create_document()
+
+        self.assertNotEqual(first, get_document())
+
+        storage_2.pop()
 
 
 
