@@ -5,7 +5,7 @@ import random
 import os
 import traceback
 
-from upsonic_on_prem.utils import storage_2
+from upsonic_on_prem.utils import storage_2, AI
 
 from upsonic_on_prem.utils.configs import admin_key
 
@@ -22,6 +22,15 @@ import textwrap
 class Scope:
     def __init__(self, key):
         self.key = key
+
+    @property
+    def documentation(self):
+        return storage_2.get(self.key + ":documentation") or "No documentation available."
+
+    def create_documentation(self):
+        document = AI.code_to_documentation(self.code)
+        storage_2.set(self.key + ":documentation", document)
+
 
     @property
     def source(self):

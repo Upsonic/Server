@@ -10,6 +10,9 @@ RUN apt-get install nginx redis-server -y
 RUN apt-get install openssl -y
 WORKDIR /app/
 
+COPY On-Prem/requirements.txt /requirements.txt
+RUN pip3 install -r /requirements.txt
+
 COPY On-Prem On-Prem
 COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
 
