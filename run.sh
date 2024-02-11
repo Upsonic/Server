@@ -5,7 +5,7 @@ python3 /app/On-Prem/ssl_setting.py
 service nginx start 
 
 
-cd /app/On-Prem/upsonic_on_prem/dash/
+cd /app/On-Prem/upsonic_on_prem/api/
 python3 main.py --host=0.0.0.0 --port=3000 &
 
 python3 /app/On-Prem/upsonic_on_prem/dash/manage.py makemigrations --noinput
