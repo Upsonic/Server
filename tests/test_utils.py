@@ -10,10 +10,10 @@ import threading
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-
-from upsonic_on_prem.utils import storage
+from upsonic_on_prem.utils import storage, storage_2
 from upsonic_on_prem.utils import AccessKey
 from upsonic_on_prem.utils import Scope
+from upsonic_on_prem.utils import AI
 import cloudpickle
 import dill
 
@@ -343,7 +343,7 @@ class Test_Accesskey(unittest.TestCase):
         storage.pop()
 
     def test_scope_dump_source(self):
-        storage.pop()
+        storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
@@ -357,10 +357,10 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(the_scope.source, dumped_data)
 
-        storage.pop()
+        storage_2.pop()
 
     def test_scope_python(self):
-        storage.pop()
+        storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
@@ -374,10 +374,10 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(the_scope.python(), my_function())
 
-        storage.pop()
+        storage_2.pop()
 
     def test_scope_type(self):
-        storage.pop()
+        storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
@@ -391,10 +391,10 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(the_scope.type, "function")
 
-        storage.pop()
+        storage_2.pop()
 
     def test_scope_code(self):
-        storage.pop()
+        storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
@@ -409,7 +409,36 @@ class Test_Accesskey(unittest.TestCase):
         print(the_scope.code)
         self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
 
-        storage.pop()
+        storage_2.pop()
+
+    def test_scope_documentation(self):
+        storage_2.pop()
+        id = "test_scope_documentation"
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data)
+        self.assertEqual(the_scope.documentation, "No documentation available.")
+        the_scope.create_documentation()
+
+        print(the_scope.documentation)
+        self.assertEqual(the_scope.documentation, "Returns a function instance for a my_function method .")
+
+        storage_2.pop()
+
+    def test_ai_code_to_document(self):
+        storage_2.pop()
+
+        print(AI.code_to_documentation("def my_function():\n    return \"aaa\"\n"))
+        self.assertEqual(AI.code_to_documentation("def my_function():\n    return \"aaa\"\n"),
+                         "Returns a function instance for a my_function method .")
+
+        storage_2.pop()
 
 
 backup = sys.argv
