@@ -9,9 +9,9 @@ def user_pre_process(the_access_key:access_key, request):
     endpoint = "/"+request.endpoint
 
     operation_type = None
-    if endpoint == dump_url:
+    if endpoint in user_write_urls:
         operation_type = the_access_key.can_access_write
-    elif endpoint == load_url:
+    elif endpoint in user_read_urls:
         operation_type = the_access_key.can_access_read
     else:
         operation_type = free_operation
