@@ -2,7 +2,7 @@ from upsonic_on_prem.api import app
 
 from upsonic_on_prem.api.urls import *
 
-from upsonic_on_prem.utils import storage, storage_2, AccessKey
+from upsonic_on_prem.utils import storage, storage_2, AccessKey, Scope
 
 from flask import jsonify
 from flask import request
@@ -13,7 +13,8 @@ def dump():
     scope = request.form.get("scope")
     data = request.form.get("data")
 
-    storage_2.set(scope, data)
+    the_scope = Scope(scope)
+    the_scope.dump(data)
 
     return jsonify({"status": True})
 
@@ -23,7 +24,7 @@ def dump():
 def load():
     scope = request.form.get("scope")
 
-    return jsonify({"status": True, "result": storage_2.get(scope)})
+    return jsonify({"status": True, "result": Scope(scope).source})
 
 
 @app.route(get_read_scopes_of_me_url, methods=["get"])
