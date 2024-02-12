@@ -28,11 +28,17 @@ jobs:
       run: |
         sudo apt-get install redis-server
         sudo python -m pip install --upgrade pip
-        sudo pip install pytest
+        sudo pip install pytest 
+        sudo pip install coverage
         sudo pip3 install -r requirements.txt
         sudo pip3 install -r requirements_2.txt
     - name: Test with pytest
       run: |
-        cd tests
-        sudo pytest -v
+        coverage run -m pytest tests && coverage xml
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      env:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: Upsonic/On-Prem
 
