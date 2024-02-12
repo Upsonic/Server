@@ -679,6 +679,41 @@ class Test_Storage(unittest.TestCase):
 
         storage_2.pop()
 
+    def test_scope_get_all_scopes(self):
+        storage_2.pop()
+        id = "onur.my_function"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        accesskey.set_is_admin(True)
+        id2 = "onur.sub.my_awesome"
+        id3 = "onur.sub.my_sub_function"
+
+        def my_function():
+            return True
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        def get_document():
+            response = requests.get("http://localhost:7777" + get_all_scopes_url,
+                                    auth=HTTPBasicAuth("", id))
+            return response.json()["result"]
+
+        self.assertEqual(the_scope.get_all_scopes(), [])
+        self.assertEqual(the_scope.get_all_scopes(), get_document())
+
+        the_scope.dump(dumped_data, AccessKey(id))
+        Scope(id2).dump(dumped_data, AccessKey(id2))
+        Scope(id3).dump(dumped_data, AccessKey(id2))
+
+        self.assertEqual(the_scope.get_all_scopes(),
+                         ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
+        self.assertEqual(the_scope.get_all_scopes(), get_document())
+        storage_2.pop()
+
+
+
 backup = sys.argv
 sys.argv = [sys.argv[0]]
 unittest.main(exit=False)
