@@ -89,3 +89,24 @@ class Scope:
 
         scopes.sort()
         return scopes
+
+
+    @staticmethod
+    def get_all_scopes_name(user: AccessKey):
+        all_scopes = Scope.get_all_scopes()
+
+        custom_scops_read = user.scopes_read
+        result = []
+
+        for i in all_scopes:
+            if user.can_access_read(i, custom_scopes_read=custom_scops_read):
+                result.append(i)
+
+        return result
+
+    @staticmethod
+    def get_all_scopes_name_prefix(user, prefix):
+        all_scopes = Scope.get_all_scopes()
+
+        return [i for i in all_scopes if i.startswith(prefix)]
+

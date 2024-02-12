@@ -498,6 +498,56 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
 
+    def test_accesskey_get_all_scopes_name_and_prefix(self):
+        storage.pop()
+        storage_2.pop()
+
+        id = "test_accesskey_get_all_scopes_name.my_function"
+        id2 = "aa.sub.my_awesome"
+        id3 = "test_accesskey_get_all_scopes_name.sub.my_sub_function"
+        user = AccessKey(id)
+        user.enable()
+
+        def my_function():
+            return True
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        self.assertEqual(Scope.get_all_scopes_name(user), [])
+
+        the_scope.dump(dumped_data, user)
+        Scope(id2).dump(dumped_data, user)
+        Scope(id3).dump(dumped_data, user)
+
+        self.assertEqual(Scope.get_all_scopes_name(user), [])
+
+        user.set_scope_read("test_accesskey_get_all_scopes_name.my_function")
+
+        self.assertEqual(Scope.get_all_scopes_name(user), ['test_accesskey_get_all_scopes_name.my_function'])
+
+        user.set_scope_read("aa.sub.my_awesome")
+
+        self.assertEqual(Scope.get_all_scopes_name(user),
+                         ['aa.sub.my_awesome', 'test_accesskey_get_all_scopes_name.my_function'])
+
+        user.set_scope_read("test_accesskey_get_all_scopes_name.sub.my_sub_function")
+
+        self.assertEqual(Scope.get_all_scopes_name(user),
+                         ['aa.sub.my_awesome', 'test_accesskey_get_all_scopes_name.my_function',
+                          "test_accesskey_get_all_scopes_name.sub.my_sub_function"])
+
+        self.assertEqual(Scope.get_all_scopes_name_prefix(user, "test_accesskey_get_all_scopes_name"),
+                         ['test_accesskey_get_all_scopes_name.my_function',
+                          "test_accesskey_get_all_scopes_name.sub.my_sub_function"])
+        self.assertEqual(Scope.get_all_scopes_name_prefix(user, "aa"),
+                         ['aa.sub.my_awesome'])
+
+        storage.pop()
+        storage_2.pop()
+
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
