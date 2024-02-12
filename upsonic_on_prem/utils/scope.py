@@ -78,3 +78,12 @@ class Scope:
         the_scope = Scope(dump_id)
         the_scope.the_storage = storage_3
         return the_scope
+
+    @staticmethod
+    def get_all_scopes():
+        keys = storage_2.keys()
+        scopes = []
+        for i in keys:
+            if not ":" in i:
+                scopes.append(i)
+        return scopes
