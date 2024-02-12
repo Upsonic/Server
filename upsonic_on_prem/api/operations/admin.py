@@ -3,8 +3,7 @@ from flask import request
 
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
-from upsonic_on_prem.utils import AccessKey, storage
-
+from upsonic_on_prem.utils import AccessKey, storage, Scope
 
 @app.route(get_admins_url, methods=["get"])
 def get_admins():
@@ -14,8 +13,6 @@ def get_admins():
 @app.route(get_users_url, methods=["get"])
 def get_users():
     return jsonify({"status": True, "result": AccessKey.get_users()})
-
-
 
 
 @app.route(add_user_url, methods=["POST"])
@@ -28,7 +25,6 @@ def add_user():
     return jsonify({"status": True})
 
 
-
 @app.route(enable_user_url, methods=["POST"])
 def enable_user():
     key = request.form.get("key")
@@ -39,8 +35,6 @@ def enable_user():
     return jsonify({"status": True})
 
 
-
-
 @app.route(disable_user_url, methods=["POST"])
 def disable_user():
     key = request.form.get("key")
@@ -49,7 +43,6 @@ def disable_user():
     user.disable()
 
     return jsonify({"status": True})
-
 
 
 @app.route(enable_admin_url, methods=["POST"])
@@ -85,7 +78,6 @@ def delete_user():
 @app.route(total_size_url, methods=["GET"])
 def total_size():
     return jsonify({"status": True, "result": storage.total_size()})
-
 
 
 @app.route(scope_write_add_url, methods=["POST"])
@@ -206,3 +198,8 @@ def get_last_x_event():
     user = AccessKey(key)
     x = request.form.get("x", type=int)
     return jsonify({"status": True, "result": user.get_last_x_events(x)})
+
+
+@app.route(get_all_scopes_url, methods=["get"])
+def get_all_scopes():
+    return jsonify({"status": True, "result": Scope.get_all_scopes()})
