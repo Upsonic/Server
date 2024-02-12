@@ -200,6 +200,6 @@ def get_last_x_event():
     return jsonify({"status": True, "result": user.get_last_x_events(x)})
 
 
-@app.route(get_all_scopes_url, methods=["post"])
+@app.route(get_all_scopes_url, methods=["get"])
 def get_all_scopes():
     return jsonify({"status": True, "result": Scope.get_all_scopes()})
