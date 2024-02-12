@@ -651,7 +651,33 @@ class Test_Storage(unittest.TestCase):
 
         storage_2.pop()
 
+    def test_scope_type(self):
+        storage_2.pop()
+        id = "test_scope_documentation_create"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        accesskey.set_scope_read("onur.my_function")
+        accesskey.set_scope_write("onur.my_function")
 
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope("onur.my_function")
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        def get_document():
+            data = {"scope": "onur.my_function", }
+            response = requests.post("http://localhost:7777" + get_type_of_scope_url,
+                                     auth=HTTPBasicAuth("", id),
+                                     data=data)
+            return response.json()["result"]
+
+        the_scope.dump(dumped_data)
+
+        self.assertEqual(get_document(), the_scope.type)
+
+        storage_2.pop()
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
