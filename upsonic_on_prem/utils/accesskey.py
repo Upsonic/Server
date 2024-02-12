@@ -185,10 +185,8 @@ class AccessKey:
 
         return control
 
-
-
-    def can_access_read(self, scope):
-        all_scopes = self.scopes_read
+    def can_access_read(self, scope, custom_scopes_read=None):
+        all_scopes = self.scopes_read if custom_scopes_read is None else custom_scopes_read
         
         control = False
 
