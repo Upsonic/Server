@@ -604,7 +604,7 @@ class Test_Storage(unittest.TestCase):
                                      data=data)
             return response.json()["result"]
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, accesskey)
         self.assertEqual(get_document(), the_scope.documentation)
         the_scope.create_documentation()
 
@@ -642,7 +642,7 @@ class Test_Storage(unittest.TestCase):
                                      data=data)
             return response.json()
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, accesskey)
         first = get_document()
         self.assertEqual(first, the_scope.documentation)
         create_document()
@@ -673,7 +673,7 @@ class Test_Storage(unittest.TestCase):
                                      data=data)
             return response.json()["result"]
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, accesskey)
 
         self.assertEqual(get_document(), the_scope.type)
 

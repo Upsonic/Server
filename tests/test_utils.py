@@ -353,7 +353,7 @@ class Test_Accesskey(unittest.TestCase):
         dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
             cloudpickle.dumps(my_function))
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, AccessKey(id))
 
         self.assertEqual(the_scope.source, dumped_data)
 
@@ -370,7 +370,7 @@ class Test_Accesskey(unittest.TestCase):
         dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
             cloudpickle.dumps(my_function))
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, AccessKey(id))
 
         self.assertEqual(the_scope.python(), my_function())
 
@@ -387,7 +387,7 @@ class Test_Accesskey(unittest.TestCase):
         dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
             cloudpickle.dumps(my_function))
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, AccessKey(id))
 
         self.assertEqual(the_scope.type, "function")
 
@@ -404,7 +404,7 @@ class Test_Accesskey(unittest.TestCase):
         dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
             cloudpickle.dumps(my_function))
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, AccessKey(id))
 
         print(the_scope.code)
         self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
@@ -422,7 +422,7 @@ class Test_Accesskey(unittest.TestCase):
         dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
             cloudpickle.dumps(my_function))
 
-        the_scope.dump(dumped_data)
+        the_scope.dump(dumped_data, AccessKey(id))
         self.assertEqual(the_scope.documentation, "No documentation available.")
         the_scope.create_documentation()
 
@@ -440,6 +440,38 @@ class Test_Accesskey(unittest.TestCase):
 
         storage_2.pop()
 
+    def test_scope_dump_history(self):
+        storage_2.pop()
+        id = "test_scope_dump_source"
+
+        def my_function():
+            return True
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        self.assertEqual(the_scope.dump_history, [])
+
+        the_scope.dump(dumped_data, AccessKey(id))
+        self.assertNotEqual(the_scope.dump_history, [])
+        self.assertEqual(len(the_scope.dump_history), 1)
+        self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
+
+        def my_function():
+            return False
+
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data, AccessKey(id))
+        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
+
+        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[1]).python(), True)
+        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), False)
+        self.assertEqual(the_scope.python(), False)
+
+        storage_2.pop()
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
