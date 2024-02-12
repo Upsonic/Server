@@ -493,7 +493,7 @@ class Test_Accesskey(unittest.TestCase):
         Scope(id3).dump(dumped_data, AccessKey(id2))
 
         self.assertEqual(the_scope.get_all_scopes(),
-                         ['onur.sub.my_awesome', 'onur.sub.my_sub_function', 'onur.my_function'])
+                         ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
 
         storage_2.pop()
 

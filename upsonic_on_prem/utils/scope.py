@@ -86,4 +86,6 @@ class Scope:
         for i in keys:
             if not ":" in i:
                 scopes.append(i)
+
+        scopes.sort()
         return scopes
