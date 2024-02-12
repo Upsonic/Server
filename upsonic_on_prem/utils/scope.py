@@ -90,6 +90,7 @@ class Scope:
         scopes.sort()
         return scopes
 
+
     @staticmethod
     def get_all_scopes_name(user: AccessKey):
         all_scopes = Scope.get_all_scopes()
@@ -108,3 +109,4 @@ class Scope:
         all_scopes = Scope.get_all_scopes()
 
         return [i for i in all_scopes if i.startswith(prefix)]
+

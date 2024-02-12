@@ -497,6 +497,7 @@ class Test_Accesskey(unittest.TestCase):
 
         storage_2.pop()
 
+
     def test_accesskey_get_all_scopes_name_and_prefix(self):
         storage.pop()
         storage_2.pop()
@@ -545,6 +546,7 @@ class Test_Accesskey(unittest.TestCase):
 
         storage.pop()
         storage_2.pop()
+
 
 
 backup = sys.argv
