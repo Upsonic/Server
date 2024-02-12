@@ -3,7 +3,8 @@ from flask import request
 
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
-from upsonic_on_prem.utils import AccessKey, storage, Scope
+from upsonic_on_prem.utils import AccessKey, storage, Scope, AI
+
 
 @app.route(get_admins_url, methods=["get"])
 def get_admins():
@@ -203,3 +204,9 @@ def get_last_x_event():
 @app.route(get_all_scopes_url, methods=["get"])
 def get_all_scopes():
     return jsonify({"status": True, "result": Scope.get_all_scopes()})
+
+
+@app.route(ai_code_to_document_url, methods=["get"])
+def ai_code_to_document():
+    code = request.form.get("x", type=str)
+    return jsonify({"status": True, "result": AI.code_to_documentation(code)})
