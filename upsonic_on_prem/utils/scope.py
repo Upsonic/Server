@@ -32,7 +32,6 @@ class Scope:
         self.the_storage.delete(self.key + ":dump_history")
         self.the_storage.delete(self.key + ":documentation")
 
-
     @property
     def dump_history(self):
         return self.the_storage.get(self.key + ":dump_history") or []
@@ -68,7 +67,6 @@ class Scope:
     def create_documentation(self):
         document = AI.code_to_documentation(self.code)
         self.the_storage.set(self.key + ":documentation", document)
-
 
     @property
     def source(self):
@@ -133,16 +131,15 @@ class Scope:
         scopes.sort()
         return scopes
 
-
     @staticmethod
     def get_all_scopes_name(user: AccessKey):
         all_scopes = Scope.get_all_scopes()
 
-        custom_scops_read = user.scopes_read
+        custom_scopes_read = user.scopes_read
         result = []
 
         for i in all_scopes:
-            if user.can_access_read(i, custom_scopes_read=custom_scops_read):
+            if user.can_access_read(i, custom_scopes_read=custom_scopes_read):
                 result.append(i)
 
         return result
@@ -152,4 +149,3 @@ class Scope:
         all_scopes = Scope.get_all_scopes()
 
         return [i for i in all_scopes if i.startswith(prefix)]
-

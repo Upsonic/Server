@@ -54,3 +54,9 @@ def create_document_of_scope():
 def get_type_of_scope():
     scope = request.form.get("scope")
     return jsonify({"status": True, "result": Scope(scope).type})
+
+
+@app.route(get_all_scopes_user_url, methods=["get"])
+def get_all_scopes_user():
+    user = AccessKey(request.authorization.password)
+    return jsonify({"status": True, "result": Scope.get_all_scopes_name(user)})

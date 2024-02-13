@@ -730,6 +730,53 @@ class Test_Storage(unittest.TestCase):
 
         storage_2.pop()
 
+    def test_accesskey_get_all_scopes_name_and_prefix(self):
+        storage.pop()
+        storage_2.pop()
+
+        id = "test_accesskey_get_all_scopes_name.my_function"
+        id2 = "aa.sub.my_awesome"
+        id3 = "test_accesskey_get_all_scopes_name.sub.my_sub_function"
+        user = AccessKey(id)
+        user.enable()
+
+        def get_document():
+            response = requests.get("http://localhost:7777" + get_all_scopes_user_url,
+                                    auth=HTTPBasicAuth("", id))
+            return response.json()["result"]
+
+        def my_function():
+            return True
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        self.assertEqual(Scope.get_all_scopes_name(user), [])
+
+        the_scope.dump(dumped_data, user)
+        Scope(id2).dump(dumped_data, user)
+        Scope(id3).dump(dumped_data, user)
+
+        self.assertEqual(Scope.get_all_scopes_name(user), [])
+
+        user.set_scope_read("test_accesskey_get_all_scopes_name.my_function")
+
+        self.assertEqual(Scope.get_all_scopes_name(user), get_document())
+
+        user.set_scope_read("aa.sub.my_awesome")
+
+        self.assertEqual(Scope.get_all_scopes_name(user),
+                         get_document())
+
+        user.set_scope_read("test_accesskey_get_all_scopes_name.sub.my_sub_function")
+
+        self.assertEqual(Scope.get_all_scopes_name(user),
+                         get_document())
+
+        storage.pop()
+        storage_2.pop()
+
 
 
 
