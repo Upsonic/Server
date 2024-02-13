@@ -25,13 +25,21 @@ class Scope:
         self.key = key
         self.the_storage = storage_2
 
+    def delete(self):
+        self.the_storage.delete(self.key)
+        for i in self.dump_history:
+            storage_3.delete(i)
+        self.the_storage.delete(self.key + ":dump_history")
+        self.the_storage.delete(self.key + ":documentation")
+
+
     @property
     def dump_history(self):
         return self.the_storage.get(self.key + ":dump_history") or []
 
     @property
     def documentation(self):
-        return self.the_storage.get(self.key + ":documentation") or "No documentation available."
+        return self.the_storage.get(self.key + ":documentation")
 
     def create_documentation(self):
         document = AI.code_to_documentation(self.code)
@@ -40,10 +48,15 @@ class Scope:
 
     @property
     def source(self):
+        the_resource = self.the_storage.get(self.key)
+        if the_resource is None:
+            return None
         return self.the_storage.get(self.key)["data"]
 
     @property
     def type(self):
+        if self.python is None:
+            return None
         the_type = type(self.python).__name__
         if the_type == "type":
             the_type = "class"
@@ -51,10 +64,15 @@ class Scope:
 
     @property
     def code(self):
+        the_python = self.python
+        if the_python is None:
+            return None
         return textwrap.dedent(dill.source.getsource(self.python))
 
     @property
     def python(self):
+        if self.source is None:
+            return None
         decrypt = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).decrypt(self.source)
         return cloudpickle.loads(decrypt)
 
