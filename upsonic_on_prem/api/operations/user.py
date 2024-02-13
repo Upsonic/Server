@@ -19,7 +19,6 @@ def dump():
     return jsonify({"status": True})
 
 
-
 @app.route(load_url, methods=["POST"])
 def load():
     scope = request.form.get("scope")
