@@ -206,7 +206,7 @@ def get_all_scopes():
     return jsonify({"status": True, "result": Scope.get_all_scopes()})
 
 
-@app.route(ai_code_to_document_url, methods=["get"])
+@app.route(ai_code_to_document_url, methods=["post"])
 def ai_code_to_document():
-    code = request.form.get("x", type=str)
+    code = request.form.get("code", type=str)
     return jsonify({"status": True, "result": AI.code_to_documentation(code)})
