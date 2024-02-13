@@ -38,6 +38,30 @@ class Scope:
         return self.the_storage.get(self.key + ":dump_history") or []
 
     @property
+    def version_history(self):
+        return self.the_storage.get(self.key + ":version_history") or []
+
+    def create_version(self, version, user: AccessKey):
+        current_time = time.time()
+        current = self.version_history
+
+        key = self.key + ":" + str(version)
+
+        data = {"data": self.source, "user": user.key, "time": current_time}
+
+        storage_3.set(key, data)
+
+        current.append(key)
+
+        self.the_storage.set(self.key + ":version_history", current)
+
+    @staticmethod
+    def get_version(version_id):
+        the_scope = Scope(version_id)
+        the_scope.the_storage = storage_3
+        return the_scope
+
+    @property
     def documentation(self):
         return self.the_storage.get(self.key + ":documentation")
 
@@ -77,11 +101,12 @@ class Scope:
         return cloudpickle.loads(decrypt)
 
     def dump(self, data, user: AccessKey):
-        the_time = str(time.time()) + "_" + str(random.randint(0, 100000))
+        current_time = time.time()
+        the_time = str(current_time) + "_" + str(random.randint(0, 100000))
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": the_time}
+        data = {"data": data, "user": user.key, "time": current_time}
 
         storage_3.set(key, data)
 
