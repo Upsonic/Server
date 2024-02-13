@@ -14,7 +14,7 @@ from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
 
 from upsonic_on_prem.utils import AccessKey
-from upsonic_on_prem.utils import storage, storage_2, Scope
+from upsonic_on_prem.utils import storage, storage_2, Scope, AI
 
 
 
@@ -711,6 +711,25 @@ class Test_Storage(unittest.TestCase):
                          ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
         self.assertEqual(the_scope.get_all_scopes(), get_document())
         storage_2.pop()
+
+    def test_ai_code_to_document(self):
+        storage_2.pop()
+
+        id = "onur.test_ai_code_to_document"
+        accesskey = AccessKey(id)
+        accesskey.enable()
+        accesskey.set_is_admin(True)
+
+        def get_document():
+            data = {"code": "def my_function():\n    return \"aaa\"\n"}
+            response = requests.post("http://localhost:7777" + ai_code_to_document_url,
+                                     auth=HTTPBasicAuth("", id), data=data)
+            return response.json()["result"]
+
+        self.assertEqual(AI.code_to_documentation("def my_function():\n    return \"aaa\"\n"), get_document())
+
+        storage_2.pop()
+
 
 
 
