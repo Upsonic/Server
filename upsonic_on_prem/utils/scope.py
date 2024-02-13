@@ -110,11 +110,11 @@ class Scope:
     def get_all_scopes_name(user: AccessKey):
         all_scopes = Scope.get_all_scopes()
 
-        custom_scops_read = user.scopes_read
+        custom_scopes_read = user.scopes_read
         result = []
 
         for i in all_scopes:
-            if user.can_access_read(i, custom_scopes_read=custom_scops_read):
+            if user.can_access_read(i, custom_scopes_read=custom_scopes_read):
                 result.append(i)
 
         return result
