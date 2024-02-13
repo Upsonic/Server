@@ -10,7 +10,7 @@ import threading
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from upsonic_on_prem.utils import storage, storage_2
+from upsonic_on_prem.utils import storage, storage_2, storage_3
 from upsonic_on_prem.utils import AccessKey
 from upsonic_on_prem.utils import Scope
 from upsonic_on_prem.utils import AI
@@ -423,7 +423,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
-        self.assertEqual(the_scope.documentation, "No documentation available.")
+        self.assertEqual(the_scope.documentation, None)
         the_scope.create_documentation()
 
         print(the_scope.documentation)
@@ -546,6 +546,36 @@ class Test_Accesskey(unittest.TestCase):
 
         storage.pop()
         storage_2.pop()
+
+    def test_scope_delete(self):
+        storage_2.pop()
+        storage_3.pop()
+        id = "test_scope_delete"
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data, AccessKey(id))
+        self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
+
+        the_scope.delete()
+        self.assertEqual(the_scope.code, None)
+        self.assertEqual(the_scope.python, None)
+        self.assertEqual(the_scope.source, None)
+        self.assertEqual(the_scope.type, None)
+        self.assertEqual(the_scope.documentation, None)
+        self.assertEqual(the_scope.dump_history, [])
+        self.assertEqual(the_scope.the_storage.get(id), None)
+
+        storage_2.pop()
+        storage_3.pop()
+
+
+
 
 
 
