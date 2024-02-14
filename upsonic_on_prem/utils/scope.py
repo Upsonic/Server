@@ -98,7 +98,9 @@ class Scope:
         decrypt = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).decrypt(self.source)
         return cloudpickle.loads(decrypt)
 
-    def dump(self, data, user: AccessKey):
+    def dump(self, data, user: AccessKey, pass_str=False):
+        if not pass_str:
+            data = data.decode()
         current_time = time.time()
         the_time = str(current_time) + "_" + str(random.randint(0, 100000))
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
