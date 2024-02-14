@@ -814,6 +814,46 @@ class Test_Storage(unittest.TestCase):
         storage_2.pop()
         storage_3.pop()
 
+    def test_scope_dump_history(self):
+        storage_2.pop()
+        id = "test_scope_dump_source"
+
+        user = AccessKey(id)
+        user.enable()
+        user.set_scope_read(id)
+
+        def my_function():
+            return True
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        self.assertEqual(the_scope.dump_history, [])
+
+        the_scope.dump(dumped_data, AccessKey(id))
+        self.assertNotEqual(the_scope.dump_history, [])
+        self.assertEqual(len(the_scope.dump_history), 1)
+        self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
+
+        def my_function():
+            return False
+
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data, AccessKey(id))
+
+        def get_document():
+            data = {"scope": id}
+            response = requests.post("http://localhost:7777" + get_dump_history_url,
+                                     auth=HTTPBasicAuth("", id), data=data)
+            return response.json()["result"]
+
+        self.assertEqual(get_document(), the_scope.dump_history)
+
+        storage_2.pop()
+
 
 backup = sys.argv
 sys.argv = [sys.argv[0]]
