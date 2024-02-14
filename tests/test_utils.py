@@ -355,7 +355,7 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope.dump(dumped_data, AccessKey(id))
 
-        self.assertEqual(the_scope.source, dumped_data)
+        self.assertEqual(the_scope.source, dumped_data.decode())
 
         storage_2.pop()
 
