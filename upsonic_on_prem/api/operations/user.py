@@ -67,3 +67,9 @@ def delete_scope():
     object = Scope(scope)
     return jsonify({"status": True, "result": object.delete()})
 
+
+@app.route(get_dump_history_url, methods=["POST"])
+def get_dump_history():
+    scope = request.form.get("scope")
+    object = Scope(scope)
+    return jsonify({"status": True, "result": object.dump_history})
