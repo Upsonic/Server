@@ -66,3 +66,4 @@ def delete_scope():
     scope = request.form.get("scope")
     object = Scope(scope)
     return jsonify({"status": True, "result": object.delete()})
+

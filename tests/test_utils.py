@@ -574,8 +574,40 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
         storage_3.pop()
 
+    def test_scope_version(self):
+        storage_2.pop()
+        storage_3.pop()
+        id = "test_scope_version"
 
+        def my_function():
+            return "aaa"
 
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data, AccessKey(id))
+
+        self.assertEqual(the_scope.python(), "aaa")
+
+        the_scope.create_version("v0.1.1", AccessKey(id))
+        self.assertEqual(the_scope.python(), "aaa")
+
+        def my_function():
+            return "bbbb"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data, AccessKey(id))
+
+        self.assertEqual(the_scope.python(), "bbbb")
+
+        self.assertEqual(Scope.get_version(the_scope.version_history[0]).python(), "aaa")
+
+        storage_2.pop()
+        storage_3.pop()
 
 
 
