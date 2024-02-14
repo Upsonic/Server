@@ -19,7 +19,6 @@ def dump():
     return jsonify({"status": True})
 
 
-
 @app.route(load_url, methods=["POST"])
 def load():
     scope = request.form.get("scope")
@@ -60,3 +59,11 @@ def get_type_of_scope():
 def get_all_scopes_user():
     user = AccessKey(request.authorization.password)
     return jsonify({"status": True, "result": Scope.get_all_scopes_name(user)})
+
+
+@app.route(delete_scope_url, methods=["POST"])
+def delete_scope():
+    scope = request.form.get("scope")
+    object = Scope(scope)
+    return jsonify({"status": True, "result": object.delete()})
+

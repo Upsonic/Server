@@ -14,7 +14,7 @@ from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
 
 from upsonic_on_prem.utils import AccessKey
-from upsonic_on_prem.utils import storage, storage_2, Scope, AI
+from upsonic_on_prem.utils import storage, storage_2, Scope, AI, storage_3
 
 
 
@@ -777,7 +777,42 @@ class Test_Storage(unittest.TestCase):
         storage.pop()
         storage_2.pop()
 
+    def test_scope_delete(self):
+        storage_2.pop()
+        storage_3.pop()
+        id = "test_scope_delete"
 
+        user = AccessKey(id)
+        user.enable()
+        user.set_scope_write(id)
+
+        def my_function():
+            return "aaa"
+
+        the_scope = Scope(id)
+        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
+            cloudpickle.dumps(my_function))
+
+        the_scope.dump(dumped_data, AccessKey(id))
+        self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
+
+        def get_document():
+            data = {"scope": id}
+            response = requests.post("http://localhost:7777" + delete_scope_url,
+                                     auth=HTTPBasicAuth("", id), data=data)
+            return response.json()["result"]
+
+        get_document()
+        self.assertEqual(the_scope.code, None)
+        self.assertEqual(the_scope.python, None)
+        self.assertEqual(the_scope.source, None)
+        self.assertEqual(the_scope.type, None)
+        self.assertEqual(the_scope.documentation, None)
+        self.assertEqual(the_scope.dump_history, [])
+        self.assertEqual(the_scope.the_storage.get(id), None)
+
+        storage_2.pop()
+        storage_3.pop()
 
 
 backup = sys.argv
