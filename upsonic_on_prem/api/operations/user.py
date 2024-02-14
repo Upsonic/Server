@@ -14,7 +14,7 @@ def dump():
     data = request.form.get("data")
 
     the_scope = Scope(scope)
-    the_scope.dump(data, AccessKey(request.authorization.password))
+    the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True)
 
     return jsonify({"status": True})
 

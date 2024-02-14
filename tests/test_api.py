@@ -816,6 +816,7 @@ class Test_Storage(unittest.TestCase):
 
     def test_scope_dump_history(self):
         storage_2.pop()
+        storage_3.pop()
         id = "test_scope_dump_source"
 
         user = AccessKey(id)
@@ -850,9 +851,21 @@ class Test_Storage(unittest.TestCase):
                                      auth=HTTPBasicAuth("", id), data=data)
             return response.json()["result"]
 
-        self.assertEqual(get_document(), the_scope.dump_history)
+        def get_document_get_dump(spec_id):
+            data = {"scope": id, "dump_id": spec_id}
+            response = requests.post("http://localhost:7777" + load_specific_dump_url,
+                                     auth=HTTPBasicAuth("", id), data=data)
+            return response.json()["result"]
+
+        the_api_return = get_document()
+        self.assertEqual(the_api_return, the_scope.dump_history)
+        print(get_document_get_dump("dsad"))
+        self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, get_document_get_dump(the_api_return[0]))
+
+
 
         storage_2.pop()
+        storage_3.pop()
 
 
 backup = sys.argv
