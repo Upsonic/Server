@@ -27,18 +27,9 @@
     {% include 'in_page_load.js.html' %}
 
 
-    {% debug_mode as debug_mode %}
-
-    {% if not debug_mode %}
-    {% include 'header_tracking.html' %}
-    {% endif %}
 
 </head>
 <body class="custom_body">
-{% if not debug_mode %}
-{% include 'body_first_tracking.html' %}
-{% endif %}
-
 
 {% include 'header.html' %}
 
@@ -62,9 +53,6 @@
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
 <script src="/static/js/site.js" id="script_tag"></script>
-{% if not debug_mode %}
-{% include 'body_last_tracking.html' %}
-{% endif %}
 
 
 </body>
