@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Thank</span> You!</span>
+    </div>
+
+    <div class="w-75 ms-5">
+        <div class="custom_pharagraph_bottom_margin">We are developing the Upsonic with your support and feedback!</div>
+    </div>
+
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Bug</span> Report</span>
+    </div>
+
+
+    <form class="w-50 ms-5" method="post">
+        <div class="row align-items-end justify-content-center">
+            {% csrf_token %}
+            <div class="col custom_form_col">
+                <div class="custom_form_field_head">Subject</div>
+                {{ form.subject }}
+                <div class="custom_form_field_head">Feedback</div>
+                {{ form.content }}
+                <button type="submit" class="btn btn-lg custom_button mt-3">Submit</button>
+            </div>
+
+
+    </form>
+
+
+</div>
+
+{% endblock content %}

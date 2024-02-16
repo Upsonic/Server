@@ -1,0 +1,862 @@
+{% extends "landing_base.html" %}
+
+
+{% block content %}
+
+<div class="container-fluid landing_first" id="landing_first">
+
+
+    {% include 'landing_nav.html' %}
+
+    <div class="d-flex flex-column lign-items-start first_content">
+        <div class="d-flex justify-content-center">
+            <button class="info_button"><img class="info_button_img" src="/static/images/early_access.svg">CD
+                Accelerator
+            </button>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="first_content_h1">Optimize CD by 99%</div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <h2 class="first_content_h2">No Outage, 1sec Build&Deploy</h2>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <p class="first_content_p">With Upsonic, save functions, classes, variables, and even modules. Update
+                without the need for a restart, reducing the build and deployment process.</p>
+        </div>
+
+        <div class="d-flex justify-content-center" style="z-index: 1;">
+            <a href="https://docs.upsonic.co/" class="btn forward_button"><img class="forward_button_img"
+                                                                               src="/static/images/documents_icon.svg">Documentation</a>
+            <a href="https://app.upsonic.co/accounts/login/" class="btn forward_button" style="margin-right: 0rem;"><img
+                    class="forward_button_img" src="/static/images/rocket.svg">Get started free</a>
+
+        </div>
+
+
+        <div class="d-flex justify-content-center" style="z-index: 0;">
+            <img src="static/images/hole.svg" class="intro_hole">
+        </div>
+
+
+        {% if socialproofs_have or love_from_small_have %}
+
+
+        <div class="row w-100 social_proof_row" style="--bs-gutter-x: 0rem;">
+
+
+            {% if socialproofs_have %}
+
+            <div class="col-md-6">
+
+
+                <div class="d-flex h-100 align-items-center justify-content-start social_proof_img_section"
+                     style="z-index: 2;">
+
+                    <div class="row" style="--bs-gutter-x: 0rem;">
+
+                        {% for socialproof in socialproofs %}
+                        <div class="col {% if socialproof.hide_mobile%} hide_mobile {% endif %}">
+                            <img src="{{socialproof.logo_safe_url}}" class="social_proof_img">
+                        </div>
+
+                        {% endfor %}
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            {% endif %}
+
+            {% if love_from_small_have %}
+
+            <div class="col love_from_small_have_col">
+
+                <div class="d-flex justify-content-start" style="z-index: 2;">
+
+                </div>
+
+                <div class="d-flex justify-content-start social_proof_img_section" style="z-index: 2;">
+
+                    <div class="row" style="--bs-gutter-x: 0rem; margin-left: auto;">
+
+                        {% for love_from in love_froms_small %}
+                        <div class="col love_from_col">
+
+                            <img src="/static/images/stars.svg" class="love_froms_small_star">
+                            <p class="love_froms_small_p">{{love_from.content}}</p>
+
+                            <div class="d-flex " style="margin-top: auto;">
+                                <img src="{{love_from.avatar_safe_url}}" class="love_froms_small_avatar">
+
+                                <h2 class="love_froms_small_avatar_h2">{{love_from.name}} <span
+                                        class="love_froms_small_avatar_h2_other">{{love_from.job}}</span></h2>
+
+
+                            </div>
+
+
+                        </div>
+
+                        {% endfor %}
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        {% endif %}
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+<div class="d-flex align-items-start justify-content-center landing_industry" id="landing_industry">
+
+    <div class="d-flex flex-column align-items-center">
+
+
+        <div class="d-flex justify-content-center align-items-center">
+
+            <div class="landing_industry_h1">How it works?</div>
+        </div>
+
+
+        <div class="d-flex justify-content-center align-items-center">
+
+            <img src="/static/images/window.svg" class="landing_industry_card" id="landing_industry_card">
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<div class="d-flex align-items-center landing_encrypted">
+
+    <div class="d-flex flex-column align-items-start landing_encrypted_sub">
+
+
+        <div class="d-flex justify-content-center align-items-center">
+            <img src="/static/images/landing_encryption_icon.svg">
+            <div class="landing_encrypted_h1">Upsonic based on <span class="landing_encrypted_h1_b">Fernet key encryption</span>
+                method
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<div class="main_pros">
+    <div class="pros_section">
+
+        <div class="sticky_light_right hide_mobile">
+            <img src="/static/images/right_light_1.svg" class="sticky_light_right_img">
+        </div>
+
+        <div class="d-flex justify-content-center align-items-start landing_section_div landing_section_div_long">
+            <div class="d-flex justify-content-center align-items-center landing_section_div_sticky blue_sticky">
+                <div class="d-flex align-items-start justify-content-start landing_integrated">
+
+                    <div class="container-fluid">
+
+                        <div class="row section_row">
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 just_mobile">
+                                <img class="landing_integrated_img" src="/static/images/deploy_window.svg">
+
+                            </div>
+
+
+                            <style>
+                                .landing_integrated_blue {
+                                  color: #00A3FF;
+                                }
+
+                            </style>
+
+                            <div class="col-md-6 align-items-start landing_integrated_sub ">
+                                <div class="landing_integrated_sub_content">
+                                    <div class="d-flex justify-content-start align-items-center landing_integrated_sub_header">
+
+                                        <div class="landing_integrated_h1">Deploy your Version in <span
+                                                class="landing_integrated_blue">1 second</span></div>
+                                    </div>
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/blue_ok.svg">
+                                        Deploy your different version to different customer
+                                    </div>
+
+                                    </p>
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/blue_ok.svg">
+                                        When you got a exception rollback your last version in 1 seconds
+                                    </div>
+
+                                    </p>
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/blue_ok.svg">
+                                        Control everything in CLI
+                                    </div>
+
+                                    </p>
+                                    <a class="landing_integrated_a landing_integrated_blue"
+                                       href="https://app.upsonic.co/home">Get started free <img
+                                            src="/static/images/link_go_blue.svg"></a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 hide_mobile">
+                                <img class="landing_integrated_img" src="/static/images/deploy_window.svg">
+                                <p class="type_write_1" id="deploying_type_write">$ </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-center align-items-start landing_section_div">
+            <div class="d-flex justify-content-center align-items-center landing_section_div_sticky purple_sticky">
+                <div class="d-flex align-items-start justify-content-start landing_integrated">
+
+                    <div class="container-fluid">
+
+                        <div class="row section_row">
+
+
+                            <style>
+                                .landing_integrated_purple {
+                                  color: #A43CD5;
+                                }
+
+                            </style>
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 just_mobile">
+                                <img class="landing_integrated_img" src="/static/images/restart_window.svg">
+                            </div>
+
+
+                            <div class="col-md-6 align-items-start landing_integrated_sub">
+                                <div class="landing_integrated_sub_content">
+                                    <div class="d-flex justify-content-start align-items-center landing_integrated_sub_header">
+                                        <div class="landing_integrated_h1">Deploy <span
+                                                class="landing_integrated_purple">without Restart</span> Avoid 2X cloud
+                                            cost
+                                        </div>
+                                    </div>
+
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/purple_ok.svg">
+                                        Update with Upsonic without ever experiencing downtime. Reduce your high cloud
+                                        costs
+                                    </div>
+                                    </p>
+                                    <p class="landing_integrated_p">
+
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/purple_ok.svg">
+                                        Develop without interruption during the deployment and build process. Develop
+                                        your products at 100X speed
+                                    </div>
+
+                                    </p>
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/purple_ok.svg">
+                                        Instantly view your changes
+                                    </div>
+
+
+                                    </p>
+
+
+                                    <a class="landing_integrated_a landing_integrated_purple"
+                                       href="https://docs.upsonic.co/">Read Docs <img
+                                            src="/static/images/link_go_purple.svg"></a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 hide_mobile">
+                                <img class="landing_integrated_img" src="/static/images/restart_window.svg">
+                                <p class="type_write_1" id="deploying_without_restart_type_write">$ </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-start landing_section_div">
+            <div class="d-flex justify-content-center align-items-center landing_section_div_sticky red_sticky">
+                <div class="d-flex align-items-start justify-content-start landing_integrated">
+
+                    <div class="container-fluid">
+
+                        <div class="row section_row">
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 just_mobile">
+                                <img class="landing_integrated_img" src="/static/images/faster_window.svg">
+                            </div>
+
+                            <style>
+                                .landing_integrated_red {
+                                  color: #FF7373;
+                                }
+
+                            </style>
+
+
+                            <div class="col-md-6 align-items-start landing_integrated_sub ">
+                                <div class="landing_integrated_sub_content">
+                                    <div class="d-flex justify-content-start align-items-center landing_integrated_sub_header">
+                                        <div class="landing_integrated_h1"><span class="landing_integrated_red">2x faster development</span>
+                                            <br>for your team
+                                        </div>
+                                    </div>
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/red_ok.svg">
+                                        Allocate the time you set aside for deployment to the development process.
+                                    </div>
+
+                                    </p>
+                                    <p class="landing_integrated_p">
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/red_ok.svg">
+                                        Prevent confusion while working on the same function by using the Lock feature
+                                    </div>
+
+                                    </p>
+                                    <p class="landing_integrated_p">
+
+                                    <div class="d-flex landing_integrated_p_f">
+                                        <img class="ok" src="/static/images/red_ok.svg">
+                                        Instantly deploy security patches.
+                                    </div>
+                                    </p>
+                                    <a class="landing_integrated_a landing_integrated_red"
+                                       href="https://app.upsonic.co/home">Try Now for Free <img
+                                            src="/static/images/link_go_red.svg"></a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 hide_mobile">
+                                <img class="landing_integrated_img" src="/static/images/faster_window.svg">
+                                <p class="type_write_1" id="2x_faster_restart_type_write">$ </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-center align-items-start landing_section_div">
+            <div class="d-flex justify-content-center align-items-center landing_section_div_sticky green_sticky">
+                <div class="d-flex align-items-start justify-content-start landing_integrated">
+
+                    <div class="container-fluid">
+
+                        <div class="row section_row">
+
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 just_mobile">
+                                <img class="landing_integrated_img" src="/static/images/durable.svg">
+                            </div>
+
+
+                            <style>
+                                .landing_integrated_green {
+                                  color: #01EE8A;
+                                }
+
+                            </style>
+
+
+                            <div class="col-md-6 align-items-start landing_integrated_sub ">
+                                <div class="landing_integrated_sub_content">
+                                    <div class="d-flex justify-content-end align-items-center landing_integrated_sub_header">
+                                        <div class="landing_integrated_h1"><span class="landing_integrated_green">Gain durability</span>
+                                            with a single line
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <p class="landing_integrated_p">Upsonic allows you to effortlessly safeguard
+                                            your statements with just one decorator. This enables you to enhance the
+                                            durability of your system and prevent business logic failures
+                                            seamlessly.</p>
+                                    </div>
+
+                                    <a class="landing_integrated_a" href="https://app.upsonic.co/home">Try Now <img
+                                            src="/static/images/link_go.svg"></a>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 hide_mobile">
+                                <img class="landing_integrated_img" src="/static/images/durable.svg">
+                                <p class="type_write_1" id="durability_restart_type_write">$ </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-center align-items-start landing_section_div">
+            <div class="d-flex justify-content-center align-items-center landing_section_div_sticky white_sticky">
+                <div class="d-flex align-items-start justify-content-start landing_integrated">
+
+                    <div class="container-fluid">
+
+                        <div class="row section_row">
+
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 just_mobile">
+                                <img class="landing_integrated_img" src="/static/images/integrations.svg">
+                            </div>
+
+
+                            <div class="col-md-6 align-items-start landing_integrated_sub ">
+                                <div class="landing_integrated_sub_content">
+                                    <div class="d-flex justify-content-start align-items-center landing_integrated_sub_header">
+                                        <div class="landing_integrated_h1">Integrated and customizable</div>
+                                    </div>
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <p class="landing_integrated_p">Upsonic supports all platforms and
+                                            infrastructures in your working environment. This allows you to start using
+                                            it with zero configuration, avoiding any issues.</p>
+                                    </div>
+
+                                    <a class="landing_integrated_a" href="https://app.upsonic.co/home">Start your hobby
+                                        project <img src="/static/images/link_go.svg"></a>
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <img src="/static/images/supports.svg" class="landing_integrated_img_sub">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 align-items-center landing_integrated_sub_2 hide_mobile">
+                                <img class="landing_integrated_img" src="/static/images/integrations.svg">
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% if love_from_have %}
+<div class="d-flex align-items-start justify-content-center landing_lovefrom">
+
+    <div class="d-flex flex-column align-items-center">
+
+
+        <div class="d-flex justify-content-center align-items-center landing_lovefrom_sub">
+
+            <div class="landing_lovefrom_h1">Love <span class="landing_lovefrom_h1_low">From</span> Developers</div>
+
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center landing_lovefrom_sub_2">
+
+            <p class="landing_lovefrom_h1_p">Join 500+ developers in Upsonic Discord Community</p>
+
+        </div>
+
+
+        <div class="container-fluid landing_lovefrom_sub_3">
+
+
+            {% for love_from in love_froms_rows %}
+            <div class="row landing_lovefrom_section">
+
+                {% for col in love_from.cols.all %}
+                <div class="col d-flex justify-content-center" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="d-flex flex-column landing_lovefrom_card">
+                        <h1 class="landing_lovefrom_card_h1">{{col.title}}</h1>
+                        <p class="landing_lovefrom_card_p">{{col.content}}</p>
+                        <div class="d-flex ">
+                            <img src="{{col.avatar_safe_url}}" class="landing_lovefrom_card_avatar">
+                            <div class="landing_lovefrom_card_avatar_right_section">
+                                <h2 class="landing_lovefrom_card_avatar_h2">{{col.name}}</h2>
+                                <p class="landing_lovefrom_card_avatar_p">{{col.job}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+
+    </div>
+</div>
+
+{% endif %}
+
+
+<div class="d-flex align-items-center justify-content-center landing_hero">
+
+    <div class="d-flex flex-column align-items-center">
+
+
+        <div class="d-flex justify-content-center align-items-center landing_hero_first_section">
+
+            <div class="d-flex flex-column align-content-center landing_hero_card">
+
+                <div class="landing_hero_card_h1">Build and Deploy in <span
+                        class="landing_hero_card_h1_b"><br>Seconds</span></div>
+                <div class="d-flex justify-content-center w-100">
+                    <p class="landing_hero_card_p">Optimize your CD processes thanks to Upsonic Update, decrease your
+                        cloud bills, development cost and more...</p>
+                </div>
+
+
+                <div class="d-flex justify-content-center w-100">
+                    <a class="btn d-flex flex-wrap justify-content-center align-content-center landing_hero_button"
+                       href="https://app.upsonic.co/home"><span class="landing_hero_button_span">Get started free</span></a>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        <div class="d-flex flex-column justify-content-center align-items-center landing_hero_second_section">
+
+            <div class="d-flex flex-column flex-wrap align-content-center ">
+                <h1 class="landing_keep_h1">Beta List</h1>
+
+
+            </div>
+
+            <div class="d-flex flex-column flex-wrap align-content-center " id="the_mail_section">
+
+
+                <form class="" method="post" style="text-align: center;" id="email_form">
+                    <div class="row align-items-end justify-content-center">
+                        {% csrf_token %}
+                        <div class="col custom_form_col">
+                            {{ form.email }}
+
+                            <button type="submit"
+                                    class="btn d-flex flex-wrap justify-content-center align-content-center landing_keep_button">
+                                <span class="landing_keep_button_span">Join Email List </span></button>
+                        </div>
+
+
+                </form>
+
+                {% include 'mail_list.js.html' %}
+            </div>
+
+            <div class="d-flex flex-column flex-wrap align-content-center ">
+
+
+                <p class="landing_keep_showcase_p">800+ people already in the list</p>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<div class="container-fluid landing_second">
+
+
+    <div class="d-flex flex-column lign-items-start second_content" id="tools">
+
+        <div class="d-flex justify-content-center" style="margin-top: 2.5rem;">
+            <h1 class="second_content_h1">Use Cases</h1>
+        </div>
+
+
+        <div class="d-flex justify-content-center use_case_section" ,
+             style="margin-left: 80px;margin-right: 80px;margin-top: 2.12rem; scale:0.9;">
+
+
+            <div class="use_case_card">
+                <div class="d-flex justify-content-start" style="height: 100px;">
+                    <img src="/static/images/save_your_function.svg" class="use_case_icon">
+                    <h3 class="use_case_card_h3"><span class="bold_white">Save your functions</span> to Upsonic <br>Cloud
+                    </h3>
+                </div>
+                <p class="use_case_card_p">Boost your team’s efficiency and flexibility by saving your functions to the
+                    cloud. Increase your productivity</p>
+            </div>
+
+
+            <div class="use_case_card">
+                <div class="d-flex justify-content-start" style="height: 100px;">
+                    <img src="/static/images/run_your_function_use_case.svg" class="use_case_icon">
+                    <h3 class="use_case_card_h3"><span class="bold_white">Run your functions</span> in Upsonic <br>Run
+                    </h3>
+                </div>
+                <p class="use_case_card_p">Run your functions and classes in isolated cloud layer environment.</p>
+            </div>
+
+
+            <div class="use_case_card">
+                <div class="d-flex justify-content-start" style="height: 100px;">
+                    <img src="/static/images/distribute-your-use-case.svg" class="use_case_icon">
+                    <h3 class="use_case_card_h3"><span class="bold_white">Distribute to customers with</span> in Upsonic
+                        Readonly</h3>
+                </div>
+                <p class="use_case_card_p">Enhance the integrity, stability, and reliability of the software delivered
+                    to customers by restricting code editing permissions, preventing undesired changes. </p>
+            </div>
+
+
+        </div>
+
+
+        <div class="d-flex justify-content-center section_tag">
+            <div class="section_tag_h1">Every services is <span class="section_tag_green">Encrypted</span> in Upsonic
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-center use_case_section" ,
+             style="margin-left: 80px;margin-right: 80px; scale:0.9;">
+
+
+            <div class="use_case_card">
+                <div class="d-flex justify-content-start" style="height: 100px;">
+                    <img src="/static/images/easily_update_use_case.svg" class="use_case_icon">
+                    <h3 class="use_case_card_h3"><span class="bold_white">Easily Update</span> your <span
+                            class="bold_white">running codes</span> with Upsonic Update</h3>
+                </div>
+                <p class="use_case_card_p">Cut down your lengthy code update processess to 3 seconds.</p>
+            </div>
+
+
+            <div class="use_case_card">
+                <div class="d-flex justify-content-start" style="height: 100px;">
+                    <img src="/static/images/save_your_classes_use_case.svg" class="use_case_icon">
+                    <h3 class="use_case_card_h3"><span class="bold_white">Save your classes</span> to Upsonic <br>Cloud
+                    </h3>
+                </div>
+                <p class="use_case_card_p">Speed up our development process by quickly accessing your classes.</p>
+            </div>
+
+
+            <div class="use_case_card">
+                <div class="d-flex justify-content-start" style="height: 100px;">
+                    <img src="/static/images/make_hidden_use_case.svg" class="use_case_icon">
+                    <h3 class="use_case_card_h3">Make <span class="bold_white">hidden your Functions</span> in Upsonic
+                        Phantom</h3>
+                </div>
+                <p class="use_case_card_p">Can share their code with third parties without revealing the underlying
+                    code’s details</p>
+            </div>
+
+
+        </div>
+
+        <div class="d-flex justify-content-center section_tag">
+            <div class="section_tag_h1">Every services is <span class="section_tag_green">Isolated</span> in Upsonic
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% if faqs_have %}
+
+
+<div class="d-flex flex-column align-items-center justify-content-start landing_faq">
+
+    <div class="d-flex flex-column align-items-start">
+
+
+        <div class="d-flex justify-content-center align-items-center">
+
+            <div class="landing_faq_h1">FAQ</div>
+        </div>
+
+
+    </div>
+
+
+    <div class="d-flex w-100 flex-column align-items-center landing_faq_sub_2">
+
+
+        <div class="accordion landing_faq_accordion" id="basicAccordion">
+
+
+            {% for faq in faqs %}
+            <div class="accordion-item landing_faq_accordion_item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed landing_faq_accordion_item_button" type="button"
+                            data-bs-toggle="collapse" href="#{{faq.id}}" aria-expanded="false"
+                            aria-controls="{{faq.id}}">
+                        <span class="landing_faq_accordion_item_button_span">{{faq.title}}</span>
+                    </button>
+                </h2>
+                <div id="{{faq.id}}" class="accordion-collapse collapse" style="">
+                    <div class="accordion-body">
+                        {{faq.content}}
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endif %}
+
+
+{% if page_have %}
+
+<div class="flex justify-content-center align-content-center text-center">
+    {% for page in pages %}
+
+    <a href="/page/{{page.slug}}" class="btn landing_page_button"><span
+            class="landing_page_button_span">{{page.title}}</span></a>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<nav class="navbar landing_nav_bottom hide_mobile">
+    <div class="container-fluid">
+        <div class="w-25 d-flex justify-content-center  hide_mobile">
+
+            <a href="https://x.com/getUpsonic"><img src="/static/images/twitter_landing.svg" class="social_icon_button"></a>
+            <a href="https://github.com/Upsonic"><img src="/static/images/github_landing.svg"
+                                                      class="social_icon_button"></a>
+            <a href="https://discord.gg/9xjtsnv5"><img src="/static/images/discord_landing.svg"
+                                                       class="social_icon_button"></a>
+
+        </div>
+
+        <a class="w-25" href="{% url 'landing' %}" style="text-align: center;">
+            <img src="/static/images/landing_logo_blue.svg" alt="Upsonic" class="">
+        </a>
+
+        <div class="w-25 d-flex flex-row-reverse align-items-center hide_mobile">
+            {% if not request.user.is_authenticated %}
+            <a href="https://app.upsonic.co/accounts/login/">
+                <button class="btn login_button"><img class="login_button_img" src="/static/images/github_loggin.svg">Sign
+                    Up
+                </button>
+            </a>
+            {% else %}
+            <a href="https://app.upsonic.co/home">
+                <button class="btn login_button">Dashboard</button>
+            </a>
+            {% endif %}
+            <a class="nav-link active landing_nav_item" aria-current="page" href="https://docs.upsonic.co/">Docs</a>
+            <a class="nav-link active landing_nav_item" aria-current="page" href="{% url 'pricing' %}">Pricing</a>
+
+
+        </div>
+    </div>
+</nav>
+
+
+<nav class="navbar landing_nav_bottom just_mobile">
+    <div class="container-fluid justify-content-center">
+        <div class="w-100 d-flex justify-content-center  ">
+
+            <a href="https://x.com/getUpsonic"><img src="/static/images/twitter_landing.svg" class="social_icon_button"></a>
+            <a href="https://github.com/Upsonic"><img src="/static/images/github_landing.svg"
+                                                      class="social_icon_button"></a>
+            <a href="https://discord.gg/9xjtsnv5"><img src="/static/images/discord_landing.svg"
+                                                       class="social_icon_button" style="margin-right: 0;"></a>
+
+        </div>
+
+
+        <div class="d-flex flex-row-reverse align-items-center" style="margin-top: 20px;">
+
+            <a class="nav-link active landing_nav_item" aria-current="page" href="https://docs.upsonic.co/"
+               style="margin-right: 0;">Docs</a>
+            <a class="nav-link active landing_nav_item" aria-current="page" href="{% url 'pricing' %}"
+               style="margin-right: 10px;">Pricing</a>
+
+
+        </div>
+
+
+        <a class="w-100" href="{% url 'landing' %}" style="text-align: center; margin-top: 20px;">
+            <img src="/static/images/landing_logo_blue.svg" alt="Upsonic" class="">
+        </a>
+
+    </div>
+</nav>
+
+
+{% endblock content %}
