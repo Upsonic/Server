@@ -92,7 +92,7 @@ def get_all_scopes_name_prefix():
 @app.route(create_version_url, methods=["POST"])
 def create_version():
     user = AccessKey(request.authorization.password)
-    version = Scope.get_version("get_version")
+    version = request.form.get("version")
     scope = request.form.get("scope")
     object = Scope(scope)
-    return jsonify({"status": True, "result": Scope.create_version(object, version, user)})
+    return jsonify({"status": True, "result": object.create_version(version, user)})
