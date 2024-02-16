@@ -1,0 +1,34 @@
+{% load tags %}
+
+<div class="d-flex flex-column flex-shrink-0 cloud_side_database"
+     style="width: 20vh; margin-left: 0!important;margin-bottom: 24px;">
+    <ul class="nav nav-pills flex-column mb-auto align-items-start">
+        {% for database in databases %}
+
+
+        <li class="nav-item {% if control_database.id == database.id %}cloud_side_nav_item_active_database{% else %}cloud_side_nav_item_database{% endif %}">
+            <a href="#"
+               onclick="page_load('{% url 'control_cloud_database' id_cloud=database.access_key.id id_db=database.id %}');event.preventDefault();"
+               class="nav-link {% if control_database.id == database.id %}cloud_side_nav_item_text_active_database{% else %}cloud_side_nav_item_text_database{% endif %}"
+               aria-current="page">
+
+                {% if control_database.id == database.id %}
+                <img style="width: 2px; height: 24px; margin-right: 3px;" src="/static/images/menu_active.png"/>
+
+                {% endif %}
+                {{database.name}}
+            </a>
+        </li>
+
+
+        {% endfor %}
+        <li class="nav-item {% if control_database.id == database.id %}cloud_side_nav_item_active_database{% else %}cloud_side_nav_item_database{% endif %}">
+            <a href="#" onclick="page_load('{% url 'control_cloud' id=control_cloud.id %}');event.preventDefault();"
+               class="nav-link"
+               style="width: 100%; height: 100%; color: #B6B3B3; font-size: 15px; font-family: Poppins; font-weight: 400; line-height: 19.50px; word-wrap: break-word; padding: 0; margin-left: 28px;">+
+                Add new database</a>
+        </li>
+
+
+    </ul>
+</div>

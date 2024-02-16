@@ -1,0 +1,107 @@
+
+
+
+@media (max-width: 1400px) {
+    .landing_integrated_p {
+        width: 130%;
+    }
+    .landing_integrated_sub_header{
+        width: 130%;
+    }
+    
+
+    .info_button {
+        width: 158.72px;
+        height: 34.192px;        
+    }
+
+    .first_content {
+        margin-top: 16px;
+    }
+
+    .first_content_h1 {    
+
+        font-size: 75px;
+
+    }
+
+
+
+
+    .first_content_h2 {
+   
+        font-size: 50px;
+        margin-right: 15px;
+    }
+    .first_content_h2_green {
+   
+        font-size: 50px;
+        margin-left: 0px;
+       
+   
+    }
+
+
+
+    .first_content_p {
+        font-size: 14px;
+        width: 865px;;
+    }
+
+
+
+
+
+
+    .landing_integrated {
+        background-position: right;
+
+        background-size: auto;
+        background-attachment: unset;
+    }
+
+    .landing_integrated_sub {
+ 
+
+   
+    }
+
+    .landing_integrated_sub_2 {
+  
+     
+    }
+
+    .landing_integrated_img {
+
+    }
+
+    .landing_encrypted {
+        background-position: right;
+        background-attachment: local;
+    }
+
+    .landing_encrypted_sub {
+        margin-left: 3rem;
+    }
+
+
+    .social_proof_span {
+        margin-top: -330px;
+    }
+
+
+    .social_proof_img {
+        margin-right: 52px;
+    }
+
+
+    .love_from_small_have_col {
+        margin-left: 0px;
+    }
+
+
+    .landing_lovefrom_card_avatar_p {
+        font-size: 12px;
+    }
+
+}
