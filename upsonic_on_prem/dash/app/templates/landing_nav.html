@@ -1,0 +1,61 @@
+<nav class="navbar landing_nav">
+    <div class="container-fluid">
+        <a class="navbar-brand  navbar_logo" href="{% url 'landing' %}">
+            <img src="/static/images/landing_logo.svg" alt="Upsonic" class="landing_logo">
+        </a>
+
+        <div class="w-50 d-flex flex-row-reverse align-items-center hide_mobile">
+            {% if not request.user.is_authenticated %}
+            <a href="https://app.upsonic.co/accounts/login/">
+                <button class="btn login_button"><img class="login_button_img" src="/static/images/github_loggin.svg">Sign
+                    Up
+                </button>
+            </a>
+            {% else %}
+            <a href="https://app.upsonic.co/home">
+                <button class="btn login_button">Dashboard</button>
+            </a>
+            {% endif %}
+            <a href="https://github.com/Upsonic/Upsonic" style="margin-right: 0.8rem;" target="_blank">
+                <button class="btn login_button"><img class="login_button_img" src="/static/images/github_loggin.svg">Star
+                    Us
+                </button>
+            </a>
+            <a class="nav-link active landing_nav_item" aria-current="page" href="{% url 'pricing' %}">Pricing</a>
+            <a class="nav-link active landing_nav_item" aria-current="page" href="https://docs.upsonic.co/"
+               target="_blank">Docs</a>
+
+
+        </div>
+
+        <div class="just_mobile">
+            <div class="w-25 d-flex flex-row-reverse align-items-center ">
+
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+
+<div class="collapse" id="navbarToggleExternalContent">
+    <div class="d-flex flex-row align-items-center collapsed_nav justify-content-center">
+
+        <a href="https://github.com/Upsonic/Upsonic" style="margin-right: 0.8rem;">
+            <button class="btn login_button"><img class="login_button_img" src="/static/images/github_loggin.svg">Star
+                Us
+            </button>
+        </a>
+        <a class="nav-link active landing_nav_item" aria-current="page" href="{% url 'pricing' %}">Pricing</a>
+        <a class="nav-link active landing_nav_item" aria-current="page" href="https://docs.upsonic.co/" target="_blank">Docs</a>
+
+
+    </div>
+</div>

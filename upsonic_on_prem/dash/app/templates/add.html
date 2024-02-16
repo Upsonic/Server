@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+
+
+    // Get Stripe publishable key
+    fetch("/config/")
+    .then((result) => { return result.json(); })
+    .then((data) => {
+      // Initialize Stripe.js
+      const stripe = Stripe(data.publicKey);
+
+
+
+
+      {% for package in packages %}
+      {% if not package.default %}
+      let {{package.name}}Btn = document.querySelector("#{{package.name}}Btn");
+      if ({{package.name}}Btn !== null) {
+        {{package.name}}Btn.addEventListener("click", () => {
+        // Get Checkout Session ID
+        fetch("/create-checkout-session/{{package.id}}/")
+          .then((result) => { return result.json(); })
+          .then((data) => {
+            console.log(data);
+            // Redirect to Stripe Checkout
+            return stripe.redirectToCheckout({sessionId: data.sessionId})
+          })
+          .then((res) => {
+            console.log(res);
+          });
+        });
+      }
+      {% endif %}
+      {% endfor %}
+
+
+
+
+
+    });
+
+</script>
+
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Add Cloud</span></span>
+    </div>
+
+
+    <div class="d-flex flex-row mb-3">
+        {% for package in packages %}
+        <div>
+            {% if package.featured %}
+            <div class="btn custom_price_card_top">
+                <div class="custom_price_card_top_text">
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                        <img class="me-3" src="/static/images/star.png">
+                        Most Purchased
+                    </div>
+
+                </div>
+
+            </div>
+            {% endif %}
+            <div class="custom_price_card">
+
+
+                <div class="custom_price_card_title" style="{% if not package.featured %}margin-top:25px;{% endif %}">
+                    {{package.view_name}}
+                </div>
+                <div class="custom_price_card_content">
+                    {{package.database_amount}} database included<br>
+                    {{package.key_amount_for_each_datbase}} key for each database included<br>
+                    {{package.runner_amount}} runner included<br>
+                    {{package.minute_request}} request minute included<br>
+                    {{package.hour_request}} request hour included<br>
+
+                    {{package.value}} value size included<br>
+                    {{package.runner_type.view_name}} type of runner<br>
+                    {{package.runner_hour_limit}} use of runner<br>
+                    {{package.runner_hour_limit_value}} hour limit of runner<br>
+                    {{package.runner_type.cpu}} cpu of runner<br>
+                    {{package.runner_type.memory}} memory of runner<br>
+                    {{package.runner_type.disk}} disk of runner<br>
+                    {{package.runner_type.bandwidth}} bandwidth of runner<br>
+
+                </div>
+
+                <div class="d-flex flex-column align-items-center custom_price_card_bottom">
+                    <div class="custom_price_card_bottom_title">{%if package.price != 0.00%}$
+                        {{package.price}}{%else%}Free{%endif%}/month
+                    </div>
+                    <button class="btn {%if package.default %}custom_price_card_bottom_button_disabled{%else%}custom_price_card_bottom_button{%endif%} ">
+                        <div class=" {%if package.default %}custom_price_card_bottom_button_text_disabled{%else%}custom_price_card_bottom_button_text{%endif%}"
+                             id="{{package.name}}Btn">{{package.buy_name}}
+                        </div>
+
+                    </button>
+
+                </div>
+
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+{% endblock content %}

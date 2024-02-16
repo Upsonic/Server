@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text">Do you<span class="custom_page_header_text_bold"> need help?</span></span>
+    </div>
+
+    <div class="w-75 ms-5">
+        <div class="custom_pharagraph_bottom_margin">Upsonic is a new product that is developing rapidly. We are always
+            ready to support you to help you. If you cannot find the support you are looking for in the FAQ section, you
+            can contact us via the form.
+        </div>
+    </div>
+
+
+    <div class="custom_page_header_top_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Support</span> form</span>
+    </div>
+
+
+    <form class="w-50 ms-5" method="post">
+        <div class="row align-items-end justify-content-center">
+            {% csrf_token %}
+            <div class="col custom_form_col">
+                <div class="custom_form_field_head">Subject</div>
+                {{ form.subject }}
+                <div class="custom_form_field_head">Content</div>
+                {{ form.content }}
+                <button type="submit" class="btn btn-lg custom_button mt-3">Submit</button>
+            </div>
+
+
+    </form>
+
+
+    {% if have_faq %}
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">FAQ</span></span>
+    </div>
+    <div class="accordion w-75 ms-5" id="basicAccordion">
+
+
+        {% for faq in faqs %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" href="#{{faq.id}}"
+                        aria-expanded="false" aria-controls="{{faq.id}}">
+                    {{faq.title}}
+                </button>
+            </h2>
+            <div id="{{faq.id}}" class="accordion-collapse collapse" style="">
+                <div class="accordion-body">
+                    {{faq.content}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endif %}
+
+
+</div>
+
+{% endblock content %}
