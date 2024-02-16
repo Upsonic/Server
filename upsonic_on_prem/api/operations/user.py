@@ -80,3 +80,10 @@ def load_specific_dump():
     dump_id = request.form.get("dump_id")
     object = Scope.get_dump(dump_id)
     return jsonify({"status": True, "result": object.source})
+
+
+@app.route(get_all_scopes_name_prefix_url, methods=["POST"])
+def get_all_scopes_name_prefix():
+    user = AccessKey(request.authorization.password)
+    prefix = request.form.get("prefix")
+    return jsonify({"status": True, "result": Scope.get_all_scopes_name_prefix(user, prefix)})

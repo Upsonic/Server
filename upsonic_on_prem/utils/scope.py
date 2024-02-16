@@ -148,6 +148,6 @@ class Scope:
 
     @staticmethod
     def get_all_scopes_name_prefix(user, prefix):
-        all_scopes = Scope.get_all_scopes()
+        all_scopes = Scope.get_all_scopes_name(user)
 
         return [i for i in all_scopes if i.startswith(prefix)]
