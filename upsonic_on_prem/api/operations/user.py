@@ -87,3 +87,12 @@ def get_all_scopes_name_prefix():
     user = AccessKey(request.authorization.password)
     prefix = request.form.get("prefix")
     return jsonify({"status": True, "result": Scope.get_all_scopes_name_prefix(user, prefix)})
+
+
+@app.route(create_version_url, methods=["POST"])
+def create_version():
+    user = AccessKey(request.authorization.password)
+    version = request.form.get("version")
+    scope = request.form.get("scope")
+    object = Scope(scope)
+    return jsonify({"status": True, "result": object.create_version(version, user)})
