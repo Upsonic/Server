@@ -1,0 +1,30 @@
+{% if attrs.name == "GitHub" %}
+<a href="{{ attrs.href }}">
+    <button type="button" class="btn custom_provider_button_github">
+        <div class="custom_provider_button_github_text">
+            <div class="d-flex flex-row align-items-center">
+                <img class="me-3" src="/static/images/login_github.png">
+                Continue with GitHub
+            </div>
+
+        </div>
+    </button>
+</a>
+
+{% endif %}
+
+
+{% if attrs.name == "Google" %}
+<a href="{{ attrs.href }}">
+    <button type="button" class="btn custom_provider_button_google">
+        <div class="custom_provider_button_google_text">
+            <div class="d-flex flex-row align-items-center">
+                <img class="me-3" src="/static/images/login_google.png">
+                Continue with Google
+            </div>
+
+        </div>
+    </button>
+</a>
+
+{% endif %}

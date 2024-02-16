@@ -1,0 +1,94 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+
+    function page_load(url) {
+        window.history.pushState("", "", url);
+        _page_load(url)
+    }
+
+
+    function _page_load(url) {
+
+
+        // load the url and replace the <main> section with respose <main_section>
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(data){
+                // get main section from response
+
+
+                const parser = new DOMParser();
+                const htmlString = data;
+                const doc = parser.parseFromString(htmlString, "text/html");
+                main_section = doc.getElementById("the_content").innerHTML
+
+
+                $ ('main').html(main_section);
+
+                // Extract the url from the response
+                this_url = doc.getElementById("this_url").innerHTML
+
+                // remove the current url from the history
+                window.history.replaceState("", "", this_url);
+
+                script_tag = document.getElementById("script_tag")
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = script_tag.src;
+
+                document.head.appendChild(script);
+
+
+
+            }
+        });
+
+    }
+
+    function form_submit(form_submit_id) {
+
+        form = document.getElementById(form_submit_id)
+
+        // submit the form and wait for response
+        $.ajax({
+            type: "POST",
+            url: form.action,
+            data: new FormData(form),
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                // get main section from response
+
+                const parser = new DOMParser();
+                const htmlString = data;
+                const doc = parser.parseFromString(htmlString, "text/html");
+                main_section = doc.getElementById("the_content").innerHTML
+
+
+                $ ('main').html(main_section);
+
+                // Extract the url from the response
+                this_url = doc.getElementById("this_url").innerHTML
+
+
+
+            }
+        });
+
+
+
+    }
+
+
+
+    $(window).on('popstate', function(e){
+        console.log("hash changed")
+        console.log(window.location)
+        page_load(window.location)
+    });
+
+</script>

@@ -1,0 +1,58 @@
+
+
+
+@media (max-width: 1440px) {
+
+
+
+
+    .love_from_small_have_col {
+        margin-left: 100px;
+    }
+
+
+
+    .landing_integrated {
+        background-position: right;
+        background-size: auto;
+        background-attachment: unset;
+    }
+
+    .landing_integrated_sub {
+
+
+   
+    }
+
+
+    .landing_integrated_img {
+        width: 400px;
+    }
+
+    .landing_integrated_sub_content {
+        width: 350px;
+    }
+
+
+    .landing_encrypted {
+        background-position: right;
+        background-attachment: local;
+    }
+
+    .landing_encrypted_sub {
+        margin-left: 3rem;
+    }
+
+
+    .social_proof_span {
+        margin-top: -280px;
+    }
+
+
+
+
+    .landing_lovefrom_card_avatar_p {
+        font-size: 12px;
+    }
+
+}

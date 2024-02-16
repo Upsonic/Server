@@ -1,0 +1,105 @@
+<div class="toast-container position-fixed bottom-0 end-0 p-3 me-4" id="toast-containter">
+
+
+</div>
+
+
+<script>
+
+    url = "{% url 'notifications' %}"
+    read_url = "{% url 'notification_read_id' %}"
+
+
+
+    // add a toast to the toast container
+
+
+    // toast generator function
+
+    function toast_generator(id, title, message, important) {
+
+
+        
+        the_toast_header = `
+        <div id="`+id+`" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        `
+
+        if (important) {
+            the_toast_header = `
+            <div id="`+id+`" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            `
+        }
+
+        the_toast = the_toast_header +`
+
+            <div class="toast-header">
+                <strong class="me-auto">`+title+`</strong>
+                <button type="button" class="btn-close" id="`+id+`_close" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                `+message+`
+            </div>
+        </div>
+
+        `
+        // check the id if not there is an already existing toast with the same id dont add it
+        if (document.getElementById(id) == null) {
+           
+            
+            toast_container = document.getElementById('toast-containter')
+            toast_container.innerHTML =  toast_container.innerHTML + the_toast
+            
+
+        
+
+        
+            var toastElList = [].slice 
+                    .call(document.querySelectorAll('.toast')); 
+
+            // Remove the toast element that have hide class
+            var toastElList = toastElList.filter(function(toastEl) { 
+                return !toastEl.classList.contains('hide') 
+            })
+
+            var toastList = toastElList.map(function (toastEl) { 
+                    return new bootstrap.Toast(toastEl) 
+                }) 
+            toastList.forEach(toast => toast.show()) 
+
+            document.getElementById(id+'_close').addEventListener('click', function() {
+                document.getElementById(id).remove()
+                // send a request to the server to mark the notification as read
+                // use read_url and id
+                request_url = read_url + id 
+             
+                fetch(request_url)
+
+            })
+        }
+
+    }
+
+
+
+
+
+    // get the notifications from the server
+    function get_notifications() {
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    toast_generator(data[i].id, data[i].title, data[i].message, data[i].important)
+                }
+            }
+        })
+    }
+
+
+    // run the function every 5 seconds
+    setInterval(get_notifications, 5000)
+
+
+</script>

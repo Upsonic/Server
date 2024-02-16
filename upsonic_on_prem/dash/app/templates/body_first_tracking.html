@@ -1,0 +1,14 @@
+{% load cookie_consent_tags %}
+
+{% if request|cookie_group_declined:"analytics" %}
+
+{% else %}
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9VCWKC3"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+{% endif %}

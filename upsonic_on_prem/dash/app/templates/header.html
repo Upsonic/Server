@@ -1,0 +1,88 @@
+{% load tags %}
+
+
+<div class="d-flex align-items-center w-100 pb-1 pt-4" style="height: 10vh;">
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <div class="p-2 bd-highlight mb-3 mt-3">
+
+            <div class="d-flex flex-row bd-highlight">
+
+
+                <div class="ps-4 mb-2 bd-highlight ">
+                    <img src="/static/images/logo_name_dark.svg" alt="Logo" width="170"
+                         class="d-inline-block align-text-top align-middle">
+                </div>
+            </div>
+
+
+        </div>
+    </a>
+
+
+    <div class="p-2 bd-highlight ms-auto ">
+
+        <div class="d-flex flex-row align-items-center">
+
+
+            <a href="https://docs.upsonic.co/" style="text-decoration: none;" class="me-5">
+                <button type="button" class="btn btn-primary custom_header_button ">
+                    <div class="d-flex flex-row align-items-center p-2">
+                        <img class="me-3" src="/static/images/documents.svg">
+                        Documentation
+                    </div>
+                </button>
+            </a>
+
+
+            <div class="pb-3">
+
+                <div class="d-flex flex-column align-items-end">
+                    <div class="">
+                        <div style="text-align: right">
+                    <span class="custom_header_usage_text">
+                      You have
+                    </span>
+                            <span class="custom_header_usage_text_highlight">
+                      {{user.the_usage_reverse}}%
+                    </span>
+                            <br>
+                            <span class="custom_header_usage_text">
+                       free space
+                      </span>
+                        </div>
+                    </div>
+                    <div class="">
+
+                        <div class="progress custom_header_usage_bar" role="progressbar" aria-label="Example 1px high"
+                             aria-valuenow="{{user.the_usage}}" aria-valuemin="0" aria-valuemax="100" style="">
+                            <div class="progress-bar custom_header_usage_bar_amount"
+                                 style="width: {{user.the_usage}}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="p-2">
+                <a href="{% url 'account_logout' %}">
+                    <div class="d-flex flex-column align-items-center">
+
+                        <div class=""><img src="/static/images/logout.svg" alt="Logout" width="24" height="24"></div>
+                        <div class=""><a class="navbar-brand custom_header_logout_text"
+                                         href="{% url 'account_logout' %}">Log out</a></div>
+                    </div>
+
+            </div>
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+    
+
+
+

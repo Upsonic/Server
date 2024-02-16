@@ -1,0 +1,22 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="8" width="9.33333" height="9.33333" rx="1" stroke="#01EE8A" stroke-linecap="round"/>
+    <rect x="8" y="22.668" width="9.33333" height="9.33333" rx="1" stroke="#01EE8A" stroke-linecap="round"/>
+    <rect x="22.666" y="8" width="9.33333" height="9.33333" rx="1" stroke="#01EE8A" stroke-linecap="round"/>
+    <path d="M27.334 22.668L27.334 32.0015" stroke="#01EE8A" stroke-linecap="round"/>
+    <path d="M32 27.3321L22.6665 27.332" stroke="#01EE8A" stroke-linecap="round"/>
+    <g filter="url(#filter0_f_41_157)">
+        <rect x="8" y="8" width="9.33333" height="9.33333" rx="1" stroke="#01EE8A" stroke-linecap="round"/>
+        <rect x="8" y="22.668" width="9.33333" height="9.33333" rx="1" stroke="#01EE8A" stroke-linecap="round"/>
+        <rect x="22.666" y="8" width="9.33333" height="9.33333" rx="1" stroke="#01EE8A" stroke-linecap="round"/>
+        <path d="M27.334 22.668L27.334 32.0015" stroke="#01EE8A" stroke-linecap="round"/>
+        <path d="M32 27.3321L22.6665 27.332" stroke="#01EE8A" stroke-linecap="round"/>
+    </g>
+    <defs>
+        <filter id="filter0_f_41_157" x="0.5" y="0.5" width="39" height="39.002" filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feGaussianBlur stdDeviation="3.5" result="effect1_foregroundBlur_41_157"/>
+        </filter>
+    </defs>
+</svg>
