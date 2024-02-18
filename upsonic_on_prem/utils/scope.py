@@ -68,6 +68,10 @@ class Scope:
         document = AI.code_to_documentation(self.code)
         self.the_storage.set(self.key + ":documentation", document)
 
+    def create_documentation_old(self):
+        document = AI.code_to_documentation(self.code_old)
+        self.the_storage.set(self.key + ":documentation", document)
+
     @property
     def source(self):
         the_resource = self.the_storage.get(self.key)
@@ -77,19 +81,10 @@ class Scope:
 
     @property
     def type(self):
-        if self.python is None:
-            return None
-        the_type = type(self.python).__name__
-        if the_type == "type":
-            the_type = "class"
-        return the_type
+        return self.the_storage.get(self.key + ":type")
 
-    @property
-    def code(self):
-        the_python = self.python
-        if the_python is None:
-            return None
-        return textwrap.dedent(dill.source.getsource(self.python))
+    def set_type(self, type):
+        return self.the_storage.set(self.key + ":type", type)
 
     @property
     def python(self):
@@ -97,6 +92,21 @@ class Scope:
             return None
         decrypt = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).decrypt(self.source)
         return cloudpickle.loads(decrypt)
+
+    @property
+    def code_old(self):
+        the_python = self.python
+        if the_python is None:
+            return None
+        return textwrap.dedent(dill.source.getsource(self.python))
+
+
+    @property
+    def code(self):
+        return self.the_storage.get(self.key + ":code")
+
+    def set_code(self, code):
+        return self.the_storage.set(self.key + ":code", code)
 
     def dump(self, data, user: AccessKey, pass_str=False):
         if not pass_str:

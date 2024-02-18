@@ -31,3 +31,8 @@ def notification_read_id(request, id):
     notification.read = True
     notification.save()
     return HttpResponse(status=200)
+
+
+@login_required
+def community(request):
+    return render(request, "templates/community.html", {"page_title": "Community"})

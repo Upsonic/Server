@@ -606,7 +606,7 @@ class Test_Storage(unittest.TestCase):
 
         the_scope.dump(dumped_data, accesskey)
         self.assertEqual(get_document(), the_scope.documentation)
-        the_scope.create_documentation()
+        the_scope.create_documentation_old()
 
         print(the_scope.documentation)
         self.assertEqual(get_document(), the_scope.documentation)
@@ -637,7 +637,7 @@ class Test_Storage(unittest.TestCase):
 
         def create_document():
             data = {"scope": "onur.my_function", }
-            response = requests.post("http://localhost:7777" + create_document_of_scope_url,
+            response = requests.post("http://localhost:7777" + create_document_of_scope_url_old,
                                      auth=HTTPBasicAuth("", id),
                                      data=data)
             return response.json()
@@ -794,7 +794,6 @@ class Test_Storage(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
-        self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
 
         def get_document():
             data = {"scope": id}
@@ -804,7 +803,7 @@ class Test_Storage(unittest.TestCase):
 
         get_document()
         self.assertEqual(the_scope.code, None)
-        self.assertEqual(the_scope.python, None)
+
         self.assertEqual(the_scope.source, None)
         self.assertEqual(the_scope.type, None)
         self.assertEqual(the_scope.documentation, None)

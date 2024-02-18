@@ -389,6 +389,7 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope.dump(dumped_data, AccessKey(id))
 
+        the_scope.set_type("function")
         self.assertEqual(the_scope.type, "function")
 
         storage_2.pop()
@@ -405,9 +406,9 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        the_scope.set_code("dsadasdadasdsa")
 
-        print(the_scope.code)
-        self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
+        self.assertEqual(the_scope.code, "dsadasdadasdsa")
 
         storage_2.pop()
 
@@ -424,7 +425,7 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope.dump(dumped_data, AccessKey(id))
         self.assertEqual(the_scope.documentation, None)
-        the_scope.create_documentation()
+        the_scope.create_documentation_old()
 
         print(the_scope.documentation)
         self.assertEqual(the_scope.documentation, "Returns a function instance for a my_function method .")
@@ -560,7 +561,6 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
-        self.assertEqual(the_scope.code, """def my_function():\n    return "aaa"\n""")
 
         the_scope.delete()
         self.assertEqual(the_scope.code, None)

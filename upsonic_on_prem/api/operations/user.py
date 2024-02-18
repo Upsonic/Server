@@ -14,9 +14,30 @@ def dump():
     data = request.form.get("data")
 
     the_scope = Scope(scope)
-    the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True)
 
-    return jsonify({"status": True})
+    return jsonify(
+        {"status": True, "result": the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True)})
+
+
+@app.route(dump_code_url, methods=["POST"])
+def dump_code():
+    scope = request.form.get("scope")
+    code = request.form.get("code")
+
+    the_scope = Scope(scope)
+
+    return jsonify({"status": True, "result": the_scope.set_code(code)})
+
+
+@app.route(dump_type_url, methods=["POST"])
+def dump_type():
+    scope = request.form.get("scope")
+    type = request.form.get("type")
+
+    the_scope = Scope(scope)
+
+    return jsonify({"status": True, "result": the_scope.set_type(type)})
+
 
 
 @app.route(load_url, methods=["POST"])
@@ -45,9 +66,15 @@ def get_document_of_scope():
 @app.route(create_document_of_scope_url, methods=["POST"])
 def create_document_of_scope():
     scope = request.form.get("scope")
-    Scope(scope).create_documentation()
-    return jsonify({"status": True})
 
+    return jsonify({"status": True, "result": Scope(scope).create_documentation()})
+
+
+@app.route(create_document_of_scope_url_old, methods=["POST"])
+def create_document_of_scope_old():
+    scope = request.form.get("scope")
+
+    return jsonify({"status": True, "result": Scope(scope).create_documentation_old()})
 
 @app.route(get_type_of_scope_url, methods=["POST"])
 def get_type_of_scope():
