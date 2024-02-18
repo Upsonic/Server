@@ -102,6 +102,14 @@ def get_dump_history():
     return jsonify({"status": True, "result": object.dump_history})
 
 
+@app.route(get_version_history_url, methods=["POST"])
+def get_version_history():
+    scope = request.form.get("scope")
+    object = Scope(scope)
+    return jsonify({"status": True, "result": object.version_history})
+
+
+
 @app.route(load_specific_dump_url, methods=["POST"])
 def load_specific_dump():
     dump_id = request.form.get("dump_id")
