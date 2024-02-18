@@ -50,6 +50,7 @@ class AccessKey:
         self._set(self.key + ":enable", False)
     @property
     def is_enable(self):
+
         return self._get(self.key + ":enable") == True
 
     def set_is_admin(self, is_admin):
@@ -202,5 +203,8 @@ class AccessKey:
 
 if admin_key is not None:
     the_admin = AccessKey(admin_key)
+
+    the_admin.enable()
+
     the_admin.set_is_admin(True)
     the_admin.set_robust(True)

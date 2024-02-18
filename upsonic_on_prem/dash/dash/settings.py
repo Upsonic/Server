@@ -15,6 +15,8 @@ import os
 
 from dotenv import load_dotenv
 
+from django.core.management.utils import get_random_secret_key
+
 load_dotenv(dotenv_path=".env")
 
 sentry = os.environ.get("sentry", "false").lower() == "true"
@@ -42,13 +44,37 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-9f_7g*-+8lt)rczd*62mnw=5^k63(b3ltp1kl*3(7qga-4u+6d"
+
+# Write a function that generates a secret key and storing in /var/lib/redis/dash.secret and if it exists, read it from there
+# If it does not exist, generate a new one and store it there
+
+if os.path.exists("/var/lib/redis/dash.secret"):
+    with open("/var/lib/redis/dash.secret", "r") as file:
+        SECRET_KEY = file.read
+else:
+    with open("/var/lib/redis/dash.secret", "w") as file:
+        SECRET_KEY = get_random_secret_key()
+        file.write(SECRET_KEY)
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+ACCOUNT_ADAPTER = 'app.adapter.CustomAccountAdapter'
+
+ACCOUNT_FORMS = {
+    'login': 'app.forms.MyCustomLoginForm',
+
+}
 
 # Application definition
 
@@ -175,3 +201,4 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 
 ]
+
