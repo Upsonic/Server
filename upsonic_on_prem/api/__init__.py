@@ -44,7 +44,7 @@ limiter = Limiter(get_remote_address, app=app, default_limits=rate_limit)
 
 @app.route(status_url, methods=["GET"])
 def status():
-    return jsonify(True)
+    return jsonify({"status": True, "result": True})
 
 
 

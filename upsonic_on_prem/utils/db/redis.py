@@ -19,9 +19,10 @@ class redis_client_():
         condition_1 =  self.redis.ping()
 
         condition_2 = False
-        self.set("test", "test")
+        random_key = random.randint(100000, 999999)
+        self.set("test", random_key)
 
-        if self.get("test") == "test":
+        if self.get("test") == random_key:
             condition_2 = True
 
         return condition_1 and condition_2
