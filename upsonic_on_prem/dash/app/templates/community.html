@@ -5,6 +5,49 @@
 <div class="w-100 custom_right_side">
 
     <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Users</span></span>
+    </div>
+
+<table class="table">
+    <thead>
+      <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Enabled</th>
+          <th scope="col">Admin</th>
+          <th scope="col">Actions</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for key in users %}
+        <tr>
+
+            <td>{{key.0}}</td>
+            <td>{{key.1}}</td>
+            <td>{{key.2}}</td>
+            <td>
+                <a href="#" onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();">Edit</a>
+                <a href="#" onclick="page_load('{% url 'delete_user' id=key.3 %}');event.preventDefault();">Delete</a>
+                <a href="#" onclick="page_load('{% url 'enable_user' id=key.3 %}');event.preventDefault();">Enable</a>
+                <a href="#" onclick="page_load('{% url 'disable_user' id=key.3 %}');event.preventDefault();">Disable</a>
+                <a href="#" onclick="page_load('{% url 'enable_admin' id=key.3 %}');event.preventDefault();">Set Admin</a>
+                <a href="#" onclick="page_load('{% url 'disable_admin' id=key.3 %}');event.preventDefault();">Unset Admin</a>
+
+            </td>
+
+
+          </tr>
+
+        {% endfor %}
+
+
+    </tbody>
+  </table>
+
+    <a href="#" onclick="page_load('{% url 'add_user' %}');event.preventDefault();" class="btn btn-lg custom_button">Create User</a>
+
+
+    <div class="custom_page_header_top_bottom_margin">
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Thank</span> You!</span>
     </div>
 

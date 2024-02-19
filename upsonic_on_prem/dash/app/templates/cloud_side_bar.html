@@ -5,20 +5,20 @@
 
 
     <ul class="nav nav-pills flex-column mb-auto align-items-center">
-        {% for cloud in clouds %}
+        {% for library in libraries %}
 
-        <li class="nav-item {% if control_cloud.id == cloud.id %}cloud_side_nav_item_active{% else %}cloud_side_nav_item{% endif %}">
-            <a href="#" onclick="page_load('{% url 'control_cloud' id=cloud.id %}');event.preventDefault();"
-               class="nav-link  {% if control_cloud.id == cloud.id %}cloud_side_nav_item_text_active{% else %}cloud_side_nav_item_text{% endif %}"
+        <li class="nav-item {% if top_control_library == library %}cloud_side_nav_item_active{% else %}cloud_side_nav_item{% endif %}">
+            <a href="#" onclick="page_load('{% url 'control_library' id=library %}');event.preventDefault();"
+               class="nav-link  {% if top_control_library == library %}cloud_side_nav_item_text_active{% else %}cloud_side_nav_item_text{% endif %}"
                aria-current="page">
 
-                {% if control_cloud.id == cloud.id %}
+                {% if top_control_library == library %}
                 <img style="width: 20px; height: 14px;" src="/static/images/Cloud_alt_fill.png"/>
                 {% else %}
                 <img style="width: 20px; height: 14px;" src="/static/images/Cloud_alt.png"/>
                 {% endif %}
 
-                {{ cloud.name }} - {{cloud.package.view_name}}
+                {{ library }}
             </a>
         </li>
 
@@ -26,14 +26,7 @@
     </ul>
 
 
-    <ul class="nav nav-pills flex-column align-items-center" style="margin-bottom: 18px;">
-        <a href="#" onclick="page_load('{%url 'add'%}');event.preventDefault();">
-            <button class="btn btn-primary custom_button_cloud_bar">
-                <div class="custom_text_yellow">+</div>
-                Create New Cloud
-            </button>
-        </a>
-    </ul>
+
 
 
 </div>

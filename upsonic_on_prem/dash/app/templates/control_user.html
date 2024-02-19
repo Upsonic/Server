@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">User {{user.username}}</span></span>
+    </div>
+
+
+     <a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();">Back</a>
+
+    <div class="custom_code_block">
+        Access Key
+            <div class="custom_code_block_code">
+                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{user.access_key}}</code></pre></div>
+            </div>
+        </div>
+
+
+      <form method="post" id="save" style="margin-left: 100px; margin-top: 69px;">
+        <div class="row">
+        {% csrf_token %}
+        <div class="col custom_form_col">
+          <div class="custom_form_field_head">Name</div>
+          {{ user_form.first_name }}
+
+        </div>
+        <div class="col custom_form_col">
+
+          <div class="custom_form_field_head">Surname</div>
+          {{ user_form.last_name }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col custom_form_col">
+          <div class="custom_form_field_head">Username</div>
+          {{ user_form.username }}
+
+          </div>
+        <div class="col custom_form_col">
+          <div class="custom_form_field_head">Pass</div>
+          {{ user_form.password }}
+
+          </div>
+        </div>
+
+    </form>
+    <button type="submit" form="save" class="btn btn-lg custom_button">Save</button>
+
+
+</div>
+
+{% endblock content %}

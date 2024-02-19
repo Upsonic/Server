@@ -28,7 +28,7 @@ html {
   padding-top: 11px;
   width: 206px !important;
   flex-shrink: 0 !important;
-  border-radius: 10px 0px 0px 10px;
+  border-radius: 10px 10px 10px 10px;
   background: #FAFAFF;
   
 }
@@ -694,8 +694,7 @@ a.disabled {
   margin-left: 23px;
 
   display: flex;
-  width: 166px;
-  height: 16px;
+
 
   flex-shrink: 0;
   color: #4B4B4D;

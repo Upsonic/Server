@@ -63,6 +63,13 @@ def get_document_of_scope():
     return jsonify({"status": True, "result": Scope(scope).documentation})
 
 
+@app.route(get_code_of_scope_url, methods=["POST"])
+def get_code_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).code})
+
+
+
 @app.route(create_document_of_scope_url, methods=["POST"])
 def create_document_of_scope():
     scope = request.form.get("scope")
