@@ -187,7 +187,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = os.environ.get("dash_origins", "").split(",")
 
 debug_mode = os.environ.get("debug", "false").lower() == "true"
