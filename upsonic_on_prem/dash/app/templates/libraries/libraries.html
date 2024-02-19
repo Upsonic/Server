@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="d-flex cloud_left_section">
+  {% include 'cloud_side_bar.html' %}
+  </div>
+
+<div class="w-100 custom_right_side">
+
+    <div>
+        <div class="custom_page_header_bottom_margin">
+            <span class="custom_page_header_text">Connection Code</span>
+        </div>
+
+
+        <div class="custom_code_block">
+            <div class="custom_code_block_code">
+                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">
+from upsonic import Upsonic_On_Prem
+upsonic = Upsonic_On_Prem('https://{{request.get_host}}', '{{request.user.access_key}}')
+                </code></pre></div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}

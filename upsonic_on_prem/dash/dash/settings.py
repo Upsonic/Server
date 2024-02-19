@@ -50,7 +50,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 if os.path.exists("/var/lib/redis/dash.secret"):
     with open("/var/lib/redis/dash.secret", "r") as file:
-        SECRET_KEY = file.read
+        SECRET_KEY = file.readlines()[0]
 else:
     with open("/var/lib/redis/dash.secret", "w") as file:
         SECRET_KEY = get_random_secret_key()

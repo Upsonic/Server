@@ -19,14 +19,14 @@
 
 
         <li class="nav-item custom_side_bar_flex_column_nav_item">
-            <a href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();"
+            <a href="#" onclick="page_load('{% url 'libraries' %}');event.preventDefault();"
                class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
                aria-current="page">
-                {% if page_title == 'Cloud' %}
+                {% if page_title == 'Libraries' %}
                 <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
                 {% endif %}
-                <img class="{% if page_title != 'Cloud' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/Cloud_alt{% if page_title == 'Cloud' %}_fill{%if request.user.dark_mode%}_dark{%endif%}{% endif %}.svg"/>
+                <img class="{% if page_title != 'Libraries' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
+                     src="/static/images/Cloud_alt{% if page_title == 'Libraries' %}_fill_dark{% endif %}.svg"/>
             </a>
             <div class="custom_side_bar_flex_column_nav_item_down_text">Libraries</div>
         </li>
@@ -40,7 +40,7 @@
 
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center ms-auto side_bar_bottom">
 
-
+            {% if request.user.is_admin %}
             <li class="nav-item custom_side_bar_flex_column_nav_item">
                 <a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();"
                class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
@@ -53,6 +53,7 @@
             </a>
                 <div class="custom_side_bar_flex_column_nav_item_down_text">Users</div>
             </li>
+            {% endif %}
 
 
         </ul>

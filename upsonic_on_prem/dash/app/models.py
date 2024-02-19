@@ -5,7 +5,7 @@ from dash import settings
 
 User = settings.AUTH_USER_MODEL
 import uuid
-
+from app.api_integration import API_Integration
 
 class TheNotifications(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -23,6 +23,24 @@ class TheNotifications(models.Model):
 
 class User(AbstractUser):
     notifications = models.ManyToManyField(TheNotifications, blank=True)
+    access_key = models.CharField(max_length=300, default="")
+
+    def save(self, *args, **kwargs):
+        self.the_register()
+        super().save(*args, **kwargs)
+
+    def the_register(self):
+        if self.access_key == "":
+            self.access_key = API_Integration.create_access_key()
+
+    def add_user(self, id):
+        API_Integration(id).add_user(self.access_key)
+        API_Integration(id).set_name(self.access_key, self.username)
+    def delete_user(self, id):
+        API_Integration(id).delete_user(self.access_key)
+
+
+
     def __str__(self):
         return self.username
 
@@ -31,3 +49,9 @@ class User(AbstractUser):
         notification.save()
         self.notifications.add(notification)
         self.save()
+
+
+    @property
+    def is_admin(self):
+        result = API_Integration(self.access_key).is_admin(self.access_key)
+        return result if result != [None] else False
