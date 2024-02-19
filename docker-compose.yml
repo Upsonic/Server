@@ -4,7 +4,7 @@ services:
 
   on_prem:
     networks:
-      - default
+      - network
     image: ghcr.io/upsonic/on-prem:latest
     volumes:
       - 'On_Prem_Volume:/var/lib/redis'
@@ -21,6 +21,6 @@ volumes:
   On_Prem_Volume:
 
 networks:
-  default:
+  network:
     external:
-    name: on-prem-network
+      name: on-prem-network
