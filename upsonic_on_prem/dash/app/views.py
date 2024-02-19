@@ -1,16 +1,24 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
-
+from django.shortcuts import redirect
 from django.http.response import HttpResponse
+from app.api_integration import API_Integration
+from app import models
 
+from app import forms
 
 # Create your views here.
 @login_required
 def home(request, exception=None):
     request.user.notify("Welcome to Upsonic", "Your free cloud is ready, you can start using it now.")
-    return render(request, "templates/home.html",
-                  {"page_title": "Home"})
+    data = {
+        "page_title": "Home",
+        "top_scopes": API_Integration(request.user.access_key).top_scopes
+    }
+
+    return render(request, "templates/home.html",data)
+
 
 
 def notifications(request):
@@ -35,4 +43,181 @@ def notification_read_id(request, id):
 
 @login_required
 def community(request):
-    return render(request, "templates/community.html", {"page_title": "Community"})
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    data = {
+        "page_title": "Community",
+        "users": API_Integration(request.user.access_key).get_users(),
+    }
+    return render(request, "templates/community.html", data)
+
+@login_required
+def control_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(access_key=id)
+    if request.method == 'POST':
+        user_form = forms.UpdateUserForm(request.POST, instance=the_user)
+
+        if user_form.is_valid():
+            user_form.save()
+            the_user.set_password(request.POST.get("password"))
+            the_user.save()
+            return redirect(to='control_user', id=id)
+
+    else:
+
+        data = {
+            "page_title": "Community",
+            "user": the_user,
+            "user_form": forms.UpdateUserForm(instance=the_user)
+        }
+        return render(request, "templates/control_user.html", data)
+
+@login_required
+def libraries(request):
+    data = {"page_title": "Libraries", "libraries": API_Integration(request.user.access_key).top_scopes}
+
+    return render(request, f"templates/libraries/libraries.html", data)
+
+@login_required
+def control_library(request,id):
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+
+
+
+    code = ""
+
+    the_name = id.replace(".", "_")
+
+    code = f'{the_name} = upsonic.load_module("{id}")'
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "top_control_library": id.split(".")[0],
+        "content": API_Integration(request.user.access_key).subs_of_scope(id),
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "code": code,
+    }
+    return render(request, f"templates/libraries/control_library.html", data)
+
+
+
+@login_required
+def control_element(request,id):
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+
+
+    using_code = ""
+    using_code = f'upsonic.load("{id}")()'
+
+    documentation = API_Integration(request.user.access_key).get_documentation(id)
+    if documentation == None:
+        API_Integration(request.user.access_key).create_documentation(id)
+        documentation = API_Integration(request.user.access_key).get_documentation(id)
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "top_control_library": id.split(".")[0],
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "code": API_Integration(request.user.access_key).get_code(id),
+        "using_code": using_code,
+        "documentation": documentation,
+    }
+    return render(request, f"templates/libraries/element.html", data)
+
+
+@login_required
+def delete_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(access_key=id)
+    the_user.delete_user(request.user.access_key)
+    the_user.delete()
+    return redirect(to='community')
+
+
+@login_required
+def enable_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(access_key=id)
+    API_Integration(request.user.access_key).enable_user(the_user.access_key)
+    return redirect(to='community')
+@login_required
+def disable_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(access_key=id)
+    API_Integration(request.user.access_key).disable_user(the_user.access_key)
+    return redirect(to='community')
+
+
+@login_required
+def enable_admin(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(access_key=id)
+    API_Integration(request.user.access_key).enable_admin(the_user.access_key)
+    return redirect(to='community')
+
+@login_required
+def disable_admin(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(access_key=id)
+    API_Integration(request.user.access_key).disable_admin(the_user.access_key)
+    return redirect(to='community')
+
+
+@login_required
+def add_user(request):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+
+    if request.method == 'POST':
+        user_form = forms.CustomUserCreationForm(request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+            user_form.user.add_user(request.user.access_key)
+            return redirect(to='community')
+        else:
+            print(user_form.errors)
+
+    else:
+
+        data = {
+            "page_title": "Community",
+            "user_form": forms.CustomUserCreationForm()
+        }
+        return render(request, "templates/add_user.html", data)
+
+

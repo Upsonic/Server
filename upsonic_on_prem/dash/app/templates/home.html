@@ -8,57 +8,43 @@
 
 
     <div class="custom_page_header_bottom_margin">
-        <span class="custom_page_header_text">Magic <span class="custom_page_header_text_bold">Use Cases</span></span>
+        <span class="custom_page_header_text">Your <span class="custom_page_header_text_bold">Libraries</span></span>
     </div>
 
 
-    {% for row in use_case_rows %}
-    {% if row.status == 1 %}
+
     <div class="d-flex flex-row ">
-        {% for col in row.cols.all %}
-        {% if col.status == 1 %}
+
+
+        {% for scope in top_scopes %}
         <div class="position-relative custom_card_section">
             <div class="custom_card">
-                <img src="/static/images/{{col.icon}}">
-                <h5 class="custom_card_header_blue_big">{{col.title|safe}}</h5>
-                <p class="custom_card_pharagraph">{{col.content}}</p>
-                <a href="#" onclick="page_load('{% url col.url %}');event.preventDefault();" class="stretched-link"></a>
+                <img src="/static/images/strong_variables.svg">
+                <h5 class="custom_card_header_blue_big">{{scope}} </h5>
+
+                <a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="stretched-link"></a>
             </div>
         </div>
-        {% endif %}
         {% endfor %}
 
     </div>
-    {% endif %}
-    {% endfor %}
 
 
-    <div class="custom_page_header_top_bottom_margin">
-        <span class="custom_page_header_text">Let's Save Your First <span class="custom_page_header_text_bold">Function - 15 Second</span></span>
-    </div>
-
-    <div class="custom_pharagraph_bottom_margin">Save and run functions, classes, and variables in a secure environment
-        with the encryption key
-    </div>
+    <div>
+        <div class="custom_page_header_top_bottom_margin">
+            <span class="custom_page_header_text">Connection Code</span>
+        </div>
 
 
-    <div class="custom_code_block">
-        <div class="custom_code_block_code">
-            <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">
-<span class="custom_code_highlight_green"># Connection</span>                
-from upsonic import Upsonic_Cloud_{{control_cloud.package.view_name}}
-cloud = Upsonic_Cloud_{{control_cloud.package.view_name}}("{{control_database.real_name}}", "{{control_cloud.key}}")
-
-<span class="custom_code_highlight_green"># Ex. Function</span>
-def my_function():
-    return "Hello world"
-
-<span class="custom_code_highlight_green"># Setting and Getting</span>
-cloud.set("my_function", my_function)
-print(cloud.get("my_function")())
-            </code></pre>
+        <div class="custom_code_block">
+            <div class="custom_code_block_code">
+                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">
+from upsonic import Upsonic_On_Prem
+upsonic = Upsonic_On_Prem('https://{{request.get_host}}', '{{request.user.access_key}}')
+                </code></pre></div>
             </div>
         </div>
+
     </div>
 
 

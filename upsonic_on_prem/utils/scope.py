@@ -151,7 +151,7 @@ class Scope:
         result = []
 
         for i in all_scopes:
-            if user.can_access_read(i, custom_scopes_read=custom_scopes_read):
+            if user.can_access_read(i, custom_scopes_read=custom_scopes_read) or user.is_admin:
                 result.append(i)
 
         return result
@@ -161,3 +161,7 @@ class Scope:
         all_scopes = Scope.get_all_scopes_name(user)
 
         return [i for i in all_scopes if i.startswith(prefix)]
+
+
+
+

@@ -13,7 +13,11 @@ def get_admins():
 
 @app.route(get_users_url, methods=["get"])
 def get_users():
+    print(AccessKey.get_users())
     return jsonify({"status": True, "result": AccessKey.get_users()})
+@app.route(get_users_keys_url, methods=["get"])
+def get_users_keys():
+    return jsonify({"status": True, "result": AccessKey.get_users_keys()})
 
 
 @app.route(add_user_url, methods=["POST"])
@@ -23,7 +27,24 @@ def add_user():
     user = AccessKey(key)
     user.enable()
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
+
+@app.route(set_name_user_url, methods=["POST"])
+def set_name_user():
+    key = request.form.get("key")
+    name = request.form.get("name")
+
+    user = AccessKey(key)
+    user.set_name(name)
+
+    return jsonify({"status": True, "result": True})
+
+@app.route(get_name_user_url, methods=["POST"])
+def get_name_user():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.name})
 
 
 @app.route(enable_user_url, methods=["POST"])
@@ -33,7 +54,7 @@ def enable_user():
     user = AccessKey(key)
     user.enable()
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(disable_user_url, methods=["POST"])
@@ -43,7 +64,13 @@ def disable_user():
     user = AccessKey(key)
     user.disable()
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
+
+@app.route(is_enabled_user_url, methods=["POST"])
+def is_enabled_user():
+    key = request.form.get("key")
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.is_enable})
 
 
 @app.route(enable_admin_url, methods=["POST"])
@@ -53,7 +80,7 @@ def enable_admin():
     user = AccessKey(key)
     user.set_is_admin(True)
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(disable_admin_url, methods=["POST"])
@@ -63,7 +90,15 @@ def disable_admin():
     user = AccessKey(key)
     user.set_is_admin(False)
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
+
+
+@app.route(id_admin_url, methods=["POST"])
+def is_admin():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.is_admin})
 
 
 @app.route(delete_user_url, methods=["POST"])
@@ -73,7 +108,7 @@ def delete_user():
     user = AccessKey(key)
     user.delete()
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(total_size_url, methods=["GET"])
@@ -89,7 +124,7 @@ def scope_write_add():
     user = AccessKey(key)
     user.set_scope_write(scope)
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(scope_write_delete_url, methods=["POST"])
@@ -100,7 +135,7 @@ def scope_write_delete():
     user = AccessKey(key)
     user.delete_scope_write(scope)
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(scope_read_add_url, methods=["POST"])
@@ -111,7 +146,7 @@ def scope_read_add():
     user = AccessKey(key)
     user.set_scope_read(scope)
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(scope_read_delete_url, methods=["POST"])
@@ -122,7 +157,7 @@ def scope_read_delete():
     user = AccessKey(key)
     user.delete_scope_read(scope)
 
-    return jsonify({"status": True})
+    return jsonify({"status": True, "result": True})
 
 
 @app.route(get_write_scopes_of_user_url, methods=["post"])

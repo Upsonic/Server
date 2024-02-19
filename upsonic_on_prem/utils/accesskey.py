@@ -75,6 +75,19 @@ class AccessKey:
         users = []
         for i in keys:
             if i.endswith(":enable"):
+                print("key", i[:-7])
+                print("key type", type(i[:-7]))
+                print("vaue", AccessKey(i[:-7]).name)
+                users.append(AccessKey(i[:-7]).name)
+
+        return users
+
+    @staticmethod
+    def get_users_keys():
+        keys = storage.keys()
+        users = []
+        for i in keys:
+            if i.endswith(":enable"):
                 users.append(i[:-7])
 
         return users
@@ -91,6 +104,7 @@ class AccessKey:
 
     @property
     def name(self):
+        print("getting_name", self.key, type(self.key), self._get(self.key + ":name"))
         return self._get(self.key + ":name")
 
 
@@ -134,6 +148,7 @@ class AccessKey:
 
         return last_x_events
     def set_name(self, name):
+        print("setting_name", self.key, type(self.key), name)
         return self._set(self.key + ":name", name)
     
     def set_scope_write(self, scope):

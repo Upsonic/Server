@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+<div class="d-flex cloud_left_section">
+{% include 'cloud_side_bar.html' %}
+
+</div>
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Content</span> of {{control_library}}</span></span>
+    </div>
+
+    {% if have_upper %}
+    <a href="#" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">Back to {{the_upper}}</a>
+    {% endif %}
+
+<table class="table">
+    <thead>
+      <tr>
+
+        <th scope="col">Name</th>
+          <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for key,value in content.items%}
+        <tr>
+
+            {% if value == False %}
+            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();">{{key}}</a></td>
+            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();">Go</a></td>
+            {% else %}
+            <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();">{{key}}</a></td>
+            <td>Library</td>
+            {% endif %}
+
+          </tr>
+
+        {% endfor %}
+
+
+    </tbody>
+  </table>
+
+    <div>
+        <div class="custom_page_header_top_bottom_margin">
+            <span class="custom_page_header_text">Gathering Code</span>
+        </div>
+
+
+        <div class="custom_code_block">
+            <div class="custom_code_block_code">
+                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{code}}
+
+
+                </code></pre></div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock content %}
