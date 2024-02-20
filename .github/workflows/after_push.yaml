@@ -127,10 +127,7 @@ jobs:
 
 
   tagext:
-    needs: [ patch, minor, major ]
-    if: |
-      always()
-      && contains(needs.*.result, 'success')
+
     runs-on: ${{ matrix.os }}
 
     strategy:
