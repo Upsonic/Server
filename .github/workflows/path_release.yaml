@@ -9,7 +9,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    if: contains('["onuratakan"]', github.actor)
+    if: contains('["onuratakan", "github-actions"]', github.actor)
 
     steps:
       - name: Checkout Repository
