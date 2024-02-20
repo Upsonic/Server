@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Print Type
         run:
-          echo "Type: ${{ needs.select_type.outputs.type }}"
+          echo ${{ needs.select_type.outputs.type }}
 
       - name: Checkout Repository
         uses: actions/checkout@v2
