@@ -12,13 +12,10 @@ jobs:
 
       - name: Check commit message
         run: |
-          commit_msg=$(git log --format=oneline -n 1 $GITHUB_SHA)
-          if [[ $commit_msg == *"[PATCH]" ]]; then
+
             echo "Commit message ends with [PATCH]"
-            curl -X POST https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/path_release.yaml/dispatches \
+          curl -X POST https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/build.yaml/dispatches \
             -H 'Accept: application/vnd.github.v3+json' \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -d '{"ref": "master"}'
-          else
-            echo "Commit message does not end with [PATCH]"
-          fi
+
