@@ -32,6 +32,7 @@ jobs:
         run: python bump.py patch
 
 
+
       - name: Check commit message
         run: |
           commit_msg=$(git log --format=oneline -n 1 $GITHUB_SHA)
