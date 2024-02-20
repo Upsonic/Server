@@ -27,11 +27,11 @@ jobs:
           commit_msg=$(git log --format=oneline -n 1 $GITHUB_SHA)
           
           if [[ $commit_msg == *"[PATCH]" ]]; then
-            echo "release_type=PATCH" >> "$GITHUB_OUTPUT"
+            echo "release_type=patch" >> "$GITHUB_OUTPUT"
           elif [[ $commit_msg == *"[MINOR]" ]]; then
-            echo "release_type=MINOR" >> "$GITHUB_OUTPUT"
+            echo "release_type=minor" >> "$GITHUB_OUTPUT"
           elif [[ $commit_msg == *"[MAJOR]" ]]; then
-            echo "release_type=MAJOR" >> "$GITHUB_OUTPUT"
+            echo "release_type=major" >> "$GITHUB_OUTPUT"
           else
             echo "Commit message does not end with [PATCH], [MINOR], or [MAJOR]"
           fi
@@ -51,87 +51,11 @@ jobs:
           echo "$release_type"
 
 
-  patch:
-    needs: select_type
-    runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.release_type == 'PATCH')  }}
-    steps:
-
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set Up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-
-      - name: setup git config
-        run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"          
-
-      - name: Run Version Bump Script
-        run: python bump.py patch
-
-
-
-  minor:
-    needs: select_type
-    runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.release_type == 'MINOR')  }}
-    steps:
-
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set Up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-
-      - name: setup git config
-        run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"          
-
-      - name: Run Version Bump Script
-        run: python bump.py minor
-
-
-  major:
-    needs: select_type
-    runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.release_type == 'MAJOR')  }}
-    steps:
-
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set Up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-
-      - name: setup git config
-        run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"          
-
-      - name: Run Version Bump Script
-        run: python bump.py major
 
 
 
   tagext:
-    needs: [ patch, minor, major ]
-    if: |
-      always() && (needs.patch.result == 'success' || needs.minor.result == 'success' || needs.major.result == 'success')
+    needs: select_type
     runs-on: ubuntu-latest
 
 
@@ -140,10 +64,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - name: Sleep for 20 seconds
+      - name: Sleep for 60 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '20s'
+          time: '60s'
 
       - uses: actions/checkout@v3
         with:
@@ -151,6 +75,19 @@ jobs:
           fetch-depth: 0
       - name: Fetching Tags
         run: git fetch --tags
+
+      - name: setup git config
+        env:
+          release_type: ${{ needs.select_type.outputs.release_type }}
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"          
+
+      - name: Run Version Bump Script
+        run: python bump.py $release_type
+
+
       - name: Getting Tag
         id: tag_extractor
         run: echo "latest_tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_OUTPUT"
@@ -160,7 +97,6 @@ jobs:
 
 
   check_2:
-    if: success('tagext')
     needs: tagext
     runs-on: ubuntu-latest
     steps:
@@ -170,8 +106,7 @@ jobs:
         run:
           echo "$release_type"
 
-  docker:
-    if: success('tagext')
+  image:
     needs: tagext
     runs-on: ubuntu-latest
     environment: Deploys
@@ -227,26 +162,22 @@ jobs:
           docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile --push -t ghcr.io/upsonic/on-prem:$VERSION \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .          
-            
   
   
-  build:
-    if: success('docker')
-    needs: docker
+
+  release:
+    needs: [ docker, tagext ]
     runs-on: ubuntu-latest
     environment: Release
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Getting Tag
-        id: tag_extractor
-        run: echo "latest_tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_OUTPUT"
 
       - uses: ncipollo/release-action@v1
         with:
           name: Upsonic ${{ steps.tag_extractor.outputs.latest_tag }}
           generateReleaseNotes: true
-          tag: ${{ steps.tag_extractor.outputs.latest_tag }}
+          tag: ${{ needs.tagext.outputs.tag }}
 
 
