@@ -153,6 +153,15 @@ jobs:
       tag: ${{ steps.tag_extractor.outputs.latest_tag }}
 
 
+  check_2:
+    needs: tagext
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Tag
+        env:
+          release_type: ${{ needs.tagext.outputs.tag }}
+        run:
+          echo "$release_type"
 
   docker:
     needs: tagext
