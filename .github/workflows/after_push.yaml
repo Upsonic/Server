@@ -12,38 +12,41 @@ jobs:
   select_type:
     if: contains('["onuratakan"]', github.actor)
     runs-on: ubuntu-latest
-
+    outputs:
+      release_type: ${{ steps.any_type.outputs.release_type }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: any_type
+        id: any_type
         run: |
 
           commit_msg=$(git log --format=oneline -n 1 $GITHUB_SHA)
           
           if [[ $commit_msg == *"[PATCH]" ]]; then
-            echo "type=PATCH" >> "$GITHUB_OUTPUT"
+            echo "release_type=PATCH" >> "$GITHUB_OUTPUT"
           elif [[ $commit_msg == *"[MINOR]" ]]; then
-            echo "type=MINOR" >> "$GITHUB_OUTPUT"
+            echo "release_type=MINOR" >> "$GITHUB_OUTPUT"
           elif [[ $commit_msg == *"[MAJOR]" ]]; then
-            echo "type=MAJOR" >> "$GITHUB_OUTPUT"
+            echo "release_type=MAJOR" >> "$GITHUB_OUTPUT"
           else
             echo "Commit message does not end with [PATCH], [MINOR], or [MAJOR]"
           fi
     
     
 
-    outputs:
-      type: ${{ steps.any_type.outputs.type }}
+
 
   check:
     needs: select_type
     runs-on: ubuntu-latest
     steps:
       - name: Print Type
+      - env:
+          release_type: ${{ needs.select_type.outputs.release_type }}
         run:
-          echo ${{ needs.select_type.outputs.type }}
+          echo "$release_type"
 
 
   patch:
