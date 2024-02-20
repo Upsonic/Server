@@ -8,10 +8,14 @@ permissions:
   contents: write
 jobs:
   run:
+
     runs-on: ubuntu-latest
-    if: contains('["onuratakan", "github-actions"]', github.actor)
 
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Checkout Repository
         uses: actions/checkout@v2
 
