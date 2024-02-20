@@ -52,7 +52,7 @@ jobs:
   patch:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.release_type != 'PATCH')  }}
+    if: ${{ (needs.select_type.outputs.release_type == 'PATCH')  }}
     steps:
 
       - name: Checkout Repository
@@ -78,7 +78,7 @@ jobs:
   minor:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.release_type != 'MINOR')  }}
+    if: ${{ (needs.select_type.outputs.release_type == 'MINOR')  }}
     steps:
 
       - name: Checkout Repository
@@ -103,7 +103,7 @@ jobs:
   major:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.release_type != 'MAJOR')  }}
+    if: ${{ (needs.select_type.outputs.release_type == 'MAJOR')  }}
     steps:
 
       - name: Checkout Repository
@@ -203,8 +203,13 @@ jobs:
           docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile --push -t ghcr.io/upsonic/on-prem:latest \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
-
-
+          
+          docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile --push -t ghcr.io/upsonic/on-prem:$VERSION \
+          --cache-to type=gha,mode=max \
+          --cache-from type=gha .          
+            
+  
+  
   build:
     needs: docker
     runs-on: ubuntu-latest
