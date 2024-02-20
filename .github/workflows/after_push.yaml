@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Type
-      - env:
+        env:
           release_type: ${{ needs.select_type.outputs.release_type }}
         run:
           echo "$release_type"
