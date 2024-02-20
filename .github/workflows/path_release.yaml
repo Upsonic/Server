@@ -10,12 +10,9 @@ jobs:
   run:
 
     runs-on: ubuntu-latest
+    if: contains('["onuratakan", "github-actions[bot]"]', github.actor)
 
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - name: Checkout Repository
         uses: actions/checkout@v2
 
@@ -33,4 +30,18 @@ jobs:
 
       - name: Run Version Bump Script
         run: python bump.py patch
+
+
+      - name: Check commit message
+        run: |
+          commit_msg=$(git log --format=oneline -n 1 $GITHUB_SHA)
+          if [[ $commit_msg == *"[PATCH]" ]]; then
+            echo "Commit message ends with [PATCH]"
+            curl -X POST https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/build.yaml/dispatches \
+            -H 'Accept: application/vnd.github.v3+json' \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -d '{"ref": "master"}'
+          else
+            echo "Commit message does not end with [PATCH]"
+          fi
 
