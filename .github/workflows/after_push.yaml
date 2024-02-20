@@ -52,7 +52,7 @@ jobs:
   patch:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.type != 'PATCH')  }}
+    if: ${{ (needs.select_type.outputs.release_type != 'PATCH')  }}
     steps:
 
       - name: Checkout Repository
@@ -78,7 +78,7 @@ jobs:
   minor:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.type != 'MINOR')  }}
+    if: ${{ (needs.select_type.outputs.release_type != 'MINOR')  }}
     steps:
 
       - name: Checkout Repository
@@ -103,7 +103,7 @@ jobs:
   major:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ (needs.select_type.outputs.type != 'MAJOR')  }}
+    if: ${{ (needs.select_type.outputs.release_type != 'MAJOR')  }}
     steps:
 
       - name: Checkout Repository
