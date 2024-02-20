@@ -57,7 +57,7 @@ jobs:
   tagext:
     needs: select_type
     runs-on: ubuntu-latest
-
+    if: ${{ (needs.select_type.outputs.release_type == 'patch') || (needs.select_type.outputs.release_type == 'minor') || (needs.select_type.outputs.release_type == 'major')}}
 
     steps:
       - name: Set Up Python
