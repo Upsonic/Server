@@ -223,6 +223,7 @@ jobs:
   
   
   build:
+    if: success('docker')
     needs: docker
     runs-on: ubuntu-latest
     environment: Release
