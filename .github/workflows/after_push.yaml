@@ -127,6 +127,7 @@ jobs:
 
 
   tagext:
+    needs: [ patch ]
 
     runs-on: ${{ matrix.os }}
 
