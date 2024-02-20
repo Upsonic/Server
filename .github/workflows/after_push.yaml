@@ -144,6 +144,8 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT }}  # Will change after public release
           fetch-depth: 0
+      - name: Fetching Tags
+        run: git fetch
       - name: Getting Tag
         id: tag_extractor
         run: echo "latest_tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_OUTPUT"
