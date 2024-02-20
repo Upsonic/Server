@@ -21,17 +21,11 @@ jobs:
         run: |
 
           commit_msg=$(git log --format=oneline -n 1 $GITHUB_SHA)
-          
           if [[ $commit_msg == *"[PATCH]" ]]; then
             echo "type='PATCH'" >> "$GITHUB_OUTPUT"
-          elif [[ $commit_msg == *"[MINOR]" ]]; then
-            echo "type='MINOR'" >> "$GITHUB_OUTPUT"
-          elif [[ $commit_msg == *"[MAJOR]" ]]; then
-            echo "type='MAJOR'" >> "$GITHUB_OUTPUT"
           else
-            echo "Commit message does not end with [PATCH], [MINOR], or [MAJOR]"
-          fi
-    
+            echo "Commit message does not end with [PATCH]"
+          fi    
     
 
     outputs:
