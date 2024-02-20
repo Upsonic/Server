@@ -162,6 +162,7 @@ jobs:
           echo "$release_type"
 
   docker:
+    if: success('tagext')
     needs: tagext
     runs-on: ubuntu-latest
     environment: Deploys
