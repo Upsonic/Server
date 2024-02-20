@@ -129,7 +129,7 @@ jobs:
   tagext:
     needs: [ patch, minor, major ]
     if: |
-      always() && ${{ (needs.patch.result == 'success' || needs.minor.result == 'success' || needs.major.result == 'success') }}
+      always() && (needs.patch.result == 'success' || needs.minor.result == 'success' || needs.major.result == 'success')
     runs-on: ${{ matrix.os }}
 
     strategy:
