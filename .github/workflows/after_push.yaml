@@ -33,7 +33,7 @@ jobs:
   patch:
     needs: select_type
     runs-on: ubuntu-latest
-    if: ${{ needs.select_type.outputs.type }} == 'PATCH'
+    if: needs.select_type.outputs.type == 'PATCH'
 
 
 
