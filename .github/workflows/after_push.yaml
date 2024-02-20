@@ -73,14 +73,15 @@ jobs:
         run: git fetch --tags
 
       - name: setup git config
-        env:
-          release_type: ${{ needs.select_type.outputs.release_type }}
+
         run: |
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"          
 
       - name: Run Version Bump Script
+        env:
+          release_type: ${{ needs.select_type.outputs.release_type }}
         run: python bump.py $release_type
 
 
