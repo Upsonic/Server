@@ -94,6 +94,7 @@ jobs:
 
 
   check_2:
+    if: success('tagext')
     needs: tagext
     runs-on: ubuntu-latest
     steps:
@@ -104,6 +105,7 @@ jobs:
           echo "$release_type"
 
   image:
+    if: success('tagext')
     needs: tagext
     runs-on: ubuntu-latest
     environment: Deploys
@@ -163,6 +165,7 @@ jobs:
   
 
   release:
+    if: success('tagext') && success('image')
     needs: [ image, tagext ]
     runs-on: ubuntu-latest
     environment: Release
