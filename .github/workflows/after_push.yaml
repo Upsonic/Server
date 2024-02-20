@@ -152,6 +152,7 @@ jobs:
 
 
   check_2:
+    if: success('tagext')
     needs: tagext
     runs-on: ubuntu-latest
     steps:
