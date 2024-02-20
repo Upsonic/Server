@@ -75,9 +75,6 @@ class AccessKey:
         users = []
         for i in keys:
             if i.endswith(":enable"):
-                print("key", i[:-7])
-                print("key type", type(i[:-7]))
-                print("vaue", AccessKey(i[:-7]).name)
                 users.append(AccessKey(i[:-7]).name)
 
         return users
