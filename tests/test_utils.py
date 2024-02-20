@@ -275,16 +275,16 @@ class Test_Accesskey(unittest.TestCase):
         id_2 = "test_get_users_"
         accesskey = AccessKey(id)
         accesskey.enable()
-        self.assertEqual(accesskey.get_users(), [id])
+        self.assertEqual(accesskey.get_users_keys(), [id])
         accesskey.delete()
-        self.assertEqual(accesskey.get_users(), [])
+        self.assertEqual(accesskey.get_users_keys(), [])
         accesskey.enable()
-        self.assertEqual(accesskey.get_users(), [id])
+        self.assertEqual(accesskey.get_users_keys(), [id])
         accesskey_2 = AccessKey(id_2)
         accesskey_2.enable()
-        self.assertIn(id, accesskey.get_users())
-        self.assertIn(id_2, accesskey.get_users())
-        self.assertEqual(len(accesskey.get_users()), 2)
+        self.assertIn(id, accesskey.get_users_keys())
+        self.assertIn(id_2, accesskey.get_users_keys())
+        self.assertEqual(len(accesskey.get_users_keys()), 2)
 
     def test_get_users_len(self):
         storage.pop()
