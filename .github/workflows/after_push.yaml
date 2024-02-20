@@ -130,15 +130,14 @@ jobs:
     needs: [ patch, minor, major ]
     if: |
       always() && (needs.patch.result == 'success' || needs.minor.result == 'success' || needs.major.result == 'success')
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-    env:
-      OS: ${{ matrix.os }}
-      PYTHON: '3.8'
+
     steps:
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_PAT }}  # Will change after public release
@@ -166,11 +165,13 @@ jobs:
     needs: tagext
     runs-on: ubuntu-latest
     environment: Deploys
-    strategy:
-      matrix:
-        python-version: [ 3.8 ]
+
 
     steps:
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - uses: nschloe/action-cached-lfs-checkout@v1
         with:
           token: ${{ secrets.GH_PAT }} # Will change after public release
