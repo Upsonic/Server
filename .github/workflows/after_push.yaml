@@ -26,6 +26,20 @@ jobs:
           else
             echo "Commit message does not end with [PATCH]"
           fi
+          
+          if [[ $commit_msg == *"[MINOR]" ]]; then
+            echo "type='MINOR'" >> "$GITHUB_OUTPUT"
+          else
+            echo "Commit message does not end with [MINOR]"
+          fi          
+          
+          
+          if [[ $commit_msg == *"[MAJOR]" ]]; then
+            echo "type='MAJOR'" >> "$GITHUB_OUTPUT"
+          else
+            echo "Commit message does not end with [MAJOR]"
+          fi            
+
     outputs:
       type: ${{ steps.any_type.outputs.type }}
 
@@ -34,9 +48,6 @@ jobs:
     needs: select_type
     runs-on: ubuntu-latest
     if: needs.select_type.outputs.type == 'PATCH'
-
-
-
     steps:
       - name: Print Type
         run:
@@ -62,8 +73,65 @@ jobs:
 
 
 
+  minor:
+    needs: select_type
+    runs-on: ubuntu-latest
+    if: needs.select_type.outputs.type == 'MINOR'
+    steps:
+      - name: Print Type
+        run:
+          echo ${{ needs.select_type.outputs.type }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"          
+
+      - name: Run Version Bump Script
+        run: python bump.py minor
+
+
+  major:
+    needs: select_type
+    runs-on: ubuntu-latest
+    if: needs.select_type.outputs.type == 'MAJOR'
+    steps:
+      - name: Print Type
+        run:
+          echo ${{ needs.select_type.outputs.type }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"          
+
+      - name: Run Version Bump Script
+        run: python bump.py major
+
+
+
   tagext:
-    needs: [ patch ]
+    needs: [ patch, minor, major ]
     if: |
       always()
       && contains(needs.*.result, 'success')
