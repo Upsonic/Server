@@ -166,7 +166,7 @@ jobs:
   
 
   release:
-    needs: [ docker, tagext ]
+    needs: [ image, tagext ]
     runs-on: ubuntu-latest
     environment: Release
     steps:
