@@ -131,7 +131,6 @@ jobs:
     if: |
       always()
       && contains(needs.*.result, 'success')
-      && !contains(needs.*.result, 'failure')
     runs-on: ${{ matrix.os }}
 
     strategy:
