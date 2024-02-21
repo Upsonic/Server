@@ -17,7 +17,7 @@ with open('requirements.txt') as fp:
     install_requires = fp.read()
 setup(
     name="upsonic_on_prem",
-    version="0.13.18",
+    version="0.14.0",
     description="""Magic Cloud Layer""",
     long_description="".join(open("README.md", encoding="utf-8").readlines()),
     long_description_content_type="text/markdown",
@@ -34,6 +34,7 @@ setup(
     python_requires=">= 3",
     zip_safe=False,
 )
+
 
 
 
