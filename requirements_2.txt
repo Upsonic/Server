@@ -2,4 +2,3 @@
 torch==2.2.0
 torchaudio==2.2.0
 torchvision==0.17.0
-tree_sitter==0.20.4
