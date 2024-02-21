@@ -134,7 +134,9 @@
   [data-bs-theme=dark] .custom_pharagraph_bottom_margin {
     color: #E5E2FF;
   }
-
+  [data-bs-theme=dark] .custom_pharagraph_for_documentations {
+    color: #E5E2FF;
+  }
   [data-bs-theme=dark] .custom_code_block {
     background: #171717;
 

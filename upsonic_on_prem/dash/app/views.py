@@ -55,7 +55,7 @@ def community(request):
 def control_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(access_key=id)
+    the_user = models.User.objects.get(id=id)
     if request.method == 'POST':
         user_form = forms.UpdateUserForm(request.POST, instance=the_user)
 
@@ -70,9 +70,59 @@ def control_user(request, id):
         data = {
             "page_title": "Community",
             "user": the_user,
-            "user_form": forms.UpdateUserForm(instance=the_user)
+            "user_form": forms.UpdateUserForm(instance=the_user),
+            "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key),
+            "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_user(the_user.access_key),
+            "scope_form": forms.ScopeForm(),
         }
         return render(request, "templates/control_user.html", data)
+
+
+@login_required
+def add_write_scope(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(id=id)
+    if request.method == 'POST':
+        scope_form = forms.ScopeForm(request.POST)
+
+        if scope_form.is_valid():
+            API_Integration(request.user.access_key).add_write_scope(request.POST.get("scope"), the_user.access_key)
+            return redirect(to='control_user', id=id)
+
+    else:
+        return HttpResponse(status=403)
+
+
+def delete_write_scope(request, scope, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(id=id)
+    API_Integration(request.user.access_key).delete_write_scope(scope, the_user.access_key)
+    return redirect(to='control_user', id=id)
+
+
+def add_read_scope(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(id=id)
+    if request.method == 'POST':
+        scope_form = forms.ScopeForm(request.POST)
+
+        if scope_form.is_valid():
+            API_Integration(request.user.access_key).add_read_scope(request.POST.get("scope"), the_user.access_key)
+            return redirect(to='control_user', id=id)
+
+    else:
+        return HttpResponse(status=403)
+
+
+def delete_read_scope(request, id, scope):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(id=id)
+    API_Integration(request.user.access_key).delete_read_scope(scope, the_user.access_key)
+    return redirect(to='control_user', id=id)
 
 @login_required
 def libraries(request):
@@ -154,28 +204,44 @@ def control_element(request,id):
     return render(request, f"templates/libraries/element.html", data)
 
 
+# Write a view to regererate the documentation
+@login_required
+def regenerate_documentation(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    API_Integration(request.user.access_key).create_documentation(id)
+    return redirect(to='control_element', id=id)
+
 @login_required
 def delete_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(access_key=id)
+    the_user = models.User.objects.get(id=id)
     the_user.delete_user(request.user.access_key)
     the_user.delete()
     return redirect(to='community')
 
 
 @login_required
+def delete_scope(request, id):
+    API_Integration(request.user.access_key).delete_code(id)
+    # if scope is an sub scope like onur.my_function return to control_element onur
+    if "." in id:
+        return redirect(to='control_library', id=".".join(id.split(".")[:-1]))
+    return redirect(to='libraries')
+
+@login_required
 def enable_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(access_key=id)
+    the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).enable_user(the_user.access_key)
     return redirect(to='community')
 @login_required
 def disable_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(access_key=id)
+    the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).disable_user(the_user.access_key)
     return redirect(to='community')
 
@@ -184,7 +250,7 @@ def disable_user(request, id):
 def enable_admin(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(access_key=id)
+    the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).enable_admin(the_user.access_key)
     return redirect(to='community')
 
@@ -192,7 +258,7 @@ def enable_admin(request, id):
 def disable_admin(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(access_key=id)
+    the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).disable_admin(the_user.access_key)
     return redirect(to='community')
 

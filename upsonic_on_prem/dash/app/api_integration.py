@@ -4,7 +4,7 @@
 import json
 import ast
 
-
+from app import models
 from rich.console import Console
 
 console = Console()
@@ -114,7 +114,7 @@ class API_Integration:
     @property
     def all_scopes(self):
         result = self._send_request("GET", "/get_all_scopes")
-        print(result)
+
         return result if result != [None] else []
 
     @property
@@ -209,11 +209,16 @@ class API_Integration:
             return None
 
         result = match_prefix(sub_scopes_general_list, prefix)
-        print(result)
+
         return result
     def get_code(self, scope):
         data = {"scope": scope}
         return self._send_request("POST", "/get_code_of_scope", data=data)
+
+    def delete_code(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/delete_scope", data=data)
+
 
     def get_documentation(self, scope):
         data = {"scope": scope}
@@ -225,23 +230,60 @@ class API_Integration:
             "POST", "/create_document_of_scope", data=data
         )
 
+    def get_read_scopes_of_user(self, key):
+        data = {"key": key}
 
+        scopes = self._send_request("POST", "/get_read_scopes_of_user", data=data)
+
+        result = []
+        for i in scopes:
+            if i != None:
+                result.append(i)
+        return result
+
+    def get_write_scopes_of_user(self, key):
+        data = {"key": key}
+
+        scopes = self._send_request("POST", "/get_write_scopes_of_user", data=data)
+
+        result = []
+        for i in scopes:
+            if i != None:
+                result.append(i)
+        return result
 
     def get_users(self):
         users = self.users_keys
-        print(users)
+
         result = []
         for i in users:
             the_name = self.get_name(i)
             if the_name == None:
                 the_name = "Robust Admin"
-            result.append([the_name, self.is_enabed_user(i), self.is_admin(i), i])
+            result.append(
+                [the_name, self.is_enabed_user(i), self.is_admin(i), models.User.objects.get(access_key=i).id])
 
         # sort
         result.sort(key=lambda x: x[0])
         return result
 
+    def add_write_scope(self, scope, key):
+        data = {"scope": scope, "key": key}
 
+        return self._send_request("POST", "/scope_write_add", data=data)
+
+    def delete_write_scope(self, scope, key):
+        data = {"scope": scope, "key": key}
+        return self._send_request("POST", "/scope_write_delete", data=data)
+
+    def add_read_scope(self, scope, key):
+        data = {"scope": scope, "key": key}
+
+        return self._send_request("POST", "/scope_read_add", data=data)
+
+    def delete_read_scope(self, scope, key):
+        data = {"scope": scope, "key": key}
+        return self._send_request("POST", "/scope_read_delete", data=data)
 
     def add_user(self, key):
         data = {"key": key}

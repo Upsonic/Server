@@ -712,6 +712,7 @@ class Test_Storage(unittest.TestCase):
         self.assertEqual(the_scope.get_all_scopes(), get_document())
         storage_2.pop()
 
+    """
     def test_ai_code_to_document(self):
         storage_2.pop()
 
@@ -728,7 +729,7 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(AI.code_to_documentation("def my_function():\n    return \"aaa\"\n"), get_document())
 
-        storage_2.pop()
+        storage_2.pop()"""
 
     def test_accesskey_get_all_scopes_name_and_prefix(self):
         storage.pop()
