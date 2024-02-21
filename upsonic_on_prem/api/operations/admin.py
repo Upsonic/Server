@@ -13,7 +13,6 @@ def get_admins():
 
 @app.route(get_users_url, methods=["get"])
 def get_users():
-    print(AccessKey.get_users())
     return jsonify({"status": True, "result": AccessKey.get_users()})
 @app.route(get_users_keys_url, methods=["get"])
 def get_users_keys():
@@ -173,6 +172,7 @@ def get_read_scopes_of_user():
     key = request.form.get("key")
 
     user = AccessKey(key)
+
     return jsonify({"status": True, "result": user.scopes_read})
 
 

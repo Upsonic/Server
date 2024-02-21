@@ -176,7 +176,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          name: Upsonic ${{ steps.tag_extractor.outputs.latest_tag }}
+          name: Upsonic ${{ needs.tagext.outputs.tag }}
           generateReleaseNotes: true
           tag: ${{ needs.tagext.outputs.tag }}
 
