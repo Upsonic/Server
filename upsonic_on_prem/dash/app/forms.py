@@ -121,3 +121,17 @@ class MyCustomLoginForm(LoginForm):
             reset_url = reverse("account_reset_password")
         except NoReverseMatch:
             pass
+
+
+# Write a form to get a scope text like "onur.*" or onur.my_function
+
+class ScopeForm(forms.Form):
+    scope = forms.CharField(max_length=100,
+                            required=True,
+                            widget=forms.TextInput(attrs={'class': 'form-control custom_form'}))
+
+    def clean_scope(self):
+        scope = self.cleaned_data['scope']
+        if not scope:
+            raise ValidationError("Scope can't be empty")
+        return scope

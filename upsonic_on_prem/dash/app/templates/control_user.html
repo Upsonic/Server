@@ -47,9 +47,85 @@
         </div>
 
     </form>
+
     <button type="submit" form="save" class="btn btn-lg custom_button">Save</button>
+
+    <div class="custom_page_header_top_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Read Scopes</span></span>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for scope in read_scopes %}
+        <tr>
+            <td>{{scope}}</td>
+            <td>
+                <a href="#"
+                   onclick="page_load('{% url 'delete_read_scope' id=user.id scope=scope %}');event.preventDefault();">Delete</a>
+            </td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+
+    <form method="post" action="{% url 'add_read_scope' id=user.id %}" id="add_read_scope"
+          style="margin-left: 100px; margin-top: 69px;">
+        <div class="row">
+            {% csrf_token %}
+            <div class="col custom_form_col">
+                <div class="custom_form_field_head">Add Read Scope</div>
+                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope">
+            </div>
+        </div>
+    </form>
+    <button type="submit" form="add_read_scope" class="btn btn-lg custom_button">Add</button>
+
+
+    <div class="custom_page_header_top_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Write Scopes</span></span>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for scope in write_scopes %}
+        <tr>
+            <td>{{scope}}</td>
+            <td>
+                <a href="#"
+                   onclick="page_load('{% url 'delete_write_scope' id=user.id scope=scope %}');event.preventDefault();">Delete</a>
+            </td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+
+
+    <form method="post" action="{% url 'add_write_scope' id=user.id %}" id="add_write_scope"
+          style="margin-left: 100px; margin-top: 69px;">
+        <div class="row">
+            {% csrf_token %}
+            <div class="col custom_form_col">
+                <div class="custom_form_field_head">Add Write Scope</div>
+                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope">
+            </div>
+        </div>
+    </form>
+    <button type="submit" form="add_write_scope" class="btn btn-lg custom_button">Add</button>
 
 
 </div>
+
 
 {% endblock content %}

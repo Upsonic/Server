@@ -22,22 +22,22 @@
         <div class="d-flex flex-row justify-content-between">
 
 
+            <div class="flex-fill w-50">
 
-    <div class="flex-fill">
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">Documentation</span>
-        </div>
+                <div class="custom_pharagraph_for_documentations">{{documentation}}</div>
 
-        <div class="custom_pharagraph_bottom_margin" >{{documentation}}</div>
+                <a href="#"
+                   onclick="page_load('{% url 'regenerate_documentation' id=control_library %}');event.preventDefault();"
+                   class="btn btn-lg custom_button">Regenerate the doc</a>
+                <a href="#" onclick="page_load('{% url 'delete_scope' id=control_library %}');event.preventDefault();">
+                    <button class="btn btn-lg custom_button_red">Delete</button>
+                </a>
 
-    </div>
+
+            </div>
 
 
-
-    <div class="flex-fill">
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">Using</span>
-        </div>
+            <div class="flex-fill w-50">
 
 
         <div class="custom_code_block">
@@ -52,14 +52,15 @@
 
 
     <div>
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">Code</span>
-        </div>
+
 
 
         <div class="custom_code_block">
             <div class="custom_code_block_code">
-                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{code}}</code></pre></div>
+                <div class="highlight">
+                    <pre class="chroma"><code class="language-html special_code_big"
+                                              data-lang="html">{{code}}</code></pre>
+                </div>
             </div>
         </div>
 
