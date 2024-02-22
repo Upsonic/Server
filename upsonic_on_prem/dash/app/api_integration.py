@@ -113,7 +113,7 @@ class API_Integration:
 
     @property
     def all_scopes(self):
-        result = self._send_request("GET", "/get_all_scopes")
+        result = self._send_request("GET", "/get_all_scopes_user")
 
         return result if result != [None] else []
 
@@ -251,6 +251,29 @@ class API_Integration:
             if i != None:
                 result.append(i)
         return result
+
+
+    def get_write_scopes_of_me(self):
+
+        scopes = self._send_request("GET", "/get_write_scopes_of_me")
+
+        result = []
+        for i in scopes:
+            if i != None:
+                result.append(i)
+        return result
+
+
+    def get_read_scopes_of_me(self):
+
+        scopes = self._send_request("GET", "/get_read_scopes_of_me")
+
+        result = []
+        for i in scopes:
+            if i != None:
+                result.append(i)
+        return result
+
 
     def get_users(self):
         users = self.users_keys
