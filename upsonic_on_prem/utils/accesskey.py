@@ -101,7 +101,7 @@ class AccessKey:
 
     @property
     def name(self):
-        print("getting_name", self.key, type(self.key), self._get(self.key + ":name"))
+
         return self._get(self.key + ":name")
 
 
@@ -145,7 +145,7 @@ class AccessKey:
 
         return last_x_events
     def set_name(self, name):
-        print("setting_name", self.key, type(self.key), name)
+
         return self._set(self.key + ":name", name)
     
     def set_scope_write(self, scope):
