@@ -11,7 +11,7 @@ from app import forms
 # Create your views here.
 @login_required
 def home(request, exception=None):
-    request.user.notify("Welcome to Upsonic", "Your free cloud is ready, you can start using it now.")
+
     data = {
         "page_title": "Home",
         "top_scopes": API_Integration(request.user.access_key).top_scopes
@@ -63,6 +63,7 @@ def control_user(request, id):
             user_form.save()
             the_user.set_password(request.POST.get("password"))
             the_user.save()
+            request.user.notify("User Updated", f"User {the_user.username} updated successfully, the user must login again to access")
             return redirect(to='control_user', id=id)
 
     else:
@@ -88,6 +89,7 @@ def add_write_scope(request, id):
 
         if scope_form.is_valid():
             API_Integration(request.user.access_key).add_write_scope(request.POST.get("scope"), the_user.access_key)
+            request.user.notify("Write Scope Added", f"Scope {request.POST.get('scope')} added to user {the_user.username}")
             return redirect(to='control_user', id=id)
 
     else:
@@ -99,6 +101,7 @@ def delete_write_scope(request, scope, id):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).delete_write_scope(scope, the_user.access_key)
+    request.user.notify("Write Scope Deleted", f"Scope {scope} deleted from user {the_user.username}")
     return redirect(to='control_user', id=id)
 
 
@@ -111,6 +114,7 @@ def add_read_scope(request, id):
 
         if scope_form.is_valid():
             API_Integration(request.user.access_key).add_read_scope(request.POST.get("scope"), the_user.access_key)
+            request.user.notify("Read Scope Added", f"Scope {request.POST.get('scope')} added to user {the_user.username}")
             return redirect(to='control_user', id=id)
 
     else:
@@ -122,6 +126,7 @@ def delete_read_scope(request, id, scope):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).delete_read_scope(scope, the_user.access_key)
+    request.user.notify("Read Scope Deleted", f"Scope {scope} deleted from user {the_user.username}")
     return redirect(to='control_user', id=id)
 
 @login_required
@@ -188,7 +193,9 @@ def control_element(request,id):
 
     documentation = API_Integration(request.user.access_key).get_documentation(id)
     if documentation == None:
+        request.user.notify("Documentation is Generating", f"Documentation for {id} is generating, it will be ready soon.")
         API_Integration(request.user.access_key).create_documentation(id)
+        request.user.notify("Documentation Generated", f"Documentation for {id} is generated, you can access it now.")
         documentation = API_Integration(request.user.access_key).get_documentation(id)
     data = {
         "page_title": "Libraries",
@@ -209,7 +216,9 @@ def control_element(request,id):
 def regenerate_documentation(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
+    request.user.notify("Documentation is Generating", f"Documentation for {id} is generating, it will be ready soon.")
     API_Integration(request.user.access_key).create_documentation(id)
+    request.user.notify("Documentation Generated", f"Documentation for {id} is generated, you can access it now.")
     return redirect(to='control_element', id=id)
 
 @login_required
@@ -219,13 +228,14 @@ def delete_user(request, id):
     the_user = models.User.objects.get(id=id)
     the_user.delete_user(request.user.access_key)
     the_user.delete()
+    request.user.notify("User Deleted", f"User {the_user.username} deleted successfully")
     return redirect(to='community')
 
 
 @login_required
 def delete_scope(request, id):
     API_Integration(request.user.access_key).delete_code(id)
-    # if scope is an sub scope like onur.my_function return to control_element onur
+    request.user.notify("Scope Deleted", f"Scope {id} deleted successfully")
     if "." in id:
         return redirect(to='control_library', id=".".join(id.split(".")[:-1]))
     return redirect(to='libraries')
@@ -236,6 +246,7 @@ def enable_user(request, id):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).enable_user(the_user.access_key)
+    request.user.notify("User Enabled", f"User {the_user.username} enabled successfully")
     return redirect(to='community')
 @login_required
 def disable_user(request, id):
@@ -243,6 +254,7 @@ def disable_user(request, id):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).disable_user(the_user.access_key)
+    request.user.notify("User Disabled", f"User {the_user.username} disabled successfully")
     return redirect(to='community')
 
 
@@ -252,6 +264,7 @@ def enable_admin(request, id):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).enable_admin(the_user.access_key)
+    request.user.notify("Admin Enabled", f"User {the_user.username} is now an admin")
     return redirect(to='community')
 
 @login_required
@@ -260,6 +273,7 @@ def disable_admin(request, id):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).disable_admin(the_user.access_key)
+    request.user.notify("Admin Disabled", f"User {the_user.username} is no longer an admin")
     return redirect(to='community')
 
 
@@ -274,6 +288,7 @@ def add_user(request):
         if user_form.is_valid():
             user_form.save()
             user_form.user.add_user(request.user.access_key)
+            request.user.notify("User Added", f"User {user_form.cleaned_data.get('username')} added successfully")
             return redirect(to='community')
         else:
             print(user_form.errors)
