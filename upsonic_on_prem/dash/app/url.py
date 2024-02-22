@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete_scope/<id>', views.delete_scope, name="delete_scope"),
     path('control_user/<id>', views.control_user, name="control_user"),
     path('add_user', views.add_user, name="add_user"),
+    path('profile', views.profile, name="profile"),
     path('delete_user/<id>', views.delete_user, name="delete_user"),
     path('enable_user/<id>', views.enable_user, name="enable_user"),
     path('disable_user/<id>', views.disable_user, name="disable_user"),

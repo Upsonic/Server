@@ -287,3 +287,11 @@ def add_user(request):
         return render(request, "templates/add_user.html", data)
 
 
+@login_required
+def profile(request):
+    data = {
+        "page_title": "Profile",
+        "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_me(),
+        "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_me(),
+    }
+    return render(request, "templates/profile.html", data)
