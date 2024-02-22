@@ -5,7 +5,7 @@
 {% load tags %}
 
 
-<div id="this_url" style="display: none;">{{request.build_absolute_uri}}</div>
+<div id="this_url" style="display: none;">https://{{request.get_host}}:5001</div>
 
 
 <html lang="en" data-bs-theme="dark">
@@ -13,7 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upsonic </title>
+    <title>{{page_title}} - Upsonic</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
