@@ -42,7 +42,7 @@
 
                         <div class=""><img src="/static/images/logout.svg" alt="Logout" width="24" height="24"></div>
                         <div class=""><a class="navbar-brand custom_header_logout_text"
-                                         href="{% url 'account_logout' %}">Log out {{ user.get_short_name }}</a></div>
+                                         href="{% url 'account_logout' %}">Log out {{ request.user.get_short_name }}</a></div>
                     </div>
                 </a>
             </div>
