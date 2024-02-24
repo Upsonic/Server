@@ -21,6 +21,7 @@ load_dotenv(dotenv_path=".env")
 
 sentry = os.environ.get("sentry", "false").lower() == "true"
 sentry_django_key = os.environ.get("sentry_django_key", "https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176")
+sentry_dsn = os.environ.get("sentry_dsn", "https://1040c5057fc1ad3bd322a800edf1aed2@o4506678585786368.ingest.sentry.io/4506678631858176")
 # settings.py
 if sentry:
     import sentry_sdk
