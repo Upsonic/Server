@@ -207,7 +207,19 @@ AUTHENTICATION_BACKENDS = [
 betterstack = os.environ.get("betterstack", "false").lower() == "true"
 betterstack_django_key = os.environ.get("betterstack_django_key", "9CaQtaX73ahSDCzDhpegB3iJ")
 # settings.py
+
+LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "loggers": {
+            "": {
+                "level": "INFO",
+            },
+        },
+    }
+
 if betterstack:
+    print("Betterstack is enabled")
     LOGGING = {
         "version": 1,
         "disable_existing_loggers": False,
