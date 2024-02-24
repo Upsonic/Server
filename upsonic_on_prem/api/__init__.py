@@ -19,7 +19,7 @@ if sentry:
     import sentry_sdk
 
     sentry_sdk.init(
-        dsn="https://557ac9191a887032087e4054dda517c4@o4506678585786368.ingest.sentry.io/4506678591225856",
+        dsn=sentry_flask_key,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         traces_sample_rate=1.0,

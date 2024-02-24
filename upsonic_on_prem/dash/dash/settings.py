@@ -20,13 +20,13 @@ from django.core.management.utils import get_random_secret_key
 load_dotenv(dotenv_path=".env")
 
 sentry = os.environ.get("sentry", "false").lower() == "true"
-
+sentry_django_key = os.environ.get("sentry_django_key", "https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176")
 # settings.py
 if sentry:
     import sentry_sdk
 
     sentry_sdk.init(
-        dsn="https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176",
+        dsn=sentry_django_key,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
         traces_sample_rate=1.0,
@@ -204,3 +204,25 @@ AUTHENTICATION_BACKENDS = [
 
 ]
 
+betterstack = os.environ.get("betterstack", "false").lower() == "true"
+betterstack_django_key = os.environ.get("betterstack_django_key", "9CaQtaX73ahSDCzDhpegB3iJ")
+# settings.py
+if betterstack:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        'handlers': {
+            'logtail': {
+                'class': 'logtail.LogtailHandler',
+                'source_token': betterstack_django_key,
+            },
+        },
+        "loggers": {
+            "": {
+                "handlers": [
+                    "logtail",
+                ],
+                "level": "INFO",
+            },
+        },
+    }
