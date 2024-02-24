@@ -69,7 +69,7 @@ def control_user(request, id):
     else:
 
         data = {
-            "page_title": "Community",
+            "page_title": "Control User",
             "user": the_user,
             "user_form": forms.UpdateUserForm(instance=the_user),
             "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key),
@@ -296,7 +296,7 @@ def add_user(request):
     else:
 
         data = {
-            "page_title": "Community",
+            "page_title": "Add User",
             "user_form": forms.CustomUserCreationForm()
         }
         return render(request, "templates/add_user.html", data)
