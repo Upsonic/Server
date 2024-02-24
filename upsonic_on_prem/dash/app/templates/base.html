@@ -5,7 +5,7 @@
 {% load tags %}
 
 
-<div id="this_url" style="display: none;">https://{{request.get_host}}:5001</div>
+<div id="this_url" style="display: none;">https://{{request.get_host}}:5001{{request.get_full_path_info}}</div>
 
 
 <html lang="en" data-bs-theme="dark">
