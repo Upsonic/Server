@@ -25,6 +25,42 @@
 
     {% include 'in_page_load.js.html' %}
 
+    {% sentry as sentry %}
+    {% sentry_dsn as sentry_dsn %}
+    {% if sentry %}
+
+    <!-- Recommended: Use this bundle for feedback, replay, error, and performance monitoring -->
+    <script
+      src="https://browser.sentry-cdn.com/7.102.1/bundle.tracing.replay.feedback.min.js"
+      integrity="sha384-26uTXIBpd3urK4WDZ68YL44GKxnla0zmZ8qlduExjd57i0bUcMZPL11G6tnCAEiH"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+        Sentry.setUser({
+          fullName: "{{request.user.username}}",
+        });
+        Sentry.init({
+          dsn: "{{sentry_dsn}}",
+
+          integrations: [
+            Sentry.feedbackIntegration({
+              // Additional SDK configuration goes in here, for example:
+              colorScheme: "dark",
+              useSentryUser: {
+                email: "email",
+                name: "fullName",
+              },
+            }),
+            Sentry.replayIntegration(),
+          ],
+          replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+          replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+        });
+
+
+    </script>
+
+    {% endif %}
 
 
 </head>
