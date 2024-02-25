@@ -108,6 +108,14 @@ class Scope:
     def set_code(self, code):
         return self.the_storage.set(self.key + ":code", code)
 
+    @property
+    def requirement(self):
+        return self.the_storage.get(self.key + ":requirement")
+
+    def set_requirement(self, requirement):
+        return self.the_storage.set(self.key + ":requirement", requirement)
+
+
     def dump(self, data, user: AccessKey, pass_str=False):
         if not pass_str:
             data = data.decode()
@@ -116,7 +124,7 @@ class Scope:
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": current_time}
+        data = {"data": data, "user": user.key, "time": current_time,}
 
         storage_3.set(key, data)
 
