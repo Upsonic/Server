@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+cd /app/On-Prem/
+ollama create gemma-2b-it -f Modelfile
+
 python3 /app/On-Prem/ssl_setting.py
 
 service nginx start 

@@ -31,6 +31,7 @@ class Scope:
             storage_3.delete(i)
         self.the_storage.delete(self.key + ":dump_history")
         self.the_storage.delete(self.key + ":documentation")
+        self.the_storage.delete(self.key + ":time_complexity")
 
     @property
     def dump_history(self):
@@ -64,9 +65,21 @@ class Scope:
     def documentation(self):
         return self.the_storage.get(self.key + ":documentation")
 
+
+    @property
+    def time_complexity(self):
+        return self.the_storage.get(self.key + ":time_complexity")
+
+
     def create_documentation(self):
         document = AI.code_to_documentation(self.code)
         self.the_storage.set(self.key + ":documentation", document)
+
+
+    def create_time_complexity(self):
+        document = AI.code_to_time_complexity(self.code)
+        self.the_storage.set(self.key + ":time_complexity", document)
+
 
     def create_documentation_old(self):
         document = AI.code_to_documentation(self.code_old)
