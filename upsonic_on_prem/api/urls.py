@@ -56,8 +56,10 @@ event_url = "/event"
 get_last_x_event_url = "/get_last_x_event"
 
 get_document_of_scope_url = "/get_document_of_scope"
+get_time_complexity_of_scope_url = "/get_time_complexity_of_scope"
 get_code_of_scope_url = "/get_code_of_scope"
 create_document_of_scope_url = "/create_document_of_scope"
+create_time_complexity_of_scope_url = "/create_time_complexity_of_scope"
 create_document_of_scope_url_old = "/create_document_of_scope_old"
 
 get_type_of_scope_url = "/get_type_of_scope"
@@ -82,12 +84,12 @@ get_all_scopes_name_prefix_url = "/get_all_scopes_name_prefix"
 
 create_version_url = "/create_version"
 
-user_urs = [load_url, dump_url, get_read_scopes_of_me_url, get_write_scopes_of_me_url, get_document_of_scope_url,
+user_urs = [load_url, dump_url, get_read_scopes_of_me_url, get_write_scopes_of_me_url, get_document_of_scope_url, get_time_complexity_of_scope_url,
             create_version_url,
             get_dump_history_url, load_specific_dump_url, get_all_scopes_name_prefix_url,
-            get_type_of_scope_url, create_document_of_scope_url, create_document_of_scope_url_old,
+            get_type_of_scope_url, create_document_of_scope_url, create_time_complexity_of_scope_url, create_document_of_scope_url_old,
             get_all_scopes_user_url, delete_scope_url, dump_code_url, dump_type_url, get_version_history_url, get_code_of_scope_url]
-user_write_urls = [dump_url, create_document_of_scope_url, create_document_of_scope_url_old, delete_scope_url,
+user_write_urls = [dump_url, create_document_of_scope_url, create_time_complexity_of_scope_url, create_document_of_scope_url_old, delete_scope_url,
                    create_version_url, dump_code_url, dump_type_url]
-user_read_urls = [load_url, get_document_of_scope_url, get_dump_history_url, get_type_of_scope_url,
+user_read_urls = [load_url, get_document_of_scope_url, get_time_complexity_of_scope_url, get_dump_history_url, get_type_of_scope_url,
                   load_specific_dump_url, get_version_history_url, get_code_of_scope_url]

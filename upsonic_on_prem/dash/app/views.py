@@ -173,7 +173,7 @@ def control_library(request,id):
 
 
 @login_required
-def control_element(request,id):
+def control_element(request, id):
 
     have_upper = False
     the_upper = ""
@@ -197,6 +197,12 @@ def control_element(request,id):
         API_Integration(request.user.access_key).create_documentation(id)
         request.user.notify("Documentation Generated", f"Documentation for {id} is generated, you can access it now.")
         documentation = API_Integration(request.user.access_key).get_documentation(id)
+    
+    time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
+    if time_complexity == None:
+        API_Integration(request.user.access_key).create_time_complexity(id)
+        time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -207,6 +213,7 @@ def control_element(request,id):
         "code": API_Integration(request.user.access_key).get_code(id),
         "using_code": using_code,
         "documentation": documentation,
+        "time_complexity": time_complexity
     }
     return render(request, f"templates/libraries/element.html", data)
 

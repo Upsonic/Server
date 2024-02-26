@@ -16,10 +16,7 @@ sentry-sdk[flask]==1.40.0
 sentry-sdk[django]==1.40.0
 pytest==8.0.0
 dill==0.3.7
-transformers==4.37.2
-transformers[sentencepiece]==4.37.2
 django-allauth==0.58.0
 django-crispy-forms==2.1
 crispy-bootstrap5==0.7
-tree_sitter==0.20.4
 logtail-python==0.2.10
