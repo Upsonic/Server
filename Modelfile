@@ -1,1 +1,1 @@
-FROM ./upsonic_on_prem/utils/ai/google/gemma-2b-it-GGUF/gemma-2b-it-q8_0.gguf
+FROM ./upsonic_on_prem/utils/ai/google/gemma-2b/sha256:c1864a5eb19305c40519da12cc543519e48a0697ecd30e15d5ac228644957d12
