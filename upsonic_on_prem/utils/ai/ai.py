@@ -12,6 +12,7 @@ this_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 
+import ollama
 
 
 
@@ -22,34 +23,30 @@ class AI_:
 
     def gemmma(self, input_text):
         print("Gemma q:", input_text)
-        data = {"model":"gemma-2b-it", "prompt":input_text, "stream": False}
-        result  = requests.post("http://localhost:11434/api/generate", data=data)
+        response = ollama.chat(model='gemma-2b-upsonic', messages=[
+        {
+            'role': 'user',
+            'content': input_text,
+        },
+        ])
+        result = response['message']['content']
         print("Gemma r:", result)
+
         return result
 
 
     def code_to_time_complexity(self, code):
         input_text = f"Calculate the time complexity of this code: \n {code}"
 
-        the_text = f"""
-<start_of_turn>user
-{input_text} <end_of_turn>
-<start_of_turn>model
-"""
 
-        result = self.gemmma(the_text)
+        result = self.gemmma(input_text)
         return result
 
     def code_to_documentation(self, code):
         input_text = f"The documentation of this code: \n {code}"
 
-        the_text = f"""
-<start_of_turn>user
-{input_text} <end_of_turn>
-<start_of_turn>model
-"""
 
-        result = self.gemmma(the_text)
+        result = self.gemmma(input_text)
         return result
 
 AI = AI_()

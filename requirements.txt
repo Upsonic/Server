@@ -20,3 +20,4 @@ django-allauth==0.58.0
 django-crispy-forms==2.1
 crispy-bootstrap5==0.7
 logtail-python==0.2.10
+ollama==0.1.6
