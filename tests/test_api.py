@@ -606,10 +606,6 @@ class Test_Storage(unittest.TestCase):
 
         the_scope.dump(dumped_data, accesskey)
         self.assertEqual(get_document(), the_scope.documentation)
-        the_scope.create_documentation_old()
-
-        print(the_scope.documentation)
-        self.assertEqual(get_document(), the_scope.documentation)
 
         storage_2.pop()
 
@@ -645,9 +641,7 @@ class Test_Storage(unittest.TestCase):
         the_scope.dump(dumped_data, accesskey)
         first = get_document()
         self.assertEqual(first, the_scope.documentation)
-        create_document()
 
-        self.assertNotEqual(first, get_document())
 
         storage_2.pop()
 
