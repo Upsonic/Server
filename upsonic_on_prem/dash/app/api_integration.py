@@ -224,6 +224,14 @@ class API_Integration:
         data = {"scope": scope}
         return self._send_request("POST", "/get_document_of_scope", data=data)
 
+
+    def get_requirements(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/get_requirements_of_scope", data=data)
+    def get_type(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/get_type_of_scope", data=data)
+
     def get_time_complexity(self, scope):
         data = {"scope": scope}
         return self._send_request("POST", "/get_time_complexity_of_scope", data=data)

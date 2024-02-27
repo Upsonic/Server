@@ -217,6 +217,9 @@ def control_element(request, id):
         security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
 
 
+    requirements = API_Integration(request.user.access_key).get_requirements(id)
+    the_type = API_Integration(request.user.access_key).get_type(id)
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -231,6 +234,8 @@ def control_element(request, id):
         "mistakes": mistakes,
         "required_test_types": required_test_types,
         "security_analysis": security_analysis,
+        "requirements": requirements,
+        "type": the_type,
     }
     return render(request, f"templates/libraries/element.html", data)
 
