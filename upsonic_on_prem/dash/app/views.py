@@ -193,15 +193,29 @@ def control_element(request, id):
 
     documentation = API_Integration(request.user.access_key).get_documentation(id)
     if documentation == None:
-        request.user.notify("Documentation is Generating", f"Documentation for {id} is generating, it will be ready soon.")
         API_Integration(request.user.access_key).create_documentation(id)
-        request.user.notify("Documentation Generated", f"Documentation for {id} is generated, you can access it now.")
         documentation = API_Integration(request.user.access_key).get_documentation(id)
     
     time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
     if time_complexity == None:
         API_Integration(request.user.access_key).create_time_complexity(id)
         time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
+
+
+    mistakes = API_Integration(request.user.access_key).get_mistakes(id)
+    if mistakes == None:
+        API_Integration(request.user.access_key).create_mistakes(id)
+        mistakes = API_Integration(request.user.access_key).get_mistakes(id)
+
+    required_test_types = API_Integration(request.user.access_key).get_required_test_types(id)
+    if required_test_types == None:
+        API_Integration(request.user.access_key).create_required_test_types(id)
+        required_test_types = API_Integration(request.user.access_key).get_required_test_types(id)
+    security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
+    if security_analysis == None:
+        API_Integration(request.user.access_key).create_security_analysis(id)
+        security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
+
 
     data = {
         "page_title": "Libraries",
@@ -213,7 +227,10 @@ def control_element(request, id):
         "code": API_Integration(request.user.access_key).get_code(id),
         "using_code": using_code,
         "documentation": documentation,
-        "time_complexity": time_complexity
+        "time_complexity": time_complexity,
+        "mistakes": mistakes,
+        "required_test_types": required_test_types,
+        "security_analysis": security_analysis,
     }
     return render(request, f"templates/libraries/element.html", data)
 
