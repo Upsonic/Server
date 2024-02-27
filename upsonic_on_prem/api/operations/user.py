@@ -149,6 +149,11 @@ def get_type_of_scope():
     scope = request.form.get("scope")
     return jsonify({"status": True, "result": Scope(scope).type})
 
+@app.route(get_python_version_of_scope_url, methods=["POST"])
+def get_python_version_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).python_version})
+
 
 @app.route(get_all_scopes_user_url, methods=["get"])
 def get_all_scopes_user():
@@ -208,3 +213,15 @@ def dump_requirements():
     the_scope = Scope(scope)
 
     return jsonify({"status": True, "result": the_scope.set_requirements(requirement)})
+
+
+
+@app.route(dump_python_version_url, methods=["POST"])
+def dump_python_version():
+    scope = request.form.get("scope")
+    python_version = request.form.get("python_version")
+
+    the_scope = Scope(scope)
+
+    return jsonify({"status": True, "result": the_scope.set_python_version(python_version)})
+
