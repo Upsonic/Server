@@ -61,6 +61,12 @@ def get_write_scopes_of_me():
 def get_document_of_scope():
     scope = request.form.get("scope")
     return jsonify({"status": True, "result": Scope(scope).documentation})
+@app.route(get_requirements_of_scope_url, methods=["POST"])
+def get_requirements_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).requirements})
+
+
 @app.route(get_time_complexity_of_scope_url, methods=["POST"])
 def get_time_complexity_of_scope():
     scope = request.form.get("scope")
@@ -197,8 +203,8 @@ def create_version():
 @app.route(dump_requirements_url, methods=["POST"])
 def dump_requirements():
     scope = request.form.get("scope")
-    requirement = request.form.get("requirement")
+    requirement = request.form.get("requirements")
 
     the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.set_requirement(requirement)})
+    return jsonify({"status": True, "result": the_scope.set_requirements(requirement)})

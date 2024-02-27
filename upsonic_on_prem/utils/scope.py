@@ -147,11 +147,11 @@ class Scope:
         return self.the_storage.set(self.key + ":code", code)
 
     @property
-    def requirement(self):
-        return self.the_storage.get(self.key + ":requirement")
+    def requirements(self):
+        return self.the_storage.get(self.key + ":requirements")
 
-    def set_requirement(self, requirement):
-        return self.the_storage.set(self.key + ":requirement", requirement)
+    def set_requirements(self, requirements):
+        return self.the_storage.set(self.key + ":requirements", requirements)
 
 
     def dump(self, data, user: AccessKey, pass_str=False):
