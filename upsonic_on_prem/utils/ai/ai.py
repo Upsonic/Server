@@ -103,12 +103,7 @@ deff add_numbers(a, b)
 ```
 
 **Output:** 
-Two mistakes are identified in this code. First, the function definition uses 'deff', which is not a valid keyword in Python. This should be corrected to 'def'. Second, the operation '++' is not valid in Python. To add two numbers in Python, the '+' operator is used. The corrected code should look like this:
-
-```python
-def add_numbers(a, b):
-    return a + b
-```
+Two mistakes are identified in this code. First, the function definition uses 'deff', which is not a valid keyword in Python. This should be corrected to 'def'. Second, the operation '++' is not valid in Python. To add two numbers in Python, the '+' operator is used.
 
 Now, please identify potential mistakes in the following code:
 
