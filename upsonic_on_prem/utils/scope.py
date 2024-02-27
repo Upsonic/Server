@@ -71,6 +71,17 @@ class Scope:
         return self.the_storage.get(self.key + ":time_complexity")
 
 
+    @property
+    def mistakes(self):
+        return self.the_storage.get(self.key + ":mistakes")
+    @property
+    def required_test_types(self):
+        return self.the_storage.get(self.key + ":required_test_types")
+
+    @property
+    def security_analysis(self):
+        return self.the_storage.get(self.key + ":security_analysis")
+
     def create_documentation(self):
         document = AI.code_to_documentation(self.code)
         self.the_storage.set(self.key + ":documentation", document)
@@ -80,10 +91,24 @@ class Scope:
         document = AI.code_to_time_complexity(self.code)
         self.the_storage.set(self.key + ":time_complexity", document)
 
+    def create_mistakes(self):
+        document = AI.code_to_mistakes(self.code)
+        self.the_storage.set(self.key + ":mistakes", document)
+
+
+    def create_required_test_types(self):
+        document = AI.code_to_required_test_types(self.code)
+        self.the_storage.set(self.key + ":required_test_types", document)
+
+    def create_security_analysis(self):
+        document = AI.code_to_security_analysis(self.code)
+        self.the_storage.set(self.key + ":security_analysis", document)
 
     def create_documentation_old(self):
         document = AI.code_to_documentation(self.code_old)
         self.the_storage.set(self.key + ":documentation", document)
+
+
 
     @property
     def source(self):
