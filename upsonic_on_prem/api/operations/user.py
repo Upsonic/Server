@@ -194,8 +194,8 @@ def create_version():
     object = Scope(scope)
     return jsonify({"status": True, "result": object.create_version(version, user)})
 
-@app.route(dump_requirement_url, methods=["POST"])
-def dump_requirement():
+@app.route(dump_requirements_url, methods=["POST"])
+def dump_requirements():
     scope = request.form.get("scope")
     requirement = request.form.get("requirement")
 
