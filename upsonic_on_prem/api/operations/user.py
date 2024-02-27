@@ -67,6 +67,26 @@ def get_time_complexity_of_scope():
     return jsonify({"status": True, "result": Scope(scope).time_complexity})
 
 
+
+@app.route(get_mistakes_of_scope_url, methods=["POST"])
+def get_mistakes_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).mistakes})
+
+
+@app.route(get_required_test_types_of_scope_url, methods=["POST"])
+def get_required_test_types_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).required_test_types})
+
+
+@app.route(get_security_analysis_of_scope_url, methods=["POST"])
+def get_security_analysis_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).security_analysis})
+
+
+
 @app.route(get_code_of_scope_url, methods=["POST"])
 def get_code_of_scope():
     scope = request.form.get("scope")
@@ -85,6 +105,31 @@ def create_time_complexity_of_scope():
     scope = request.form.get("scope")
 
     return jsonify({"status": True, "result": Scope(scope).create_time_complexity()})
+
+
+
+
+@app.route(create_mistakes_of_scope_url, methods=["POST"])
+def create_mistakes_of_scope():
+    scope = request.form.get("scope")
+
+    return jsonify({"status": True, "result": Scope(scope).create_mistakes()})
+
+@app.route(create_required_test_types_of_scope_url, methods=["POST"])
+def create_required_test_types_of_scope():
+    scope = request.form.get("scope")
+
+    return jsonify({"status": True, "result": Scope(scope).create_required_test_types()})
+
+@app.route(create_security_analysis_of_scope_url, methods=["POST"])
+def create_security_analysis_of_scope():
+    scope = request.form.get("scope")
+
+    return jsonify({"status": True, "result": Scope(scope).create_security_analysis()})
+
+
+
+
 
 
 @app.route(create_document_of_scope_url_old, methods=["POST"])

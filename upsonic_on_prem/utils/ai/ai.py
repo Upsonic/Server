@@ -122,7 +122,7 @@ Note: Please identify and describe the errors in a clear and informative manner.
 
 
 
-    def code_to_security_analyse(self, code):
+    def code_to_security_analysis(self, code):
 
         input_text = f"""
 In this task, you're required to conduct a security analysis of the provided Python code snippet. It requires you to find potential security risks, pitfalls or weak practices from a security perspective and propose enhancements to address them.

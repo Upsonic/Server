@@ -1156,12 +1156,12 @@ body.with-cookie-bar {
     color: #000;
     font-feature-settings: 'clig' off, 'liga' off;
     font-family: Poppins;
-    font-size: 23px;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 130%;
-    margin-bottom: 36px;
-    margin-top: 36px;
+    font-weight: 400;
+    line-height: 120%;
+    margin-bottom: 16px;
+    margin-top: 16px;
 }
 
 .special_code_big {

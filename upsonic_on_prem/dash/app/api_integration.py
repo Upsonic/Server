@@ -228,6 +228,18 @@ class API_Integration:
         data = {"scope": scope}
         return self._send_request("POST", "/get_time_complexity_of_scope", data=data)
 
+
+    def get_mistakes(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/get_mistakes_of_scope", data=data)
+    def get_required_test_types(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/get_required_test_types_of_scope", data=data)
+    def get_security_analysis(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/get_security_analysis_of_scope", data=data)        
+
+
     def create_documentation(self, scope):
         data = {"scope": scope}
         return self._send_request(
@@ -240,6 +252,24 @@ class API_Integration:
         return self._send_request(
             "POST", "/create_time_complexity_of_scope", data=data
         )
+
+
+    def create_mistakes(self, scope):
+        data = {"scope": scope}
+        return self._send_request(
+            "POST", "/create_mistakes_of_scope", data=data
+        )
+    def create_required_test_types(self, scope):
+        data = {"scope": scope}
+        return self._send_request(
+            "POST", "/create_required_test_types_of_scope", data=data
+        )
+    def create_security_analysis(self, scope):
+        data = {"scope": scope}
+        return self._send_request(
+            "POST", "/create_security_analysis_of_scope", data=data
+        )    
+
 
     def get_read_scopes_of_user(self, key):
         data = {"key": key}

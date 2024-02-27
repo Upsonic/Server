@@ -22,10 +22,34 @@
         <div class="d-flex flex-row justify-content-between">
 
 
-            <div class="flex-fill w-50">
+            <div class="flex-fill w-50 me-3">
 
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Documentation</span>
+                </div>
                 <div class="custom_pharagraph_for_documentations">{{documentation}}</div>
+
+
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Time Complexity</span>
+                </div>                
                 <div class="custom_pharagraph_for_documentations">{{time_complexity}}</div>
+
+
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Mistakes</span>
+                </div>                
+                <div class="custom_pharagraph_for_documentations">{{mistakes}}</div>
+
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Required Test Types</span>
+                </div>                
+                <div class="custom_pharagraph_for_documentations">{{required_test_types}}</div>
+
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Security Analysis</span>
+                </div>                
+                <div class="custom_pharagraph_for_documentations">{{security_analysis}}</div>                
 
                 <a href="#"
                    onclick="page_load('{% url 'regenerate_documentation' id=control_library %}');event.preventDefault();"
@@ -38,14 +62,36 @@
             </div>
 
 
-            <div class="flex-fill w-50">
+            <div class="flex-fill w-50" style="
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            top: 0;
+            align-self: flex-start; /* <-- this is the fix */
+              /* Not necessary -- for example only */
+        ">
 
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Code</span>
+                </div> 
 
-        <div class="custom_code_block">
-            <div class="custom_code_block_code">
-                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{using_code}}</code></pre></div>
-            </div>
-        </div>
+                <div class="custom_code_block">
+                    <div class="custom_code_block_code">
+                        <div class="highlight">
+                            <pre class="chroma"><code class="language-html special_code_big"
+                                                      data-lang="html">{{code}}</code></pre>
+                        </div>
+                    </div>
+        
+                    
+                </div>
+        
+                <div class="custom_code_block">
+                    <div class="custom_code_block_code">
+                        <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{using_code}}</code></pre></div>
+                    </div>
+                </div>
+        
+
 
     </div>
 </div>
@@ -56,14 +102,7 @@
 
 
 
-        <div class="custom_code_block">
-            <div class="custom_code_block_code">
-                <div class="highlight">
-                    <pre class="chroma"><code class="language-html special_code_big"
-                                              data-lang="html">{{code}}</code></pre>
-                </div>
-            </div>
-        </div>
+
 
     </div>
 
