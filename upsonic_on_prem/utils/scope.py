@@ -154,6 +154,14 @@ class Scope:
         return self.the_storage.set(self.key + ":requirements", requirements)
 
 
+    @property
+    def python_version(self):
+        return self.the_storage.get(self.key + ":python_version")
+
+    def set_python_version(self, python_version):
+        return self.the_storage.set(self.key + ":python_version", python_version)
+
+
     def dump(self, data, user: AccessKey, pass_str=False):
         if not pass_str:
             data = data.decode()
