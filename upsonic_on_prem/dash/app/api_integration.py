@@ -228,6 +228,9 @@ class API_Integration:
     def get_requirements(self, scope):
         data = {"scope": scope}
         return self._send_request("POST", "/get_requirements_of_scope", data=data)
+    def get_python_version(self, scope):
+        data = {"scope": scope}
+        return self._send_request("POST", "/get_python_version_of_scope", data=data)    
     def get_type(self, scope):
         data = {"scope": scope}
         return self._send_request("POST", "/get_type_of_scope", data=data)

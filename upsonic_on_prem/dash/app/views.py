@@ -169,7 +169,11 @@ def control_library(request,id):
         "code": code,
     }
     return render(request, f"templates/libraries/control_library.html", data)
-
+def capitalize_first_letter(input_string):
+    if not input_string:
+        return input_string
+    else:
+        return input_string[0].upper() + input_string[1:]
 
 
 @login_required
@@ -219,6 +223,7 @@ def control_element(request, id):
 
     requirements = API_Integration(request.user.access_key).get_requirements(id)
     the_type = API_Integration(request.user.access_key).get_type(id)
+    python_version = API_Integration(request.user.access_key).get_python_version(id)
 
     data = {
         "page_title": "Libraries",
@@ -235,7 +240,8 @@ def control_element(request, id):
         "required_test_types": required_test_types,
         "security_analysis": security_analysis,
         "requirements": requirements,
-        "type": the_type,
+        "type": capitalize_first_letter(the_type),
+        "python_version": python_version,
     }
     return render(request, f"templates/libraries/element.html", data)
 
