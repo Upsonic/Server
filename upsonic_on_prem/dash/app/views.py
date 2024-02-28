@@ -196,29 +196,54 @@ def control_element(request, id):
     using_code = f'upsonic.load("{id}")()'
 
     documentation = API_Integration(request.user.access_key).get_documentation(id)
-    if documentation == None:
-        API_Integration(request.user.access_key).create_documentation(id)
-        documentation = API_Integration(request.user.access_key).get_documentation(id)
+
+    write_right = request.user.can_write(id)
+
+    if documentation == None and write_right:
+        tasks = models.AI_Task.objects.filter(task_name="documentation", key=id, status=False)
+        if len(tasks) == 0:
+            models.AI_Task(task_name="documentation", key=id, access_key=request.user.access_key, owner=request.user).save()
+        documentation = "Documentation is generating, it will be ready soon."
+
     
     time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
-    if time_complexity == None:
-        API_Integration(request.user.access_key).create_time_complexity(id)
-        time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
+    if time_complexity == None and write_right:
+
+        tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=id, status=False)
+        if len(tasks) == 0:
+            models.AI_Task(task_name="time_complexity", key=id, access_key=request.user.access_key, owner=request.user).save()
+        time_complexity = "Time Complexity is generating, it will be ready soon."
+
 
 
     mistakes = API_Integration(request.user.access_key).get_mistakes(id)
-    if mistakes == None:
-        API_Integration(request.user.access_key).create_mistakes(id)
-        mistakes = API_Integration(request.user.access_key).get_mistakes(id)
+    if mistakes == None and write_right:
+
+        tasks = models.AI_Task.objects.filter(task_name="mistakes", key=id, status=False)
+        if len(tasks) == 0:
+            models.AI_Task(task_name="mistakes", key=id, access_key=request.user.access_key, owner=request.user).save()
+        mistakes = "Mistakes are generating, it will be ready soon."
+
 
     required_test_types = API_Integration(request.user.access_key).get_required_test_types(id)
-    if required_test_types == None:
-        API_Integration(request.user.access_key).create_required_test_types(id)
-        required_test_types = API_Integration(request.user.access_key).get_required_test_types(id)
+    if required_test_types == None and write_right:
+
+        tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=id, status=False)
+        if len(tasks) == 0:
+            models.AI_Task(task_name="required_test_types", key=id, access_key=request.user.access_key, owner=request.user).save()
+        required_test_types = "Required Test Types are generating, it will be ready soon."
+
+
     security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
-    if security_analysis == None:
-        API_Integration(request.user.access_key).create_security_analysis(id)
-        security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
+    if security_analysis == None and write_right:
+        tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=id, status=False)
+        if len(tasks) == 0:
+            models.AI_Task(task_name="security_analysis", key=id, access_key=request.user.access_key, owner=request.user).save()
+        security_analysis = "Security Analysis is generating, it will be ready soon."
+
+
+
+
 
 
     requirements = API_Integration(request.user.access_key).get_requirements(id)
@@ -345,3 +370,19 @@ def profile(request):
         "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_me(),
     }
     return render(request, "templates/profile.html", data)
+
+
+
+
+@login_required
+def ai(request):
+    the_list = models.AI_Task.objects.filter(status=False)
+    tasks = []
+    for task in the_list:
+        if request.user.can_read(task.key):
+            tasks.append(task)
+    data = {
+        "page_title": "AI",
+        "tasks": tasks,
+    }
+    return render(request, "templates/ai.html", data)

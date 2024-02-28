@@ -20,24 +20,26 @@ load_dotenv(dotenv_path=".env")
 api_url = "http://localhost:3000"
 
 def transform_to_html_bold(text):
-    # Find content within double asterisks
-    start_idx = text.find('**')
+    try:
+        # Find content within double asterisks
+        start_idx = text.find('**')
 
-    while start_idx != -1:
-        end_idx = text.find('**', start_idx + 2)
+        while start_idx != -1:
+            end_idx = text.find('**', start_idx + 2)
 
-        if end_idx == -1:
-            break  # Break if no matching end double asterisks found
+            if end_idx == -1:
+                break  # Break if no matching end double asterisks found
 
-        # Extract content between double asterisks
-        content = text[start_idx + 2:end_idx]
-        
-        # Replace content with HTML <b> tags
-        text = text[:start_idx] + '<br><br><b>' + content + '</b><br>' + text[end_idx + 2:]
+            # Extract content between double asterisks
+            content = text[start_idx + 2:end_idx]
+            
+            # Replace content with HTML <b> tags
+            text = text[:start_idx] + '<br><br><b>' + content + '</b><br>' + text[end_idx + 2:]
 
-        # Find the next occurrence
-        start_idx = text.find('**', end_idx + 2)
-
+            # Find the next occurrence
+            start_idx = text.find('**', end_idx + 2)
+    except:
+        pass
     return text
 
 
