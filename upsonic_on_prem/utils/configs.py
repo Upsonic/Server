@@ -62,7 +62,7 @@ maximum_key_amount_user = (
 
 
 
-threads = os.environ.get("threads", 4)
+threads = os.environ.get("threads", 50)
 url_scheme = os.environ.get("url_scheme", 'https')
 
 

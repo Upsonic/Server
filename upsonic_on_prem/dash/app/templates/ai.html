@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Active AI Tasks</span></span>
+    </div>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Content</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{task.task_name}}</td>
+            <td>{{task.key}}</td>
+
+            
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+{% endblock content %}
