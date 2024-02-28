@@ -1162,6 +1162,7 @@ body.with-cookie-bar {
     line-height: 120%;
     margin-bottom: 16px;
     margin-top: 16px;
+    text-align: justify;
 }
 
 .special_code_big {

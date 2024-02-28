@@ -19,6 +19,27 @@ load_dotenv(dotenv_path=".env")
 
 api_url = "http://localhost:3000"
 
+def transform_to_html_bold(text):
+    # Find content within double asterisks
+    start_idx = text.find('**')
+
+    while start_idx != -1:
+        end_idx = text.find('**', start_idx + 2)
+
+        if end_idx == -1:
+            break  # Break if no matching end double asterisks found
+
+        # Extract content between double asterisks
+        content = text[start_idx + 2:end_idx]
+        
+        # Replace content with HTML <b> tags
+        text = text[:start_idx] + '<br><br><b>' + content + '</b><br>' + text[end_idx + 2:]
+
+        # Find the next occurrence
+        start_idx = text.find('**', end_idx + 2)
+
+    return text
+
 
 class API_Integration:
     def _log(self, message):
@@ -222,7 +243,7 @@ class API_Integration:
 
     def get_documentation(self, scope):
         data = {"scope": scope}
-        return self._send_request("POST", "/get_document_of_scope", data=data)
+        return transform_to_html_bold(self._send_request("POST", "/get_document_of_scope", data=data))
 
 
     def get_requirements(self, scope):
@@ -237,18 +258,18 @@ class API_Integration:
 
     def get_time_complexity(self, scope):
         data = {"scope": scope}
-        return self._send_request("POST", "/get_time_complexity_of_scope", data=data)
+        return transform_to_html_bold(self._send_request("POST", "/get_time_complexity_of_scope", data=data))
 
 
     def get_mistakes(self, scope):
         data = {"scope": scope}
-        return self._send_request("POST", "/get_mistakes_of_scope", data=data)
+        return transform_to_html_bold(self._send_request("POST", "/get_mistakes_of_scope", data=data))
     def get_required_test_types(self, scope):
         data = {"scope": scope}
-        return self._send_request("POST", "/get_required_test_types_of_scope", data=data)
+        return transform_to_html_bold(self._send_request("POST", "/get_required_test_types_of_scope", data=data))
     def get_security_analysis(self, scope):
         data = {"scope": scope}
-        return self._send_request("POST", "/get_security_analysis_of_scope", data=data)        
+        return transform_to_html_bold(self._send_request("POST", "/get_security_analysis_of_scope", data=data))
 
 
     def create_documentation(self, scope):
