@@ -27,6 +27,7 @@ urlpatterns = [
     path('enable_admin/<id>', views.enable_admin, name="enable_admin"),
     path('disable_admin/<id>', views.disable_admin, name="disable_admin"),
     path('community', views.community, name="community"),
+    path('ai', views.ai, name="ai"),
     path('notifications/', views.notifications, name="notifications"),
     path('notification_read/', views.notification_read_id, name="notification_read_id"),
     path('notification_read/<id>', views.notification_read_id, name="notification_read_id_sub"),
