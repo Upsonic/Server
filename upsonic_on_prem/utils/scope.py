@@ -191,7 +191,7 @@ class Scope:
         keys = storage_2.keys()
         scopes = []
         for i in keys:
-            if not ":" in i:
+            if not ":" in i and i != "":
                 scopes.append(i)
 
         scopes.sort()
