@@ -143,11 +143,18 @@ class API_Integration:
     @property
     def top_scopes(self):
         all_scopes = self.all_scopes
-        result = []
+        result_before = []
 
         for i in all_scopes:
             if "." in i:
-                result.append(i.split(".")[0])
+                result_before.append(i.split(".")[0])
+
+
+        result = []
+        for i in result_before:
+            if i != '':
+                result.append(i)
+        
 
         result = list(set(result))
         result.sort()
