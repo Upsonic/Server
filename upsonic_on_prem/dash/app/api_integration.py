@@ -38,8 +38,14 @@ def transform_to_html_bold(text):
 
             # Find the next occurrence
             start_idx = text.find('**', end_idx + 2)
+
+        if text.startswith("<br><br>"):
+            text = text[8:]            
     except:
         pass
+
+
+
     return text
 
 
@@ -430,3 +436,14 @@ class API_Integration:
         data = {"key": key}
         return self._send_request("POST", "/disable_admin", data=data)
 
+
+
+    def search_by_documentation(self, question):
+        data = {"question": question}
+        response = self._send_request("POST", "/search_by_documentation", data=data)
+        result = []
+        for i in response:
+            result.append([i[0], transform_to_html_bold(i[1]), i[2]])
+
+        return result
+    

@@ -219,3 +219,15 @@ class Scope:
 
 
 
+
+    @staticmethod
+    def get_all_scopes_with_documentation(user: AccessKey):
+        all_scopes = Scope.get_all_scopes_name(user)
+
+        result = []
+        for i in all_scopes:
+            the_scope = Scope(i)
+            element = {"name": i, "documentation": the_scope.documentation}
+            result.append(element)
+
+        return result

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+
+<div class="w-100 custom_right_side">
+
+    <form class="d-flex" role="search" action="{% url 'search' %}" method="post">
+        <input class="form-control me-2 search_bar" type="search" placeholder="Search" aria-label="Search" name="question">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+
+
+    {% if searched %}
+    <div class="custom_page_header_top_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Question: {{question}}</span></span>
+    </div>
+
+
+    {% for result in results %}
+
+    <div class="custom_page_header_top_margin">
+        <span class="custom_page_header_text"><a href="{% url 'control_library' id=result.0 %}">{{result.0}}</a></span>
+    </div>
+
+    <div class="custom_pharagraph_for_documentations">{{result.1|safe}}</div>
+    <div class="custom_pharagraph_for_documentations">Score: {{result.2}}</div>
+    
+
+    {% endfor %}
+
+
+    {% endif %}
+
+
+</div>
+
+
+{% endblock content %}

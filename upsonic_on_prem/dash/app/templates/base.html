@@ -72,6 +72,15 @@
 
     {% include 'sidebar.html' %}
 
+      {% if page_title == 'Search' %}
+      <script>
+      document.getElementById("header_search_div").style.display = "none";
+      </script>
+      {% else %}
+      <script>
+      document.getElementById("header_search_div").style.display = "block";
+      </script>      
+      {% endif %}
 
     {% block content %}{% endblock content %}
 

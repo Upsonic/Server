@@ -32,6 +32,21 @@
         </li>
 
 
+
+        <li class="nav-item custom_side_bar_flex_column_nav_item">
+            <a href="#" onclick="page_load('{% url 'search' %}');event.preventDefault();"
+               class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
+               aria-current="page">
+                {% if page_title == 'Search' %}
+                <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
+                {% endif %}
+                <img class="{% if page_title != 'Search' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
+                     src="/static/images/search{% if page_title == 'Search' %}_fill_dark{% endif %}.svg"/>
+            </a>
+            
+            <div class="custom_side_bar_flex_column_nav_item_down_text">Search</div>
+        </li>
+
         <li class="nav-item custom_side_bar_flex_column_nav_item">
             <a href="#" onclick="page_load('{% url 'ai' %}');event.preventDefault();"
                class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
@@ -43,7 +58,7 @@
                      src="/static/images/ai{% if page_title == 'AI' %}_fill_dark{% endif %}.svg"/>
             </a>
             
-            
+            <div class="custom_side_bar_flex_column_nav_item_down_text">Gemma</div>
         </li>
 
 
