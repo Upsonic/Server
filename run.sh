@@ -5,6 +5,7 @@ cd /app/On-Prem/
 ollama serve &
 sleep 30s
 ollama create gemma-2b-upsonic -f Modelfile
+ollama create nomic-embed-text-upsonic -f Modelfile_2
 
 python3 /app/On-Prem/ssl_setting.py
 

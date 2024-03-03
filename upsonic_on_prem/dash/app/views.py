@@ -386,3 +386,22 @@ def ai(request):
         "tasks": tasks,
     }
     return render(request, "templates/ai.html", data)
+
+
+@login_required
+def search(request):
+    if request.method == 'POST':
+        data = {
+            "page_title": "Search",
+            "results": API_Integration(request.user.access_key).search_by_documentation(request.POST.get("question")),
+            "question": request.POST.get("question"),
+            "searched": True,
+        }    
+        return render(request, "templates/search.html", data)
+
+    else:
+        data = {
+            "page_title": "Search",
+            "searched": False,
+        }
+        return render(request, "templates/search.html", data)
