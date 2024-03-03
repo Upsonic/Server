@@ -14,11 +14,46 @@ this_dir = os.path.dirname(os.path.abspath(__file__))
 
 import ollama
 
-
-
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.vectorstores import Chroma
 class AI_:
     def __init__(self):
         pass
+
+
+    def search_by_documentation(self, the_contents, question, min_score=500, how_many_result=10):
+
+        from langchain.docstore.document import Document
+
+        texts = []
+
+        for content in the_contents:
+            text = content["name"] + ":" + str(content["documentation"])
+            texts.append(Document(page_content=text, metadata={"name": content["name"]}))
+
+        oembed = OllamaEmbeddings(base_url="http://localhost:11434", model="nomic-embed-text-upsonic")
+        vectorstore = Chroma.from_documents(documents=texts, embedding=oembed)
+
+
+
+        docs = vectorstore.similarity_search_with_score(question, k=how_many_result)
+
+
+        results = []
+
+        for doc in docs:
+            if doc[1] < min_score:
+
+
+                doc = [doc[0].metadata["name"],doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
+                results.append(doc)
+
+        results = [list(t) for t in set(tuple(element) for element in results)]
+
+        return results
+
+
+
 
 
     def gemmma(self, input_text):

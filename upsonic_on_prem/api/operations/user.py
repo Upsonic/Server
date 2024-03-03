@@ -2,7 +2,7 @@ from upsonic_on_prem.api import app
 
 from upsonic_on_prem.api.urls import *
 
-from upsonic_on_prem.utils import storage, storage_2, AccessKey, Scope
+from upsonic_on_prem.utils import storage, storage_2, AccessKey, Scope, AI
 
 from flask import jsonify
 from flask import request
@@ -225,3 +225,20 @@ def dump_python_version():
 
     return jsonify({"status": True, "result": the_scope.set_python_version(python_version)})
 
+
+
+
+@app.route(search_by_documentation_url, methods=["POST"])
+def search_by_documentation():
+    question = request.form.get("question")
+    min_score = float(request.form.get("min_score", 600))
+    how_many_result = int(request.form.get("how_many_result", 10))
+
+    user = AccessKey(request.authorization.password)
+    scopes = Scope.get_all_scopes_with_documentation(user)
+    if len(scopes) == 0:
+        return jsonify({"status": False, "result": "No scope has documentation"})
+
+    results = AI.search_by_documentation(scopes, question, min_score, how_many_result)
+
+    return jsonify({"status": True, "result": results})

@@ -31,6 +31,7 @@ urlpatterns = [
     path('notifications/', views.notifications, name="notifications"),
     path('notification_read/', views.notification_read_id, name="notification_read_id"),
     path('notification_read/<id>', views.notification_read_id, name="notification_read_id_sub"),
+    path('search', views.search, name="search"),
     path('', RedirectView.as_view(url='/home', permanent=False), name='index')
 
 ]
