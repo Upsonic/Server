@@ -50,6 +50,8 @@ class AI_:
 
         results = [list(t) for t in set(tuple(element) for element in results)]
 
+        results = sorted(results, key=lambda x: x[2])
+
         return results
 
 
