@@ -391,10 +391,14 @@ def ai(request):
 @login_required
 def search(request):
     if request.method == 'POST':
+        min_score = float(request.POST.get("min_score", 500))
+        how_many_result = int(request.POST.get("how_many_result", 10))
         data = {
             "page_title": "Search",
-            "results": API_Integration(request.user.access_key).search_by_documentation(request.POST.get("question")),
+            "results": API_Integration(request.user.access_key).search_by_documentation(request.POST.get("question"), min_score, how_many_result),
             "question": request.POST.get("question"),
+            "min_score": min_score,
+            "how_many_result": how_many_result,
             "searched": True,
         }    
         return render(request, "templates/search.html", data)

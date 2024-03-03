@@ -10,6 +10,10 @@
 
     <form class="d-flex" role="search" action="{% url 'search' %}" method="post">
         <input class="form-control me-2 search_bar" type="search" placeholder="Search" aria-label="Search" name="question">
+        Minumum Score: 
+        <input class="form-control me-2 search_bar" placeholder="500" aria-label="Minumum Score" name="min_score" value="500">
+        How Many Result: 
+        <input class="form-control me-2 search_bar" placeholder="10" aria-label="How Many Result" name="how_many_result" value="10">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
 
@@ -18,6 +22,8 @@
     {% if searched %}
     <div class="custom_page_header_top_bottom_margin">
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Question: {{question}}</span></span>
+        <div class="custom_pharagraph_for_documentations">Minumum Score: {{min_score}}</div>
+        <div class="custom_pharagraph_for_documentations">How Many Result: {{how_many_result}}</div>
     </div>
 
 
