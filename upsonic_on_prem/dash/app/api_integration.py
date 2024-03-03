@@ -263,7 +263,10 @@ class API_Integration:
 
     def get_requirements(self, scope):
         data = {"scope": scope}
-        return self._send_request("POST", "/get_requirements_of_scope", data=data)
+        requirements = self._send_request("POST", "/get_requirements_of_scope", data=data)
+        if requirements is not None:
+            requirements.replace(",", "")
+        return requirements
     def get_python_version(self, scope):
         data = {"scope": scope}
         return self._send_request("POST", "/get_python_version_of_scope", data=data)    
