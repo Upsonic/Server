@@ -441,7 +441,7 @@ class API_Integration:
 
 
 
-    def search_by_documentation(self, question, min_score=500, how_many_result=10):
+    def search_by_documentation(self, question, min_score=0.5, how_many_result=10):
         data = {"question": question, "min_score": min_score, "how_many_result": how_many_result}
         response = self._send_request("POST", "/search_by_documentation", data=data)
         result = []
