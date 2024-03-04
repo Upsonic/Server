@@ -231,7 +231,7 @@ def dump_python_version():
 @app.route(search_by_documentation_url, methods=["POST"])
 def search_by_documentation():
     question = request.form.get("question")
-    min_score = float(request.form.get("min_score", 500))
+    min_score = float(request.form.get("min_score", 0.5))
     how_many_result = int(request.form.get("how_many_result", 10))
 
     user = AccessKey(request.authorization.password)
