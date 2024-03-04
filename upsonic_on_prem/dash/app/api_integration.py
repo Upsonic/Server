@@ -285,6 +285,9 @@ class API_Integration:
     def get_required_test_types(self, scope):
         data = {"scope": scope}
         return transform_to_html_bold(self._send_request("POST", "/get_required_test_types_of_scope", data=data))
+    def get_tags(self, scope):
+        data = {"scope": scope}
+        return transform_to_html_bold(self._send_request("POST", "/get_tags_of_scope", data=data))    
     def get_security_analysis(self, scope):
         data = {"scope": scope}
         return transform_to_html_bold(self._send_request("POST", "/get_security_analysis_of_scope", data=data))
@@ -313,6 +316,11 @@ class API_Integration:
         data = {"scope": scope}
         return self._send_request(
             "POST", "/create_required_test_types_of_scope", data=data
+        )
+    def create_tags(self, scope):
+        data = {"scope": scope}
+        return self._send_request(
+            "POST", "/create_tags_of_scope", data=data
         )
     def create_security_analysis(self, scope):
         data = {"scope": scope}

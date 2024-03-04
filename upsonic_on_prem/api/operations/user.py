@@ -86,6 +86,11 @@ def get_required_test_types_of_scope():
     return jsonify({"status": True, "result": Scope(scope).required_test_types})
 
 
+@app.route(get_tags_of_scope_url, methods=["POST"])
+def get_tags_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).tags})
+
 @app.route(get_security_analysis_of_scope_url, methods=["POST"])
 def get_security_analysis_of_scope():
     scope = request.form.get("scope")
@@ -126,6 +131,13 @@ def create_required_test_types_of_scope():
     scope = request.form.get("scope")
 
     return jsonify({"status": True, "result": Scope(scope).create_required_test_types()})
+
+
+@app.route(create_tags_of_scope_url, methods=["POST"])
+def create_tags_of_scope():
+    scope = request.form.get("scope")
+    return jsonify({"status": True, "result": Scope(scope).create_tags()})
+
 
 @app.route(create_security_analysis_of_scope_url, methods=["POST"])
 def create_security_analysis_of_scope():

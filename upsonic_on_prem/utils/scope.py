@@ -79,6 +79,11 @@ class Scope:
         return self.the_storage.get(self.key + ":required_test_types")
 
     @property
+    def tags(self):
+        return self.the_storage.get(self.key + ":tags")
+
+
+    @property
     def security_analysis(self):
         return self.the_storage.get(self.key + ":security_analysis")
 
@@ -99,6 +104,12 @@ class Scope:
     def create_required_test_types(self):
         document = AI.code_to_required_test_types(self.code)
         self.the_storage.set(self.key + ":required_test_types", document)
+
+
+    def create_tags(self):
+        document = AI.code_to_tags(self.code)
+        self.the_storage.set(self.key + ":tags", document)
+
 
     def create_security_analysis(self):
         document = AI.code_to_security_analysis(self.code)

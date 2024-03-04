@@ -30,7 +30,7 @@
     {% for result in results %}
 
     <div class="custom_page_header_top_margin">
-        <span class="custom_page_header_text"><a href="{% url 'control_library' id=result.0 %}">{{result.0}}</a></span>
+        <span class="custom_page_header_text"><a href="{% url 'control_element' id=result.0 %}">{{result.0}}</a></span>
     </div>
 
     <div class="custom_pharagraph_for_documentations">{{result.1|safe}}</div>
