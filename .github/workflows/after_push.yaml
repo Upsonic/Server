@@ -154,6 +154,8 @@ jobs:
           git fetch
           cd ..
           
+          mv On-Prem/upsonic_on_prem/utils/ai/models models
+
           docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile --push -t ghcr.io/upsonic/on-prem:latest -t ghcr.io/upsonic/on-prem:$VERSION \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .

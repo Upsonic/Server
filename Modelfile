@@ -1,1 +1,1 @@
-FROM ./upsonic_on_prem/utils/ai/google/gemma-2b/model.gguf
+FROM ./upsonic_on_prem/utils/ai/models/google/gemma-2b/model.gguf
