@@ -19,9 +19,12 @@ RUN pip3 install -r /requirements.txt
 
 
 COPY On-Prem On-Prem
+
 COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
 
 COPY On-Prem/run.sh /
+
+COPY models On-Prem/upsonic_on_prem/utils/ai/models
 
 WORKDIR /app/On-Prem
 
