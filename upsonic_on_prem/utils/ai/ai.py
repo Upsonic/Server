@@ -245,4 +245,50 @@ Note down list the types of tests you would run to ensure the function behaves a
         return result        
 
 
+
+
+
+    def code_to_tags(self, code):
+        input_text = f"""
+Your objective is to develop an automated system that can extract and generate informative tags based on the functionality and characteristics of the provided Python code snippets. The generated tags should succinctly summarize the key aspects and features of each code segment.
+
+Your system needs to analyze the code snippets and produce descriptive tags that capture the essence of the code's purpose and functionality. Consider elements like variable names, function calls, control flow structures, and any unique patterns present in the code to generate meaningful tags.
+
+**Example:**
+
+**Input:**
+```python
+def check_prime(number):
+    if number <= 1:
+        return False
+    for i in range(2, int(number ** 0.5) + 1):
+        if number % i == 0:
+            return False
+    return True
+```
+
+**Output:**
+Tags: 'prime numbers', 'number validation', 'loop iteration', 'mathematics'
+
+For this example, the generated tags highlight key concepts related to prime number checks, number validation, loop iteration, and mathematical operations within the code.
+
+Now, analyze the Python code snippet provided below and generate descriptive tags that encapsulate the primary functionalities and characteristics of the code:
+
+```python
+{code}
+```
+
+Produce meaningful tags that succinctly summarize the significant components and operations illustrated in the provided code snippet. Focus on extracting essential details from the code content to generate informative tags without diving into actual code generation.
+"""
+
+
+        result = self.gemmma(input_text)
+
+        return result        
+
+
+
+
+
+
 AI = AI_()

@@ -133,6 +133,11 @@ class AI_Task(models.Model):
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         the_thread.start()
         ai_threads.append(the_thread)
+    def tags_task(self):
+        the_func = API_Integration(self.access_key).create_tags
+        the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
+        the_thread.start()
+        ai_threads.append(the_thread)        
     def security_analysis_task(self):
         the_func = API_Integration(self.access_key).create_security_analysis
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
@@ -153,6 +158,8 @@ class AI_Task(models.Model):
             self.time_complexity_task()
         elif self.task_name == "required_test_types":
             self.required_test_types_task()
+        elif self.task_name == "tags":
+            self.tags_task()
         elif self.task_name == "security_analysis":
             self.security_analysis_task()
         else:
