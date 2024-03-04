@@ -80,9 +80,6 @@ class AI_:
         return results
 
 
-
-
-
     def gemmma(self, input_text):
         print("Gemma q:", input_text)
         response = ollama.chat(model='gemma-2b-upsonic', messages=[
