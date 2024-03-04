@@ -254,3 +254,11 @@ def search_by_documentation():
     results = AI.search_by_documentation(scopes, question, min_score, how_many_result)
 
     return jsonify({"status": True, "result": results})
+
+
+
+
+@app.route(ai_completion_url, methods=["POST"])
+def ai_completion():
+    message = request.form.get("message")
+    return jsonify({"status": True, "result": AI.gemma(message)})
