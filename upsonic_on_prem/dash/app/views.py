@@ -234,6 +234,17 @@ def control_element(request, id):
         required_test_types = "Required Test Types are generating, it will be ready soon."
 
 
+
+    tags = API_Integration(request.user.access_key).get_tags(id)
+    if tags == None and write_right:
+
+        tasks = models.AI_Task.objects.filter(task_name="tags", key=id, status=False)
+        if len(tasks) == 0:
+            models.AI_Task(task_name="tags", key=id, access_key=request.user.access_key, owner=request.user).save()
+        tags = "Tags are generating, it will be ready soon."
+
+
+
     security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
     if security_analysis == None and write_right:
         tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=id, status=False)
@@ -263,6 +274,7 @@ def control_element(request, id):
         "time_complexity": time_complexity,
         "mistakes": mistakes,
         "required_test_types": required_test_types,
+        "tags": tags,
         "security_analysis": security_analysis,
         "requirements": requirements,
         "type": capitalize_first_letter(the_type),
