@@ -82,12 +82,7 @@ class AI_:
 
     def gemmma(self, input_text):
         print("Gemma q:", input_text)
-        response = ollama.chat(model='gemma-2b-upsonic', messages=[
-        {
-            'role': 'user',
-            'content': input_text,
-        },
-        ])
+        response = ollama.generate(model='gemma-2b-upsonic', prompt=input_text)
         result = response['message']['content']
         print("Gemma r:", result)
 
