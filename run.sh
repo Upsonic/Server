@@ -4,6 +4,7 @@ chown -R redis:redis /db
 cd /app/On-Prem/
 ollama serve &
 sleep 30s
+python3 ollama_setting.py
 ollama create gemma-2b-upsonic -f Modelfile
 ollama create nomic-embed-text-upsonic -f Modelfile_2
 
