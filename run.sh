@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+chown -R redis:redis /db
 cd /app/On-Prem/
 ollama serve &
 sleep 30s

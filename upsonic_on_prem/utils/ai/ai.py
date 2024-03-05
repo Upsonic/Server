@@ -41,22 +41,22 @@ class AI_:
         oembed = OllamaEmbeddings(base_url="http://localhost:11434", model="nomic-embed-text-upsonic")
 
 
-        if not os.path.exists("/var/lib/redis/embed_by_documents"):
-            os.makedirs("/var/lib/redis/embed_by_documents")
+        if not os.path.exists("/db/embed_by_documents"):
+            os.makedirs("/db/embed_by_documents")
 
         pass_generate = False
 
-        if not os.path.exists("/var/lib/redis/embed_by_documents/chroma.sqlite3"):
-            vectorstore = Chroma.from_documents(documents=texts, embedding=oembed, persist_directory="/var/lib/redis/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
+        if not os.path.exists("/db/embed_by_documents/chroma.sqlite3"):
+            vectorstore = Chroma.from_documents(documents=texts, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
             storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
             pass_generate = True
 
 
 
-        vectorstore = Chroma(persist_directory="/var/lib/redis/embed_by_documents", embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
+        vectorstore = Chroma(persist_directory="/db/embed_by_documents", embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
 
         if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(":embed_by_documents_salt") and not pass_generate:
-            vectorstore = Chroma.from_documents(documents=texts, embedding=oembed, persist_directory="/var/lib/redis/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
+            vectorstore = Chroma.from_documents(documents=texts, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
             storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
         
 

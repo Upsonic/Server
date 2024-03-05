@@ -3,6 +3,7 @@ FROM ubuntu
 LABEL org.opencontainers.image.source https://github.com/Upsonic/On-Prem
 
 RUN mkdir /app
+RUN mkdir /db
 
 RUN apt-get update
 RUN apt-get install python3 python3-pip -y

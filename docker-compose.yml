@@ -7,7 +7,7 @@ services:
       - network
     image: ghcr.io/upsonic/on-prem:latest
     volumes:
-      - 'On_Prem_Volume:/var/lib/redis'
+      - 'On_Prem_Volume:/db'
     env_file:
       - stack.env
     healthcheck:

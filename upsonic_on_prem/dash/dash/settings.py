@@ -46,14 +46,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-# Write a function that generates a secret key and storing in /var/lib/redis/dash.secret and if it exists, read it from there
+# Write a function that generates a secret key and storing in /db/dash.secret and if it exists, read it from there
 # If it does not exist, generate a new one and store it there
 
-if os.path.exists("/var/lib/redis/dash.secret"):
-    with open("/var/lib/redis/dash.secret", "r") as file:
+if os.path.exists("/db/dash.secret"):
+    with open("/db/dash.secret", "r") as file:
         SECRET_KEY = file.readlines()[0]
 else:
-    with open("/var/lib/redis/dash.secret", "w") as file:
+    with open("/db/dash.secret", "w") as file:
         SECRET_KEY = get_random_secret_key()
         file.write(SECRET_KEY)
 
@@ -134,7 +134,7 @@ WSGI_APPLICATION = "dash.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "/var/lib/redis/dash.sqlite3",
+        "NAME": "/db/dash.sqlite3",
     }
 }
 
