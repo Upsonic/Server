@@ -28,9 +28,8 @@ class redis_client_():
         return condition_1 and condition_2
 
     def total_size(self):
-        # Calculate the size of /var/lib/redis/ folder
         total_size = 0
-        for dirpath, dirnames, filenames in os.walk("/var/lib/redis/"):
+        for dirpath, dirnames, filenames in os.walk("/db/"):
             for f in filenames:
                 fp = os.path.join(dirpath, f)
                 total_size += os.path.getsize(fp)
@@ -97,7 +96,7 @@ class redis_config:
                 
                     f.write(f"dbfilename storage.rdb\n")
 
-                    f.write(f"dir /var/lib/redis/\n")
+                    f.write(f"dir /db/\n")
       
                     f.write(f"requirepass {self.password}\n")
                     
