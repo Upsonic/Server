@@ -83,7 +83,7 @@ class AI_:
     def gemmma(self, input_text):
         print("Gemma q:", input_text)
         response = ollama.generate(model='gemma-2b-upsonic', prompt=input_text)
-        result = response['message']['content']
+        result = response['response']
         print("Gemma r:", result)
 
         return result
