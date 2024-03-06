@@ -453,8 +453,10 @@ class API_Integration:
         data = {"question": question, "min_score": min_score, "how_many_result": how_many_result}
         response = self._send_request("POST", "/search_by_documentation", data=data)
         result = []
-        for i in response:
-            result.append([i[0], transform_to_html_bold(i[1]), i[2]])
-
+        try:
+            for i in response:
+                result.append([i[0], transform_to_html_bold(i[1]), i[2]])
+        except:
+            pass
         return result
     
