@@ -27,56 +27,74 @@ class AI_:
     
 
     def search_by_documentation(self, the_contents, question, min_score=0.5, how_many_result=10):
+        try:
+            from langchain.docstore.document import Document
 
-        from langchain.docstore.document import Document
+            texts = []
+            ids = []
+            for content in the_contents:
+                text = content["name"] + ":" + str(content["documentation"])
+                ids.append(content["name"])
+                texts.append(Document(page_content=text, metadata={"name": content["name"]}))
 
-        texts = []
+            text_salt = " ".join([text.page_content for text in texts])
 
-        for content in the_contents:
-            text = content["name"] + ":" + str(content["documentation"])
-            texts.append(Document(page_content=text, metadata={"name": content["name"]}))
-
-        text_salt = " ".join([text.page_content for text in texts])
-
-        oembed = OllamaEmbeddings(base_url="http://localhost:11434", model="nomic-embed-text-upsonic")
-
-
-        if not os.path.exists("/db/embed_by_documents"):
-            os.makedirs("/db/embed_by_documents")
-
-        pass_generate = False
-
-        if not os.path.exists("/db/embed_by_documents/chroma.sqlite3"):
-            vectorstore = Chroma.from_documents(documents=texts, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
-            storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
-            pass_generate = True
+            oembed = OllamaEmbeddings(base_url="http://localhost:11434", model="nomic-embed-text-upsonic")
 
 
+            if not os.path.exists("/db/embed_by_documents"):
+                os.makedirs("/db/embed_by_documents")
 
-        vectorstore = Chroma(persist_directory="/db/embed_by_documents", embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
+            pass_generate = False
 
-        if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(":embed_by_documents_salt") and not pass_generate:
-            vectorstore = Chroma.from_documents(documents=texts, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
-            storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
-        
-
-
-        docs = vectorstore.similarity_search_with_relevance_scores(question, k=how_many_result)
-
-
-        results = []
-
-        for doc in docs:
-            if doc[1] >= min_score:
+            if not os.path.exists("/db/embed_by_documents/chroma.sqlite3"):
+                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
+                storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
+                pass_generate = True
 
 
-                doc = [doc[0].metadata["name"],doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
-                results.append(doc)
 
-        results = [list(t) for t in set(tuple(element) for element in results)]
+            vectorstore = Chroma(persist_directory="/db/embed_by_documents", embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
 
-        results = sorted(results, key=lambda x: x[2], reverse=True)
+            if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(":embed_by_documents_salt") and not pass_generate:
+                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
+                storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
+                
+                currently_docs = vectorstore._collection.get().documents
 
+                for doc in currently_docs:
+                    if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
+                        vectorstore._collection.remove(doc.metadata["name"])
+                    else:
+                        new_doc = None
+                        for text in texts:
+                            if doc.metadata["name"] == text.metadata["name"]:
+                                new_doc = text
+
+                        if new_doc != None:
+                            if doc.page_content != new_doc.page_content:
+                                vectorstore.update_document(new_doc.metadata["name"], new_doc)
+
+            
+
+
+            docs = vectorstore.similarity_search_with_relevance_scores(question, k=how_many_result)
+
+
+            results = []
+
+            for doc in docs:
+                if doc[1] >= min_score:
+
+
+                    doc = [doc[0].metadata["name"],doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
+                    results.append(doc)
+
+            results = [list(t) for t in set(tuple(element) for element in results)]
+
+            results = sorted(results, key=lambda x: x[2], reverse=True)
+        except:
+            results = []
         return results
 
 
