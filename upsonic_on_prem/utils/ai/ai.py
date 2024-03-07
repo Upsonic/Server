@@ -4,6 +4,7 @@ import os
 
 from dotenv import load_dotenv
 import requests
+from upsonic_on_prem.utils.logs import debug, info, warning, failed, successfully
 
 load_dotenv(dotenv_path=".env")
 
@@ -32,6 +33,7 @@ class AI_:
     
 
     def search_by_documentation(self, the_contents, question, min_score=0.5, how_many_result=10):
+        info("Starting documentation search.")
         try:
             from langchain.docstore.document import Document
 
@@ -107,12 +109,15 @@ class AI_:
 
             results = sorted(results, key=lambda x: x[2], reverse=True)
         except:
+            failed("Error during completion operation.")
             traceback.print_exc()
             results = []
+        successfully("Completion operation completed successfully.")
         return results
 
 
     def completion(self, input_text, model):
+        info(f"Starting completion with model: {model}.")
         result = None
         if model == "gemma-2b":
             result = self.gemmma(input_text)
@@ -159,6 +164,7 @@ class AI_:
 
 
     def code_to_time_complexity(self, code):
+        info("Starting code to time complexity analysis.")
         input_text = f"""
 In this task, your goal is to generate the time complexity of a given piece of Python code. The complexity should be expressed in Big-O notation which describes the worst-case scenario in terms of time complexity. The time complexity would describe how the runtime of the code scales with the size of its input. Here's an example:
 
@@ -183,9 +189,11 @@ Consider loops, recursive calls, and other structures that might affect the scal
 
 
         result = self.default_completion(input_text)
+        successfully("Code to time complexity analysis completed successfully.")
         return result
 
     def code_to_documentation(self, code):
+        info("Starting code to documentation generation.")
         input_text = f"""
 The task is to generate a summary of a given piece of Python code. The summary should explain the purpose of the code, the input variables and the operation it performs. High level understanding of the logic behind the code should also be provided. The code for analysis will be provided as input in string format. Here's an example:
 
@@ -211,10 +219,12 @@ And now make a summary for this code:
 
 
         result = self.default_completion(input_text)
+        successfully("Code to documentation generation completed successfully.")
         return result
 
 
     def code_to_mistakes(self, code):
+        info("Starting code to mistakes identification.")
 
         input_text = f"""
 In this task, your goal is to identify and describe potential mistakes, including syntax errors and logical errors, in a given Python code. You should provide suggestions on how to fix these errors when possible. Here's an example:
@@ -241,11 +251,14 @@ Note: Please identify and describe the errors in a clear and informative manner.
 
 
         result = self.default_completion(input_text)
+        successfully("Code to mistakes identification completed successfully.")
+        successfully("Code to security analysis completed successfully.")
         return result
 
 
 
     def code_to_security_analysis(self, code):
+        info("Starting code to security analysis.")
 
         input_text = f"""
 In this task, you're required to conduct a security analysis of the provided Python code snippet. It requires you to find potential security risks, pitfalls or weak practices from a security perspective and propose enhancements to address them.
@@ -273,6 +286,7 @@ In your response, give a clear outline of potential security issues present and 
 
 
     def code_to_required_test_types(self, code):
+        info("Starting code to required test types analysis.")
         input_text = f"""
 In this task, you're asked to critically evaluate the Python code provided below from a testing perspective. You're expected to identify the critical sections which would require testing, recommend types of tests (unit tests, functional tests, integration tests, etc.) that would be appropriate, and highlight any potential edge cases that need to be addressed.
 
@@ -303,6 +317,7 @@ Note down list the types of tests you would run to ensure the function behaves a
 
 
         result = self.default_completion(input_text)
+        successfully("Code to required test types analysis completed successfully.")
         return result        
 
 
@@ -310,6 +325,7 @@ Note down list the types of tests you would run to ensure the function behaves a
 
 
     def code_to_tags(self, code):
+        info("Starting code to tags generation.")
         input_text = f"""
 Your objective is to develop an automated system that can extract and generate informative tags based on the functionality and characteristics of the provided Python code snippets. The generated tags should succinctly summarize the key aspects and features of each code segment.
 
@@ -345,6 +361,7 @@ Produce meaningful tags that succinctly summarize the significant components and
 
         result = self.default_completion(input_text)
 
+        successfully("Code to tags generation completed successfully.")
         return result        
 
 
