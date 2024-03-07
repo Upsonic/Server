@@ -29,6 +29,23 @@
         </tbody>
     </table>
 
+    <form method="POST" action=".">
+        {% csrf_token %}
+        <div>
+            <label for="ai_input">AI Input:</label>
+            <input type="text" id="ai_input" name="ai_input" required>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    {% if result %}
+        <div>
+            <strong>Result:</strong> {{ result }}
+        </div>
+    {% endif %}
+
 
 
 </div>
