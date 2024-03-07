@@ -28,6 +28,7 @@ jobs:
       run: |
         sudo mkdir /db
         sudo apt-get install redis-server
+        sudo chown -R redis:redis /db
         sudo python -m pip install --upgrade pip
         sudo pip install pytest 
         sudo pip install coverage
