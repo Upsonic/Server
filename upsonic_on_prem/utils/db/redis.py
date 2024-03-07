@@ -138,7 +138,7 @@ Alias=redis.service
 """)
             
 
-
+        os.system("systemctl daemon-reload")
 
         conf = "/etc/redis/redis.conf"
         with open(conf, "w") as f:
