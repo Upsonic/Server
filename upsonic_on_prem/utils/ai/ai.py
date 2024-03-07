@@ -24,6 +24,8 @@ from upsonic_on_prem.utils import debug, info, warning, failed, successfully
 import traceback
 from openai import OpenAI
 
+from upsonic_on_prem.utils.logs import info, warning, failed, successfully
+
 class AI_:
     def __init__(self):
         pass
@@ -108,6 +110,7 @@ class AI_:
             results = sorted(results, key=lambda x: x[2], reverse=True)
         except:
             traceback.print_exc()
+            failed("Failed during completion operation.")
             results = []
         return results
 
