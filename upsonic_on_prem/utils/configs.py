@@ -72,7 +72,10 @@ redis_port = os.environ.get("redis_port", 6379)
 
 admin_key = os.environ.get("admin_key")
 
-debugging = os.environ.get("debugging", "false").lower() == "true"
+debugging = os.environ.get("debug", "false").lower() == "true"
 
 sentry = os.environ.get("sentry", "false").lower() == "true"
 sentry_flask_key = os.environ.get("sentry_flask_key", "https://557ac9191a887032087e4054dda517c4@o4506678585786368.ingest.sentry.io/4506678591225856")
+
+betterstack = os.environ.get("betterstack", "false").lower() == "true"
+betterstack_flask_key = os.environ.get("betterstack_flask_key", "HyjgwPt5AAiPWxEUqDL49151")
