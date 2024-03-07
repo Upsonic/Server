@@ -29,6 +29,13 @@
         </tbody>
     </table>
 
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="ai_input" placeholder="Enter AI Task Data">
+        <button type="submit">Submit</button>
+    </form>
+    <p id="ai_result">{{ result }}</p>
+
 
 
 </div>
