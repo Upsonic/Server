@@ -32,6 +32,7 @@ class AI_:
     
 
     def search_by_documentation(self, the_contents, question, min_score=0.5, how_many_result=10):
+        info(f"Searching by documentation for {question}")
         try:
             from langchain.docstore.document import Document
 
@@ -48,35 +49,40 @@ class AI_:
 
 
             if not os.path.exists("/db/embed_by_documents"):
+                debug("Creating /db/embed_by_documents")
                 os.makedirs("/db/embed_by_documents")
 
             pass_generate = False
 
             if not os.path.exists("/db/embed_by_documents/chroma.sqlite3"):
+                debug("Generating new vectorstore")
                 vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
                 storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
                 pass_generate = True
+                debug("Generated new vectorstore")
 
 
 
             vectorstore = Chroma(persist_directory="/db/embed_by_documents", embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
 
             if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(":embed_by_documents_salt") and not pass_generate:
+                debug("Regenerating vectorstore")
                 vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
                 storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
+                debug("Regenerated vectorstore")
                 
             currenly_get = vectorstore._collection.get()
-            print(currenly_get)
+    
             currently_docs = []
             for doc in currenly_get["documents"]:
                 index_number = currenly_get["documents"].index(doc)
                 data = {"page_content": doc, "metadata": currenly_get["metadatas"][index_number]}
                 currently_docs.append(Document(page_content=data["page_content"], metadata=data["metadata"]))
-            print(currently_docs)
+    
             for doc in currently_docs:
-                    print("Doc", doc)
+                    
                     if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
-                        print("Removing", doc.metadata["name"])
+                        debug(f"Removing {doc.metadata["name"]}")
                         vectorstore._collection.delete([doc.metadata["name"]])
                     else:
                         new_doc = None
@@ -86,28 +92,29 @@ class AI_:
 
                         if new_doc != None:
                             if doc.page_content != new_doc.page_content:
+                                debug(f"Updating {doc.metadata["name"]}")
                                 vectorstore.update_document(new_doc.metadata["name"], new_doc)
 
             
 
 
             docs = vectorstore.similarity_search_with_relevance_scores(question, k=how_many_result)
-
+            debug(f"Found {len(docs)} results")
 
             results = []
 
             for doc in docs:
                 if doc[1] >= min_score:
-
-
                     doc = [doc[0].metadata["name"],doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
                     results.append(doc)
 
             results = [list(t) for t in set(tuple(element) for element in results)]
 
+            info(f"Returning {len(results)} results")
             results = sorted(results, key=lambda x: x[2], reverse=True)
         except:
             traceback.print_exc()
+            failed("Failed to search by documentation")
             results = []
         return results
 
