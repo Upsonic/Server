@@ -289,7 +289,12 @@ def regenerate_documentation(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
     request.user.notify("Documentation is Generating", f"Documentation for {id} is generating, it will be ready soon.")
-    API_Integration(request.user.access_key).create_documentation(id)
+    models.AI_Task(task_name="documentation", key=id, access_key=request.user.access_key, owner=request.user).save()
+    models.AI_Task(task_name="time_complexity", key=id, access_key=request.user.access_key, owner=request.user).save()
+    models.AI_Task(task_name="mistakes", key=id, access_key=request.user.access_key, owner=request.user).save()
+    models.AI_Task(task_name="required_test_types", key=id, access_key=request.user.access_key, owner=request.user).save()
+    models.AI_Task(task_name="tags", key=id, access_key=request.user.access_key, owner=request.user).save()
+    models.AI_Task(task_name="security_analysis", key=id, access_key=request.user.access_key, owner=request.user).save()
     request.user.notify("Documentation Generated", f"Documentation for {id} is generated, you can access it now.")
     return redirect(to='control_element', id=id)
 
