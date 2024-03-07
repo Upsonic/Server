@@ -19,6 +19,8 @@ from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.utils import storage
 
+import traceback
+
 class AI_:
     def __init__(self):
         pass
@@ -60,11 +62,19 @@ class AI_:
                 vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
                 storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
                 
-                currently_docs = vectorstore._collection.get().documents
-
-                for doc in currently_docs:
+            currenly_get = vectorstore._collection.get()
+            print(currenly_get)
+            currently_docs = []
+            for doc in currenly_get["documents"]:
+                index_number = currenly_get["documents"].index(doc)
+                data = {"page_content": doc, "metadata": currenly_get["metadatas"][index_number]}
+                currently_docs.append(Document(page_content=data["page_content"], metadata=data["metadata"]))
+            print(currently_docs)
+            for doc in currently_docs:
+                    print("Doc", doc)
                     if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
-                        vectorstore._collection.remove(doc.metadata["name"])
+                        print("Removing", doc.metadata["name"])
+                        vectorstore._collection.delete([doc.metadata["name"]])
                     else:
                         new_doc = None
                         for text in texts:
@@ -94,6 +104,7 @@ class AI_:
 
             results = sorted(results, key=lambda x: x[2], reverse=True)
         except:
+            traceback.print_exc()
             results = []
         return results
 
