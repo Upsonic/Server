@@ -82,7 +82,8 @@ class AI_:
             for doc in currently_docs:
                     
                     if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
-                        debug(f"Removing {doc.metadata["name"]}")
+                        _name = doc.metadata["name"]
+                        debug(f"Removing {_name}")
                         vectorstore._collection.delete([doc.metadata["name"]])
                     else:
                         new_doc = None
@@ -92,7 +93,8 @@ class AI_:
 
                         if new_doc != None:
                             if doc.page_content != new_doc.page_content:
-                                debug(f"Updating {doc.metadata["name"]}")
+                                _name = doc.metadata["name"]
+                                debug(f"Updating {_name}")
                                 vectorstore.update_document(new_doc.metadata["name"], new_doc)
 
             
