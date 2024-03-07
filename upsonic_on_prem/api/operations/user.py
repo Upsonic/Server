@@ -261,4 +261,5 @@ def search_by_documentation():
 @app.route(ai_completion_url, methods=["POST"])
 def ai_completion():
     message = request.form.get("message")
-    return jsonify({"status": True, "result": AI.gemmma(message)})
+    model = request.form.get("model", "gemma-2b")
+    return jsonify({"status": True, "result": AI.completion(message, model)})

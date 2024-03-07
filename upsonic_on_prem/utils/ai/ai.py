@@ -20,6 +20,7 @@ from langchain_community.vectorstores import Chroma
 from upsonic_on_prem.utils import storage
 
 import traceback
+from openai import OpenAI
 
 class AI_:
     def __init__(self):
@@ -107,6 +108,36 @@ class AI_:
             traceback.print_exc()
             results = []
         return results
+
+
+    def completion(self, input_text, model):
+        result = None
+        if model == "gemma-2b":
+            result = self.gemmma(input_text)
+        elif model == "gpt-3.5-turbo":
+            result = self.gpt(input_text, model=model)
+        elif model == "gpt-4":
+            result = self.gpt(input_text, model=model)            
+        return result
+
+
+    def gpt(self, input_text, model):
+        client = OpenAI(
+            # This is the default and can be omitted
+            api_key=os.environ.get("OPENAI_API_KEY"),
+        )
+
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": input_text,
+                }
+            ],
+            model=model,
+        )
+
+        return chat_completion.choices[0].message.content
 
 
     def gemmma(self, input_text):
