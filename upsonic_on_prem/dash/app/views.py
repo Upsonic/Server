@@ -393,16 +393,25 @@ def profile(request):
 
 @login_required
 def ai(request):
+    if request.method == "POST":
+        ai_input = request.POST.get('ai_input')
+        # Placeholder for AI task processing logic
+        # result = process_ai_task(ai_input)
+        result = "Result of AI processing for " + ai_input  # Placeholder result
+        tasks = []  # Existing logic for tasks after processing
+    else:
+        result = None  # Ensure result is None if not a POST request
+        tasks = []  # Existing tasks population logic
     the_list = models.AI_Task.objects.filter(status=False)
-    tasks = []
     for task in the_list:
         if request.user.can_read(task.key):
             tasks.append(task)
     data = {
         "page_title": "AI",
         "tasks": tasks,
+        "result": result,  # Add result to context
     }
-    return render(request, "templates/ai.html", data)
+    return render(request, 'templates/ai.html', data)
 
 
 @login_required
