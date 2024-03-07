@@ -7,6 +7,7 @@ from app.api_integration import API_Integration
 from app import models
 
 from app import forms
+from upsonic_on_prem.utils.ai.ai import AI_
 
 # Create your views here.
 @login_required
@@ -394,11 +395,10 @@ def profile(request):
 @login_required
 def ai(request):
     result = None
+    ai_instance = AI_()
     if request.method == "POST":
-        # Placeholder for AI calculation process
         input_data = request.POST.get("ai_input")
-        # Assuming 'ai_calculate' is a function that does the calculation
-        result = "Placeholder result for " + input_data
+        result = ai_instance.completion(input_data, "gpt-3.5-turbo")
 
     the_list = models.AI_Task.objects.filter(status=False)
     tasks = []
