@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 import os
 from cryptography.fernet import Fernet
 
+import traceback
 
 load_dotenv(dotenv_path=".env")
 
@@ -42,7 +43,7 @@ def transform_to_html_bold(text):
         if text.startswith("<br><br>"):
             text = text[8:]            
     except:
-        pass
+        traceback.print_exc()
 
 
 
@@ -457,6 +458,6 @@ class API_Integration:
             for i in response:
                 result.append([i[0], transform_to_html_bold(i[1]), i[2]])
         except:
-            pass
+            traceback.print_exc()
         return result
     
