@@ -121,6 +121,13 @@ class AI_:
         return result
 
 
+    def default_completion(self, input_text):
+        default_model = os.environ.get("DEFAULT_MODEL", "gemma-2b")
+        return self.completion(input_text, default_model)
+
+
+
+
     def gpt(self, input_text, model):
         client = OpenAI(
             # This is the default and can be omitted
@@ -173,7 +180,7 @@ Consider loops, recursive calls, and other structures that might affect the scal
 """
 
 
-        result = self.gemmma(input_text)
+        result = self.default_completion(input_text)
         return result
 
     def code_to_documentation(self, code):
@@ -201,7 +208,7 @@ And now make a summary for this code:
 """
 
 
-        result = self.gemmma(input_text)
+        result = self.default_completion(input_text)
         return result
 
 
@@ -231,7 +238,7 @@ Note: Please identify and describe the errors in a clear and informative manner.
 """
 
 
-        result = self.gemmma(input_text)
+        result = self.default_completion(input_text)
         return result
 
 
@@ -259,7 +266,7 @@ In your response, give a clear outline of potential security issues present and 
 """
 
 
-        result = self.gemmma(input_text)
+        result = self.default_completion(input_text)
         return result
 
 
@@ -293,7 +300,7 @@ Note down list the types of tests you would run to ensure the function behaves a
 """
 
 
-        result = self.gemmma(input_text)
+        result = self.default_completion(input_text)
         return result        
 
 
@@ -334,7 +341,7 @@ Produce meaningful tags that succinctly summarize the significant components and
 """
 
 
-        result = self.gemmma(input_text)
+        result = self.default_completion(input_text)
 
         return result        
 
