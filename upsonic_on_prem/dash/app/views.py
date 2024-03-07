@@ -393,6 +393,13 @@ def profile(request):
 
 @login_required
 def ai(request):
+    result = None
+    if request.method == "POST":
+        # Placeholder for AI calculation process
+        input_data = request.POST.get("ai_input")
+        # Assuming 'ai_calculate' is a function that does the calculation
+        result = "Placeholder result for " + input_data
+
     the_list = models.AI_Task.objects.filter(status=False)
     tasks = []
     for task in the_list:
@@ -401,6 +408,7 @@ def ai(request):
     data = {
         "page_title": "AI",
         "tasks": tasks,
+        "result": result,
     }
     return render(request, "templates/ai.html", data)
 
