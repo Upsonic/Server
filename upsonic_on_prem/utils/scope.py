@@ -238,7 +238,7 @@ class Scope:
         result = []
         for i in all_scopes:
             the_scope = Scope(i)
-            element = {"name": i, "documentation": the_scope.documentation}
+            element = {"name": i, "documentation": str(the_scope.documentation) + " " + str(the_scope.tags)}
             result.append(element)
 
         return result
