@@ -1,1 +1,3 @@
 FROM ./upsonic_on_prem/utils/ai/models/nomic-ai/nomic-embed-text/model.gguf
+PARAMETER num_ctx 8192
+TEMPLATE """{{ .Prompt }}"""
