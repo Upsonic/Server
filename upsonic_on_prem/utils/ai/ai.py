@@ -123,6 +123,10 @@ class AI_:
 
     def completion(self, input_text, model):
         result = None
+        self.model_call_counter[model] = self.model_call_counter.get(model, 0) + 1
+        call_count = self.model_call_counter[model]
+        if call_count % 10 == 0:
+            debug(f"Model {model} has been called {call_count} times.")
         if model == "gemma-2b":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
@@ -360,5 +364,7 @@ Produce meaningful tags that succinctly summarize the significant components and
 
 
 
+
+    model_call_counter = {}
 
 AI = AI_()
