@@ -29,6 +29,8 @@ class Scope:
         self.the_storage.delete(self.key)
         for i in self.dump_history:
             storage_3.delete(i)
+        for i in self.version_history:
+            storage_3.delete(i)            
         self.the_storage.delete(self.key + ":dump_history")
         self.the_storage.delete(self.key + ":documentation")
         self.the_storage.delete(self.key + ":time_complexity")
