@@ -38,6 +38,7 @@ class Scope:
         self.the_storage.delete(self.key + ":security_analysis")
         self.the_storage.delete(self.key + ":code")
         self.the_storage.delete(self.key + ":requirements")
+        self.the_storage.delete(self.key + ":version_history")
         self.the_storage.delete(self.key + ":python_version")
 
     @property
