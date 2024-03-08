@@ -18,7 +18,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.utils import storage
-from upsonic_on_prem.utils.scope import storage_3
+from upsonic_on_prem.utils.scope import storage_4
 
 from upsonic_on_prem.utils import debug, info, warning, failed, successfully
 
@@ -132,7 +132,7 @@ class AI_:
             if call_count % 10 == 0:
                 debug(f"Model {model} has been called {call_count} times.")
             
-            storage_3.set("ai_model_call_counts", json.dumps(self.model_call_counter))
+            storage_4.set("ai_model_call_counts", json.dumps(self.model_call_counter))
         except Exception as e:
             debug(f"Failed to persist model call counts: {str(e)}")
         if call_count % 10 == 0:
