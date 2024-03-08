@@ -89,7 +89,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "app"
+    "app",
+    'pwa'
 ]
 
 MIDDLEWARE = [
@@ -239,3 +240,37 @@ if betterstack:
             },
         },
     }
+
+
+
+
+
+PWA_APP_NAME = "Upsonic"
+PWA_APP_DESCRIPTION = "Self-Driven Autonomous Python Libraries"
+PWA_APP_THEME_COLOR = "#007bff"
+PWA_APP_BACKGROUND_COLOR = "#ffffff"
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'portrait'
+PWA_APP_START_URL = '/'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/images/favicon.png',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/images/favicon.png',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+PWA_APP_SHORTCUTS = [
+    {
+        'name': 'Libraries',
+        'url': '/libraries',
+        'description': 'View all libraries'
+    },    
+]
