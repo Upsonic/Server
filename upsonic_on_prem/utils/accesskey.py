@@ -4,6 +4,7 @@ import redis
 import random
 import os
 import traceback
+from copy import deepcopy
 
 
 from upsonic_on_prem.utils import storage
@@ -13,6 +14,7 @@ from upsonic_on_prem.utils.configs import admin_key
 class AccessKey:
     def __init__(self, key):
         self.key = key
+        self.notes = []
 
     def set_robust(self, robust):
         return self._set(self.key + ":robust", robust)
@@ -179,6 +181,22 @@ class AccessKey:
         self._delete(self.key + ":enable")
         self._delete(self.key + ":robust")
         self._delete(self.key + ":events")
+
+    def add_note(self, scope, note):
+        for note_dict in self.notes:
+            if note_dict['scope'] == scope:
+                note_dict['note'] = note
+                return
+        self.notes.append({'scope': scope, 'note': note})
+
+    def get_notes(self):
+        return deepcopy(self.notes)
+
+    def remove_note_by_scope(self, scope):
+        self.notes = [note for note in self.notes if note['scope'] != scope]
+
+    def clear_notes(self):
+        self.notes = []
 
 
     
