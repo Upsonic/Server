@@ -15,7 +15,7 @@ RUN apt-get install curl -y
 WORKDIR /app/
 
 COPY On-Prem/requirements.txt /requirements.txt
-COPY on-Prem/ollama_install.sh /ollama_install.sh
+COPY On-Prem/ollama_install.sh /ollama_install.sh
 RUN pip3 install -r /requirements.txt
 RUN sh /ollama_install.sh
 
