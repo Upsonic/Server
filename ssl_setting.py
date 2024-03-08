@@ -1,6 +1,7 @@
 import os
 import requests
 import subprocess
+from os import getenv
 
 # Checks if there is an active internet connection
 # Returns True if connected, False otherwise
@@ -25,7 +26,7 @@ def install_letsencrypt():
 ssl_cert_path = "/db/upsonic.origin.pem"
 ssl_key_path = "/db/upsonic.private.pem"
 
-domain_name = "www.upsonic.co"  # Domain name for certificate generation
+domain_name = getenv("DOMAIN_NAME", "www.upsonic.co") if is_internet_on() else "www.upsonic.co"  # Domain name for certificate generation
 
 if is_internet_on():
     install_letsencrypt()
