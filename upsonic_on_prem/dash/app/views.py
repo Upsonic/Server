@@ -7,7 +7,7 @@ from app.api_integration import API_Integration
 from app import models
 
 from app import forms
-from upsonic_on_prem.utils import AI
+
 
 # Create your views here.
 @login_required
@@ -395,10 +395,10 @@ def profile(request):
 @login_required
 def ai(request):
     result = None
-    ai_instance = AI
+
     if request.method == "POST":
         input_data = request.POST.get("ai_input")
-        result = ai_instance.default_completion(input_data)
+        result = API_Integration(request.user.access_key).ai_completion(input_data)
 
     the_list = models.AI_Task.objects.filter(status=False)
     tasks = []

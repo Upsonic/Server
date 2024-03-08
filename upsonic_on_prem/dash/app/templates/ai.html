@@ -29,19 +29,22 @@
         </tbody>
     </table>
 
-    <form method="POST" action=".">
+
+    <div class="custom_page_header_top_bottom_margin">
+        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Quick Ask&Answer</span></span>
+    </div>
+    <form method="POST" class="d-flex">
         {% csrf_token %}
         <div>
-            <label for="ai_input">AI Input:</label>
-            <input type="text" id="ai_input" name="ai_input" required>
+            <input type="text" id="ai_input" name="ai_input" required class="form-control me-2 search_bar">
         </div>
         <div>
-            <button type="submit">Submit</button>
+            <button class="btn btn-outline-success ms-3" type="submit">Ask</button>
         </div>
     </form>
 
     {% if result %}
-        <div>
+        <div class="mt-3">
             <strong>Result:</strong> {{ result }}
         </div>
     {% endif %}
