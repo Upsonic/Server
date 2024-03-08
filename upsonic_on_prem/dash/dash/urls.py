@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path
 from django.urls import include
+
 from django.conf.urls.static import static
 
 from dash import settings
@@ -27,6 +28,7 @@ urlpatterns = [
     path('', include('app.url')),
     path('accounts/', include('allauth.urls')),
     path('favicon.ico', lambda x: HttpResponseRedirect('/static/images/favicon.png')),
+    path('', include('pwa.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

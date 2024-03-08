@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-
+{% load pwa %}
 
 {% load tags %}
 
@@ -62,7 +62,7 @@
 
     {% endif %}
 
-
+    {% progressive_web_app_meta %}
 </head>
 <body class="custom_body">
 
@@ -93,7 +93,6 @@
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/popper.min.js"></script>
 <script src="/static/js/site.js" id="script_tag"></script>
-
 
 </body>
 </html>
