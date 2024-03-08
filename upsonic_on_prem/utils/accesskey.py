@@ -183,20 +183,32 @@ class AccessKey:
         self._delete(self.key + ":events")
 
     def add_note(self, scope, note):
-        for note_dict in self.notes:
+        import json
+        current_notes_json = self._get(self.key + ":notes") or '[]'
+        current_notes = json.loads(current_notes_json)
+        for note_dict in current_notes:
             if note_dict['scope'] == scope:
                 note_dict['note'] = note
+                self._set(self.key + ":notes", json.dumps(current_notes))
                 return
-        self.notes.append({'scope': scope, 'note': note})
+        current_notes.append({'scope': scope, 'note': note})
+        self._set(self.key + ":notes", json.dumps(current_notes))
 
     def get_notes(self):
-        return deepcopy(self.notes)
+        import json
+        current_notes_json = self._get(self.key + ":notes") or '[]'
+        return json.loads(current_notes_json)
 
     def remove_note_by_scope(self, scope):
-        self.notes = [note for note in self.notes if note['scope'] != scope]
+        import json
+        current_notes_json = self._get(self.key + ":notes") or '[]'
+        current_notes = json.loads(current_notes_json)
+        current_notes = [note for note in current_notes if note['scope'] != scope]
+        self._set(self.key + ":notes", json.dumps(current_notes))
 
     def clear_notes(self):
-        self.notes = []
+        import json
+        self._set(self.key + ":notes", json.dumps([]))
 
 
     
