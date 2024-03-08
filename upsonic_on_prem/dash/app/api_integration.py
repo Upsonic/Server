@@ -455,8 +455,9 @@ class API_Integration:
         response = self._send_request("POST", "/search_by_documentation", data=data)
         result = []
         try:
-            for i in response:
-                result.append([i[0], transform_to_html_bold(i[1]), i[2]])
+            if response != [None]:
+                for i in response:
+                    result.append([i[0], transform_to_html_bold(i[1]), i[2]])
         except:
             traceback.print_exc()
         return result
