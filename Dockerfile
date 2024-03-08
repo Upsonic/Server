@@ -11,12 +11,13 @@ RUN apt-get install nginx redis-server -y
 RUN apt-get install openssl -y
 RUN apt-get install git-lfs -y
 RUN apt-get install curl -y
-RUN curl https://ollama.ai/install.sh | sed 's#https://ollama.ai/download#https://github.com/jmorganca/ollama/releases/download/v0.1.17#' | sh
+
 WORKDIR /app/
 
 COPY On-Prem/requirements.txt /requirements.txt
+COPY on-Prem/ollama_install.sh /ollama_install.sh
 RUN pip3 install -r /requirements.txt
-
+RUN sh /ollama_install.sh
 
 
 COPY On-Prem On-Prem
