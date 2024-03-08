@@ -158,12 +158,19 @@ def control_library(request,id):
 
     code = f'{the_name} = upsonic.load_module("{id}")'
 
+    the_content = None
+    try:
+        the_content = API_Integration(request.user.access_key).subs_of_scope(id)
+    except:
+        pass
+    if the_content == None:
+        return redirect(to='libraries')
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "top_control_library": id.split(".")[0],
-        "content": API_Integration(request.user.access_key).subs_of_scope(id),
+        "content": the_content,
         "have_upper": have_upper,
         "the_upper": the_upper,
         "code": code,
