@@ -259,7 +259,7 @@ def search_by_documentation():
     # Remove the results that not able to access by the user 
     access_control_list = []
     for result in results:
-        if result[0] in the_read_scopes:
+        if result[0] in the_read_scopes or user.is_admin:
             access_control_list.append(result)
 
     return jsonify({"status": True, "result": access_control_list})
