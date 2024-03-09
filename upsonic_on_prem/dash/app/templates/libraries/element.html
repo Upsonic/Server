@@ -10,19 +10,20 @@
 <div class="w-100 custom_right_side">
 
     <div class="custom_page_header_bottom_margin">
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Content</span> of {{control_library}}</span></span>
+        <span class="custom_page_header_text">
+            {% if have_upper %}
+            <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
+            {% endif %}
+            <span class="custom_page_header_text_bold">{{control_library}}</span></span></span>
     </div>
 
 
-    {% if have_upper %}
-    <a href="#" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">Back to {{the_upper}}</a>
-    {% endif %}
 
 
         <div class="d-flex flex-row justify-content-between">
 
 
-            <div class="flex-fill w-50 me-3">
+            <div class="flex-fill w-50 me-5">
 
                 <div class="custom_page_header_top_bottom_margin">
                     <span class="custom_page_header_text">Documentation</span>

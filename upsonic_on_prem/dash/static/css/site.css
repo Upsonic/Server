@@ -1177,3 +1177,22 @@ body.with-cookie-bar {
 .search_bar {
   background-color: #171717;
 }
+
+.library_item_a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.library_item {
+  vertical-align: baseline;
+}
+
+.library_table {
+  --bs-table-bg: #000;
+  --bs-table-border-color: #01EE8A;
+}
+
+.back_a {
+  color: #fff;
+  text-decoration: none;
+}
