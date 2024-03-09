@@ -481,3 +481,7 @@ class API_Integration:
             return transform_to_html_bold(result)
         except:
             return result
+        
+    def get_all_scopes_name_prefix(self, prefix):
+        data = {"prefix": prefix}
+        return self._send_request("POST", "/get_all_scopes_name_prefix", data=data)

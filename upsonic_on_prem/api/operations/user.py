@@ -288,7 +288,7 @@ def create_readme():
     # order by alphabetical
     all_scopes.sort()
 
-    result = ""
+    result = f"{top_library}"
     for i in all_scopes:
         result += i + "\n"
     
@@ -300,16 +300,8 @@ def create_readme():
         summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
         summary_list += Scope(each_scope).documentation + "\n\n"
 
-    prompt = f"""
-Hi there is an list of elements and summaries:
 
-{summary_list}
-
-
-Explain the purpose of this '{top_library}' library and its elements in a few sentences.
-"""
-
-    result = AI.default_completion(prompt)
+    result = AI.generate_readme(top_library, summary_list)
 
     storage_4.set(sha256, result)
 
@@ -323,9 +315,12 @@ def get_readme():
     # order by alphabetical
     all_scopes.sort()
 
-    result = ""
+    result = f"{top_library}"
     for i in all_scopes:
         result += i + "\n"
+
+    print("TOP_library", top_library)
+    print("All scopes", result)
     
     #Create sha256 hash of the result
     sha256 = hashlib.sha256(result.encode()).hexdigest()

@@ -173,6 +173,10 @@ def control_library(request,id):
         tasks = models.AI_Task.objects.filter(task_name="readme", key=id, status=False)
         if len(tasks) == 0:        
             models.AI_Task(task_name="readme", key=id, access_key=request.user.access_key, owner=request.user).save()
+
+    all_scopes = []
+    for each_scope in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
+        all_scopes.append([each_scope, API_Integration(request.user.access_key).get_documentation(each_scope)])
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -183,6 +187,7 @@ def control_library(request,id):
         "the_upper": the_upper,
         "code": code,
         "readme": readme,
+        "all_scopes": all_scopes,
     }
     return render(request, f"templates/libraries/control_library.html", data)
 def capitalize_first_letter(input_string):

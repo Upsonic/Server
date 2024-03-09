@@ -55,16 +55,17 @@
         <div class="custom_code_block">
             <div class="custom_code_block_code">
                 <div class="highlight">
-                    <pre class="chroma">
+                    <pre class="chroma" style="text-wrap: wrap;">
                         <code class="language-html" data-lang="html">
-# {{control_library}}
-
 <b>Importing:</b>
 {{code}}
 
 {{readme|safe}}
 
-
+<b>Content:</b>
+{% for key,value in all_scopes%}
+<b>{{key}}</b>: {{value}}<br>
+{% endfor %}
 
                         </code>
                     </pre>
@@ -74,9 +75,7 @@
 
     </div>
 
-    <a href="#"
-                   onclick="page_load('{% url 'regenerate_readme' id=control_library %}');event.preventDefault();"
-                   class="btn btn-lg custom_button mt-5">Regenerate</a>
+    <a href="{% url 'regenerate_readme' id=control_library %}" class="btn btn-lg custom_button mt-5">Regenerate</a>
 
 </div>
 

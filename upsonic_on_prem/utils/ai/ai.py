@@ -123,12 +123,15 @@ class AI_:
 
     def completion(self, input_text, model):
         result = None
+        print("AI q:", input_text)
         if model == "gemma-2b":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
             result = self.gpt(input_text, model=model)
         elif model == "gpt-4":
-            result = self.gpt(input_text, model=model)            
+            result = self.gpt(input_text, model=model)  
+
+        print("AI r:", result)          
         return result
 
 
@@ -159,10 +162,10 @@ class AI_:
 
 
     def gemmma(self, input_text):
-        print("Gemma q:", input_text)
+
         response = ollama.generate(model='gemma-2b-upsonic', prompt=input_text)
         result = response['response']
-        print("Gemma r:", result)
+
 
         return result
 
@@ -360,5 +363,34 @@ Produce meaningful tags that succinctly summarize the significant components and
 
 
 
+    def generate_readme(self, top_library, summary_list):
+        prompt = f"""
+Hi there is an list of elements and summaries:
+
+{summary_list}
+
+
+Explain the purpose of this '{top_library}' library and its elements in a few sentences.
+"""
+
+
+
+        summary = self.default_completion(prompt)
+
+        # Also generate the usage aim
+        prompt = f"""
+Hi there is an list of elements and summaries:
+
+{summary_list}
+
+
+Explain the usage aim of this '{top_library}' library and its elements in a few sentences.
+"""
+        
+        usage_aim = self.default_completion(prompt)
+
+        result = "<b>Explanation:</b><br>" + summary + "\n\n<b>Use Case:</b><br>" + usage_aim
+
+        return result
 
 AI = AI_()
