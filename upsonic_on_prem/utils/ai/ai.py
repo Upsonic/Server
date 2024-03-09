@@ -107,7 +107,7 @@ class AI_:
 
             for doc in docs:
                 if doc[1] >= min_score:
-                    doc = [doc[0].metadata["name"],doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
+                    doc = [doc[0].metadata["name"], doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
                     results.append(doc)
 
             results = [list(t) for t in set(tuple(element) for element in results)]
