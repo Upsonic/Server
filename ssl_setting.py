@@ -34,8 +34,8 @@ if is_internet_on() and domain_name != "www.upsonic.co":
     try:
         subprocess.run(["sudo", "certbot", "certonly", "--standalone", "-d", domain_name], check=True)
         # Adjust paths after successful generation
-        ssl_cert_file = "/etc/letsencrypt/live/" + domain_name + "/fullchain.pem"
-        ssl_key_file = "/etc/letsencrypt/live/" + domain_name + "/privkey.pem"
+        letsencrypt_public = "/etc/letsencrypt/live/" + domain_name + "/fullchain.pem"
+        letsencrypt_private = "/etc/letsencrypt/live/" + domain_name + "/privkey.pem"
     except subprocess.SubprocessError as e:
         print(f"Error generating Let's Encrypt certificates: {e}")
 else:
