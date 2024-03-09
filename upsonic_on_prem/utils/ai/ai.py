@@ -32,7 +32,7 @@ class AI_:
 
     
 
-    def search_by_documentation(self, the_contents, question, min_score=0.5, how_many_result=10):
+    def search_by_documentation(self, the_contents, question, min_score=0, how_many_result=10):
         info(f"Searching by documentation for {question}")
         try:
             from langchain.docstore.document import Document
