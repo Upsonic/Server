@@ -10,14 +10,16 @@
 <div class="w-100 custom_right_side">
 
     <div class="custom_page_header_bottom_margin">
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Content</span> of {{control_library}}</span></span>
+        <span class="custom_page_header_text">
+            {% if have_upper %}
+            <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
+            {% endif %}
+            <span class="custom_page_header_text_bold">{{control_library}}</span></span></span>
     </div>
 
-    {% if have_upper %}
-    <a href="#" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">Back to {{the_upper}}</a>
-    {% endif %}
 
-<table class="table">
+
+<table class="table table-hover align-middle library_table">
     <thead>
       <tr>
 
@@ -31,12 +33,14 @@
         <tr>
 
             {% if value == False %}
-            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();">{{key}}</a></td>
-            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();">Go</a></td>
+            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="library_item_a">{{key}}</a></td>
+            
             {% else %}
-            <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();">{{key}}</a></td>
-            <td>Library</td>
+            <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/library_fill_dark.svg"/>
+                {{key}}</a></td>
+            
             {% endif %}
+            <td style="padding: 1rem 1rem;"><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();">Go</a></td>
 
           </tr>
 
@@ -48,7 +52,7 @@
 
     <div>
         <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">README</span>
+            <span class="custom_page_header_text">Readme</span>
         </div>
 
 
