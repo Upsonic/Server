@@ -8,6 +8,7 @@ from app import models
 
 from app import forms
 
+
 # Create your views here.
 @login_required
 def home(request, exception=None):
@@ -400,6 +401,12 @@ def profile(request):
 
 @login_required
 def ai(request):
+    result = None
+
+    if request.method == "POST":
+        input_data = request.POST.get("ai_input")
+        result = API_Integration(request.user.access_key).ai_completion(input_data)
+
     the_list = models.AI_Task.objects.filter(status=False)
     tasks = []
     for task in the_list:
@@ -408,6 +415,7 @@ def ai(request):
     data = {
         "page_title": "AI",
         "tasks": tasks,
+        "result": result,
     }
     return render(request, "templates/ai.html", data)
 
