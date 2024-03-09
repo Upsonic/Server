@@ -415,7 +415,7 @@ def ai(request):
 @login_required
 def search(request):
     if request.method == 'POST':
-        min_score = float(request.POST.get("min_score", 0.5))
+        min_score = float(request.POST.get("min_score", 0))
         how_many_result = int(request.POST.get("how_many_result", 10))
         data = {
             "page_title": "Search",
