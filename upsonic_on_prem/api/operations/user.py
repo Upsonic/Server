@@ -247,13 +247,22 @@ def search_by_documentation():
     how_many_result = int(request.form.get("how_many_result", 10))
 
     user = AccessKey(request.authorization.password)
-    scopes = Scope.get_all_scopes_with_documentation(user)
+    scopes = Scope.get_all_scopes_with_documentation()
+
+    the_read_scopes = user.scopes_read
+
     if len(scopes) == 0:
         return jsonify({"status": False, "result": "No scope has documentation"})
 
     results = AI.search_by_documentation(scopes, question, min_score, how_many_result)
 
-    return jsonify({"status": True, "result": results})
+    # Remove the results that not able to access by the user 
+    access_control_list = []
+    for result in results:
+        if result[0] in the_read_scopes:
+            access_control_list.append(result)
+
+    return jsonify({"status": True, "result": access_control_list})
 
 
 
