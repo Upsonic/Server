@@ -48,21 +48,35 @@
 
     <div>
         <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">Gathering Code</span>
+            <span class="custom_page_header_text">README</span>
         </div>
 
 
         <div class="custom_code_block">
             <div class="custom_code_block_code">
-                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{code}}
+                <div class="highlight">
+                    <pre class="chroma">
+                        <code class="language-html" data-lang="html">
+# {{control_library}}
+
+<b>Importing:</b>
+{{code}}
+
+{{readme|safe}}
 
 
-                </code></pre></div>
+
+                        </code>
+                    </pre>
+                </div>
             </div>
         </div>
 
     </div>
 
+    <a href="#"
+                   onclick="page_load('{% url 'regenerate_readme' id=control_library %}');event.preventDefault();"
+                   class="btn btn-lg custom_button mt-5">Regenerate</a>
 
 </div>
 

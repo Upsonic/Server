@@ -166,6 +166,13 @@ def control_library(request,id):
         pass
     if the_content == None:
         return redirect(to='libraries')
+
+    readme = API_Integration(request.user.access_key).get_readme(id)
+    if readme == None:
+        readme = "Generating..."
+        tasks = models.AI_Task.objects.filter(task_name="readme", key=id, status=False)
+        if len(tasks) == 0:        
+            models.AI_Task(task_name="readme", key=id, access_key=request.user.access_key, owner=request.user).save()
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -175,6 +182,7 @@ def control_library(request,id):
         "have_upper": have_upper,
         "the_upper": the_upper,
         "code": code,
+        "readme": readme,
     }
     return render(request, f"templates/libraries/control_library.html", data)
 def capitalize_first_letter(input_string):
@@ -305,6 +313,16 @@ def regenerate_documentation(request, id):
     models.AI_Task(task_name="security_analysis", key=id, access_key=request.user.access_key, owner=request.user).save()
     request.user.notify("Documentation Generated", f"Documentation for {id} is generated, you can access it now.")
     return redirect(to='control_element', id=id)
+
+
+@login_required
+def regenerate_readme(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    print("STARTED TO REGENERATE README")
+    models.AI_Task(task_name="readme", key=id, access_key=request.user.access_key, owner=request.user).save()
+    print("returning to control_library")
+    return redirect(to='control_library', id=id)
 
 @login_required
 def delete_user(request, id):

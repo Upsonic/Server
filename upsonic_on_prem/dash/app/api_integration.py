@@ -469,3 +469,15 @@ class API_Integration:
             data["model"] = model
         response = self._send_request("POST", "/ai_completion", data=data)
         return response
+
+    def create_readme(self, top_library):
+        data = {"top_library": top_library}
+        return self._send_request("POST", "/create_readme", data=data)
+    
+    def get_readme(self, top_library):
+        data = {"top_library": top_library}
+        result = self._send_request("POST", "/get_readme", data=data)
+        try:
+            return transform_to_html_bold(result)
+        except:
+            return result
