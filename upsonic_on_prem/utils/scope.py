@@ -29,9 +29,19 @@ class Scope:
         self.the_storage.delete(self.key)
         for i in self.dump_history:
             storage_3.delete(i)
+        for i in self.version_history:
+            storage_3.delete(i)            
         self.the_storage.delete(self.key + ":dump_history")
         self.the_storage.delete(self.key + ":documentation")
         self.the_storage.delete(self.key + ":time_complexity")
+        self.the_storage.delete(self.key + ":mistakes")
+        self.the_storage.delete(self.key + ":required_test_types")
+        self.the_storage.delete(self.key + ":tags")
+        self.the_storage.delete(self.key + ":security_analysis")
+        self.the_storage.delete(self.key + ":code")
+        self.the_storage.delete(self.key + ":requirements")
+        self.the_storage.delete(self.key + ":version_history")
+        self.the_storage.delete(self.key + ":python_version")
 
     @property
     def dump_history(self):
