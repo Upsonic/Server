@@ -462,3 +462,10 @@ class API_Integration:
             traceback.print_exc()
         return result
     
+
+    def ai_completion(self, message, model=None):
+        data = {"message": message}
+        if model != None:
+            data["model"] = model
+        response = self._send_request("POST", "/ai_completion", data=data)
+        return response
