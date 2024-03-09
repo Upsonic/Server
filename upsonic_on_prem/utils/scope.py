@@ -242,8 +242,8 @@ class Scope:
 
 
     @staticmethod
-    def get_all_scopes_with_documentation(user: AccessKey):
-        all_scopes = Scope.get_all_scopes_name(user)
+    def get_all_scopes_with_documentation():
+        all_scopes = Scope.get_all_scopes()
 
         result = []
         for i in all_scopes:
