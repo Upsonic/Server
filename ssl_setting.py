@@ -28,14 +28,14 @@ ssl_key_path = "/db/upsonic.private.pem"
 
 domain_name = getenv("DOMAIN_NAME", "www.upsonic.co") if is_internet_on() else "www.upsonic.co"  # Domain name for certificate generation
 
-if is_internet_on():
+if is_internet_on() and domain_name != "www.upsonic.co":
     install_letsencrypt()
     # Generate SSL certificates using Let's Encrypt
     try:
         subprocess.run(["sudo", "certbot", "certonly", "--standalone", "-d", domain_name], check=True)
         # Adjust paths after successful generation
-        ssl_cert_path = "/etc/letsencrypt/live/" + domain_name + "/fullchain.pem"
-        ssl_key_path = "/etc/letsencrypt/live/" + domain_name + "/privkey.pem"
+        letsenvcrypt_public = "/etc/letsencrypt/live/" + domain_name + "/fullchain.pem"
+        letsenvcrypt_private = "/etc/letsencrypt/live/" + domain_name + "/privkey.pem"
     except subprocess.SubprocessError as e:
         print(f"Error generating Let's Encrypt certificates: {e}")
 else:
