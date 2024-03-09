@@ -147,7 +147,7 @@ class AI_:
 
 
     def default_completion(self, input_text):
-        default_model = os.environ.get("DEFAULT_MODEL", "gemma-2b")
+        default_model = os.environ.get("default_model", "gemma-2b")
         return self.completion(input_text, default_model)
 
 
@@ -156,7 +156,7 @@ class AI_:
     def gpt(self, input_text, model):
         client = OpenAI(
             # This is the default and can be omitted
-            api_key=os.environ.get("OPENAI_API_KEY"),
+            api_key=os.environ.get("openai_api_key"),
         )
 
         chat_completion = client.chat.completions.create(
