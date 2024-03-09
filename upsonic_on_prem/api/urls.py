@@ -111,8 +111,10 @@ search_by_documentation_url = "/search_by_documentation"
 
 ai_completion_url = "/ai_completion"
 
+create_readme_url = "/create_readme"
+get_readme_url = "/get_readme"
 
-user_urs = [load_url, dump_url, get_read_scopes_of_me_url, get_write_scopes_of_me_url, get_document_of_scope_url, get_requirements_of_scope_url, get_security_analysis_of_scope_url, get_required_test_types_of_scope_url, get_tags_of_scope_url, get_mistakes_of_scope_url, get_time_complexity_of_scope_url,
+user_urs = [create_readme_url, get_readme_url, load_url, dump_url, get_read_scopes_of_me_url, get_write_scopes_of_me_url, get_document_of_scope_url, get_requirements_of_scope_url, get_security_analysis_of_scope_url, get_required_test_types_of_scope_url, get_tags_of_scope_url, get_mistakes_of_scope_url, get_time_complexity_of_scope_url,
             create_version_url, search_by_documentation_url, ai_completion_url,
             get_dump_history_url, load_specific_dump_url, get_all_scopes_name_prefix_url,
             get_type_of_scope_url, get_python_version_of_scope_url, create_document_of_scope_url, create_security_analysis_of_scope_url, create_required_test_types_of_scope_url, create_tags_of_scope_url, create_mistakes_of_scope_url, create_time_complexity_of_scope_url, create_document_of_scope_url_old,
