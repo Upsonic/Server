@@ -1,8 +1,9 @@
+import hashlib
 from upsonic_on_prem.api import app
 
 from upsonic_on_prem.api.urls import *
 
-from upsonic_on_prem.utils import storage, storage_2, AccessKey, Scope, AI
+from upsonic_on_prem.utils import storage, storage_2, storage_4, AccessKey, Scope, AI
 
 from flask import jsonify
 from flask import request
@@ -277,3 +278,51 @@ def ai_completion():
     else:
         result = AI.default_completion(message)
     return jsonify({"status": True, "result": result})
+
+
+@app.route(create_readme_url, methods=["POST"])
+def create_readme():
+    top_library = request.form.get("top_library")
+    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+
+    # order by alphabetical
+    all_scopes.sort()
+
+    result = f"{top_library}"
+    for i in all_scopes:
+        result += i + "\n"
+    
+    #Create sha256 hash of the result
+    sha256 = hashlib.sha256(result.encode()).hexdigest()
+
+    summary_list = ""
+    for each_scope in all_scopes:
+        summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
+        summary_list += Scope(each_scope).documentation + "\n\n"
+
+
+    result = AI.generate_readme(top_library, summary_list)
+
+    storage_4.set(sha256, result)
+
+    return jsonify({"status": True, "result": result})
+
+@app.route(get_readme_url, methods=["POST"])
+def get_readme():
+    top_library = request.form.get("top_library")
+    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+
+    # order by alphabetical
+    all_scopes.sort()
+
+    result = f"{top_library}"
+    for i in all_scopes:
+        result += i + "\n"
+
+    print("TOP_library", top_library)
+    print("All scopes", result)
+    
+    #Create sha256 hash of the result
+    sha256 = hashlib.sha256(result.encode()).hexdigest()
+
+    return jsonify({"status": True, "result": storage_4.get(sha256)})
