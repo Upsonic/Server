@@ -144,6 +144,11 @@ class AI_Task(models.Model):
         the_thread.start()
         ai_threads.append(the_thread)
 
+    def readme_task(self):
+        the_func = API_Integration(self.access_key).create_readme
+        the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
+        the_thread.start()
+        ai_threads.append(the_thread)
 
 
     def the_register(self):
@@ -162,6 +167,8 @@ class AI_Task(models.Model):
             self.tags_task()
         elif self.task_name == "security_analysis":
             self.security_analysis_task()
+        elif self.task_name == "readme":
+            self.readme_task()
         else:
             any_task = False
         

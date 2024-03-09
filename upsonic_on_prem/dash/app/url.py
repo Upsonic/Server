@@ -13,6 +13,7 @@ urlpatterns = [
     path('control_library/<id>', views.control_library, name="control_library"),
     path('control_element/<id>', views.control_element, name="control_element"),
     path('regenerate_documentation/<id>', views.regenerate_documentation, name="regenerate_documentation"),
+    path('regenerate_readme/<id>', views.regenerate_readme, name="regenerate_readme"),
     path('delete_scope/<id>', views.delete_scope, name="delete_scope"),
     path('control_user/<id>', views.control_user, name="control_user"),
     path('add_user', views.add_user, name="add_user"),

@@ -56,10 +56,8 @@
                 </div>                
                 <div class="custom_pharagraph_for_documentations">{{tags|safe}}</div>
 
-                <a href="#"
-                   onclick="page_load('{% url 'regenerate_documentation' id=control_library %}');event.preventDefault();"
-                   class="btn btn-lg custom_button">Regenerate the doc</a>
-                <a href="#" onclick="page_load('{% url 'delete_scope' id=control_library %}');event.preventDefault();">
+                <a href="{% url 'regenerate_documentation' id=control_library %}" class="btn btn-lg custom_button">Regenerate the doc</a>
+                <a href="{% url 'delete_scope' id=control_library %}" >
                     <button class="btn btn-lg custom_button_red">Delete</button>
                 </a>
 
