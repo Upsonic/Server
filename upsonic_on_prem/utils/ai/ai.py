@@ -136,9 +136,11 @@ class AI_:
 
 
     def default_completion(self, input_text):
-        default_model = os.environ.get("default_model", "gemma-2b")
-        return self.completion(input_text, default_model)
+        return self.completion(input_text, self.default_model)
 
+    @property
+    def default_model(self):
+        return os.environ.get("default_model", "gemma-2b")
 
 
 
