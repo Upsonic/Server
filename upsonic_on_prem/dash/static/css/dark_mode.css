@@ -248,7 +248,7 @@
 
   [data-bs-theme=dark] .custom_header_button { 
     border-radius: 5px;
-    border: 1px solid #4D38FF;
+    border: 0px solid #4D38FF;
     background: #171717;
 
   }
