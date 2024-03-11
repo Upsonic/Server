@@ -28,6 +28,7 @@
                 <img class="{% if page_title != 'Libraries' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
                      src="/static/images/library{% if page_title == 'Libraries' %}_fill_dark{% endif %}.svg"/>
             </a>
+            
             <div class="custom_side_bar_flex_column_nav_item_down_text">Libraries</div>
         </li>
 
@@ -57,8 +58,8 @@
                 <img class="{% if page_title != 'AI' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
                      src="/static/images/ai{% if page_title == 'AI' %}_fill_dark{% endif %}.svg"/>
             </a>
-            
-            <div class="custom_side_bar_flex_column_nav_item_down_text">Gemma</div>
+            {% default_ai_model request as default_ai_model %}         
+            <div class="custom_side_bar_flex_column_nav_item_down_text">{{default_ai_model}}</div>
         </li>
 
 
