@@ -485,3 +485,7 @@ class API_Integration:
     def get_all_scopes_name_prefix(self, prefix):
         data = {"prefix": prefix}
         return self._send_request("POST", "/get_all_scopes_name_prefix", data=data)
+
+
+    def get_default_ai_model(self):
+        return self._send_request("GET", "/get_default_ai_model")

@@ -280,6 +280,11 @@ def ai_completion():
     return jsonify({"status": True, "result": result})
 
 
+@app.route(get_default_ai_model, methods=["get"])
+def get_default_ai_model():
+    return jsonify({"status": True, "result": AI.default_model})
+
+
 @app.route(create_readme_url, methods=["POST"])
 def create_readme():
     top_library = request.form.get("top_library")
