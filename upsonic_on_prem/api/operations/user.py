@@ -303,7 +303,7 @@ def create_readme():
     summary_list = ""
     for each_scope in all_scopes:
         summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
-        summary_list += Scope(each_scope).documentation + "\n\n"
+        summary_list += str(Scope(each_scope).documentation) + "\n\n"
 
 
     result = AI.generate_readme(top_library, summary_list)
