@@ -9,9 +9,13 @@ from upsonic_on_prem.api.pre_process.admin import *
 
 from upsonic_on_prem.api.pre_process.user import *
 
+from upsonic_on_prem.api.pre_process.token_handler import edit_api_token_if_needed
+
 
 @app.before_request
 def check():
+    edit_api_token_if_needed(request)
+
     the_endpoint = request.endpoint
     if request.endpoint == None:
         the_endpoint = ""
