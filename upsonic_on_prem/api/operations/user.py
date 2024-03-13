@@ -280,6 +280,11 @@ def ai_completion():
     return jsonify({"status": True, "result": result})
 
 
+@app.route(get_default_ai_model, methods=["get"])
+def get_default_ai_model():
+    return jsonify({"status": True, "result": AI.default_model})
+
+
 @app.route(create_readme_url, methods=["POST"])
 def create_readme():
     top_library = request.form.get("top_library")
@@ -298,7 +303,7 @@ def create_readme():
     summary_list = ""
     for each_scope in all_scopes:
         summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
-        summary_list += Scope(each_scope).documentation + "\n\n"
+        summary_list += str(Scope(each_scope).documentation) + "\n\n"
 
 
     result = AI.generate_readme(top_library, summary_list)
