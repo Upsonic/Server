@@ -395,4 +395,11 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
         return result
 
+    def chat(self, input_text, model="gpt-3.5-turbo"):
+        try:
+            return self.gpt(input_text, model=model)
+        except Exception as e:
+            failed(f"Failed to generate chat response: {e}")
+            return None
+
 AI = AI_()
