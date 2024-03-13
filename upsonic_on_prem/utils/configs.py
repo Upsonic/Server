@@ -79,3 +79,6 @@ sentry_flask_key = os.environ.get("sentry_flask_key", "https://557ac9191a8870320
 
 betterstack = os.environ.get("betterstack", "false").lower() == "true"
 betterstack_flask_key = os.environ.get("betterstack_flask_key", "HyjgwPt5AAiPWxEUqDL49151")
+
+
+openai_api_key = os.environ.get("openai_api_key")

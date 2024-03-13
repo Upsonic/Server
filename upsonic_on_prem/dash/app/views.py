@@ -69,9 +69,21 @@ def control_user(request, id):
 
     else:
 
+        openai_api_key = API_Integration(the_user.access_key).get_openai_api_key_user()
+        if openai_api_key["special"] == False:
+            openai_api_key = "SHARED_KEY"
+        else:
+            openai_api_key = openai_api_key["api_key"]
+
+        gpt_model = False
+        if API_Integration(request.user.access_key).get_default_ai_model().startswith("gpt"):
+            gpt_model = True
+
         data = {
             "page_title": "Control User",
             "user": the_user,
+            "openai_api_key": openai_api_key,
+            "gpt_model": gpt_model,
             "user_form": forms.UpdateUserForm(instance=the_user),
             "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key),
             "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_user(the_user.access_key),
@@ -464,3 +476,27 @@ def search(request):
             "searched": False,
         }
         return render(request, "templates/search.html", data)
+    
+
+
+@login_required
+def set_openai_api_key_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    
+    if request.method == 'POST':
+        openai_api_key = request.POST.get("openai_api_key")
+        user = models.User.objects.get(id=id)
+        API_Integration(request.user.access_key).set_openai_api_key_user(user.access_key, openai_api_key)
+        return redirect(to='control_user', id=id)
+    else:
+        return redirect(to='community')
+
+
+@login_required
+def delete_openai_api_key_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    user = models.User.objects.get(id=id)
+    API_Integration(request.user.access_key).delete_openai_api_key_user(user.access_key)
+    return redirect(to='control_user', id=id)
