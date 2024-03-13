@@ -68,7 +68,7 @@
 
 <b>Content:</b>
 {% for key,value in all_scopes%}
-<b>{{key}}</b>: {{value}}<br>
+<b>{{key}}</b>: {{value|safe}}<br>
 {% endfor %}
 
                         </code>
