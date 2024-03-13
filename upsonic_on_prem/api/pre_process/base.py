@@ -1,5 +1,6 @@
 from upsonic_on_prem.api import app
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, Response, jsonify, redirect
+import requests
 
 from upsonic_on_prem.utils import AccessKey
 
@@ -30,6 +31,20 @@ def check():
         )
 
     the_access_key = AccessKey(auth.password)
+
+    # Check for api_token and modify it
+    api_token = request.headers.get('api_token')
+    if api_token:
+        # Logic to decode, modify, and re-encode the api_token goes here
+        modified_api_token = 'modified_' + api_token  # Example modification
+
+        # Forwarding the modified request
+        forward_url = 'http://api.actualserver.com'  # The actual API server URL
+        headers = {'api_token': modified_api_token}
+        response = requests.get(forward_url, headers=headers)
+
+        # Return the response from the API server to the client
+        return Response(response.content, status=response.status_code, headers=dict(response.headers))
 
     if not the_access_key.is_enable:
         return Response(
