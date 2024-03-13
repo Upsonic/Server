@@ -75,10 +75,15 @@ def control_user(request, id):
         else:
             openai_api_key = openai_api_key["api_key"]
 
+        gpt_model = False
+        if API_Integration(request.user.access_key).get_default_ai_model().startswith("gpt"):
+            gpt_model = True
+
         data = {
             "page_title": "Control User",
             "user": the_user,
             "openai_api_key": openai_api_key,
+            "gpt_model": gpt_model,
             "user_form": forms.UpdateUserForm(instance=the_user),
             "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key),
             "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_user(the_user.access_key),
