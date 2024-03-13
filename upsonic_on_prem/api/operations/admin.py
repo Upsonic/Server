@@ -245,3 +245,18 @@ def get_all_scopes():
 def ai_code_to_document():
     code = request.form.get("code", type=str)
     return jsonify({"status": True, "result": AI.code_to_documentation(code)})
+
+
+
+@app.route(set_openai_api_key_user, methods=["post"])
+def set_openai_api_key_user():
+    key = request.form.get("key")
+    openai_api_key = request.form.get("openai_api_key")
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.set_openai_api_key(openai_api_key)})
+
+@app.route(delete_openai_api_key_user, methods=["post"])
+def delete_openai_api_key_user():
+    key = request.form.get("key")
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.delete_openai_api_key()})
