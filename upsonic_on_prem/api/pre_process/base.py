@@ -31,6 +31,14 @@ def check():
 
     the_access_key = AccessKey(auth.password)
 
+    # Checking for API token in the request headers
+    api_token = request.headers.get('Authorization')
+    if api_token:
+        # Logic to modify the API token
+        modified_token = 'modified_' + api_token # Simplified modification for demonstration
+        # Updating request header with new token
+        request.headers['Authorization'] = modified_token
+
     if not the_access_key.is_enable:
         return Response(
             "You don't have register to access this URL.\n"
