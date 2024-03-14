@@ -36,12 +36,13 @@
                 </div>                
                 <div class="custom_pharagraph_for_documentations">{{time_complexity|safe}}</div>
 
-
+                {% if gpt_model %}
                 <div class="custom_page_header_top_bottom_margin">
                     <span class="custom_page_header_text">Mistakes</span>
                 </div>                
                 <div class="custom_pharagraph_for_documentations">{{mistakes|safe}}</div>
-
+                {% endif %}
+                
                 <div class="custom_page_header_top_bottom_margin">
                     <span class="custom_page_header_text">Required Test Types</span>
                 </div>                
