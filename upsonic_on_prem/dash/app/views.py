@@ -232,6 +232,12 @@ def control_element(request, id):
 
     write_right = request.user.can_write(id)
 
+
+    gpt_model = False
+    if API_Integration(request.user.access_key).get_default_ai_model().startswith("gpt"):
+        gpt_model = True
+
+
     if documentation == None and write_right:
         tasks = models.AI_Task.objects.filter(task_name="documentation", key=id, status=False)
         if len(tasks) == 0:
@@ -250,7 +256,7 @@ def control_element(request, id):
 
 
     mistakes = API_Integration(request.user.access_key).get_mistakes(id)
-    if mistakes == None and write_right:
+    if mistakes == None and write_right and gpt_model:
 
         tasks = models.AI_Task.objects.filter(task_name="mistakes", key=id, status=False)
         if len(tasks) == 0:
@@ -312,6 +318,7 @@ def control_element(request, id):
         "requirements": requirements,
         "type": capitalize_first_letter(the_type),
         "python_version": python_version,
+        "gpt_model": gpt_model,
     }
     return render(request, f"templates/libraries/element.html", data)
 
