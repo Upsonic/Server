@@ -10,6 +10,8 @@ from upsonic_on_prem.utils.configs import openai_api_key
 from flask import jsonify
 from flask import request
 
+import time
+
 
 @app.route(dump_url, methods=["POST"])
 def dump():
@@ -107,12 +109,24 @@ def get_code_of_scope():
     return jsonify({"status": True, "result": Scope(scope).code})
 
 
+documentation_tasks = []
 
 @app.route(create_document_of_scope_url, methods=["POST"])
 def create_document_of_scope():
+    global documentation_tasks
     scope = request.form.get("scope")
-
-    return jsonify({"status": True, "result": Scope(scope).create_documentation()})
+    if not scope in documentation_tasks:
+        documentation_tasks.append(scope)
+        try:
+            work = Scope(scope).create_documentation()
+        except:
+            pass
+        documentation_tasks.remove(scope)
+    else:
+        while scope in documentation_tasks:
+            time.sleep(1)
+        work = Scope(scope).documentation
+    return jsonify({"status": True, "result": work})
 
 @app.route(create_time_complexity_of_scope_url, methods=["POST"])
 def create_time_complexity_of_scope():
@@ -289,6 +303,7 @@ def get_default_ai_model():
 
 @app.route(create_readme_url, methods=["POST"])
 def create_readme():
+    global documentation_tasks
     top_library = request.form.get("top_library")
     all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
 
@@ -299,14 +314,27 @@ def create_readme():
     for i in all_scopes:
         result += i + "\n"
     
-    #Create sha256 hash of the result
-    sha256 = hashlib.sha256(result.encode()).hexdigest()
+
 
     summary_list = ""
     for each_scope in all_scopes:
+        while each_scope in documentation_tasks:
+            time.sleep(1)    
+
+        if Scope(each_scope).documentation == None:
+            documentation_tasks.append(each_scope)
+            Scope(each_scope).create_documentation()
+            try:
+                documentation_tasks.remove(each_scope)
+            except:
+                pass
+
         summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
         summary_list += str(Scope(each_scope).documentation) + "\n\n"
 
+
+    #Create sha256 hash of the result
+    sha256 = hashlib.sha256(summary_list.encode()).hexdigest()
 
     result = AI.generate_readme(top_library, summary_list)
 
@@ -326,9 +354,16 @@ def get_readme():
     for i in all_scopes:
         result += i + "\n"
 
+    summary_list = ""
+    for each_scope in all_scopes:
+        while each_scope in documentation_tasks:
+            time.sleep(1)    
+        summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
+        summary_list += str(Scope(each_scope).documentation) + "\n\n"
+
     
     #Create sha256 hash of the result
-    sha256 = hashlib.sha256(result.encode()).hexdigest()
+    sha256 = hashlib.sha256(summary_list.encode()).hexdigest()
 
     return jsonify({"status": True, "result": storage_4.get(sha256)})
 
