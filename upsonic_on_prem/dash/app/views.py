@@ -418,13 +418,19 @@ def add_user(request):
             request.user.notify("User Added", f"User {user_form.cleaned_data.get('username')} added successfully")
             return redirect(to='community')
         else:
-            print(user_form.errors)
+            data = {
+                "page_title": "Add User",
+                "user_form": forms.CustomUserCreationForm(),
+                "error": user_form.errors
+            }
+            return render(request, "templates/add_user.html", data)
 
     else:
 
         data = {
             "page_title": "Add User",
-            "user_form": forms.CustomUserCreationForm()
+            "user_form": forms.CustomUserCreationForm(),
+            "error": False
         }
         return render(request, "templates/add_user.html", data)
 

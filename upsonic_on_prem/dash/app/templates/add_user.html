@@ -8,6 +8,10 @@
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Create User</span></span>
     </div>
 
+    {% if error != False %}
+    {{error|safe}}
+    {% endif %}
+
 
      <a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();">Back</a>
 
