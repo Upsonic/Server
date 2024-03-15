@@ -218,6 +218,12 @@ def load_specific_dump():
     object = Scope.get_dump(dump_id)
     return jsonify({"status": True, "result": object.source})
 
+@app.route(load_specific_version_url, methods=["POST"])
+def load_specific_version():
+    version = request.form.get("version")
+    object = Scope.get_version(version)
+    return jsonify({"status": True, "result": object.source})
+
 
 @app.route(get_all_scopes_name_prefix_url, methods=["POST"])
 def get_all_scopes_name_prefix():
