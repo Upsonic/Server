@@ -66,6 +66,15 @@ class Scope:
         self.the_storage.set(self.key + ":version_history", current)
 
     @staticmethod
+    def delete_version(version_id):
+        storage_3.delete(version_id)
+        the_scope = Scope(version_id.split(":")[0])
+        current = the_scope.version_history
+        current.remove(version_id)
+        the_scope.the_storage.set(the_scope.key + ":version_history", current)
+
+
+    @staticmethod
     def get_version(version_id):
         the_scope = Scope(version_id)
         the_scope.the_storage = storage_3
