@@ -21,9 +21,10 @@ import time
 
 
 class Scope:
-    def __init__(self, key):
+    def __init__(self, key, specific=False):
         self.key = key
         self.the_storage = storage_2
+        self.specific = specific
 
     def delete(self):
         self.the_storage.delete(self.key)
@@ -57,7 +58,7 @@ class Scope:
 
         key = self.key + ":" + str(version)
 
-        data = {"data": self.source, "user": user.key, "time": current_time}
+        data = {"data": self.source, "user": user.key, "time": current_time, "code": self.code}
 
         storage_3.set(key, data)
 
@@ -76,7 +77,7 @@ class Scope:
 
     @staticmethod
     def get_version(version_id):
-        the_scope = Scope(version_id)
+        the_scope = Scope(version_id, specific=True)
         the_scope.the_storage = storage_3
         return the_scope
 
@@ -171,7 +172,14 @@ class Scope:
 
     @property
     def code(self):
-        return self.the_storage.get(self.key + ":code")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":code")
+        else:
+            the_resource = self.the_storage.get(self.key)
+            if not the_resource != None:
+                source = self.the_storage.get(self.key)["code"]            
+        return source
 
     def set_code(self, code):
         return self.the_storage.set(self.key + ":code", code)
@@ -200,7 +208,7 @@ class Scope:
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": current_time,}
+        data = {"data": data, "user": user.key, "time": current_time, "code":self.code}
 
         storage_3.set(key, data)
 
@@ -212,7 +220,7 @@ class Scope:
 
     @staticmethod
     def get_dump(dump_id):
-        the_scope = Scope(dump_id)
+        the_scope = Scope(dump_id, specific)
         the_scope.the_storage = storage_3
         return the_scope
 
