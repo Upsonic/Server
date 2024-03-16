@@ -396,3 +396,18 @@ def get_openai_api_key_user():
 
     the_result = {"api_key": the_result, "special": special}
     return jsonify({"status": True, "result": the_result})
+
+
+
+@app.route(create_version_prefix_url, methods=["post"])
+def create_version_prefix():
+    user = AccessKey(request.authorization.password)
+    top_library = request.form.get("top_library")
+    version = request.form.get("version")
+    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    write_scopes = user.scopes_write
+    for each_scope in all_scopes:
+        if each_scope in write_scopes:
+            Scope(each_scope).create_version(version, user)
+
+    jsonify({"status": True, "result": True})
