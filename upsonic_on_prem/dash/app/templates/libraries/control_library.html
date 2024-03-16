@@ -14,7 +14,8 @@
             {% if have_upper %}
             <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
             {% endif %}
-            <span class="custom_page_header_text_bold">{{control_library}}</span></span></span>
+            <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
+            <a href="#" onclick="page_load('{% url 'control_library_version' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Version Control</a>
     </div>
 
 
