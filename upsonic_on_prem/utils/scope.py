@@ -58,7 +58,7 @@ class Scope:
 
         key = self.key + ":" + str(version)
 
-        data = {"data": self.source, "user": user.key, "time": current_time, "code": self.code}
+        data = {"data": self.source, "user": user.key, "time": current_time, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -83,29 +83,96 @@ class Scope:
 
     @property
     def documentation(self):
-        return self.the_storage.get(self.key + ":documentation")
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":documentation")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["documentation"]        
+        return source
 
 
     @property
     def time_complexity(self):
-        return self.the_storage.get(self.key + ":time_complexity")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":time_complexity")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["time_complexity"]   
+     
+        return source        
+
 
 
     @property
     def mistakes(self):
-        return self.the_storage.get(self.key + ":mistakes")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":mistakes")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["mistakes"]   
+     
+        return source  
+
+
     @property
     def required_test_types(self):
-        return self.the_storage.get(self.key + ":required_test_types")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":required_test_types")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["required_test_types"]   
+     
+        return source  
+
+
 
     @property
     def tags(self):
-        return self.the_storage.get(self.key + ":tags")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":tags")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["tags"]   
+     
+        return source  
+
+
 
 
     @property
     def security_analysis(self):
-        return self.the_storage.get(self.key + ":security_analysis")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":security_analysis")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["security_analysis"]   
+     
+        return source  
+
+
 
     def create_documentation(self):
         document = AI.code_to_documentation(self.code)
@@ -176,9 +243,12 @@ class Scope:
         if not self.specific:
             source = self.the_storage.get(self.key + ":code")
         else:
+
             the_resource = self.the_storage.get(self.key)
-            if not the_resource != None:
-                source = self.the_storage.get(self.key)["code"]            
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["code"]   
+     
         return source
 
     def set_code(self, code):
@@ -186,7 +256,18 @@ class Scope:
 
     @property
     def requirements(self):
-        return self.the_storage.get(self.key + ":requirements")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":requirements")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["requirements"]   
+     
+        return source        
+        
 
     def set_requirements(self, requirements):
         return self.the_storage.set(self.key + ":requirements", requirements)
@@ -208,7 +289,7 @@ class Scope:
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": current_time, "code":self.code}
+        data = {"data": data, "user": user.key, "time": current_time, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -220,7 +301,7 @@ class Scope:
 
     @staticmethod
     def get_dump(dump_id):
-        the_scope = Scope(dump_id, specific)
+        the_scope = Scope(dump_id, specific=True)
         the_scope.the_storage = storage_3
         return the_scope
 
@@ -250,9 +331,13 @@ class Scope:
 
     @staticmethod
     def get_all_scopes_name_prefix(user, prefix):
+        prefix = prefix + "."
         all_scopes = Scope.get_all_scopes_name(user)
-
-        return [i for i in all_scopes if i.startswith(prefix)]
+        result = []
+        for i in all_scopes:
+            if i.startswith(prefix):
+                result.append(i)
+        return result
 
 
 
