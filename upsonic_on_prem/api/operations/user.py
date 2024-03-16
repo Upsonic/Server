@@ -109,7 +109,7 @@ def get_code_of_scope():
     return jsonify({"status": True, "result": Scope(scope).code})
 
 @app.route(get_version_code_of_scope_url, methods=["POST"])
-def get_code_of_scope():
+def get_version_code_of_scope():
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.code})
