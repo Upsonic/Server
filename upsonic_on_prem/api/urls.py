@@ -106,6 +106,7 @@ get_all_scopes_name_prefix_url = "/get_all_scopes_name_prefix"
 
 create_version_url = "/create_version"
 create_version_prefix_url = "/create_version_prefix"
+delete_version_prefix_url = "/delete_version_prefix"
 
 dump_requirements_url = "/dump_requirements"
 dump_python_version_url = "/dump_python_version"

@@ -151,6 +151,11 @@ def libraries(request):
 @login_required
 def control_library(request,id):
 
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
     have_upper = False
     the_upper = ""
     if "." in id:
@@ -162,6 +167,8 @@ def control_library(request,id):
         print("the_upper", the_upper)
         print("last", last)
         the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
 
 
 
@@ -169,17 +176,32 @@ def control_library(request,id):
 
     the_name = id.replace(".", "_")
 
-    code = f'{the_name} = upsonic.load_module("{id}")'
+    if version != None:
+        code = f'{the_name} = upsonic.load_module("{id}", version="{version}")'
+    else:
+        code = f'{the_name} = upsonic.load_module("{id}")'
 
     the_content = None
     try:
-        the_content = API_Integration(request.user.access_key).subs_of_scope(id)
+        the_content_response = API_Integration(request.user.access_key).subs_of_scope(id, version=version)
+        if version != None:
+            the_content = {}
+            for each in the_content_response:
+                the_content[each+":"+version] = the_content_response[each]
+        else:
+            the_content = the_content_response
     except:
         pass
+
+    
+
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
+    print(the_content)
+
     if the_content == None:
         return redirect(to='libraries')
 
-    readme = API_Integration(request.user.access_key).get_readme(id)
+    readme = API_Integration(request.user.access_key).get_readme(id, version=version)
     if readme == None:
         readme = "Generating..."
         tasks = models.AI_Task.objects.filter(task_name="readme", key=id, status=False)
@@ -188,11 +210,16 @@ def control_library(request,id):
 
     all_scopes = []
     for each_scope in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
-        all_scopes.append([each_scope, API_Integration(request.user.access_key).get_documentation(each_scope)])
+        if version != None:
+            if version in API_Integration(request.user.access_key).get_version_history(each_scope):
+                all_scopes.append([each_scope, API_Integration(request.user.access_key).get_documentation(each_scope, version=version)])
+        else:
+            all_scopes.append([each_scope, API_Integration(request.user.access_key).get_documentation(each_scope)])
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
         "top_control_library": id.split(".")[0],
         "content": the_content,
         "have_upper": have_upper,
@@ -200,8 +227,11 @@ def control_library(request,id):
         "code": code,
         "readme": readme,
         "all_scopes": all_scopes,
+        "version": "" if version == None else version,
     }
     return render(request, f"templates/libraries/control_library.html", data)
+
+
 def capitalize_first_letter(input_string):
     if not input_string:
         return input_string
@@ -212,6 +242,11 @@ def capitalize_first_letter(input_string):
 @login_required
 def control_element(request, id):
 
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
     have_upper = False
     the_upper = ""
     if "." in id:
@@ -223,12 +258,15 @@ def control_element(request, id):
         print("the_upper", the_upper)
         print("last", last)
         the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
 
 
     using_code = ""
     using_code = f'upsonic.load("{id}")()'
 
-    documentation = API_Integration(request.user.access_key).get_documentation(id)
+    documentation = API_Integration(request.user.access_key).get_documentation(id, version=version)
 
     write_right = request.user.can_write(id)
 
@@ -238,15 +276,15 @@ def control_element(request, id):
         gpt_model = True
 
 
-    if documentation == None and write_right:
+    if documentation == None and write_right and version==None:
         tasks = models.AI_Task.objects.filter(task_name="documentation", key=id, status=False)
         if len(tasks) == 0:
             models.AI_Task(task_name="documentation", key=id, access_key=request.user.access_key, owner=request.user).save()
         documentation = "Documentation is generating, it will be ready soon."
 
     
-    time_complexity = API_Integration(request.user.access_key).get_time_complexity(id)
-    if time_complexity == None and write_right:
+    time_complexity = API_Integration(request.user.access_key).get_time_complexity(id, version=version)
+    if time_complexity == None and write_right and version==None:
 
         tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=id, status=False)
         if len(tasks) == 0:
@@ -255,8 +293,8 @@ def control_element(request, id):
 
 
 
-    mistakes = API_Integration(request.user.access_key).get_mistakes(id)
-    if mistakes == None and write_right and gpt_model:
+    mistakes = API_Integration(request.user.access_key).get_mistakes(id, version=version)
+    if mistakes == None and write_right and version==None and gpt_model:
 
         tasks = models.AI_Task.objects.filter(task_name="mistakes", key=id, status=False)
         if len(tasks) == 0:
@@ -264,8 +302,8 @@ def control_element(request, id):
         mistakes = "Mistakes are generating, it will be ready soon."
 
 
-    required_test_types = API_Integration(request.user.access_key).get_required_test_types(id)
-    if required_test_types == None and write_right:
+    required_test_types = API_Integration(request.user.access_key).get_required_test_types(id, version=version)
+    if required_test_types == None and write_right and version==None:
 
         tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=id, status=False)
         if len(tasks) == 0:
@@ -274,8 +312,8 @@ def control_element(request, id):
 
 
 
-    tags = API_Integration(request.user.access_key).get_tags(id)
-    if tags == None and write_right:
+    tags = API_Integration(request.user.access_key).get_tags(id, version=version)
+    if tags == None and write_right and version==None:
 
         tasks = models.AI_Task.objects.filter(task_name="tags", key=id, status=False)
         if len(tasks) == 0:
@@ -284,8 +322,8 @@ def control_element(request, id):
 
 
 
-    security_analysis = API_Integration(request.user.access_key).get_security_analysis(id)
-    if security_analysis == None and write_right:
+    security_analysis = API_Integration(request.user.access_key).get_security_analysis(id, version=version)
+    if security_analysis == None and write_right and version==None:
         tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=id, status=False)
         if len(tasks) == 0:
             models.AI_Task(task_name="security_analysis", key=id, access_key=request.user.access_key, owner=request.user).save()
@@ -296,18 +334,19 @@ def control_element(request, id):
 
 
 
-    requirements = API_Integration(request.user.access_key).get_requirements(id)
-    the_type = API_Integration(request.user.access_key).get_type(id)
-    python_version = API_Integration(request.user.access_key).get_python_version(id)
+    requirements = API_Integration(request.user.access_key).get_requirements(id, version=version)
+    the_type = API_Integration(request.user.access_key).get_type(id, version=version)
+    python_version = API_Integration(request.user.access_key).get_python_version(id, version=version)
 
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
         "top_control_library": id.split(".")[0],
         "have_upper": have_upper,
         "the_upper": the_upper,
-        "code": API_Integration(request.user.access_key).get_code(id),
+        "code": API_Integration(request.user.access_key).get_code(id, version=version),
         "using_code": using_code,
         "documentation": documentation,
         "time_complexity": time_complexity,
@@ -319,6 +358,7 @@ def control_element(request, id):
         "type": capitalize_first_letter(the_type),
         "python_version": python_version,
         "gpt_model": gpt_model,
+        "version": "" if version == None else version,
     }
     return render(request, f"templates/libraries/element.html", data)
 
@@ -513,3 +553,193 @@ def delete_openai_api_key_user(request, id):
     user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).delete_openai_api_key_user(user.access_key)
     return redirect(to='control_user', id=id)
+
+
+
+
+
+
+@login_required
+def control_element_version(request, id):
+
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
+
+
+    using_code = ""
+    using_code = f'upsonic.load("{id}")()'
+
+    write_right = request.user.can_write(id)
+
+
+
+
+
+    requirements = API_Integration(request.user.access_key).get_requirements(id)
+    the_type = API_Integration(request.user.access_key).get_type(id)
+    python_version = API_Integration(request.user.access_key).get_python_version(id)
+
+    print("id", id)
+    the_versions = []
+    the_versions_response = API_Integration(request.user.access_key).get_version_history(id)
+    no_version = False
+    if the_versions_response == [None]:
+        no_version = True
+    else:
+        for element in the_versions_response:
+            code = None
+            code_response = API_Integration(request.user.access_key).get_version_code(id, element)
+            if code_response != [None]:
+                code = code_response
+            data = {"version":element, "code": code, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element}
+            the_versions.append(data)
+
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
+        "top_control_library": id.split(".")[0],
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "code": API_Integration(request.user.access_key).get_code(id),
+        "using_code": using_code,
+        "requirements": requirements,
+        "type": capitalize_first_letter(the_type),
+        "python_version": python_version,
+        "the_versions": the_versions,
+        "no_version": no_version,
+        "version": "" if version == None else version,
+        "using_code":f'upsonic.load("{id}")()',
+        "create_version":request.user.can_write(id)
+    }
+    return render(request, f"templates/libraries/element_version.html", data)
+
+
+
+@login_required
+def control_library_version(request,id):
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
+
+
+    code = ""
+
+    the_name = id.replace(".", "_")
+
+
+
+    the_content = None
+    try:
+        the_content = API_Integration(request.user.access_key).subs_of_scope(id)
+    except:
+        pass
+    if the_content == None:
+        return redirect(to='libraries')
+
+
+
+    all_scopes_response = API_Integration(request.user.access_key).get_all_scopes_name_prefix(id)
+    print(all_scopes_response)
+    all_possible_versions = []
+    for each_scope in all_scopes_response:
+        scope_versions = API_Integration(request.user.access_key).get_version_history(each_scope)
+        for each_version in scope_versions:
+            if each_version not in all_possible_versions:
+                all_possible_versions.append(each_version)
+    
+
+    the_versions = []
+    for each_version in all_possible_versions:
+        the_versions.append({"version": each_version, "using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version}")', "link":id+":"+each_version})
+
+    no_version = False
+    if len(the_versions) == 0:
+        no_version = True
+
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
+        "top_control_library": id.split(".")[0],
+        "content": the_content,
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "the_versions": the_versions,
+        "no_version": no_version,
+        "version": "" if version == None else version,
+        "using_code": f'{the_name} = upsonic.load_module("{id}")'
+    }
+    return render(request, f"templates/libraries/control_library_version.html", data)
+
+
+@login_required
+def control_element_version_create(request, id):
+    if not request.user.can_write(id):
+        return HttpResponse(status=403)
+    
+    if request.method == 'POST':
+        version = request.POST.get("version")
+        API_Integration(request.user.access_key).create_version(id, version)
+        return redirect(to='control_element_version', id=id)
+    else:
+        return redirect(to='control_element', id=id)
+
+
+@login_required
+def control_library_version_create(request, id):
+
+    if request.method == 'POST':
+        version = request.POST.get("version")
+        API_Integration(request.user.access_key).create_version_prefix(id, version)
+        return redirect(to='control_library_version', id=id)
+    else:
+        return redirect(to='control_library', id=id)
+
+
+@login_required
+def control_library_version_delete(request, id, version):
+        API_Integration(request.user.access_key).delete_version_prefix(id, version)
+        return redirect(to='control_library_version', id=id)
+
+@login_required
+def control_element_version_delete(request, id, version):
+        API_Integration(request.user.access_key).delete_version(id, version)
+        return redirect(to='control_element_version', id=id)
