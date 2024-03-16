@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+<div class="d-flex cloud_left_section">
+{% include 'cloud_side_bar.html' %}
+
+</div>
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text">
+            {% if have_upper %}
+            <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
+            {% endif %}
+            <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
+            <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Library View</a>
+    </div>
+
+
+    <div class="d-flex flex-row justify-content-between">
+
+
+        <div class="flex-fill w-50 me-5">
+            <div class="custom_page_header_top_bottom_margin">
+                <span class="custom_page_header_text">Latest</span>
+            </div>
+            <div class="custom_code_block">
+                <div class="custom_code_block_code">
+                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{using_code}}</code></pre></div>
+                </div>
+            </div>
+            <a href="#" onclick="page_load('{% url 'control_library' id=control_library %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Latest</a>
+
+
+
+            {% if not no_version %}
+
+
+            {% for v in the_versions %}
+
+            <div class="custom_page_header_top_bottom_margin">
+                <span class="custom_page_header_text">{{v.version}}</span>
+            </div>
+            <div class="custom_code_block">
+                <div class="custom_code_block_code">
+                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{v.using_code}}</code></pre></div>
+                </div>
+            </div>
+            <a href="#" onclick="page_load('{% url 'control_library' id=v.link %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Library View for {{v.version}}</a>
+            <a href="{% url 'control_library_version_delete' id=control_library version=v.version %}" class="btn btn-lg custom_button_red mt-3">Delete {{v.version}}</a>
+
+            {% endfor %}
+
+            {% else %}
+
+
+            <div class="custom_page_header_top_bottom_margin">
+                <span class="custom_page_header_text">- No Version Found</span>
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+        <div class="flex-fill w-50" style="
+        position: -webkit-sticky; /* for Safari */
+        position: sticky;
+        top: 0;
+        align-self: flex-start; /* <-- this is the fix */
+          /* Not necessary -- for example only */
+    ">
+
+ 
+
+<div class="custom_page_header_top_bottom_margin">
+<span class="custom_page_header_text"><span class="custom_page_header_text_bold">Create New Version</span></span>
+</div>
+<form method="POST" class="d-flex"  action="{% url 'control_library_version_create' id=control_library %}">
+{% csrf_token %}
+<div>
+    <input type="text" id="version" name="version" required class="form-control me-2 search_bar" placeholder="Ex. v1">
+</div>
+<div>
+    <button class="btn btn-outline-success ms-3" type="submit">Create</button>
+</div>
+</form>
+
+
+
+
+</div>
+
+</div>
+
+
+
+{% endblock content %}
