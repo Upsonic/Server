@@ -108,6 +108,11 @@ def get_code_of_scope():
     scope = request.form.get("scope")
     return jsonify({"status": True, "result": Scope(scope).code})
 
+@app.route(get_version_code_of_scope_url, methods=["POST"])
+def get_code_of_scope():
+    version = request.form.get("version")
+    object = Scope.get_version(version)
+    return jsonify({"status": True, "result": object.code})
 
 documentation_tasks = []
 
@@ -195,6 +200,12 @@ def delete_scope():
     scope = request.form.get("scope")
     object = Scope(scope)
     return jsonify({"status": True, "result": object.delete()})
+
+@app.route(delete_version_url, methods=["POST"])
+def delete_version():
+    version = request.form.get("version")
+    object = Scope.delete_version(version)
+    return jsonify({"status": True, "result": object})
 
 
 @app.route(get_dump_history_url, methods=["POST"])
