@@ -65,48 +65,122 @@ def get_write_scopes_of_me():
 @app.route(get_document_of_scope_url, methods=["POST"])
 def get_document_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).documentation})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.documentation})
+
+
 @app.route(get_requirements_of_scope_url, methods=["POST"])
 def get_requirements_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).requirements})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.requirements})
+
+
+
 
 
 @app.route(get_time_complexity_of_scope_url, methods=["POST"])
 def get_time_complexity_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).time_complexity})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.time_complexity})
+
+
+
 
 
 
 @app.route(get_mistakes_of_scope_url, methods=["POST"])
 def get_mistakes_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).mistakes})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.mistakes})
+
+
 
 
 @app.route(get_required_test_types_of_scope_url, methods=["POST"])
 def get_required_test_types_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).required_test_types})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.required_test_types})
+
 
 
 @app.route(get_tags_of_scope_url, methods=["POST"])
 def get_tags_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).tags})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.tags})
+
+    scope = request.form.get("scope")
+
 
 @app.route(get_security_analysis_of_scope_url, methods=["POST"])
 def get_security_analysis_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).security_analysis})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.security_analysis})
+
+
 
 
 
 @app.route(get_code_of_scope_url, methods=["POST"])
 def get_code_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).code})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.code})
+
+
 
 @app.route(get_version_code_of_scope_url, methods=["POST"])
 def get_version_code_of_scope():
@@ -181,12 +255,30 @@ def create_document_of_scope_old():
 @app.route(get_type_of_scope_url, methods=["POST"])
 def get_type_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).type})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.type})
+
+
+
 
 @app.route(get_python_version_of_scope_url, methods=["POST"])
 def get_python_version_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).python_version})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.python_version})
+
 
 
 @app.route(get_all_scopes_user_url, methods=["get"])
@@ -322,7 +414,16 @@ def get_default_ai_model():
 def create_readme():
     global documentation_tasks
     top_library = request.form.get("top_library")
-    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    version = request.form.get("version")
+
+    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    all_scopes = []
+    for each_scope in all_scopes_response:
+        if version != None:
+            if version in Scope(each_scope).version_history:
+                all_scopes.append(each_scope)
+        else:
+            all_scopes.append(each_scope)
 
     # order by alphabetical
     all_scopes.sort()
@@ -335,19 +436,24 @@ def create_readme():
 
     summary_list = ""
     for each_scope in all_scopes:
-        while each_scope in documentation_tasks:
-            time.sleep(1)    
+        
+        if version != None:
+            the_scope = Scope(each_scope)
+            while each_scope in documentation_tasks:
+                time.sleep(1)    
 
-        if Scope(each_scope).documentation == None:
-            documentation_tasks.append(each_scope)
-            Scope(each_scope).create_documentation()
-            try:
-                documentation_tasks.remove(each_scope)
-            except:
-                pass
+            if Scope(each_scope).documentation == None:
+                documentation_tasks.append(each_scope)
+                Scope(each_scope).create_documentation()
+                try:
+                    documentation_tasks.remove(each_scope)
+                except:
+                    pass
+        else:
+            the_scope = Scope.get_version(each_scope+":"+version)
 
-        summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
-        summary_list += str(Scope(each_scope).documentation) + "\n\n"
+        summary_list += each_scope +" - " + the_scope.type + "\n"
+        summary_list += str(the_scope.documentation) + "\n\n"
 
 
     #Create sha256 hash of the result
@@ -362,7 +468,16 @@ def create_readme():
 @app.route(get_readme_url, methods=["POST"])
 def get_readme():
     top_library = request.form.get("top_library")
-    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    version = request.form.get("version")
+    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    all_scopes = []
+    for each_scope in all_scopes_response:
+        if version != None:
+            if version in Scope(each_scope).version_history:
+                all_scopes.append(each_scope)
+        else:
+            all_scopes.append(each_scope)
+    
 
     # order by alphabetical
     all_scopes.sort()
@@ -404,10 +519,30 @@ def create_version_prefix():
     user = AccessKey(request.authorization.password)
     top_library = request.form.get("top_library")
     version = request.form.get("version")
-    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    all_scopes = Scope.get_all_scopes_name_prefix(user, top_library)
     write_scopes = user.scopes_write
     for each_scope in all_scopes:
-        if each_scope in write_scopes:
+        if each_scope in write_scopes or user.is_admin:
             Scope(each_scope).create_version(version, user)
 
     jsonify({"status": True, "result": True})
+
+
+
+@app.route(delete_version_prefix_url, methods=["post"])
+def delete_version_prefix():
+    user = AccessKey(request.authorization.password)
+    top_library = request.form.get("top_library")
+    version = request.form.get("version")
+
+
+    all_scopes = Scope.get_all_scopes_name_prefix(user, top_library)
+    write_scopes = user.scopes_write
+    for each_scope in all_scopes:
+        if each_scope in write_scopes or user.is_admin:
+            try:
+                Scope(each_scope).delete_version(each_scope+":"+version)
+            except:
+                pass
+
+    jsonify({"status": True, "result": True})    
