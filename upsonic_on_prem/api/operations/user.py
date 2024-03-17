@@ -416,11 +416,16 @@ def create_readme():
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
+
     all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
     all_scopes = []
     for each_scope in all_scopes_response:
         if version != None:
-            if version in Scope(each_scope).version_history:
+            the_version_history_response = Scope(each_scope).version_history
+            the_version_history = []
+            for element in the_version_history_response:
+                the_version_history.append(element.replace(each_scope+":", ""))
+            if version in the_version_history:
                 all_scopes.append(each_scope)
         else:
             all_scopes.append(each_scope)
@@ -437,7 +442,7 @@ def create_readme():
     summary_list = ""
     for each_scope in all_scopes:
         
-        if version != None:
+        if version == None:
             the_scope = Scope(each_scope)
             while each_scope in documentation_tasks:
                 time.sleep(1)    
@@ -452,9 +457,11 @@ def create_readme():
         else:
             the_scope = Scope.get_version(each_scope+":"+version)
 
-        summary_list += each_scope +" - " + the_scope.type + "\n"
+        summary_list += each_scope +" - " + str(the_scope.type) + "\n"
         summary_list += str(the_scope.documentation) + "\n\n"
 
+
+    print("SUMMARY LIST: ", summary_list)
 
     #Create sha256 hash of the result
     sha256 = hashlib.sha256(summary_list.encode()).hexdigest()
@@ -473,11 +480,16 @@ def get_readme():
     all_scopes = []
     for each_scope in all_scopes_response:
         if version != None:
-            if version in Scope(each_scope).version_history:
+            the_version_history_response = Scope(each_scope).version_history
+            the_version_history = []
+            for element in the_version_history_response:
+                the_version_history.append(element.replace(each_scope+":", ""))
+            if version in the_version_history:
                 all_scopes.append(each_scope)
         else:
             all_scopes.append(each_scope)
     
+    print("ALL SCOPES: ", all_scopes)
 
     # order by alphabetical
     all_scopes.sort()
@@ -488,10 +500,27 @@ def get_readme():
 
     summary_list = ""
     for each_scope in all_scopes:
-        while each_scope in documentation_tasks:
-            time.sleep(1)    
-        summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
-        summary_list += str(Scope(each_scope).documentation) + "\n\n"
+        
+        if version == None:
+            the_scope = Scope(each_scope)
+            while each_scope in documentation_tasks:
+                time.sleep(1)    
+
+            if Scope(each_scope).documentation == None:
+                documentation_tasks.append(each_scope)
+                Scope(each_scope).create_documentation()
+                try:
+                    documentation_tasks.remove(each_scope)
+                except:
+                    pass
+        else:
+            the_scope = Scope.get_version(each_scope+":"+version)
+
+        summary_list += each_scope +" - " + str(the_scope.type) + "\n"
+        summary_list += str(the_scope.documentation) + "\n\n"
+
+
+    print("SUMMARY LIST: ", summary_list)
 
     
     #Create sha256 hash of the result
