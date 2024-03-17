@@ -504,8 +504,8 @@ class API_Integration:
     def create_readme(self, top_library):
         version = None
         if ":" in top_library:
-            top_library = top_library.split(":")[0]
             version = top_library.split(":")[1]
+            top_library = top_library.split(":")[0]
         data = {"top_library": top_library}
         if version != None:
             data["version"] = version        
