@@ -115,9 +115,11 @@ class API_Integration:
                 return result
             except:  # pragma: no cover
                 print(f"Error on '{self.api_url + endpoint}': ", response.text)
+                traceback.print_exc()
                 return [None]  # pragma: no cover
         except:
             print("Error: Remote is down")
+            traceback.print_exc()
             return [None]
 
     @property
@@ -172,9 +174,19 @@ class API_Integration:
     def sub_based_all_scopes(self):
         return self.sub_based_all_scopes_()
 
-    def sub_based_all_scopes_(self, prefix=None):
+    def sub_based_all_scopes_(self, prefix=None, version=None):
 
-        all_scopes = self.all_scopes
+        all_scopes_response = self.all_scopes
+        all_scopes = []
+        for each_scope in all_scopes_response:
+            if version != None:
+                print("Version chec AAAAAAAAAAAAAAAAAAAAAAAAA")
+                if version in self.get_version_history(each_scope):
+                    print("pass", each_scope)
+                    all_scopes.append(each_scope)
+            else:
+                all_scopes.append(each_scope)
+
 
         def group_by_top_level_recursive(function_list):
             grouped_dict = {}
@@ -233,8 +245,8 @@ class API_Integration:
 
         return result
 
-    def subs_of_scope(self, prefix):
-        sub_scopes_general_list = self.sub_based_all_scopes_(prefix)
+    def subs_of_scope(self, prefix, version=None):
+        sub_scopes_general_list = self.sub_based_all_scopes_(prefix, version=version)
 
         def match_prefix(dictionary, prefix):
             for key, value in dictionary.items():
@@ -248,8 +260,10 @@ class API_Integration:
         result = match_prefix(sub_scopes_general_list, prefix)
 
         return result
-    def get_code(self, scope):
+    def get_code(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return self._send_request("POST", "/get_code_of_scope", data=data)
 
     def delete_code(self, scope):
@@ -257,40 +271,57 @@ class API_Integration:
         return self._send_request("POST", "/delete_scope", data=data)
 
 
-    def get_documentation(self, scope):
+    def get_documentation(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version
         return transform_to_html_bold(self._send_request("POST", "/get_document_of_scope", data=data))
 
 
-    def get_requirements(self, scope):
+    def get_requirements(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         requirements = self._send_request("POST", "/get_requirements_of_scope", data=data)
-        if requirements is not None:
+
+        if requirements is not None and requirements != [None]:
             requirements.replace(",", "")
         return requirements
-    def get_python_version(self, scope):
+    def get_python_version(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return self._send_request("POST", "/get_python_version_of_scope", data=data)    
-    def get_type(self, scope):
+    def get_type(self, scope, version=None):
         data = {"scope": scope}
         return self._send_request("POST", "/get_type_of_scope", data=data)
 
-    def get_time_complexity(self, scope):
+    def get_time_complexity(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return transform_to_html_bold(self._send_request("POST", "/get_time_complexity_of_scope", data=data))
 
 
-    def get_mistakes(self, scope):
+    def get_mistakes(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return transform_to_html_bold(self._send_request("POST", "/get_mistakes_of_scope", data=data))
-    def get_required_test_types(self, scope):
+    def get_required_test_types(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return transform_to_html_bold(self._send_request("POST", "/get_required_test_types_of_scope", data=data))
-    def get_tags(self, scope):
+    def get_tags(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return transform_to_html_bold(self._send_request("POST", "/get_tags_of_scope", data=data))    
-    def get_security_analysis(self, scope):
+    def get_security_analysis(self, scope, version=None):
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
         return transform_to_html_bold(self._send_request("POST", "/get_security_analysis_of_scope", data=data))
 
 
@@ -471,11 +502,19 @@ class API_Integration:
         return response
 
     def create_readme(self, top_library):
+        version = None
+        if ":" in top_library:
+            top_library = top_library.split(":")[0]
+            version = top_library.split(":")[1]
         data = {"top_library": top_library}
+        if version != None:
+            data["version"] = version        
         return self._send_request("POST", "/create_readme", data=data)
     
-    def get_readme(self, top_library):
+    def get_readme(self, top_library, version=None):
         data = {"top_library": top_library}
+        if version != None:
+            data["version"] = version
         result = self._send_request("POST", "/get_readme", data=data)
         try:
             return transform_to_html_bold(result)
@@ -500,3 +539,31 @@ class API_Integration:
     def delete_openai_api_key_user(self, key):
         data = {"key": key}
         return self._send_request("POST", "/delete_openai_api_key_user", data=data)
+
+
+    def get_version_history(self, scope):
+        data = {"scope": scope}
+        response = self._send_request("POST", "/get_version_history", data=data)
+        result = []
+        if response != [None]:
+            for element in response:
+                result.append(element.replace(scope+":", ""))
+        return result
+
+    def delete_version(self, scope, version):
+        data = {"version": scope+":"+version}
+        return self._send_request("POST", "/delete_version", data)
+
+    def create_version(self, scope, version):
+        data = {"scope":scope ,"version": version}
+        return self._send_request("POST", "/create_version", data)   
+    def create_version_prefix(self, top_library, version):
+        data = {"top_library":top_library, "version":version}
+        return self._send_request("POST", "/create_version_prefix", data) 
+    def delete_version_prefix(self, top_library, version):
+        data = {"top_library":top_library, "version":version}
+        return self._send_request("POST", "/delete_version_prefix", data) 
+
+    def get_version_code(self, scope, version):
+        data = {"version": scope+":"+version}
+        return self._send_request("POST", "/get_version_code_of_scope", data=data)
