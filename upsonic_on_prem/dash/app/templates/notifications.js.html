@@ -16,17 +16,17 @@
 
     // toast generator function
 
-    function toast_generator(id, title, message, important) {
-
+    function toast_generator(id, title, message, important, tour_number) {
+        original_id = id
 
         
         the_toast_header = `
-        <div id="`+id+`" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="`+id+`" class="toast `+tour_number+`" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="4000">
         `
 
         if (important) {
             the_toast_header = `
-            <div id="`+id+`" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div id="`+id+`" class="toast `+tour_number+`" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
             `
         }
 
@@ -34,7 +34,7 @@
 
             <div class="toast-header">
                 <strong class="me-auto">`+title+`</strong>
-                <button type="button" class="btn-close" id="`+id+`_close" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="`+id+`_close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
                 `+message+`
@@ -50,31 +50,15 @@
             toast_container.innerHTML =  toast_container.innerHTML + the_toast
             
 
-        
-
-        
-            var toastElList = [].slice 
-                    .call(document.querySelectorAll('.toast')); 
-
-            // Remove the toast element that have hide class
-            var toastElList = toastElList.filter(function(toastEl) { 
-                return !toastEl.classList.contains('hide') 
-            })
-
-            var toastList = toastElList.map(function (toastEl) { 
-                    return new bootstrap.Toast(toastEl) 
-                }) 
-            toastList.forEach(toast => toast.show()) 
-
             document.getElementById(id+'_close').addEventListener('click', function() {
-                document.getElementById(id).remove()
-                // send a request to the server to mark the notification as read
-                // use read_url and id
-                request_url = read_url + id 
+                request_url = read_url + original_id 
              
                 fetch(request_url)
 
             })
+
+
+
         }
 
     }
@@ -85,16 +69,43 @@
 
     // get the notifications from the server
     function get_notifications() {
+        tour_number = Math.floor(Math.random() * 1000)
         fetch(url)
         .then(response => response.json())
         .then(data => {
             
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    toast_generator(data[i].id, data[i].title, data[i].message, data[i].important)
+                    
+                    toast_generator(data[i].id, data[i].title, data[i].message, data[i].important, tour_number)
+                    //wait for 1 second
+
                 }
             }
-        })
+        }).finally(response =>{
+            var toastElList = [].slice 
+                    .call(document.querySelectorAll('.toast')); 
+
+            // Remove the toast element that have hide class
+            var toastElList = toastElList.filter(function(toastEl) { 
+                return !toastEl.classList.contains('hide') 
+            })
+
+           // Remove the toast element that have hide class
+            var toastElList = toastElList.filter(function(toastEl) { 
+                return toastEl.classList.contains(tour_number) 
+            })            
+
+            var toastList = toastElList.map(function (toastEl) { 
+                    return new bootstrap.Toast(toastEl) 
+                }) 
+            toastList.forEach(toast => toast.show()) 
+        }
+        )
+
+
+        
+
     }
 
 
