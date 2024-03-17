@@ -353,7 +353,26 @@ def get_dump_history():
 def get_version_history():
     scope = request.form.get("scope")
     object = Scope(scope)
+    
     return jsonify({"status": True, "result": object.version_history})
+
+
+@app.route(get_module_version_history_url, methods=["POST"])
+def get_module_version_history():
+    top_library = request.form.get("top_library")
+    user = AccessKey(request.authorization.password)
+
+
+    all_scopes_response = Scope.get_all_scopes_name_prefix(user, top_library)
+
+    all_possible_versions = []
+    for each_scope in all_scopes_response:
+        scope_versions = Scope(each_scope).version_history
+        for each_version in scope_versions:
+            if each_version not in all_possible_versions:
+                all_possible_versions.append(each_version.split(":")[1])
+
+    return jsonify({"status": True, "result": all_possible_versions})
 
 
 
