@@ -176,35 +176,111 @@ class Scope:
 
     def create_documentation(self):
         document = AI.code_to_documentation(self.code)
-        self.the_storage.set(self.key + ":documentation", document)
+
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":documentation", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["documentation"] = document
+            self.the_storage.set(self.key, the_resource)
+     
+   
+
+
+        
+        
 
 
     def create_time_complexity(self):
         document = AI.code_to_time_complexity(self.code)
-        self.the_storage.set(self.key + ":time_complexity", document)
+
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":time_complexity", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["time_complexity"] = document
+            self.the_storage.set(self.key, the_resource)
+
+
 
     def create_mistakes(self):
         document = AI.code_to_mistakes(self.code)
-        self.the_storage.set(self.key + ":mistakes", document)
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":mistakes", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["mistakes"] = document
+            self.the_storage.set(self.key, the_resource)
+
+
 
 
     def create_required_test_types(self):
         document = AI.code_to_required_test_types(self.code)
-        self.the_storage.set(self.key + ":required_test_types", document)
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":required_test_types", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["required_test_types"] = document
+            self.the_storage.set(self.key, the_resource)
+
+
 
 
     def create_tags(self):
         document = AI.code_to_tags(self.code)
-        self.the_storage.set(self.key + ":tags", document)
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":tags", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["tags"] = document
+            self.the_storage.set(self.key, the_resource)
+
+
 
 
     def create_security_analysis(self):
         document = AI.code_to_security_analysis(self.code)
-        self.the_storage.set(self.key + ":security_analysis", document)
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":security_analysis", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["security_analysis"] = document
+            self.the_storage.set(self.key, the_resource)
+
+
 
     def create_documentation_old(self):
         document = AI.code_to_documentation(self.code_old)
-        self.the_storage.set(self.key + ":documentation", document)
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":documentation", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["documentation"] = document
+            self.the_storage.set(self.key, the_resource)
+
+
 
 
 
@@ -275,7 +351,19 @@ class Scope:
 
     @property
     def python_version(self):
-        return self.the_storage.get(self.key + ":python_version")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":python_version")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["python_version"]   
+     
+        return source        
+                
+
 
     def set_python_version(self, python_version):
         return self.the_storage.set(self.key + ":python_version", python_version)
