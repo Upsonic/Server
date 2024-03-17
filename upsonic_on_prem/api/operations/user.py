@@ -193,25 +193,42 @@ documentation_tasks = []
 @app.route(create_document_of_scope_url, methods=["POST"])
 def create_document_of_scope():
     global documentation_tasks
+
     scope = request.form.get("scope")
-    if not scope in documentation_tasks:
-        documentation_tasks.append(scope)
+    version = request.form.get("version")
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    if not task_name in documentation_tasks:
+        documentation_tasks.append(task_name)
         try:
-            work = Scope(scope).create_documentation()
+            work = the_scope.create_documentation()
         except:
             pass
-        documentation_tasks.remove(scope)
+        try:
+            documentation_tasks.remove(task_name)
+        except:
+            pass
     else:
-        while scope in documentation_tasks:
+        while task_name in documentation_tasks:
             time.sleep(1)
-        work = Scope(scope).documentation
+        work = the_scope.documentation
     return jsonify({"status": True, "result": work})
 
 @app.route(create_time_complexity_of_scope_url, methods=["POST"])
 def create_time_complexity_of_scope():
     scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": Scope(scope).create_time_complexity()})
+    return jsonify({"status": True, "result": the_scope.create_time_complexity()})
 
 
 
@@ -219,27 +236,47 @@ def create_time_complexity_of_scope():
 @app.route(create_mistakes_of_scope_url, methods=["POST"])
 def create_mistakes_of_scope():
     scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": Scope(scope).create_mistakes()})
+    return jsonify({"status": True, "result": the_scope.create_mistakes()})
 
 @app.route(create_required_test_types_of_scope_url, methods=["POST"])
 def create_required_test_types_of_scope():
     scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": Scope(scope).create_required_test_types()})
+    return jsonify({"status": True, "result": the_scope.create_required_test_types()})
 
 
 @app.route(create_tags_of_scope_url, methods=["POST"])
 def create_tags_of_scope():
     scope = request.form.get("scope")
-    return jsonify({"status": True, "result": Scope(scope).create_tags()})
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+    return jsonify({"status": True, "result": the_scope.create_tags()})
 
 
 @app.route(create_security_analysis_of_scope_url, methods=["POST"])
 def create_security_analysis_of_scope():
     scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": Scope(scope).create_security_analysis()})
+    return jsonify({"status": True, "result": the_scope.create_security_analysis()})
 
 
 
@@ -249,8 +286,13 @@ def create_security_analysis_of_scope():
 @app.route(create_document_of_scope_url_old, methods=["POST"])
 def create_document_of_scope_old():
     scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": Scope(scope).create_documentation_old()})
+    return jsonify({"status": True, "result": the_scope.create_documentation_old()})
 
 @app.route(get_type_of_scope_url, methods=["POST"])
 def get_type_of_scope():
@@ -441,30 +483,33 @@ def create_readme():
 
     summary_list = ""
     for each_scope in all_scopes:
-        
-        if version == None:
-            the_scope = Scope(each_scope)
-            while each_scope in documentation_tasks:
+            task_name = each_scope
+            if version == None:
+                the_scope = Scope(each_scope)
+            else:
+                task_name = each_scope+":"+version
+                the_scope = Scope.get_version(each_scope+":"+version)
+
+            while task_name in documentation_tasks:
                 time.sleep(1)    
 
-            if Scope(each_scope).documentation == None:
-                documentation_tasks.append(each_scope)
-                Scope(each_scope).create_documentation()
+            if the_scope.documentation == None:
+                documentation_tasks.append(task_name)
+                the_scope.create_documentation()
                 try:
-                    documentation_tasks.remove(each_scope)
+                    documentation_tasks.remove(task_name)
                 except:
                     pass
-        else:
-            the_scope = Scope.get_version(each_scope+":"+version)
 
-        summary_list += each_scope +" - " + str(the_scope.type) + "\n"
-        summary_list += str(the_scope.documentation) + "\n\n"
+
+            summary_list += each_scope +" - " + str(the_scope.type) + "\n"
+            summary_list += str(the_scope.documentation) + "\n\n"
 
 
     print("SUMMARY LIST: ", summary_list)
 
     #Create sha256 hash of the result
-    sha256 = hashlib.sha256(summary_list.encode()).hexdigest()
+    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
 
     result = AI.generate_readme(top_library, summary_list)
 
@@ -524,7 +569,7 @@ def get_readme():
 
     
     #Create sha256 hash of the result
-    sha256 = hashlib.sha256(summary_list.encode()).hexdigest()
+    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
 
     return jsonify({"status": True, "result": storage_4.get(sha256)})
 
