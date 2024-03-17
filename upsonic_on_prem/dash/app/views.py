@@ -29,12 +29,17 @@ def notifications(request):
         json_notifications.append({"id": notification.id, "title": notification.title, "message": notification.message,
                                    "date": notification.date, "read": notification.read,
                                    "important": notification.important})
-        notification.read = True
+        if not notification.important:
+            notification.read = True
         notification.save()
     return JsonResponse(json_notifications, safe=False)
 
 
-
+def notification_read_id(request, id):
+    notification = request.user.notifications.get(id=id)
+    notification.read = True
+    notification.save()
+    return HttpResponse(status=200)
 
 
 @login_required
