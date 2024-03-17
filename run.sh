@@ -26,4 +26,4 @@ cd /app/On-Prem/upsonic_on_prem/dash/
 echo "from app import models; models.User.objects.create_superuser('$admin_username', 'onprem@upsonic.co', '$admin_pass', access_key='$admin_key')" | python3 manage.py shell
 
 
-gunicorn --bind localhost:3001 --timeout 0 dash.wsgi:application
+gunicorn --bind localhost:3001 --workers=5 --timeout 0 dash.wsgi:application
