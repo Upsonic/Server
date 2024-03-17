@@ -326,36 +326,73 @@ class API_Integration:
 
 
     def create_documentation(self, scope):
+        version = None
+        if ":" in scope:
+            version = scope.split(":")[1]
+            scope = scope.split(":")[0]
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version    
+
         return self._send_request(
             "POST", "/create_document_of_scope", data=data
         )
 
 
     def create_time_complexity(self, scope):
+        version = None
+        if ":" in scope:
+            version = scope.split(":")[1]
+            scope = scope.split(":")[0]
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version   
         return self._send_request(
             "POST", "/create_time_complexity_of_scope", data=data
         )
 
 
     def create_mistakes(self, scope):
+        version = None
+        if ":" in scope:
+            version = scope.split(":")[1]
+            scope = scope.split(":")[0]
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version   
         return self._send_request(
             "POST", "/create_mistakes_of_scope", data=data
         )
     def create_required_test_types(self, scope):
+        version = None
+        if ":" in scope:
+            version = scope.split(":")[1]
+            scope = scope.split(":")[0]
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version   
         return self._send_request(
             "POST", "/create_required_test_types_of_scope", data=data
         )
     def create_tags(self, scope):
+        version = None
+        if ":" in scope:
+            version = scope.split(":")[1]
+            scope = scope.split(":")[0]
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version   
         return self._send_request(
             "POST", "/create_tags_of_scope", data=data
         )
     def create_security_analysis(self, scope):
+        version = None
+        if ":" in scope:
+            version = scope.split(":")[1]
+            scope = scope.split(":")[0]
         data = {"scope": scope}
+        if version != None:
+            data["version"] = version   
         return self._send_request(
             "POST", "/create_security_analysis_of_scope", data=data
         )    
