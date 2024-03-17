@@ -9,6 +9,12 @@ from app.api_integration import API_Integration
 
 import threading
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path=".env")
+import time
+
 
 class TheNotifications(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -96,7 +102,38 @@ class User(AbstractUser):
         return result if result != [None] else False
 
 
-ai_threads = []
+active_tasks = []
+pending_tasks = []
+parallel_ai_task_limit = int(os.getenv("parallel_ai_task_limit", 2))
+
+
+# Write a thread function that starts and control the pending tasks and moving to activa tasks. I want to set limit to os.getenv("parallel_ai_tasks")
+def organizer_ai_tasks():
+    print("organizer_ai_tasks started")
+    global active_tasks
+    global pending_tasks
+    global parallel_ai_task_limit
+    while True:
+        len_of_active_tasks = len(active_tasks)
+        print("len_of_active_tasks", len_of_active_tasks)
+        suitable_space = parallel_ai_task_limit - len_of_active_tasks
+        if suitable_space > 0:
+            print("suitable_space", suitable_space)
+            the_tasks = pending_tasks[:suitable_space]
+            for i in the_tasks:
+                print("i", i)
+                active_tasks.append(i)
+                pending_tasks.remove(i)
+                i.start()
+        for i in active_tasks:
+            if not i.is_alive():
+                print("i.is_alive()", i.is_alive())
+                active_tasks.remove(i)
+        
+        time.sleep(1)
+
+organizer_thread = threading.Thread(target=organizer_ai_tasks)
+organizer_thread.start()
 
 
 class AI_Task(models.Model):
@@ -116,39 +153,31 @@ class AI_Task(models.Model):
     def documentation_task(self):
         the_func = API_Integration(self.access_key).create_documentation
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)
+        pending_tasks.append(the_thread)
     def mistakes_task(self):
         the_func = API_Integration(self.access_key).create_mistakes
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)
+        pending_tasks.append(the_thread)
     def time_complexity_task(self):
         the_func = API_Integration(self.access_key).create_time_complexity
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)
+        pending_tasks.append(the_thread)
     def required_test_types_task(self):
         the_func = API_Integration(self.access_key).create_required_test_types
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)
+        pending_tasks.append(the_thread)
     def tags_task(self):
         the_func = API_Integration(self.access_key).create_tags
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)        
+        pending_tasks.append(the_thread)
     def security_analysis_task(self):
         the_func = API_Integration(self.access_key).create_security_analysis
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)
-
+        pending_tasks.append(the_thread)
     def readme_task(self):
         the_func = API_Integration(self.access_key).create_readme
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        the_thread.start()
-        ai_threads.append(the_thread)
+        pending_tasks.append(the_thread)
 
 
     def the_register(self):
