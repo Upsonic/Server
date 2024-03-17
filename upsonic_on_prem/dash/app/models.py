@@ -127,8 +127,7 @@ def organizer_ai_tasks():
         
         time.sleep(1)
 
-organizer_thread = threading.Thread(target=organizer_ai_tasks)
-organizer_thread.start()
+organizer_thread = None
 
 
 class AI_Task(models.Model):
@@ -202,6 +201,10 @@ class AI_Task(models.Model):
 
 
     def save(self, *args, **kwargs):
+        global organizer_thread
+        if organizer_thread is None:
+            organizer_thread = threading.Thread(target=organizer_ai_tasks)
+            organizer_thread.start()       
         self.the_register()
         super().save(*args, **kwargs)
 
