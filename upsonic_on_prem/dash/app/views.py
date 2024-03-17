@@ -29,17 +29,12 @@ def notifications(request):
         json_notifications.append({"id": notification.id, "title": notification.title, "message": notification.message,
                                    "date": notification.date, "read": notification.read,
                                    "important": notification.important})
-        if not notification.important:
-            notification.read = True
+        notification.read = True
         notification.save()
     return JsonResponse(json_notifications, safe=False)
 
 
-def notification_read_id(request, id):
-    notification = request.user.notifications.get(id=id)
-    notification.read = True
-    notification.save()
-    return HttpResponse(status=200)
+
 
 
 @login_required
@@ -201,12 +196,13 @@ def control_library(request,id):
     readme = API_Integration(request.user.access_key).get_readme(id, version=version)
     if readme == None:
         readme = "Generating..."
-        tasks = models.AI_Task.objects.filter(task_name="readme", key=id, status=False)
-        if len(tasks) == 0:        
-            if version == None:
+        if version == None:
                 the_id = id
-            else:
-                the_id = id +":"+version
+        else:
+                the_id = id +":"+version        
+        tasks = models.AI_Task.objects.filter(task_name="readme", key=the_id, status=False)
+        if len(tasks) == 0:        
+
             models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
 
     all_scopes = []
@@ -277,57 +273,83 @@ def control_element(request, id):
         gpt_model = True
 
 
-    if documentation == None and write_right and version==None:
-        tasks = models.AI_Task.objects.filter(task_name="documentation", key=id, status=False)
+    if documentation == None and write_right:
+        if version == None:
+                the_id = id
+        else:
+                the_id = id +":"+version         
+        tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
         if len(tasks) == 0:
-            models.AI_Task(task_name="documentation", key=id, access_key=request.user.access_key, owner=request.user).save()
+         
+            models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         documentation = "Documentation is generating, it will be ready soon."
 
     
     time_complexity = API_Integration(request.user.access_key).get_time_complexity(id, version=version)
-    if time_complexity == None and write_right and version==None:
-
-        tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=id, status=False)
+    if time_complexity == None and write_right:
+        if version == None:
+                the_id = id
+        else:
+                the_id = id +":"+version 
+        tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=the_id, status=False)
         if len(tasks) == 0:
-            models.AI_Task(task_name="time_complexity", key=id, access_key=request.user.access_key, owner=request.user).save()
+           
+            models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         time_complexity = "Time Complexity is generating, it will be ready soon."
 
 
 
     mistakes = API_Integration(request.user.access_key).get_mistakes(id, version=version)
-    if mistakes == None and write_right and version==None and gpt_model:
-
-        tasks = models.AI_Task.objects.filter(task_name="mistakes", key=id, status=False)
+    if mistakes == None and write_right and gpt_model:
+        if version == None:
+                the_id = id
+        else:
+                the_id = id +":"+version 
+        tasks = models.AI_Task.objects.filter(task_name="mistakes", key=the_id, status=False)
         if len(tasks) == 0:
-            models.AI_Task(task_name="mistakes", key=id, access_key=request.user.access_key, owner=request.user).save()
+         
+            models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         mistakes = "Mistakes are generating, it will be ready soon."
 
 
     required_test_types = API_Integration(request.user.access_key).get_required_test_types(id, version=version)
-    if required_test_types == None and write_right and version==None:
-
-        tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=id, status=False)
+    if required_test_types == None and write_right:
+        if version == None:
+                the_id = id
+        else:
+                the_id = id +":"+version 
+        tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=the_id, status=False)
         if len(tasks) == 0:
-            models.AI_Task(task_name="required_test_types", key=id, access_key=request.user.access_key, owner=request.user).save()
+          
+            models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         required_test_types = "Required Test Types are generating, it will be ready soon."
 
 
 
     tags = API_Integration(request.user.access_key).get_tags(id, version=version)
-    if tags == None and write_right and version==None:
-
-        tasks = models.AI_Task.objects.filter(task_name="tags", key=id, status=False)
+    if tags == None and write_right:
+        if version == None:
+                the_id = id
+        else:
+                the_id = id +":"+version  
+        tasks = models.AI_Task.objects.filter(task_name="tags", key=the_id, status=False)
         if len(tasks) == 0:
-            models.AI_Task(task_name="tags", key=id, access_key=request.user.access_key, owner=request.user).save()
+          
+            models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         tags = "Tags are generating, it will be ready soon."
 
 
 
     security_analysis = API_Integration(request.user.access_key).get_security_analysis(id, version=version)
-    if security_analysis == None and write_right and version==None:
-        tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=id, status=False)
+    if security_analysis == None and write_right:
+        if version == None:
+                the_id = id
+        else:
+                the_id = id +":"+version            
+        tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=the_id, status=False)
         if len(tasks) == 0:
-            models.AI_Task(task_name="security_analysis", key=id, access_key=request.user.access_key, owner=request.user).save()
+        
+            models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         security_analysis = "Security Analysis is generating, it will be ready soon."
 
 
