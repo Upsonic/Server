@@ -414,7 +414,16 @@ def get_default_ai_model():
 def create_readme():
     global documentation_tasks
     top_library = request.form.get("top_library")
-    all_scopes = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    version = request.form.get("version")
+
+    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    all_scopes = []
+    for each_scope in all_scopes_response:
+        if version != None:
+            if version in Scope(each_scope).version_history:
+                all_scopes.append(each_scope)
+        else:
+            all_scopes.append(each_scope)
 
     # order by alphabetical
     all_scopes.sort()
@@ -427,19 +436,24 @@ def create_readme():
 
     summary_list = ""
     for each_scope in all_scopes:
-        while each_scope in documentation_tasks:
-            time.sleep(1)    
+        
+        if version != None:
+            the_scope = Scope(each_scope)
+            while each_scope in documentation_tasks:
+                time.sleep(1)    
 
-        if Scope(each_scope).documentation == None:
-            documentation_tasks.append(each_scope)
-            Scope(each_scope).create_documentation()
-            try:
-                documentation_tasks.remove(each_scope)
-            except:
-                pass
+            if Scope(each_scope).documentation == None:
+                documentation_tasks.append(each_scope)
+                Scope(each_scope).create_documentation()
+                try:
+                    documentation_tasks.remove(each_scope)
+                except:
+                    pass
+        else:
+            the_scope = Scope.get_version(each_scope+":"+version)
 
-        summary_list += each_scope +" - " + Scope(each_scope).type + "\n"
-        summary_list += str(Scope(each_scope).documentation) + "\n\n"
+        summary_list += each_scope +" - " + the_scope.type + "\n"
+        summary_list += str(the_scope.documentation) + "\n\n"
 
 
     #Create sha256 hash of the result
