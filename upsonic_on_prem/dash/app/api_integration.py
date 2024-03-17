@@ -502,7 +502,13 @@ class API_Integration:
         return response
 
     def create_readme(self, top_library):
+        version = None
+        if ":" in top_library:
+            top_library = top_library.split(":")[0]
+            version = top_library.split(":")[1]
         data = {"top_library": top_library}
+        if version != None:
+            data["version"] = version        
         return self._send_request("POST", "/create_readme", data=data)
     
     def get_readme(self, top_library, version=None):

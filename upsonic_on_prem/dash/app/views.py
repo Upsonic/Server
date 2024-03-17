@@ -195,9 +195,6 @@ def control_library(request,id):
 
     
 
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
-    print(the_content)
-
     if the_content == None:
         return redirect(to='libraries')
 
@@ -206,7 +203,11 @@ def control_library(request,id):
         readme = "Generating..."
         tasks = models.AI_Task.objects.filter(task_name="readme", key=id, status=False)
         if len(tasks) == 0:        
-            models.AI_Task(task_name="readme", key=id, access_key=request.user.access_key, owner=request.user).save()
+            if version == None:
+                the_id = id
+            else:
+                the_id = id +":"+version
+            models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
 
     all_scopes = []
     for each_scope in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
