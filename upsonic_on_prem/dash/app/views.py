@@ -400,6 +400,16 @@ def control_element(request, id):
     the_type = API_Integration(request.user.access_key).get_type(id, version=version)
     python_version = API_Integration(request.user.access_key).get_python_version(id, version=version)
 
+    the_dumps = []
+    for dump in API_Integration(request.user.access_key).get_dump_history(id):
+        dump_id = dump.split(":")[1]
+        user = None
+        user_response = API_Integration(request.user.access_key).get_dump_user(id, dump_id)
+        if user_response != [None]:
+            user = models.User.objects.get(access_key=user_response).username
+
+        the_dumps.append({"dump_id": dump_id, "user":user})
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -421,6 +431,7 @@ def control_element(request, id):
         "python_version": python_version,
         "gpt_model": gpt_model,
         "version": "" if version == None else version,
+        "dumps": the_dumps
     }
     return render(request, f"templates/libraries/element.html", data)
 
@@ -670,7 +681,11 @@ def control_element_version(request, id):
             code_response = API_Integration(request.user.access_key).get_version_code(id, element)
             if code_response != [None]:
                 code = code_response
-            data = {"version":element, "code": code, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element}
+            user = None
+            user_response = API_Integration(request.user.access_key).get_version_user(id, element)
+            if user_response != [None]:
+                user = models.User.objects.get(access_key=user_response).username              
+            data = {"version":element, "code": code, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element, "user":user}
             the_versions.append(data)
 
 
@@ -739,16 +754,22 @@ def control_library_version(request,id):
     all_scopes_response = API_Integration(request.user.access_key).get_all_scopes_name_prefix(id)
     print(all_scopes_response)
     all_possible_versions = []
+    the_version_history = []
     for each_scope in all_scopes_response:
         scope_versions = API_Integration(request.user.access_key).get_version_history(each_scope)
         for each_version in scope_versions:
             if each_version not in all_possible_versions:
+                user = None
+                user_response = API_Integration(request.user.access_key).get_version_user(each_scope, each_version)
+                if user_response != [None]:
+                    user = models.User.objects.get(access_key=user_response).username                   
                 all_possible_versions.append(each_version)
+                the_version_history.append([each_version, user])
     
 
     the_versions = []
-    for each_version in all_possible_versions:
-        the_versions.append({"version": each_version, "using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version}")', "link":id+":"+each_version})
+    for each_version in the_version_history:
+        the_versions.append({"version": each_version[0], "using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
 
     no_version = False
     if len(the_versions) == 0:
