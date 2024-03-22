@@ -198,7 +198,47 @@ def control_library(request,id):
     if the_content == None:
         return redirect(to='libraries')
 
-    readme = API_Integration(request.user.access_key).get_readme(id, version=version)
+    docs_are_ready = True
+
+    all_scopes = []
+    for each_scope in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
+        write_right = request.user.can_write(each_scope)
+        if version != None:
+            if version in API_Integration(request.user.access_key).get_version_history(each_scope):
+                sub_doc =  API_Integration(request.user.access_key).get_documentation(each_scope, version=version)
+                if sub_doc == None and write_right:
+                    docs_are_ready = False
+                    if version == None:
+                            the_id = id
+                    else:
+                            the_id = id +":"+version         
+                    tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
+                    if len(tasks) == 0:
+                    
+                        models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+                    sub_doc = "Documentation is generating, it will be ready soon."
+
+                all_scopes.append([each_scope, sub_doc])
+
+        else:
+            sub_doc = API_Integration(request.user.access_key).get_documentation(each_scope)
+
+            if sub_doc == None and write_right:
+                    docs_are_ready = False
+                    if version == None:
+                            the_id = id
+                    else:
+                            the_id = id +":"+version         
+                    tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
+                    if len(tasks) == 0:
+                    
+                        models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+                    sub_doc = "Documentation is generating, it will be ready soon."
+
+            all_scopes.append([each_scope, sub_doc])            
+
+
+    readme = API_Integration(request.user.access_key).get_readme(id, version=version) if docs_are_ready else None
     if readme == None:
         readme = "Generating..."
         if version == None:
@@ -210,13 +250,7 @@ def control_library(request,id):
 
             models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
 
-    all_scopes = []
-    for each_scope in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
-        if version != None:
-            if version in API_Integration(request.user.access_key).get_version_history(each_scope):
-                all_scopes.append([each_scope, API_Integration(request.user.access_key).get_documentation(each_scope, version=version)])
-        else:
-            all_scopes.append([each_scope, API_Integration(request.user.access_key).get_documentation(each_scope)])
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
