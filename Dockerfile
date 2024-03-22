@@ -30,7 +30,7 @@ COPY models On-Prem/upsonic_on_prem/utils/ai/
 
 WORKDIR /app/On-Prem
 
-EXPOSE 5000
+EXPOSE 7340
 
 
 CMD ["bash", "/run.sh"]

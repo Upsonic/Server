@@ -353,7 +353,26 @@ def get_dump_history():
 def get_version_history():
     scope = request.form.get("scope")
     object = Scope(scope)
+    
     return jsonify({"status": True, "result": object.version_history})
+
+
+@app.route(get_module_version_history_url, methods=["POST"])
+def get_module_version_history():
+    top_library = request.form.get("top_library")
+    user = AccessKey(request.authorization.password)
+
+
+    all_scopes_response = Scope.get_all_scopes_name_prefix(user, top_library)
+
+    all_possible_versions = []
+    for each_scope in all_scopes_response:
+        scope_versions = Scope(each_scope).version_history
+        for each_version in scope_versions:
+            if each_version not in all_possible_versions:
+                all_possible_versions.append(each_version.split(":")[1])
+
+    return jsonify({"status": True, "result": all_possible_versions})
 
 
 
@@ -545,24 +564,28 @@ def get_readme():
 
     summary_list = ""
     for each_scope in all_scopes:
-        
-        if version == None:
-            the_scope = Scope(each_scope)
-            while each_scope in documentation_tasks:
+            task_name = each_scope
+            if version == None:
+                the_scope = Scope(each_scope)
+            else:
+                task_name = each_scope+":"+version
+                the_scope = Scope.get_version(each_scope+":"+version)
+
+            while task_name in documentation_tasks:
                 time.sleep(1)    
 
-            if Scope(each_scope).documentation == None:
-                documentation_tasks.append(each_scope)
-                Scope(each_scope).create_documentation()
+            if the_scope.documentation == None:
+                documentation_tasks.append(task_name)
+                the_scope.create_documentation()
                 try:
-                    documentation_tasks.remove(each_scope)
+                    documentation_tasks.remove(task_name)
                 except:
                     pass
-        else:
-            the_scope = Scope.get_version(each_scope+":"+version)
 
-        summary_list += each_scope +" - " + str(the_scope.type) + "\n"
-        summary_list += str(the_scope.documentation) + "\n\n"
+
+
+            summary_list += each_scope +" - " + str(the_scope.type) + "\n"
+            summary_list += str(the_scope.documentation) + "\n\n"
 
 
     print("SUMMARY LIST: ", summary_list)

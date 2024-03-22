@@ -98,6 +98,8 @@ delete_version_url = "/delete_version"
 get_dump_history_url = "/get_dump_history"
 get_version_history_url = "/get_version_history"
 
+get_module_version_history_url = "/get_module_version_history"
+
 load_specific_dump_url = "/load_specific_dump"
 load_specific_version_url = "/load_specific_version"
 
@@ -131,7 +133,7 @@ user_urs = [create_readme_url, get_openai_api_key_user, get_default_ai_model, ge
             create_version_url, create_version_prefix_url, search_by_documentation_url, ai_completion_url,
             get_dump_history_url, load_specific_dump_url,load_specific_version_url, get_all_scopes_name_prefix_url,
             get_type_of_scope_url, get_python_version_of_scope_url, create_document_of_scope_url, create_security_analysis_of_scope_url, create_required_test_types_of_scope_url, create_tags_of_scope_url, create_mistakes_of_scope_url, create_time_complexity_of_scope_url, create_document_of_scope_url_old,
-            get_all_scopes_user_url, delete_scope_url,delete_version_url, dump_code_url, dump_requirements_url, dump_python_version_url, dump_type_url, get_version_history_url, get_version_code_of_scope_url, get_code_of_scope_url]
+            get_all_scopes_user_url, delete_scope_url,delete_version_url, dump_code_url, dump_requirements_url, dump_python_version_url, dump_type_url, get_version_history_url, get_module_version_history_url, get_version_code_of_scope_url, get_code_of_scope_url]
 user_write_urls = [dump_url, create_document_of_scope_url, create_security_analysis_of_scope_url, create_required_test_types_of_scope_url, create_tags_of_scope_url, create_mistakes_of_scope_url, create_time_complexity_of_scope_url, create_document_of_scope_url_old, delete_scope_url,delete_version_url,
                    create_version_url, dump_code_url, dump_requirements_url, dump_python_version_url, dump_type_url]
 user_read_urls = [load_url, get_document_of_scope_url, get_requirements_of_scope_url, get_security_analysis_of_scope_url, get_required_test_types_of_scope_url, get_tags_of_scope_url, get_mistakes_of_scope_url, get_time_complexity_of_scope_url, get_dump_history_url, get_type_of_scope_url, get_python_version_of_scope_url,
