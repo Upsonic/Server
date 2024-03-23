@@ -578,6 +578,11 @@ class API_Integration:
         return self._send_request("POST", "/delete_openai_api_key_user", data=data)
 
 
+    def get_dump_history(self, scope):
+        data = {"scope": scope}
+        result = self._send_request("POST", "/get_dump_history", data=data)
+        return result
+
     def get_version_history(self, scope):
         data = {"scope": scope}
         response = self._send_request("POST", "/get_version_history", data=data)
@@ -604,3 +609,12 @@ class API_Integration:
     def get_version_code(self, scope, version):
         data = {"version": scope+":"+version}
         return self._send_request("POST", "/get_version_code_of_scope", data=data)
+
+    def get_version_user(self, scope, version):
+        data = {"version": scope+":"+version}
+        return self._send_request("POST", "/get_version_user_of_scope", data=data)
+
+
+    def get_dump_user(self, scope, dump):
+        data = {"dump": scope+":"+dump}
+        return self._send_request("POST", "/get_dump_user_of_scope", data=data)        
