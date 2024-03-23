@@ -22,7 +22,7 @@ COPY On-Prem On-Prem
 
 COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
 
-COPY On-Prem/run.sh /
+COPY On-Prem/run_without_models.sh /
 
 
 
