@@ -70,6 +70,9 @@ get_security_analysis_of_scope_url = "/get_security_analysis_of_scope"
 
 get_code_of_scope_url = "/get_code_of_scope"
 get_version_code_of_scope_url = "/get_version_code_of_scope"
+get_version_user_of_scope_url = "/get_version_user_of_scope"
+
+get_dump_user_of_scope_url = "/get_dump_user_of_scope"
 
 create_document_of_scope_url = "/create_document_of_scope"
 create_time_complexity_of_scope_url = "/create_time_complexity_of_scope"
