@@ -291,6 +291,17 @@ class Scope:
             return None
         return self.the_storage.get(self.key)["data"]
 
+
+    @property
+    def user(self):
+        if not self.specific:
+            return None
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            return the_resource["user"]
+
     @property
     def type(self):
         return self.the_storage.get(self.key + ":type")

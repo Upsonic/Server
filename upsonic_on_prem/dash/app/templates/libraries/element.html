@@ -18,7 +18,7 @@
             <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Version Control</a>
     </div>
 
-
+    
 
 
         <div class="d-flex flex-row justify-content-between">
@@ -96,6 +96,9 @@
                         <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{using_code}}</code></pre></div>
                     </div>
                 </div>
+                {% if requirements != "" %}
+                
+                
 
                 <div class="custom_pharagraph_for_documentations">Requirements</div>
                 <div class="custom_code_block">
@@ -103,6 +106,7 @@
                         <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{requirements}}</code></pre></div>
                     </div>
                 </div>
+                {% endif %}
 
 
     </div>
@@ -118,6 +122,20 @@
 
     </div>
 
+
+    <div class="mt-5">
+        <div class="custom_page_header_top_bottom_margin">
+            <span class="custom_page_header_text">Commits</span>
+        </div>                
+    {% for dump in dumps %}
+    <div class="custom_code_block">
+        {{dump.user}}
+        <div class="custom_code_block_code">
+            <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{dump.dump_id}}</code></pre></div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
 
 </div>
 
