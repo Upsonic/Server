@@ -15,6 +15,7 @@ import hashlib
 import ollama
 
 from langchain_community.embeddings import OllamaEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.utils import storage
@@ -28,7 +29,9 @@ class AI_:
     def __init__(self):
         pass
 
-
+    @property
+    def default_search_model(self):
+        return os.environ.get("default_search_model", "nomic-embed-text-upsonic")
     
 
     def search_by_documentation(self, the_contents, question, min_score=0, how_many_result=10):
@@ -45,30 +48,41 @@ class AI_:
 
             text_salt = " ".join([text.page_content for text in texts])
 
-            oembed = OllamaEmbeddings(base_url="http://localhost:11434", model="nomic-embed-text-upsonic")
+
+            if not self.default_search_model.startswith("text-embedding"):
+                print("Used ollama")
+                oembed = OllamaEmbeddings(base_url="http://localhost:11434", model=self.default_search_model)
+            else:
+                print("Used openai")
+                oembed = OpenAIEmbeddings(model=self.default_search_model, openai_api_key=os.environ.get("openai_api_key"))
+
+            sha256_of_model = hashlib.sha256(self.default_search_model.encode()).hexdigest()
+
+            the_directory = "/db/embed_by_documents"+sha256_of_model
+            the_salt_name = ":embed_by_documents_salt"+sha256_of_model
 
 
-            if not os.path.exists("/db/embed_by_documents"):
-                debug("Creating /db/embed_by_documents")
-                os.makedirs("/db/embed_by_documents")
+            if not os.path.exists(the_directory):
+                debug("Creating the_directory")
+                os.makedirs(the_directory)
 
             pass_generate = False
 
-            if not os.path.exists("/db/embed_by_documents/chroma.sqlite3"):
+            if not os.path.exists(the_directory+"/chroma.sqlite3"):
                 debug("Generating new vectorstore")
-                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
-                storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
+                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
+                storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
                 pass_generate = True
                 debug("Generated new vectorstore")
 
 
 
-            vectorstore = Chroma(persist_directory="/db/embed_by_documents", embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
+            vectorstore = Chroma(persist_directory=the_directory, embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
 
-            if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(":embed_by_documents_salt") and not pass_generate:
+            if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(the_salt_name) and not pass_generate:
                 debug("Regenerating vectorstore")
-                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory="/db/embed_by_documents", collection_metadata={"hnsw:space": "cosine"})
-                storage.set(":embed_by_documents_salt", hashlib.sha256(text_salt.encode()).hexdigest())
+                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
+                storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
                 debug("Regenerated vectorstore")
                 
             currenly_get = vectorstore._collection.get()
