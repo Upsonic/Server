@@ -238,18 +238,24 @@ def control_library(request,id):
             all_scopes.append([each_scope, sub_doc])            
 
 
-    readme = API_Integration(request.user.access_key).get_readme(id, version=version) if docs_are_ready else None
-    if readme == None:
+
+    if version == None:
+        the_id = id
+    else:
+        the_id = id +":"+version    
+
+    tasks = models.AI_Task.objects.filter(task_name="readme", key=the_id, status=False)
+    if len(tasks) == 0:  
+
+        readme = API_Integration(request.user.access_key).get_readme(id, version=version) if docs_are_ready else None
+        if readme == None:
+            readme = "Generating..."
+    
+            if len(tasks) == 0:        
+
+                models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+    else:
         readme = "Generating..."
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version        
-        tasks = models.AI_Task.objects.filter(task_name="readme", key=the_id, status=False)
-        if len(tasks) == 0:        
-
-            models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-
 
     data = {
         "page_title": "Libraries",
