@@ -89,6 +89,20 @@ def get_requirements_of_scope():
 
 
 
+@app.route(get_settings_of_scope_url, methods=["POST"])
+def get_settings_of_scope():
+    scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.settings})
+
+
+
 
 
 @app.route(get_time_complexity_of_scope_url, methods=["POST"])
@@ -419,11 +433,21 @@ def create_version():
 @app.route(dump_requirements_url, methods=["POST"])
 def dump_requirements():
     scope = request.form.get("scope")
-    requirement = request.form.get("requirements")
+    settings = request.form.get("requirements")
+
+    the_scope = Scope(scope)
+
+    return jsonify({"status": True, "result": the_scope.set_settings(settings)})
+
+@app.route(dump_settings_url, methods=["POST"])
+def dump_settings():
+    scope = request.form.get("scope")
+    requirement = request.form.get("settings")
 
     the_scope = Scope(scope)
 
     return jsonify({"status": True, "result": the_scope.set_requirements(requirement)})
+
 
 
 

@@ -361,6 +361,25 @@ class Scope:
 
 
     @property
+    def settings(self):
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":settings")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["settings"]   
+     
+        return source              
+
+    def set_settings(self, settings):
+        return self.the_storage.set(self.key + ":settings", settings)
+
+
+
+    @property
     def python_version(self):
         source = None
         if not self.specific:
