@@ -437,16 +437,21 @@ def dump_requirements():
 
     the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.set_settings(settings)})
+    return jsonify({"status": True, "result": the_scope.set_requirements(settings)})
 
 @app.route(dump_settings_url, methods=["POST"])
 def dump_settings():
     scope = request.form.get("scope")
-    requirement = request.form.get("settings")
+    settings = request.form.get("settings")
+
+    the_settings = {}
+    for key,value in request.form.items():
+        if key != "scope":
+            the_settings[key] = value
 
     the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.set_requirements(requirement)})
+    return jsonify({"status": True, "result": the_scope.set_settings(the_settings)})
 
 
 

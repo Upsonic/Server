@@ -122,6 +122,22 @@
 
     </div>
 
+    {{cpu_usage_analyses}}
+    {% if can_write and version == "" %}
+    <div class="mt-5">
+        <div class="custom_page_header_top_bottom_margin">
+            <span class="custom_page_header_text">Settings</span>
+        </div>                
+
+        {% if cpu_usage_analyses == True %}
+        <a href="{% url 'deactivate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5">Deactivate Usage Analyses</a>
+        {% endif %}
+        {% if cpu_usage_analyses == False %}
+        <a href="{% url 'activate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5">Activate Usage Analyses</a>
+        {% endif %}
+
+    </div>
+    {% endif %}
 
     <div class="mt-5">
         <div class="custom_page_header_top_bottom_margin">

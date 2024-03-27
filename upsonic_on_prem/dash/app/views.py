@@ -410,6 +410,23 @@ def control_element(request, id):
 
         the_dumps.append({"dump_id": dump_id, "user":user})
 
+
+    
+    if version == None:
+        cpu_usage_analyses_response = API_Integration(request.user.access_key).get_settings(id)
+        if cpu_usage_analyses_response == None:
+            cpu_usage_analyses = False
+        else:
+            if "usage_analyses" in cpu_usage_analyses_response:
+                try:
+                    cpu_usage_analyses = cpu_usage_analyses_response["usage_analyses"].lower() == "true"
+                except:
+                    
+                    cpu_usage_analyses = None
+    else:
+        cpu_usage_analyses = None
+
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -431,7 +448,9 @@ def control_element(request, id):
         "python_version": python_version,
         "gpt_model": gpt_model,
         "version": "" if version == None else version,
-        "dumps": the_dumps
+        "dumps": the_dumps,
+        "cpu_usage_analyses": cpu_usage_analyses,
+        "can_write": request.user.can_write(id)
     }
     return render(request, f"templates/libraries/element.html", data)
 
@@ -826,3 +845,34 @@ def control_library_version_delete(request, id, version):
 def control_element_version_delete(request, id, version):
         API_Integration(request.user.access_key).delete_version(id, version)
         return redirect(to='control_element_version', id=id)
+
+
+
+@login_required
+def activate_usage_analyses(request, id):
+    the_settings = API_Integration(request.user.access_key).get_settings(id)
+    try:
+        if the_settings == None:
+            the_settings = {}    
+        if not isinstance(the_settings, dict):
+            the_settings = {}
+        the_settings["usage_analyses"] = True
+        print("Dumping the settings", the_settings)
+        API_Integration(request.user.access_key).dump_settings(id, the_settings)
+    except:
+        pass
+    return redirect(to='control_element', id=id)
+
+@login_required
+def deactivate_usage_analyses(request, id):
+    the_settings = API_Integration(request.user.access_key).get_settings(id)
+    try:
+        if the_settings == None:
+            the_settings = {}
+        if not isinstance(the_settings, dict):
+            the_settings = {}            
+        the_settings["usage_analyses"] = False
+        API_Integration(request.user.access_key).dump_settings(id, the_settings)
+    except:
+        pass
+    return redirect(to='control_element', id=id)    

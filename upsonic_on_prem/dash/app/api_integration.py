@@ -97,6 +97,7 @@ class API_Integration:
                 self.api_url + endpoint,
                 data=data,
                 auth=self.HTTPBasicAuth("", self.password),
+                
                 verify=False,
             )
             try:
@@ -287,6 +288,21 @@ class API_Integration:
         if requirements is not None and requirements != [None]:
             requirements.replace(",", "")
         return requirements
+
+
+    def get_settings(self, scope, version=None):
+        data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
+        return self._send_request("POST", "/get_settings_of_scope", data=data)    
+
+    def dump_settings(self, scope, settings):
+        data = {"scope": scope}
+        for key, value in settings.items():
+            data[key] = value
+        return self._send_request("POST", "/dump_settings", data=data)    
+ 
+
     def get_python_version(self, scope, version=None):
         data = {"scope": scope}
         if version != None:
