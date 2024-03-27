@@ -44,14 +44,14 @@
 
 
   [data-bs-theme=dark] .custom_card {
-    border: 1px solid #171717;
+    border-bottom: 1px solid #01ee8a;
 
     background: #171717;
   }
 
 
   [data-bs-theme=dark] .custom_card:hover {
-    border: 1px solid #2C2C2C;
+    border-bottom: 1px solid #ffffff;
 
     background: #171717;
   }
