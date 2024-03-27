@@ -398,7 +398,7 @@ html {
   flex-shrink: 0;
 
   border-radius: 5px;
-  border: 1px solid #FAFAFF;
+
   background: #FAFAFF;
 
   padding-left: 15px;
@@ -406,7 +406,6 @@ html {
   padding-top: 14px;
   padding-bottom: 31px;
 
-  margin-right: 33px;
   margin-bottom: 33px;
 
   height: 80%;
@@ -438,7 +437,6 @@ html {
 
 .custom_card:hover {
 
-  border: 1px solid #4D38FF;
 
 }
 
@@ -1123,7 +1121,7 @@ a.disabled {
 
 
 .custom_card_section {
-  width: 50%;
+  width: 25%;
 }
 
 
