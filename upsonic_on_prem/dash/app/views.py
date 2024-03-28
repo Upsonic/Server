@@ -867,7 +867,7 @@ def activate_usage_analyses(request, id):
         API_Integration(request.user.access_key).dump_settings(id, the_settings)
     except:
         pass
-    return redirect(to='control_element', id=id)
+    return redirect(to='control_element_settings', id=id)
 
 @login_required
 def deactivate_usage_analyses(request, id):
@@ -881,7 +881,7 @@ def deactivate_usage_analyses(request, id):
         API_Integration(request.user.access_key).dump_settings(id, the_settings)
     except:
         pass
-    return redirect(to='control_element', id=id)    
+    return redirect(to='control_element_settings', id=id)    
 
 
 
