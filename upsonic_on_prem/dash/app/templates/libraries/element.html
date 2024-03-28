@@ -11,12 +11,23 @@
 
     <div class="custom_page_header_bottom_margin">
         <span class="custom_page_header_text">
+            <div class="d-flex flex-row justify-content-between">
+
+            <div class="flex-fill w-50 me-5">
             {% if have_upper %}
             <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
             {% endif %}
             <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
-            <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Version Control</a>
-            <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Run History</a>
+            </div>
+            <div class="flex-fill w-50 me-5">
+                <div class="row">
+            <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4 mt-3" style="vertical-align: super; width: 40%;">Version Control</a>
+            <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4 mt-3" style="vertical-align: super; width: 40%;">Commits</a>
+            <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4 mt-3" style="vertical-align: super; width: 40%;">Run History</a>
+            <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4 mt-3" style="vertical-align: super; width: 40%;">Settings</a>
+                </div>
+        </div>
+            </div>
     </div>
 
     
@@ -123,35 +134,8 @@
 
     </div>
 
-    {% if can_write and version == "" %}
-    <div class="mt-5">
-        <div class="custom_page_header_top_margin">
-            <span class="custom_page_header_text">Settings</span>
-        </div>                
 
-        {% if cpu_usage_analyses == True %}
-        <a href="{% url 'deactivate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5">Deactivate Usage Analyses</a>
-        {% endif %}
-        {% if cpu_usage_analyses == False %}
-        <a href="{% url 'activate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5">Activate Usage Analyses</a>
-        {% endif %}
 
-    </div>
-    {% endif %}
-
-    <div class="mt-5">
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">Commits</span>
-        </div>                
-    {% for dump in dumps %}
-    <div class="custom_code_block">
-        {{dump.user}}
-        <div class="custom_code_block_code">
-            <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{dump.dump_id}}</code></pre></div>
-        </div>
-    </div>
-    {% endfor %}
-    </div>
 
 </div>
 

@@ -29,44 +29,24 @@
     </div>
 
 
-
         
 
 
         <div>
-            {% if cpu_usage_analyses == False %}
-            
-            <div class="custom_page_header_top_bottom_margin">
-                <span class="custom_page_header_text">Please enable Usage Analyses for catching new runs.</span>
-            </div>            
-            {% endif %}
 
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Version</th>
-                    <th scope="col">CPU Usage (one core)</th>
-                    <th scope="col">Memory Usage</th>
-                    <th scope="col">Elapsed Time</th>
-                    <th scope="col">Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                
-                {% for run in get_last_runs%}
-                  <tr>
-                    <th>{{run.data.version}}</th>
-                    <td>{{run.data.cpu_usage}}</td>
-                    <td>{{run.data.memory_usage}}</td>
-                    <td>{{run.data.elapsed_time}}</td>
-                    <td>{{run.data.type}}</td>
-                  </tr>
-
-                {% endfor %}
-
-                </tbody>
-              </table>
-
+            <div class="mt-5">
+                <div class="custom_page_header_top_bottom_margin">
+                    <span class="custom_page_header_text">Commits</span>
+                </div>                
+            {% for dump in dumps %}
+            <div class="custom_code_block">
+                {{dump.user}}
+                <div class="custom_code_block_code">
+                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{dump.dump_id}}</code></pre></div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
 
         </div>
 
