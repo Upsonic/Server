@@ -1149,6 +1149,7 @@ def control_element_settings(request, id):
         "have_upper": have_upper,
         "the_upper": the_upper,
         "cpu_usage_analyses": cpu_usage_analyses,
+        "version": "" if version == None else version,
 
     }
     return render(request, f"templates/libraries/element_settings.html", data)
