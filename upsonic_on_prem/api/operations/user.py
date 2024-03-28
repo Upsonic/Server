@@ -684,3 +684,33 @@ def delete_version_prefix():
                 pass
 
     jsonify({"status": True, "result": True})    
+
+
+
+@app.route(dump_run_url, methods=["POST"])
+def dump_run():
+    scope = request.form.get("scope")
+    version = request.form.get("version")
+    os_type = request.form.get("os_type")
+    os_architecture = request.form.get("os_architecture")
+    os_version = request.form.get("os_version")
+    python_version = request.form.get("python_version")
+    _type = request.form.get("type")
+    cpu_usage = request.form.get("cpu_usage")
+    memory_usage = request.form.get("memory_usage")
+    elapsed_time = request.form.get("elapsed_time")
+    the_scope = Scope(scope)
+    op = the_scope.add_run_history(version=version, os_type=os_type, os_architecture=os_architecture, os_version=os_version, python_version=python_version, type=_type, cpu_usage=cpu_usage, memory_usage=memory_usage, elapsed_time=elapsed_time)
+    return jsonify({"status": True, "result": op})
+
+
+@app.route(get_last_runs_url, methods=["POST"])
+def get_last_runs():
+    scope = request.form.get("scope")
+    last_runs = request.form.get("last_runs")
+    the_scope = Scope(scope)
+    if last_runs != None:
+        op = the_scope.get_last_runs(int(last_runs))
+    else:
+        op = the_scope.get_last_runs()
+    return jsonify({"status": True, "result": op})
