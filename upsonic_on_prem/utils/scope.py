@@ -32,6 +32,8 @@ class Scope:
         for i in self.run_history[-n:]:
             the_run = storage_5.get(i)
             result.append(the_run)
+
+        result.reverse()
         return result
         
 
@@ -54,7 +56,7 @@ class Scope:
 
         current.append(sha_256)
 
-        if len(current) > 2:
+        if len(current) > 100:
             current = current[1:]
 
 

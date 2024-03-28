@@ -707,7 +707,7 @@ def dump_run():
 @app.route(get_last_runs_url, methods=["POST"])
 def get_last_runs():
     scope = request.form.get("scope")
-    last_runs = request.form.get("last_runs")
+    last_runs = request.form.get("n")
     the_scope = Scope(scope)
     if last_runs != None:
         op = the_scope.get_last_runs(int(last_runs))

@@ -882,3 +882,64 @@ def deactivate_usage_analyses(request, id):
     except:
         pass
     return redirect(to='control_element', id=id)    
+
+
+
+    
+
+
+@login_required
+def control_element_runs(request, id):
+
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
+
+
+    get_last_runs = API_Integration(request.user.access_key).get_last_runs(id)
+
+
+
+    cpu_usage_analyses_response = API_Integration(request.user.access_key).get_settings(id)
+    if cpu_usage_analyses_response == None:
+            cpu_usage_analyses = False
+    else:
+        if "usage_analyses" in cpu_usage_analyses_response:
+            try:
+                cpu_usage_analyses = cpu_usage_analyses_response["usage_analyses"].lower() == "true"
+            except:
+                    
+                cpu_usage_analyses = None
+
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
+        "top_control_library": id.split(".")[0],
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "code": API_Integration(request.user.access_key).get_code(id, version=version),
+        "get_last_runs": get_last_runs,
+        "cpu_usage_analyses":cpu_usage_analyses,
+        "version": "" if version == None else version,
+        "can_write": request.user.can_write(id)
+    }
+    return render(request, f"templates/libraries/element_runs.html", data)    
