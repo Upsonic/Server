@@ -16,6 +16,7 @@
             {% endif %}
             <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
             <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Version Control</a>
+            <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Run History</a>
     </div>
 
     

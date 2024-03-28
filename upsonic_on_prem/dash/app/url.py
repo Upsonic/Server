@@ -15,6 +15,7 @@ urlpatterns = [
     path('control_library_version_create/<id>', views.control_library_version_create, name="control_library_version_create"),
     path('control_library_version_delete/<id>/<version>', views.control_library_version_delete, name="control_library_version_delete"),
     path('control_element/<id>', views.control_element, name="control_element"),
+    path('control_element_runs/<id>', views.control_element_runs, name="control_element_runs"),
     path('control_element_version/<id>', views.control_element_version, name="control_element_version"),
     path('control_element_version_create/<id>', views.control_element_version_create, name="control_element_version_create"),
     path('control_element_version_delete/<id>/<version>', views.control_element_version_delete, name="control_element_version_delete"),
