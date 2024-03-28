@@ -50,7 +50,7 @@ class Scope:
 
         sha_256 = hashlib.sha256((str(current_time)+str(version)+str(self.key)).encode()).hexdigest()
 
-        the_run = {"data": data, "time": current_time}
+        the_run = {"data": data, "time": current_time, "scope": self.key}
 
         storage_5.set(sha_256, the_run)
 
