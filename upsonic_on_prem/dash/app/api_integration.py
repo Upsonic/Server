@@ -634,3 +634,10 @@ class API_Integration:
     def get_dump_user(self, scope, dump):
         data = {"dump": scope+":"+dump}
         return self._send_request("POST", "/get_dump_user_of_scope", data=data)        
+
+
+    def get_last_runs(self, scope, n=None):
+        data = {"scope": scope}
+        if n != None:
+            data["n"] = n
+        return self._send_request("POST", "/get_last_runs", data=data)

@@ -36,6 +36,7 @@ while not succed:
         storage_2 = redis_client_(db=1)
         storage_3 = redis_client_(db=2)
         storage_4 = redis_client_(db=2)
+        storage_5 = redis_client_(db=2)
         succed = True
     except:
         warning("Redis configuration failed retrying in 5 seconds")
