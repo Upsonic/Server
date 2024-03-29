@@ -1208,3 +1208,126 @@ def control_element_commits(request, id):
         "dumps": the_dumps,
     }
     return render(request, f"templates/libraries/element_commits.html", data)
+
+
+
+
+@login_required
+def control_library_settings(request,id):
+
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
+
+
+    code = ""
+
+    the_name = id.replace(".", "_")
+
+    if version != None:
+        code = f'{the_name} = upsonic.load_module("{id}", version="{version}")'
+    else:
+        code = f'{the_name} = upsonic.load_module("{id}")'
+
+    the_content = None
+    try:
+        the_content_response = API_Integration(request.user.access_key).subs_of_scope(id, version=version)
+        if version != None:
+            the_content = {}
+            for each in the_content_response:
+                the_content[each+":"+version] = the_content_response[each]
+        else:
+            the_content = the_content_response
+    except:
+        pass
+
+    
+
+    if the_content == None:
+        return redirect(to='libraries')
+
+    total_usage_analyses = True
+    for each in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):   
+        cpu_usage_analyses_response = API_Integration(request.user.access_key).get_settings(each)
+        cpu_usage_analyses = None
+        if cpu_usage_analyses_response == None:
+                cpu_usage_analyses = False
+
+        else:
+            if "usage_analyses" in cpu_usage_analyses_response:
+                try:
+                    cpu_usage_analyses = cpu_usage_analyses_response["usage_analyses"].lower() == "true"
+                except:
+                    cpu_usage_analyses = None
+        if cpu_usage_analyses != True:
+            total_usage_analyses = False
+            break
+
+    print(total_usage_analyses)
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
+        "top_control_library": id.split(".")[0],
+        "content": the_content,
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "total_usage_analyses":total_usage_analyses,
+        "version": "" if version == None else version,
+    }
+    return render(request, f"templates/libraries/control_library_settings.html", data)
+
+
+@login_required
+def activate_usage_analyses_prefix(request, id):
+    for each in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
+        the_settings = API_Integration(request.user.access_key).get_settings(each)
+        try:
+            if the_settings == None:
+                the_settings = {}    
+            if not isinstance(the_settings, dict):
+                the_settings = {}
+            the_settings["usage_analyses"] = True
+            print("Dumping the settings", the_settings)
+            API_Integration(request.user.access_key).dump_settings(each, the_settings)
+        except:
+            pass
+
+    return redirect(to='control_library_settings', id=id)
+
+
+@login_required
+def deactivate_usage_analyses_prefix(request, id):
+    for each in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
+        the_settings = API_Integration(request.user.access_key).get_settings(each)
+        try:
+            if the_settings == None:
+                the_settings = {}    
+            if not isinstance(the_settings, dict):
+                the_settings = {}
+            the_settings["usage_analyses"] = False
+            print("Dumping the settings", the_settings)
+            API_Integration(request.user.access_key).dump_settings(each, the_settings)
+        except:
+            pass
+
+    return redirect(to='control_library_settings', id=id)
+

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+<div class="d-flex cloud_left_section">
+{% include 'cloud_side_bar.html' %}
+
+</div>
+<div class="w-100 custom_right_side">
+
+    <div class="custom_page_header_bottom_margin">
+        <span class="custom_page_header_text">
+            {% if have_upper %}
+            <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
+            {% endif %}
+            <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
+            <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Libray View</a>
+    </div>
+
+
+    {% if total_usage_analyses == True %}
+    <a href="{% url 'deactivate_usage_analyses_prefix' id=control_library %}" class="btn btn-lg custom_button mt-5">Deactivate Usage Analyses</a>
+    {% endif %}
+    {% if total_usage_analyses == False %}
+    <a href="{% url 'activate_usage_analyses_prefix' id=control_library %}" class="btn btn-lg custom_button mt-5">Activate Usage Analyses</a>
+    {% endif %}
+
+
+</div>
+
+
+
+{% endblock content %}
