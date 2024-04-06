@@ -8,14 +8,37 @@ from app import models
 
 from app import forms
 
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv(dotenv_path=".env")
+
+
+def the_connection_code(request):
+    custom_connection_url = os.getenv("custom_connection_url")
+    if custom_connection_url == None:
+        the_connection_code = f"""
+from upsonic import Upsonic_On_Prem
+upsonic = Upsonic_On_Prem('https://{request.get_host()}:7340', '{request.user.access_key}')
+"""
+    else:
+        the_connection_code = f"""
+from upsonic import Upsonic_On_Prem
+upsonic = Upsonic_On_Prem('{custom_connection_url}', '{request.user.access_key}')
+"""
+    return the_connection_code
 
 # Create your views here.
 @login_required
 def home(request, exception=None):
 
+
+
     data = {
         "page_title": "Home",
-        "top_scopes": API_Integration(request.user.access_key).top_scopes
+        "top_scopes": API_Integration(request.user.access_key).top_scopes,
+        "the_connection_code": the_connection_code(request),
     }
 
     return render(request, "templates/home.html",data)
@@ -144,7 +167,7 @@ def delete_read_scope(request, id, scope):
 
 @login_required
 def libraries(request):
-    data = {"page_title": "Libraries", "libraries": API_Integration(request.user.access_key).top_scopes}
+    data = {"page_title": "Libraries", "libraries": API_Integration(request.user.access_key).top_scopes, "the_connection_code": the_connection_code(request),}
 
     return render(request, f"templates/libraries/libraries.html", data)
 
