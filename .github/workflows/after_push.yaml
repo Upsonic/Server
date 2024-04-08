@@ -162,7 +162,7 @@ jobs:
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
           
-          docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile.without_models --push -t ghcr.io/upsonic/on-prem_without_models:$VERSION \
+          docker buildx build --platform linux/amd64,linux/arm64 -f On-Prem/Dockerfile.without_models --push -t ghcr.io/upsonic/on-prem_without_models:latest -t ghcr.io/upsonic/on-prem_without_models:$VERSION \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
           
