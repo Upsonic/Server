@@ -1,0 +1,28 @@
+
+
+
+
+<table class="table table-hover align-middle library_table">
+    <thead>
+      <tr>
+
+        <th scope="col">Name</th>
+          <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for scope in top_scopes %}
+        <tr>
+
+            <td><a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="library_item_a">{{scope}}</a></td>
+
+            <td style="padding: 1rem 1rem;"><a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();">Go</a></td>
+
+          </tr>
+
+        {% endfor %}
+
+
+    </tbody>
+  </table>

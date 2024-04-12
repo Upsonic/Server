@@ -79,6 +79,9 @@
   
 
 
+  [data-bs-theme=dark] .page_header_right_text{
+    color: #FFFFFF;
+  }
 
 
 
