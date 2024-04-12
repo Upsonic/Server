@@ -7,27 +7,33 @@
 <div class="w-100 custom_right_side">
 
 
+
+
     <div class="custom_page_header_bottom_margin">
-        <span class="custom_page_header_text">Your <span class="custom_page_header_text_bold">Libraries</span></span>
-    </div>
 
+        <div class="d-flex flex-row justify-content-between align-items-center">
 
+            <div class="flex-fill w-50 me-5">
+                <span class="custom_page_header_text">Your <span class="custom_page_header_text_bold">Libraries</span></span>
+            </div>
+            <div class="flex-fill w-50 me-5">
+                <div class="row">
+                    <span class="page_header_right_text">View</span>
 
-    <div class="row">
+                    <a href="#" onclick="page_load('{% url 'home' %}?view=card');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/cardview{%if the_view == 'card' %}_active{% endif %}.svg"/></a>
+                    <a href="#" onclick="page_load('{% url 'home' %}?view=table');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/tableview{%if the_view == 'table' %}_active{% endif %}.svg"/></a>
 
-
-        {% for scope in top_scopes %}
-        <div class="position-relative custom_card_section">
-            <div class="custom_card">
-                <img src="/static/images/strong_variables.svg">
-                <h5 class="custom_card_header_blue_big">{{scope}} </h5>
-
-                <a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="stretched-link"></a>
+                </div>
             </div>
         </div>
-        {% endfor %}
-
     </div>
+
+    {% if the_view == 'card' %}
+        {% include 'home/cardview.html' %}
+
+    {% elif the_view == 'table' %}
+        {% include 'home/tableview.html' %}
+    {% endif %}
 
 
     <div>

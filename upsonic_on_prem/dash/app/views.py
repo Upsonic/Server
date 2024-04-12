@@ -32,13 +32,19 @@ upsonic = Upsonic_On_Prem('{custom_connection_url}', '{request.user.access_key}'
 # Create your views here.
 @login_required
 def home(request, exception=None):
-
+    #Get parameter from the URL
+    the_view = request.GET.get("view")
+    print("the_view", the_view)
+    if the_view == None:
+        the_view = "card"
+         
 
 
     data = {
         "page_title": "Home",
         "top_scopes": API_Integration(request.user.access_key).top_scopes,
         "the_connection_code": the_connection_code(request),
+        "the_view": the_view
     }
 
     return render(request, "templates/home.html",data)
