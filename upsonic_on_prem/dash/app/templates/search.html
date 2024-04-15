@@ -8,15 +8,16 @@
 
 <div class="w-100 custom_right_side">
 
-    <form class="d-flex" role="search" action="{% url 'search' %}" method="post">
-        <input class="form-control me-2 search_bar" type="search" placeholder="Search" aria-label="Search" name="question">
-        Minumum Score: 
-        <input class="form-control me-2 search_bar" placeholder="0" aria-label="Minumum Score" name="min_score" value="0">
-        How Many Result: 
-        <input class="form-control me-2 search_bar" placeholder="10" aria-label="How Many Result" name="how_many_result" value="10">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
 
+
+      <form class="d-flex form-control search_bar" role="search" action="{% url 'search' %}" method="post">
+        <img class="" src="/static/images/search.svg">        
+        <input class=" me-2 ms-2" type="search" placeholder="Search" aria-label="Search" name="question" style="
+    background-color: #0000;
+    border: 0px;
+    outline: 0px; ">
+
+      </form>
 
 
     {% if searched %}
