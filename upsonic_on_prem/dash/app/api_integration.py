@@ -35,7 +35,7 @@ def transform_to_html_bold(text):
             content = text[start_idx + 2:end_idx]
             
             # Replace content with HTML <b> tags
-            text = text[:start_idx] + '<br><br><b>' + content + '</b><br>' + text[end_idx + 2:]
+            text = text[:start_idx] + '<br><br><b class="custom_code_highlight_green">' + content + '</b><br>' + text[end_idx + 2:]
 
             # Find the next occurrence
             start_idx = text.find('**', end_idx + 2)
