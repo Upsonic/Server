@@ -1187,7 +1187,6 @@ body.with-cookie-bar {
 
 .library_table {
   --bs-table-bg: #000;
-  --bs-table-border-color: #01EE8A;
 }
 
 .back_a {
@@ -1210,4 +1209,10 @@ body.with-cookie-bar {
   padding-right: 15px;
   height: 100%;
   padding-bottom: 124px;
+}
+
+
+
+.notification_title {
+  color: #01EE8A;
 }
