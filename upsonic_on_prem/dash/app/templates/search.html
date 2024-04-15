@@ -9,7 +9,7 @@
 <div class="w-100 custom_right_side">
 
 
-
+    <div class="d-flex flex-column">
       <form class="d-flex form-control search_bar" role="search" action="{% url 'search' %}" method="post">
         <img class="" src="/static/images/search.svg">        
         <input class=" me-2 ms-2" type="search" placeholder="Search" aria-label="Search" name="question" style="
@@ -19,6 +19,9 @@
 
       </form>
 
+    </div>
+
+      <div class="d-flex flex-column scrollabe_righ_side">
 
     {% if searched %}
     <div class="custom_page_header_top_bottom_margin">
@@ -43,7 +46,7 @@
 
     {% endif %}
 
-
+</div>
 </div>
 
 
