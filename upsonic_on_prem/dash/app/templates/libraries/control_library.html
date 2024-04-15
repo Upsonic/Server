@@ -19,7 +19,7 @@
                     {% if have_upper %}
                     <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
                     {% endif %}
-                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
+                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
                 </div>
                 <div class="flex-fill w-50 me-5">
                     <div class="row">
@@ -58,11 +58,11 @@
 
             {% if value == False %}
             <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/object_fill_dark.svg" style="height: 13px;"/>{{key}}</a></td>
-            
+
             {% else %}
             <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/library_fill_dark.svg" style="height: 13px;"/>
                 {{key}}</a></td>
-            
+
             {% endif %}
             <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
                 <a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;"/></a>
