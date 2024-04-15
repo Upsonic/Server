@@ -67,11 +67,18 @@
             
             {% endif %}
             <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
+                {% if value == False %}
                 <a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
                 <a href="#" onclick="page_load('{% url 'control_element_version' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
                 <a href="#" onclick="page_load('{% url 'control_element_commits' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
                 <a href="#" onclick="page_load('{% url 'control_element_runs' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
                 <a href="#" onclick="page_load('{% url 'control_element_settings' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+                {% else %}
+                <a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
+                <a href="#" onclick="page_load('{% url 'control_library_version' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
+                <a href="#" onclick="page_load('{% url 'control_library_settings' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+
+                {% endif %}
             </td>
 
           </tr>
