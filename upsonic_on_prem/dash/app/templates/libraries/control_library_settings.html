@@ -9,14 +9,38 @@
 </div>
 <div class="w-100 custom_right_side">
 
-    <div class="custom_page_header_bottom_margin">
-        <span class="custom_page_header_text">
-            {% if have_upper %}
-            <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< | </a>
-            {% endif %}
-            <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>
-            <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="btn btn-lg custom_button ms-4" style="vertical-align: super;">Libray View</a>
+
+
+
+    <div class="d-flex flex-column">
+
+        <div class="custom_page_header_bottom_margin">
+
+            <div class="d-flex flex-row justify-content-between align-items-center">
+
+                <div class="flex-fill w-50 me-5">
+                    {% if have_upper %}
+                    <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
+                    {% endif %}
+                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
+                </div>
+                <div class="flex-fill w-50 me-5">
+                    <div class="row">
+                        <span class="page_header_right_text">Settings</span>
+
+                        <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_library_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_library_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;"/></a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <div class="d-flex flex-column scrollabe_righ_side">
 
 
     {% if total_usage_analyses == True %}
@@ -26,6 +50,8 @@
     <a href="{% url 'activate_usage_analyses_prefix' id=control_library %}" class="btn btn-lg custom_button mt-5">Activate Usage Analyses</a>
     {% endif %}
 
+
+</div>
 
 </div>
 
