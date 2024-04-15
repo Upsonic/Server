@@ -4,10 +4,16 @@
 
 <table class="table table-hover align-middle library_table">
     <thead>
-      <tr>
+      <tr style="
+      border-bottom-color: #01EE8D;
+  ">
 
         <th scope="col">Name</th>
-          <th scope="col">Action</th>
+          <th scope="col" style="
+          text-align: end;
+          padding: 1rem 1rem;
+          padding-right: 70px;
+      ">Action</th>
 
       </tr>
     </thead>
@@ -17,7 +23,13 @@
 
             <td><a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="library_item_a">{{scope}}</a></td>
 
-            <td style="padding: 1rem 1rem;"><a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();">Go</a></td>
+            <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
+
+              <a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;"/></a>
+              <a href="#" onclick="page_load('{% url 'control_library_version' id=scope %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;"/></a>
+              <a href="#" onclick="page_load('{% url 'control_library_settings' id=scope %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;"/></a>
+               
+            </td>
 
           </tr>
 
