@@ -3,7 +3,7 @@
 
 <div class="d-flex align-items-center w-100 pb-1 pt-4" style="height: 10vh;">
     <a class="navbar-brand" href="{% url 'home' %}">
-        <div class="p-2 bd-highlight mb-3 mt-3">
+        <div class="p-2 bd-highlight mb-2 mt-3">
 
             <div class="d-flex flex-row bd-highlight">
 
@@ -18,10 +18,15 @@
         </div>
     </a>
 
-    <div class="ms-5 mb-3" id="header_search_div">
-    <form class="d-flex" role="search" action="{% url 'search' %}" method="post">
-        <input class="form-control me-2 search_bar" type="search" placeholder="Search" aria-label="Search" name="question">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+    <div class="ms-5" id="header_search_div">
+    <form class="d-flex form-control search_bar" role="search" action="{% url 'search' %}" method="post">
+        <img class="" src="/static/images/search.svg">        
+        <input class=" me-2 ms-2" type="search" placeholder="Search" aria-label="Search" name="question" style="
+    background-color: #0000;
+    border: 0px;
+    outline: 0px;
+">
+
       </form>
     </div>
 
@@ -34,7 +39,7 @@
             <a href="https://docs.upsonic.co/" style="text-decoration: none;" class="me-2" target="_blank">
                 <button type="button" class="btn btn-primary custom_header_button ">
                     <div class="d-flex flex-row align-items-center p-2">
-                        <img class="me-3" src="/static/images/documents.svg">
+                        <img class="me-1" src="/static/images/documents.svg" style="height: 20px;">
                         Documentation
                     </div>
                 </button>
