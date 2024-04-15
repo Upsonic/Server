@@ -4,11 +4,11 @@ body {
   }
 
 
-  
+
 html {
   height: -webkit-fill-available;
 }
-  
+
   main {
     height: 90vh;
     width: 100%;
@@ -30,7 +30,7 @@ html {
   flex-shrink: 0 !important;
   border-radius: 10px 10px 10px 10px;
   background: #FAFAFF;
-  
+
 }
 
 
@@ -105,7 +105,7 @@ html {
   font-weight: 500;
   line-height: 130%; /* 19.5px */
 
-  
+
 }
 
 
@@ -154,7 +154,7 @@ html {
   line-height: 130%; /* 19.5px */
 
 
-  
+
 }
 
 
@@ -182,7 +182,7 @@ html {
 
 
 
-.custom_button { 
+.custom_button {
 
   width: 175px;
   height: 41px;
@@ -191,7 +191,7 @@ html {
 
   border-radius: 5px;
   background: #E5E2FF;
-  
+
   color: #4D38FF;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins;
@@ -199,21 +199,21 @@ html {
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-  
+
 
 }
 
 
-.custom_button_cloud_bar { 
+.custom_button_cloud_bar {
 
   width: 175px;
   height: 41px;
-  
+
   flex-shrink: 0;
 
   border-radius: 5px;
   background: #E5E2FF;
-  
+
   color: #4D38FF;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins;
@@ -221,11 +221,11 @@ html {
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-  
+
 
 }
 
-.custom_button_100_width { 
+.custom_button_100_width {
 
   width: 100%;
   height: 41px;
@@ -233,7 +233,7 @@ html {
 
   border-radius: 5px;
   background: #E5E2FF;
-  
+
   color: #4D38FF;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins;
@@ -241,13 +241,13 @@ html {
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-  
+
 
 }
 
 
 
-.custom_button_white_background { 
+.custom_button_white_background {
 
   width: 175px;
   height: 41px;
@@ -257,7 +257,7 @@ html {
   border-radius: 5px;
   background: #FFF;
   border-color: #E5E2FF;
-  
+
   color: #4D38FF;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins;
@@ -265,13 +265,13 @@ html {
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-  
+
 
 }
 
 
 
-.custom_button_red { 
+.custom_button_red {
 
   width: 175px;
   height: 41px;
@@ -281,7 +281,7 @@ html {
   border-radius: 5px;
   border-color: #dc3545;
   background: #FFF;
-  
+
   color: #dc3545;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins;
@@ -289,13 +289,13 @@ html {
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-  
+
 
 }
 
 
 
-.custom_button_red_100_width { 
+.custom_button_red_100_width {
 
   width: 100%;
   height: 41px;
@@ -304,7 +304,7 @@ html {
   border-radius: 5px;
   border-color: #dc3545;
   background: #FFF;
-  
+
   color: #dc3545;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Poppins;
@@ -312,7 +312,7 @@ html {
   font-style: normal;
   font-weight: 500;
   line-height: 130%;
-  
+
 
 }
 
@@ -451,7 +451,7 @@ html {
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 130%; /* 20.8px */  
+  line-height: 130%; /* 20.8px */
 }
 
 
@@ -465,7 +465,7 @@ html {
   line-height: 130%; /* 20.8px */
 
   margin-bottom: 6px;
-  
+
 }
 
 .custom_form_col {
@@ -495,7 +495,7 @@ html {
   font-style: normal;
   font-weight: 400;
   line-height: 130%; /* 16.9px */
-  
+
 }
 
 
@@ -506,7 +506,7 @@ html {
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
-  line-height: 130%; /* 16.9px */  
+  line-height: 130%; /* 16.9px */
   margin-bottom: 36px;
 }
 
@@ -601,17 +601,17 @@ html {
 
 .custom_page_header_text {
 
-  color: #4D38FF; 
-  font-size: 35px; 
-  font-family: Gabarito; 
-  font-weight: 400; 
+  color: #4D38FF;
+  font-size: 35px;
+  font-family: Gabarito;
+  font-weight: 400;
   line-height: 52px; word-wrap: break-word
 
 }
 
 
 .custom_login_header {
-  color: #4D38FF; 
+  color: #4D38FF;
   text-align: center;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Gabarito;
@@ -625,13 +625,13 @@ html {
 
 
 
-.custom_page_header_text_bold { 
+.custom_page_header_text_bold {
 
-  color: #4D38FF; 
-  font-size: 35px; 
-  font-family: Gabarito; 
-  font-weight: 700; 
-  line-height: 52px; 
+  color: #4D38FF;
+  font-size: 35px;
+  font-family: Gabarito;
+  font-weight: 700;
+  line-height: 52px;
   word-wrap: break-word
 
 }
@@ -649,11 +649,11 @@ a.disabled {
 
 .custom_right_side {
   background: #FFF;
-  margin-left: 16px; 
+  margin-left: 16px;
   padding-left: 39px;
-  padding-top: 22px; 
-  padding-right: 78px; 
-  padding-bottom: 55px; 
+  padding-top: 22px;
+  padding-right: 78px;
+  padding-bottom: 55px;
   overflow: overlay;
   min-width: 500px;
 }
@@ -665,12 +665,12 @@ a.disabled {
 }
 
 .custom_profile_full_name {
-  color: black; 
-  font-size: 40px; 
-  font-family: Poppins; 
-  font-weight: 400; 
-  line-height: 52px; 
-  word-wrap: break-word; 
+  color: black;
+  font-size: 40px;
+  font-family: Poppins;
+  font-weight: 400;
+  line-height: 52px;
+  word-wrap: break-word;
   margin-left: 27px;
 }
 
@@ -703,14 +703,14 @@ a.disabled {
   line-height: 130%; /* 19.5px */
 
 
-  
+
 }
 
 
 .custom_side_bar_flex_column {
-  width: 50px!important; 
-  margin-left: 5px!important; 
-  padding-top: 29px!important; 
+  width: 50px!important;
+  margin-left: 5px!important;
+  padding-top: 29px!important;
   background: #F6F5FF;
 
 }
@@ -720,8 +720,8 @@ a.disabled {
 }
 
 .custom_side_bar_flex_column_nav_item_left_image {
-  width: 2px; 
-  height: 24px; 
+  width: 2px;
+  height: 24px;
   margin-left: 6px;
 }
 
@@ -744,14 +744,14 @@ a.disabled {
 
 
 .custom_side_bar_flex_column_nav_item_down_text {
-  text-align: start; 
-  color: rgba(0, 0, 0, 0.70); 
-  font-size: 12px; 
-  font-family: Poppins; 
-  font-weight: 400; 
-  line-height: 15.60px; 
-  word-wrap: break-word; 
-  margin-left: 12px; 
+  text-align: start;
+  color: rgba(0, 0, 0, 0.70);
+  font-size: 12px;
+  font-family: Poppins;
+  font-weight: 400;
+  line-height: 15.60px;
+  word-wrap: break-word;
+  margin-left: 12px;
   margin-top: 8px;
 }
 
@@ -768,28 +768,28 @@ a.disabled {
 
 
 .custom_header_usage_text {
-  color: rgba(0, 0, 0, 0.40); 
-  font-size: 15px; 
-  font-family: Poppins; 
-  font-weight: 400; 
-  line-height: 19.50px; 
+  color: rgba(0, 0, 0, 0.40);
+  font-size: 15px;
+  font-family: Poppins;
+  font-weight: 400;
+  line-height: 19.50px;
   word-wrap: break-word
 
 }
 
 .custom_header_usage_text_highlight {
-  color: #4D38FF; 
-  font-size: 15px; 
-  font-family: Poppins; 
-  font-weight: 700; 
-  line-height: 19.50px; 
+  color: #4D38FF;
+  font-size: 15px;
+  font-family: Poppins;
+  font-weight: 700;
+  line-height: 19.50px;
   word-wrap: break-word
 
 }
 
 .custom_header_usage_bar {
-  height: 6px; 
-  width: 116px; 
+  height: 6px;
+  width: 116px;
 }
 
 .custom_header_usage_bar_amount {
@@ -799,7 +799,7 @@ a.disabled {
 
 
 .custom_header_welcome_first {
-  color: #4D38FF; 
+  color: #4D38FF;
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: Gabarito;
   font-size: 36px;
@@ -810,11 +810,11 @@ a.disabled {
 
 
 .custom_header_welcome_second{
-  color: #01EE8A; 
-  font-size: 36px; 
-  font-family: Gabarito; 
-  font-weight: 400; 
-  line-height: 46.80px; 
+  color: #01EE8A;
+  font-size: 36px;
+  font-family: Gabarito;
+  font-weight: 400;
+  line-height: 46.80px;
   word-wrap: break-word
 }
 
@@ -822,12 +822,12 @@ a.disabled {
 
 
 .custom_header_logout_text {
-  text-align: center; 
-  color: #33363F; 
-  font-size: 12px; 
-  font-family: Poppins; 
-  font-weight: 400; 
-  line-height: 15.60px; 
+  text-align: center;
+  color: #33363F;
+  font-size: 12px;
+  font-family: Poppins;
+  font-weight: 400;
+  line-height: 15.60px;
   word-wrap: break-word
 }
 
@@ -976,7 +976,7 @@ a.disabled {
   line-height: 130%; /* 18.2px */
 
 
- 
+
 
 
 }
@@ -990,7 +990,7 @@ a.disabled {
 
   border-radius: 5px;
   border: 0px;
-  background: #F6F5FF;  
+  background: #F6F5FF;
 
   color: #101010;
   font-feature-settings: 'clig' off, 'liga' off;
@@ -1002,7 +1002,7 @@ a.disabled {
 
   margin-right: 33px;
 
-  
+
 }
 
 
@@ -1064,8 +1064,8 @@ a.disabled {
 }
 
 
-.custom_card_header_bold { 
-  color: #4D38FF; 
+.custom_card_header_bold {
+  color: #4D38FF;
 }
 
 
@@ -1104,7 +1104,7 @@ a.disabled {
 
   flex-direction: column;
   justify-content: center;
-  flex-shrink: 0;  
+  flex-shrink: 0;
 
 
   color: #FFF;
@@ -1133,11 +1133,11 @@ a.disabled {
 body.with-cookie-bar {
 
   padding-top: 35px;
-  
+
   }
-  
+
   .cookie-bar {
-  
+
     position: fixed;
     width: 100%;
     bottom: 0;
@@ -1146,7 +1146,7 @@ body.with-cookie-bar {
     line-height: 25px;
     border: 1px solid #2C2C2C;
     background: rgb(23 23 23);
-  
+
   }
 
 .custom_pharagraph_for_documentations {

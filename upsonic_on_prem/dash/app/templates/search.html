@@ -11,7 +11,7 @@
 
 
       <form class="d-flex form-control search_bar" role="search" action="{% url 'search' %}" method="post">
-        <img class="" src="/static/images/search.svg">        
+        <img class="" src="/static/images/search.svg">
         <input class=" me-2 ms-2" type="search" placeholder="Search" aria-label="Search" name="question" style="
     background-color: #0000;
     border: 0px;
@@ -36,7 +36,7 @@
 
     <div class="custom_pharagraph_for_documentations">{{result.1|safe}}</div>
     <div class="custom_pharagraph_for_documentations">Score: {{result.2}}</div>
-    
+
 
     {% endfor %}
 
