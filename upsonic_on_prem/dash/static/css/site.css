@@ -654,7 +654,7 @@ a.disabled {
   padding-top: 22px; 
   padding-right: 78px; 
   padding-bottom: 55px; 
-  overflow: overlay;
+  overflow: hidden;
   min-width: 500px;
 }
 
@@ -1191,6 +1191,7 @@ body.with-cookie-bar {
 }
 
 .back_a {
+  font-size: 30px;
   color: #fff;
   text-decoration: none;
 }
@@ -1201,4 +1202,12 @@ body.with-cookie-bar {
   font-size: 16px;
   width: auto;
   margin-left: auto;
+}
+
+
+.scrollabe_righ_side {
+  overflow: overlay;
+  padding-right: 15px;
+  height: 100%;
+  padding-bottom: 124px;
 }
