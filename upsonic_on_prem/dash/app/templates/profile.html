@@ -4,6 +4,8 @@
 {% block content %}
 <div class="w-100 custom_right_side">
 
+
+    <div class="d-flex flex-column">
     <div class="custom_page_header_bottom_margin">
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">User {{request.user.username}}</span></span>
     </div>
@@ -14,7 +16,11 @@
             <div class="custom_code_block_code">
                 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{request.user.access_key}}</code></pre></div>
             </div>
-        </div>
+    </div>
+    </div>
+
+
+    <div class="d-flex flex-column scrollabe_righ_side">
 
 
     <div class="custom_page_header_top_bottom_margin">
@@ -60,6 +66,7 @@
         </tbody>
     </table>
 
+</div>
 
 
 </div>
