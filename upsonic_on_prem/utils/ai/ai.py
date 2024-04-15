@@ -405,7 +405,7 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
         
         usage_aim = self.default_completion(prompt)
 
-        result = "<b>Explanation:</b><br>" + summary + "\n\n<b>Use Case:</b><br>" + usage_aim
+        result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
 
         return result
 
