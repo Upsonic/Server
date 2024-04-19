@@ -89,7 +89,7 @@ class Scope:
         if the_list != None:
             the_list = sorted(the_list, key=lambda x: storage_3.get(x)["time"], reverse=True)
         else:
-            []
+            the_list = []
         return the_list
 
     @property
