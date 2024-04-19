@@ -11,7 +11,7 @@ from .main import cli
 
 
 
-__version__ = '0.20.6'
+__version__ = '0.20.7'
 
 
 
