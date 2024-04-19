@@ -942,7 +942,11 @@ def control_element_runs(request, id):
 
 
     get_last_runs = API_Integration(request.user.access_key).get_last_runs(id)
-
+    latest_commit = API_Integration(request.user.access_key).get_dump_history(id)[0].split(":")[1]
+    print("Latest commit", latest_commit)
+    for each_run in get_last_runs:
+        print(each_run["data"])
+        each_run["data"]["version"] = "Latest" if each_run["data"]["version"] == latest_commit else each_run["data"]["version"]
 
 
     cpu_usage_analyses_response = API_Integration(request.user.access_key).get_settings(id)
