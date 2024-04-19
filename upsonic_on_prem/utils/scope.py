@@ -85,7 +85,10 @@ class Scope:
 
     @property
     def dump_history(self):
-        return self.the_storage.get(self.key + ":dump_history") or []
+        the_list = self.the_storage.get(self.key + ":dump_history")
+        if the_list != None:
+            the_list = sorted(the_list, key=lambda x: storage_3.get(x)["time"], reverse=True)
+        return the_list
 
     @property
     def version_history(self):
