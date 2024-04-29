@@ -359,7 +359,7 @@ def get_all_scopes_user():
 def delete_scope():
     scope = request.form.get("scope")
     object = Scope(scope)
-    return jsonify({"status": True, "result": object.delete()})
+    return jsonify({"status": True, "result": object.delete(AccessKey(request.authorization.password))})
 
 @app.route(delete_version_url, methods=["POST"])
 def delete_version():
@@ -714,3 +714,17 @@ def get_last_runs():
     else:
         op = the_scope.get_last_runs()
     return jsonify({"status": True, "result": op})
+
+
+
+@app.route(get_github_sync_of_scope_url, methods=["POST"])
+def get_github_sync_of_scope():
+    scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.is_it_github_synced()})

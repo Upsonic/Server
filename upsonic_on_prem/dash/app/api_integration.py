@@ -278,6 +278,13 @@ class API_Integration:
             data["version"] = version
         return transform_to_html_bold(self._send_request("POST", "/get_document_of_scope", data=data))
 
+    def get_github_sync(self, scope, version=None):
+        data = {"scope": scope}
+        if version != None:
+            data["version"] = version
+        return self._send_request("POST", "/get_github_sync_of_scope", data=data) == True
+
+
 
     def get_requirements(self, scope, version=None):
         data = {"scope": scope}
