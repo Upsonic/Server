@@ -75,7 +75,7 @@ jobs:
           git fetch
           cd ..
 
-          rm -r models
+          if [ -d models ]; then rm -r models; fi
           mkdir models
           mv On-Prem/upsonic_on_prem/utils/ai/models models
           
@@ -132,7 +132,7 @@ jobs:
           git fetch
           cd ..
 
-          rm -r models
+          if [ -d models ]; then rm -r models; fi
           mkdir models
           mv On-Prem/upsonic_on_prem/utils/ai/models models
           
