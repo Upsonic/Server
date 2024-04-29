@@ -16,7 +16,7 @@ WORKDIR /app/
 
 COPY On-Prem/requirements.txt /requirements.txt
 COPY On-Prem/ollama_install.sh /ollama_install.sh
-RUN pip3 install -r /requirements.txt
+RUN pip3 install -r /requirements.txt --break-system-packages
 RUN sh /ollama_install.sh
 
 
