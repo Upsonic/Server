@@ -14,9 +14,14 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=".env")
 
+github_active = os.environ.get("github_active", "false").lower() == "true"
+github_repo_owner = os.environ.get("github_repo_owner")
+github_repo_name = os.environ.get("github_repo_name")
+
 
 def the_connection_code(request):
     custom_connection_url = os.getenv("custom_connection_url")
+    
     if custom_connection_url == None:
         the_connection_code = f"""
 from upsonic import Upsonic_On_Prem
@@ -686,6 +691,7 @@ def delete_openai_api_key_user(request, id):
 
 
 
+
 @login_required
 def control_element_version(request, id):
 
@@ -1106,6 +1112,12 @@ def control_element(request, id):
 
 
     
+    github_synced = False
+
+    github_url = f"https://github.com/{github_repo_owner}/{github_repo_name}/"
+    if github_active:
+        github_synced = API_Integration(request.user.access_key).get_github_sync(id, version=version)
+
 
 
     data = {
@@ -1117,6 +1129,9 @@ def control_element(request, id):
         "have_upper": have_upper,
         "the_upper": the_upper,
         "code": API_Integration(request.user.access_key).get_code(id, version=version),
+        "github_active":github_active,
+        "github_synced":github_synced, 
+        "github_url":github_url,       
         "using_code": using_code,
         "documentation": documentation,
         "time_complexity": time_complexity,

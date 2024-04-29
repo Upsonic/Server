@@ -9,6 +9,8 @@ from upsonic_on_prem.utils import storage_2, AI, storage_3, AccessKey, storage_5
 
 from upsonic_on_prem.utils.configs import admin_key
 
+from upsonic_on_prem.utils.github_sync import github
+
 import cloudpickle
 import dill
 
@@ -65,7 +67,16 @@ class Scope:
         self.the_storage.set(self.key + ":run_history", current)
 
 
-    def delete(self):
+    def delete(self, user):
+
+        if ":" in self.key:
+            path = self.key.split(":")[0].replace(".", "/")
+        else:
+            path = self.key.replace(".", "/")
+        path = f'{path}.py'        
+
+        github.delete_file(scope=self, message=f"Deleted {path} by {user.name}")
+
         self.the_storage.delete(self.key)
         for i in self.dump_history:
             storage_3.delete(i)
@@ -73,6 +84,7 @@ class Scope:
             storage_3.delete(i)            
         self.the_storage.delete(self.key + ":dump_history")
         self.the_storage.delete(self.key + ":documentation")
+        self.the_storage.delete(self.key + "github_sha")
         self.the_storage.delete(self.key + ":time_complexity")
         self.the_storage.delete(self.key + ":mistakes")
         self.the_storage.delete(self.key + ":required_test_types")
@@ -102,7 +114,7 @@ class Scope:
 
         key = self.key + ":" + str(version)
 
-        data = {"data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+        data = {"data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -137,6 +149,17 @@ class Scope:
                 source = self.the_storage.get(self.key)["documentation"]        
         return source
 
+    @property
+    def github_sha(self):
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":github_sha")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["github_sha"]        
+        return source
 
     @property
     def time_complexity(self):
@@ -233,6 +256,20 @@ class Scope:
      
    
 
+
+    def set_github_sha(self, sha):
+
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":github_sha", sha)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["github_sha"] = sha
+            self.the_storage.set(self.key, the_resource)
+     
+   
 
         
         
@@ -451,7 +488,7 @@ class Scope:
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+        data = {"data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -460,6 +497,26 @@ class Scope:
         self.the_storage.set(self.key + ":dump_history", current)
 
         self.the_storage.set(self.key, data)
+
+
+        if ":" in self.key:
+            path = self.key.split(":")[0].replace(".", "/")
+        else:
+            path = self.key.replace(".", "/")
+        path = f'{path}.py'     
+
+        github_sha = github.create_or_update_file(scope=self, message=f"New changes for {path} by {user.name}")
+        if github_sha != False:
+            self.set_github_sha(github_sha)
+    
+
+    def is_it_github_synced(self):
+        print("test")
+        print(self.specific)
+        print(self.github_sha)
+        print(github.get_sha(self))
+        return self.github_sha == github.get_sha(self)
+
 
     @staticmethod
     def get_dump(dump_id):
