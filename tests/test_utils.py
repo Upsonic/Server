@@ -470,8 +470,8 @@ class Test_Accesskey(unittest.TestCase):
         the_scope.dump(dumped_data, AccessKey(id))
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[-1]).source, the_scope.source)
 
-        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[1]).python(), True)
-        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), False)
+        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), True)
+        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[1]).python(), False)
         self.assertEqual(the_scope.python(), False)
 
         storage_2.pop()
