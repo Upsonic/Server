@@ -67,15 +67,15 @@ class Scope:
         self.the_storage.set(self.key + ":run_history", current)
 
 
-    def delete(self, user):
+    def delete(self, user=None):
+        if user != None:
+            if ":" in self.key:
+                path = self.key.split(":")[0].replace(".", "/")
+            else:
+                path = self.key.replace(".", "/")
+            path = f'{path}.py'        
 
-        if ":" in self.key:
-            path = self.key.split(":")[0].replace(".", "/")
-        else:
-            path = self.key.replace(".", "/")
-        path = f'{path}.py'        
-
-        github.delete_file(scope=self, message=f"Deleted {path} by {user.name}")
+            github.delete_file(scope=self, message=f"Deleted {path} by {user.name}")
 
         self.the_storage.delete(self.key)
         for i in self.dump_history:
