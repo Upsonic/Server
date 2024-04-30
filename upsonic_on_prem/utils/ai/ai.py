@@ -50,10 +50,10 @@ class AI_:
 
 
             if not self.default_search_model.startswith("text-embedding"):
-                print("Used ollama")
+
                 oembed = OllamaEmbeddings(base_url="http://localhost:11434", model=self.default_search_model)
             else:
-                print("Used openai")
+
                 oembed = OpenAIEmbeddings(model=self.default_search_model, openai_api_key=os.environ.get("openai_api_key"))
 
             sha256_of_model = hashlib.sha256(self.default_search_model.encode()).hexdigest()
@@ -137,7 +137,7 @@ class AI_:
 
     def completion(self, input_text, model):
         result = None
-        print("AI q:", input_text)
+
         if model == "gemma-2b":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
@@ -145,7 +145,7 @@ class AI_:
         elif model == "gpt-4":
             result = self.gpt(input_text, model=model)  
 
-        print("AI r:", result)          
+         
         return result
 
 
@@ -403,6 +403,8 @@ Hi there is an list of elements and summaries:
 Explain the usage aim of this '{top_library}' library and its elements in a few sentences.
 """
         
+
+                    
         usage_aim = self.default_completion(prompt)
 
         result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
