@@ -468,7 +468,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
-        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
+        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[-1]).source, the_scope.source)
 
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[1]).python(), True)
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), False)
