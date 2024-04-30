@@ -581,6 +581,19 @@ class API_Integration:
         except:
             return result
         
+
+    
+    def get_readme_github_sync(self, top_library, version=None):
+        data = {"top_library": top_library}
+        if version != None:
+            data["version"] = version
+        result = self._send_request("POST", "/get_readme_github_sync", data=data)
+        try:
+            return result
+        except:
+            return result
+        
+
     def get_all_scopes_name_prefix(self, prefix):
         data = {"prefix": prefix}
         return self._send_request("POST", "/get_all_scopes_name_prefix", data=data)

@@ -38,6 +38,20 @@
 
     <div class="d-flex flex-column scrollabe_righ_side">
 
+    {% if version == "" and github_active %}
+    <div class="mb-1">
+        <a href="{{github_url}}" target="_blank" style="text-decoration: none;">
+        <img src="/static/images/github.png" style="height: 15px;"/>
+        {% if github_synced %}
+        <span>Synced</span>
+        {% else %}
+        <span >Not Synced</span>
+        {% endif %}
+    </a>
+    </div>
+
+    {% endif %}
+
 
 <table class="table table-hover align-middle library_table">
     <thead>
