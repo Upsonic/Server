@@ -291,6 +291,15 @@ def control_library(request,id):
     else:
         readme = "Generating..."
 
+
+    
+    github_synced = False
+
+    github_url = f"https://github.com/{github_repo_owner}/{github_repo_name}/"
+    if github_active:
+        github_synced = API_Integration(request.user.access_key).get_readme_github_sync(id, version=version)
+
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -304,6 +313,9 @@ def control_library(request,id):
         "readme": readme,
         "all_scopes": all_scopes,
         "version": "" if version == None else version,
+        "github_synced": github_synced,
+        "github_url": github_url,
+        "github_active": github_active,
     }
     return render(request, f"templates/libraries/control_library.html", data)
 

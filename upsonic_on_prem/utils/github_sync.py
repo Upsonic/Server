@@ -27,10 +27,49 @@ class github_:
 
     def get_file(self, path):
         url = f'{self.base_url}/contents/{path}'
-        response = requests.get(url, headers=self.headers)
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+            return response.json()
+        except:
+            return False
     
+
+    def create_or_update_file_(self, path, content, message):
+        # Attempt to get the file to see if it already exists
+        get_url = f'{self.base_url}/contents/{path}'
+        try:
+            get_response = requests.get(get_url, headers=self.headers)
+
+            data = {
+                'message': message,
+                'content': content,
+                'author': {
+                    'name': self.author_name,
+                    'email': self.author_email
+                },
+                'committer': {
+                    'name': self.author_name,
+                    'email': self.author_email
+                }
+            }
+
+
+            # If the file exists, get its SHA to update it
+            if get_response.status_code == 200:
+                data['sha'] = get_response.json()['sha']
+
+
+       
+            # Whether the file exists or not, try to create or update it
+            put_response = requests.put(get_url, headers=self.headers, json=data)
+            put_response.raise_for_status()
+
+            return put_response.json()["content"]['sha']
+        except:
+            return False
+
+
     def create_or_update_file(self, scope, message):
         if not self.github_active:
             return False
@@ -50,37 +89,18 @@ class github_:
         content = encoded_content
 
 
-
-        # Attempt to get the file to see if it already exists
-        get_url = f'{self.base_url}/contents/{path}'
-        get_response = requests.get(get_url, headers=self.headers)
-
-        data = {
-            'message': message,
-            'content': content,
-            'author': {
-                'name': self.author_name,
-                'email': self.author_email
-            },
-            'committer': {
-                'name': self.author_name,
-                'email': self.author_email
-            }
-        }
-
-
-        # If the file exists, get its SHA to update it
-        if get_response.status_code == 200:
-            data['sha'] = get_response.json()['sha']
+        return self.create_or_update_file_(path, content, message)
 
 
 
-        # Whether the file exists or not, try to create or update it
-        put_response = requests.put(get_url, headers=self.headers, json=data)
-        put_response.raise_for_status()
-
-        return put_response.json()["content"]['sha']
-
+    def get_sha_(self, path):
+        # Get the file to retrieve its SHA
+        try:
+            file_info = self.get_file(path)
+            return file_info['sha']
+        except:
+            return False
+    
 
     def get_sha(self, scope):
         if not self.github_active:
@@ -92,10 +112,39 @@ class github_:
             path = scope.key.replace(".", "/")
         path = f'{path}.py'
 
-        # Get the file to retrieve its SHA
-        file_info = self.get_file(path)
-        return file_info['sha']
-    
+        return self.get_sha_(path)
+
+
+
+    def delete_file_(self, path, message):
+        try:
+            # First, get the file to retrieve its SHA
+            file_info = self.get_file(path)
+            sha = file_info['sha']
+
+            # Prepare the URL and data for the DELETE request
+            url = f'{self.base_url}/contents/{path}'
+            data = {
+                'message': message,
+                'sha': sha,
+                'author': {
+                    'name': self.author_name,
+                    'email': self.author_email
+                },
+                'committer': {
+                    'name': self.author_name,
+                    'email': self.author_email
+                }
+            }
+
+            # Send the DELETE request
+            response = requests.delete(url, headers=self.headers, json=data)
+            response.raise_for_status()
+            return response.json()        
+        except:
+            return False
+
+
 
     def delete_file(self, scope, message):
         if not self.github_active:
@@ -107,29 +156,7 @@ class github_:
             path = scope.key.replace(".", "/")
         path = f'{path}.py'
 
-        # First, get the file to retrieve its SHA
-        file_info = self.get_file(path)
-        sha = file_info['sha']
-
-        # Prepare the URL and data for the DELETE request
-        url = f'{self.base_url}/contents/{path}'
-        data = {
-            'message': message,
-            'sha': sha,
-            'author': {
-                'name': self.author_name,
-                'email': self.author_email
-            },
-            'committer': {
-                'name': self.author_name,
-                'email': self.author_email
-            }
-        }
-
-        # Send the DELETE request
-        response = requests.delete(url, headers=self.headers, json=data)
-        response.raise_for_status()
-        return response.json()        
+        return self.delete_file_(path, message)
 
 
 github = github_(os.environ.get("github_token", False), os.environ.get("github_repo_owner", False), os.environ.get("github_repo_name", False))

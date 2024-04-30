@@ -77,6 +77,41 @@ class Scope:
 
             github.delete_file(scope=self, message=f"Deleted {path} by {user.name}")
 
+            def split_dotted_string(s):
+                results = []
+                while '.' in s:
+                    results.append(s)
+                    s = s.rsplit('.', 1)[0]
+                results.append(s)  # to include the first part
+                return results
+
+            #Checking for top libray
+            if len(user.scopes_read) == ["*"] or user.is_admin == True:
+                print("STARTED FOR CHECKING")
+                all_scopes = self.get_all_scopes()
+                for each_split in split_dotted_string(self.key):
+                    if each_split == self.key:
+                        continue
+                    print("CHECK: ", each_split)
+                    top_library = each_split
+                    is_there_any = False
+                    for each in all_scopes:
+                        if each.startswith(top_library) and self.key != each:
+                            print("FOUND: ", each)
+                            if len(top_library.split(".")) == 1:
+                                if each != top_library:
+                                    continue
+                                    
+                            is_there_any = True
+                            break
+                    print("IS THERE ANY: ", is_there_any)
+                    if is_there_any == False:
+                        path = top_library.replace(".", "/") if "." in top_library else top_library
+                        path += f'/README.md'
+                        print("DELETING: ", path)
+                        github.delete_file_(path, message=f"Deleted {path} by {user.name}")
+            
+
         self.the_storage.delete(self.key)
         for i in self.dump_history:
             storage_3.delete(i)
@@ -507,7 +542,7 @@ class Scope:
 
         github_sha = github.create_or_update_file(scope=self, message=f"New changes for {path} by {user.name}")
         if github_sha != False:
-            self.set_github_sha(github_sha)
+            self.set_github_sha(github.get_sha(self))
     
 
     def is_it_github_synced(self):

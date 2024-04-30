@@ -7,9 +7,11 @@ from upsonic_on_prem.utils import storage, storage_2, storage_4, AccessKey, Scop
 
 from upsonic_on_prem.utils.configs import openai_api_key
 
+from upsonic_on_prem.utils.github_sync import github
+
 from flask import jsonify
 from flask import request
-
+import base64
 import time
 
 
@@ -518,6 +520,9 @@ def create_readme():
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
+    print("CREATE README TASK for: ", top_library)
+    print()
+
 
     all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
     all_scopes = []
@@ -550,7 +555,9 @@ def create_readme():
                 task_name = each_scope+":"+version
                 the_scope = Scope.get_version(each_scope+":"+version)
 
+
             while task_name in documentation_tasks:
+                print("WAITING FOR TASK: ", task_name)
                 time.sleep(1)    
 
             if the_scope.documentation == None:
@@ -566,7 +573,7 @@ def create_readme():
             summary_list += str(the_scope.documentation) + "\n\n"
 
 
-    print("SUMMARY LIST: ", summary_list)
+
 
     #Create sha256 hash of the result
     sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
@@ -575,7 +582,118 @@ def create_readme():
 
     storage_4.set(sha256, result)
 
+    if len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True:
+        path = top_library.replace(".", "/") if "." in top_library else top_library
+        path += f'/README.md'
+        
+
+
+        code = ""
+        the_name = top_library.replace(".", "_")
+        code = f'{the_name} = upsonic.load_module("{top_library}")'
+                    
+        content = '<b class="custom_code_highlight_green">Imporing:</b><br>'
+        content +="\n```python\n"
+        content += code
+        content +="\n```\n"
+        content += "<br>"
+
+        content += result
+
+        content += '\n<br><b class="custom_code_highlight_green">Content:</b><br>\n'
+        for each in all_scopes:
+            content += f"  - {each}\n"
+        
+        
+
+        # Inside your create_or_update_file function, before the PUT request
+        encoded_content = base64.b64encode(content.encode('utf-8')).decode('utf-8')
+        content = encoded_content    
+
+        print("CREATE PATH: ", path)
+        github.create_or_update_file_(path, content, f"Changes for {path}")
+        sha_of_readme = github.get_sha_(path)
+        print("CREATE SHA: ", sha_of_readme)
+
+        storage_4.set(sha256+"github_sha", sha_of_readme)
+        get_sha = storage_4.get(sha256+"github_sha")
+        print("RETRIVE_HASH", get_sha)
+
     return jsonify({"status": True, "result": result})
+
+
+@app.route(get_readme_github_sync_url, methods=["POST"])
+def get_readme_github_sync():
+    top_library = request.form.get("top_library")
+    version = request.form.get("version")
+    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    all_scopes = []
+    for each_scope in all_scopes_response:
+        if version != None:
+            the_version_history_response = Scope(each_scope).version_history
+            the_version_history = []
+            for element in the_version_history_response:
+                the_version_history.append(element.replace(each_scope+":", ""))
+            if version in the_version_history:
+                all_scopes.append(each_scope)
+        else:
+            all_scopes.append(each_scope)
+    
+
+
+    # order by alphabetical
+    all_scopes.sort()
+
+    result = f"{top_library}"
+    for i in all_scopes:
+        result += i + "\n"
+
+    summary_list = ""
+    for each_scope in all_scopes:
+            task_name = each_scope
+            if version == None:
+                the_scope = Scope(each_scope)
+            else:
+                task_name = each_scope+":"+version
+                the_scope = Scope.get_version(each_scope+":"+version)
+
+            while task_name in documentation_tasks:
+                time.sleep(1)    
+
+            if the_scope.documentation == None:
+                documentation_tasks.append(task_name)
+                the_scope.create_documentation()
+                try:
+                    documentation_tasks.remove(task_name)
+                except:
+                    pass
+
+
+
+            summary_list += each_scope +" - " + str(the_scope.type) + "\n"
+            summary_list += str(the_scope.documentation) + "\n\n"
+
+
+    
+    #Create sha256 hash of the result
+    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
+
+    the_currently_sha = storage_4.get(sha256+"github_sha")
+    path = top_library.replace(".", "/") if "." in top_library else top_library
+    path += f'/README.md'
+    
+    github_sha = github.get_sha_(path)
+    print("CHECK PATH: ", path)
+    print("CHECK SHA: ", github_sha)
+    print("CHECK CURRENTLY SHA: ", the_currently_sha)
+    result = the_currently_sha == github_sha
+
+    if len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True:
+        return jsonify({"status": True, "result": result})
+    else:
+        result = None
+
+
 
 @app.route(get_readme_url, methods=["POST"])
 def get_readme():
@@ -593,8 +711,7 @@ def get_readme():
                 all_scopes.append(each_scope)
         else:
             all_scopes.append(each_scope)
-    
-    print("ALL SCOPES: ", all_scopes)
+
 
     # order by alphabetical
     all_scopes.sort()
@@ -629,7 +746,6 @@ def get_readme():
             summary_list += str(the_scope.documentation) + "\n\n"
 
 
-    print("SUMMARY LIST: ", summary_list)
 
     
     #Create sha256 hash of the result
