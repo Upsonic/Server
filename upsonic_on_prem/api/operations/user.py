@@ -218,12 +218,8 @@ def get_version_code_of_scope():
 
 documentation_tasks = []
 
-@app.route(create_document_of_scope_url, methods=["POST"])
-def create_document_of_scope():
-    global documentation_tasks
 
-    scope = request.form.get("scope")
-    version = request.form.get("version")
+def create_document_of_scope_(scope, version):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -245,18 +241,179 @@ def create_document_of_scope():
         while task_name in documentation_tasks:
             time.sleep(1)
         work = the_scope.documentation
-    return jsonify({"status": True, "result": work})
+
+    print("Complated doc task: ", scope)
+    return work
+
+
+time_complexity_tasks = []
+
+
+def create_time_complexity_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    if not task_name in time_complexity_tasks:
+        time_complexity_tasks.append(task_name)
+        try:
+            work = the_scope.create_time_complexity()
+        except:
+            pass
+        try:
+            time_complexity_tasks.remove(task_name)
+        except:
+            pass
+    else:
+        while task_name in time_complexity_tasks:
+            time.sleep(1)
+        work = the_scope.time_complexity
+
+    print("Complated time_complexity  task: ", scope)
+    return work
+
+
+
+
+mistakes_tasks = []
+
+
+def create_mistakes_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    if not task_name in mistakes_tasks:
+        mistakes_tasks.append(task_name)
+        try:
+            work = the_scope.create_mistakes()
+        except:
+            pass
+        try:
+            mistakes_tasks.remove(task_name)
+        except:
+            pass
+    else:
+        while task_name in mistakes_tasks:
+            time.sleep(1)
+        work = the_scope.mistakes
+
+    print("Complated mistakes_tasks  task: ", scope)
+    return work
+
+
+
+required_test_types_tasks = []
+
+
+def create_required_test_types_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    if not task_name in required_test_types_tasks:
+        required_test_types_tasks.append(task_name)
+        try:
+            work = the_scope.create_required_test_types()
+        except:
+            pass
+        try:
+            required_test_types_tasks.remove(task_name)
+        except:
+            pass
+    else:
+        while task_name in required_test_types_tasks:
+            time.sleep(1)
+        work = the_scope.required_test_types
+
+    print("Complated required_test_types_tasks  task: ", scope)
+    return work
+
+
+tags_tasks = []
+
+
+def create_tags_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    if not task_name in tags_tasks:
+        tags_tasks.append(task_name)
+        try:
+            work = the_scope.create_tags()
+        except:
+            pass
+        try:
+            tags_tasks.remove(task_name)
+        except:
+            pass
+    else:
+        while task_name in tags_tasks:
+            time.sleep(1)
+        work = the_scope.tags
+
+    print("Complated tags_tasks  task: ", scope)
+    return work
+
+
+security_analyses_tasks = []
+
+
+def create_security_analyses_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    if not task_name in security_analyses_tasks:
+        security_analyses_tasks.append(task_name)
+        try:
+            work = the_scope.create_security_analysis()
+        except:
+            pass
+        try:
+            security_analyses_tasks.remove(task_name)
+        except:
+            pass
+    else:
+        while task_name in security_analyses_tasks:
+            time.sleep(1)
+        work = the_scope.security_analysis
+
+    print("Complated security_analyses_tasks  task: ", scope)
+    return work
+
+
+@app.route(create_document_of_scope_url, methods=["POST"])
+def create_document_of_scope():
+    global documentation_tasks
+
+    scope = request.form.get("scope")
+    version = request.form.get("version")
+
+    return jsonify({"status": True, "result": create_document_of_scope_(scope, version)})
 
 @app.route(create_time_complexity_of_scope_url, methods=["POST"])
 def create_time_complexity_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
-    else:
-        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.create_time_complexity()})
+    return jsonify({"status": True, "result": create_time_complexity_of_scope_(scope, version)})
 
 
 
@@ -265,23 +422,17 @@ def create_time_complexity_of_scope():
 def create_mistakes_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
-    else:
-        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.create_mistakes()})
+
+    return jsonify({"status": True, "result": create_mistakes_of_scope_(scope, version)})
 
 @app.route(create_required_test_types_of_scope_url, methods=["POST"])
 def create_required_test_types_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
-    else:
-        the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.create_required_test_types()})
+
+    return jsonify({"status": True, "result": create_required_test_types_of_scope_(scope, version)})
 
 
 @app.route(create_tags_of_scope_url, methods=["POST"])
@@ -292,7 +443,7 @@ def create_tags_of_scope():
         the_scope = Scope.get_version(scope+":"+version)
     else:
         the_scope = Scope(scope)
-    return jsonify({"status": True, "result": the_scope.create_tags()})
+    return jsonify({"status": True, "result": create_tags_of_scope_(scope, version)})
 
 
 @app.route(create_security_analysis_of_scope_url, methods=["POST"])
@@ -304,7 +455,7 @@ def create_security_analysis_of_scope():
     else:
         the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.create_security_analysis()})
+    return jsonify({"status": True, "result": create_security_analyses_of_scope_(scope, version)})
 
 
 
@@ -514,17 +665,13 @@ def get_default_ai_model():
     return jsonify({"status": True, "result": AI.default_model})
 
 
-@app.route(create_readme_url, methods=["POST"])
-def create_readme():
+def create_readme_(top_library, version, request=None):
     global documentation_tasks
-    top_library = request.form.get("top_library")
-    version = request.form.get("version")
-
     print("CREATE README TASK for: ", top_library)
     print()
 
 
-    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library)
+    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix = top_library)
     all_scopes = []
     for each_scope in all_scopes_response:
         if version != None:
@@ -582,7 +729,13 @@ def create_readme():
 
     storage_4.set(sha256, result)
 
-    if len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True:
+
+    make_sync = False
+    if request != None:
+        make_sync = len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True
+    else:
+        make_sync = True
+    if make_sync:
         path = top_library.replace(".", "/") if "." in top_library else top_library
         path += f'/README.md'
         
@@ -617,9 +770,17 @@ def create_readme():
 
         storage_4.set(sha256+"github_sha", sha_of_readme)
         get_sha = storage_4.get(sha256+"github_sha")
-        print("RETRIVE_HASH", get_sha)
+        print("RETRIVE_HASH", get_sha)        
 
-    return jsonify({"status": True, "result": result})
+    return result
+
+
+@app.route(create_readme_url, methods=["POST"])
+def create_readme():
+    top_library = request.form.get("top_library")
+    version = request.form.get("version")
+
+    return jsonify({"status": True, "result": create_readme_(top_library, version, request)})
 
 
 @app.route(get_readme_github_sync_url, methods=["POST"])

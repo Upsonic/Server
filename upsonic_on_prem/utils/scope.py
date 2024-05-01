@@ -11,6 +11,7 @@ from upsonic_on_prem.utils.configs import admin_key
 
 from upsonic_on_prem.utils.github_sync import github
 
+
 import cloudpickle
 import dill
 
@@ -20,6 +21,41 @@ import hashlib
 
 import textwrap
 import time
+
+import threading
+
+
+
+
+background_tasks = []
+
+def background_worker(group_name, func, *args, **kwargs):
+    #Write a function and if there is another task with same group_name wait for it to finish and run the new task after that
+    #If there is no task with same group_name start the task
+
+    print("Automatic Background Worker Started for")
+    print(group_name)
+
+    global background_tasks
+
+    for i in background_tasks:
+        if i["group_name"] == group_name:
+            i["thread"].join()
+
+    the_thread = threading.Thread(target=func, args=args, kwargs=kwargs)
+    the_thread.start()
+    background_tasks.append({"group_name":group_name, "thread":the_thread})
+
+
+def split_dotted_string(s):
+                results = []
+                while '.' in s:
+                    results.append(s)
+                    s = s.rsplit('.', 1)[0]
+                results.append(s)
+                results = results[1:]
+                return results
+
 
 
 class Scope:
@@ -77,13 +113,7 @@ class Scope:
 
             github.delete_file(scope=self, message=f"Deleted {path} by {user.name}")
 
-            def split_dotted_string(s):
-                results = []
-                while '.' in s:
-                    results.append(s)
-                    s = s.rsplit('.', 1)[0]
-                results.append(s)  # to include the first part
-                return results
+
 
             #Checking for top libray
             if len(user.scopes_read) == ["*"] or user.is_admin == True:
@@ -455,6 +485,22 @@ class Scope:
         return source
 
     def set_code(self, code):
+        from upsonic_on_prem.api.operations.user import create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
+        currently_code = self.code
+        if currently_code != code:
+            task_id = "create_documentation"+self.key
+            background_worker(task_id, create_document_of_scope_, scope=self.key, version=None)
+            background_worker("create_time_complexity_"+self.key, create_time_complexity_of_scope_, scope=self.key, version=None)
+            background_worker("create_mistakes_"+self.key, create_mistakes_of_scope_, scope=self.key, version=None)
+            background_worker("create_required_test_types_"+self.key, create_required_test_types_of_scope_, scope=self.key, version=None)
+            background_worker("create_tags_"+self.key, create_tags_of_scope_, scope=self.key, version=None)
+            background_worker("create_security_analyses_"+self.key, create_security_analyses_of_scope_, scope=self.key, version=None)
+            readmes = split_dotted_string(self.key)
+            print("Triggered readmes", readmes)
+            for i in readmes:
+                task_id = "create_readme_"+i
+                background_worker(task_id, create_readme_, top_library=i, version=None)
+
         return self.the_storage.set(self.key + ":code", code)
 
     @property
@@ -584,9 +630,9 @@ class Scope:
         return result
 
     @staticmethod
-    def get_all_scopes_name_prefix(user, prefix):
+    def get_all_scopes_name_prefix(user=None, prefix=None):
         prefix = prefix + "."
-        all_scopes = Scope.get_all_scopes_name(user)
+        all_scopes = Scope.get_all_scopes_name(user) if user != None else Scope.get_all_scopes()
         result = []
         for i in all_scopes:
             if i.startswith(prefix):
