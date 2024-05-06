@@ -179,7 +179,10 @@ class Scope:
 
         key = self.key + ":" + str(version)
 
-        the_prev_code = Scope.get_version(self.version_history[-1]).code
+        try:
+            the_prev_code = Scope.get_version(self.version_history[-1]).code
+        except:
+            the_prev_code = self.code
 
         data = {"data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
