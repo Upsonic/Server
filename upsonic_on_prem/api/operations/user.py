@@ -360,7 +360,7 @@ def create_commit_message_of_scope_(scope, version):
 
     while task_name in commit_message_tasks:
             time.sleep(1)
-
+    work = None
     if not task_name in commit_message_tasks:
         commit_message_tasks[task_name] = True
         try:
