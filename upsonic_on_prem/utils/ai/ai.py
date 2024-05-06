@@ -411,4 +411,108 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
         return result
 
+
+
+
+    def difference_to_commit_message(self, code):
+        input_text = f"""
+In this task, your goal is to generate a commit message for the differences.
+
+
+```python difference
+{code}
+
+```
+
+Generate a smalll commit message. Maybe 1 or 2 sentence.
+
+```
+Example commit messages:
+Add feature for a user to like a post
+
+Drop feature for a user to like a post
+
+Fix association between a user and a post
+
+Bump dependency library to current version
+
+Make build process use caches for speed
+
+Start feature flag for a user to like a post
+
+Stop feature flag for a user to like a post
+
+Optimize search speed for a user to see posts
+
+Document community guidelines for post content
+
+Refactor user model to new language syntax
+
+Reformat home page text to use more whitespace
+
+Rearrange buttons so OK is on the lower right
+
+Redraw diagram of how our web app works
+
+Reword home page text to be more welcoming
+  
+Revise link to update it to the new URL
+```
+"""
+
+
+
+        result = self.default_completion(input_text)
+
+
+        return result
+
+
+    def commits_to_release_note(self, code):
+        input_text = f"""
+In this task, your goal is to generate a releate note by the commits.
+
+
+```commit messages
+{code}
+```
+
+Generate a small release note. Maybe 1 or 2 pharagraph and a list.
+
+
+"""
+
+
+
+
+        result = self.default_completion(input_text)
+
+        return result
+
+
+    def generate_releate_note(self, top_library, small_parts, version):
+        input_text = f"""
+In this task, your goal is to generating a library release note by the smaller parts release notes.
+
+Library name: {top_library}
+Release version: {version}
+
+```smaller parts
+{small_parts}
+```
+
+Generate a small release note. Maybe 1 or 2 pharagraph and a list.
+"""
+
+
+
+
+        result = self.default_completion(input_text)
+
+
+        return result
+
+
+
+
 AI = AI_()

@@ -13,6 +13,7 @@ from flask import jsonify
 from flask import request
 import base64
 import time
+import traceback
 
 
 @app.route(dump_url, methods=["POST"])
@@ -215,6 +216,14 @@ def get_dump_difference_of_scope():
     return jsonify({"status": True, "result": object.difference})
 
 
+@app.route(get_dump_commit_message_of_scope_url, methods=["POST"])
+def get_commit_message_difference_of_scope():
+    dump = request.form.get("dump")
+    object = Scope.get_dump(dump)
+    return jsonify({"status": True, "result": object.commit_message})
+
+
+
 @app.route(get_version_user_of_scope_url, methods=["POST"])
 def get_version_user_of_scope():
     version = request.form.get("version")
@@ -240,7 +249,14 @@ def get_version_time_of_scope():
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.dump_time})
 
-documentation_tasks = []
+@app.route(get_version_release_note_of_scope_url, methods=["POST"])
+def get_version_release_note_of_scope():
+    version = request.form.get("version")
+    object = Scope.get_version(version)
+    return jsonify({"status": True, "result": object.release_note})
+
+
+documentation_tasks = {}
 
 
 def create_document_of_scope_(scope, version):
@@ -251,26 +267,26 @@ def create_document_of_scope_(scope, version):
     else:
         the_scope = Scope(scope)
 
+    while task_name in documentation_tasks:
+            time.sleep(1)
+
     if not task_name in documentation_tasks:
-        documentation_tasks.append(task_name)
+        documentation_tasks[task_name] = True
         try:
             work = the_scope.create_documentation()
         except:
             pass
         try:
-            documentation_tasks.remove(task_name)
+            documentation_tasks.pop(task_name)
         except:
             pass
-    else:
-        while task_name in documentation_tasks:
-            time.sleep(1)
-        work = the_scope.documentation
+
 
     print("Complated doc task: ", scope)
     return work
 
 
-time_complexity_tasks = []
+time_complexity_tasks = {}
 
 
 def create_time_complexity_of_scope_(scope, version):
@@ -281,20 +297,19 @@ def create_time_complexity_of_scope_(scope, version):
     else:
         the_scope = Scope(scope)
 
+    while task_name in time_complexity_tasks:
+            time.sleep(1)
+
     if not task_name in time_complexity_tasks:
-        time_complexity_tasks.append(task_name)
+        time_complexity_tasks[task_name] = True
         try:
             work = the_scope.create_time_complexity()
         except:
             pass
         try:
-            time_complexity_tasks.remove(task_name)
+            time_complexity_tasks.pop(task_name)
         except:
             pass
-    else:
-        while task_name in time_complexity_tasks:
-            time.sleep(1)
-        work = the_scope.time_complexity
 
     print("Complated time_complexity  task: ", scope)
     return work
@@ -302,7 +317,7 @@ def create_time_complexity_of_scope_(scope, version):
 
 
 
-mistakes_tasks = []
+mistakes_tasks = {}
 
 
 def create_mistakes_of_scope_(scope, version):
@@ -313,27 +328,57 @@ def create_mistakes_of_scope_(scope, version):
     else:
         the_scope = Scope(scope)
 
+    while task_name in mistakes_tasks:
+            time.sleep(1)
+
     if not task_name in mistakes_tasks:
-        mistakes_tasks.append(task_name)
+        mistakes_tasks[task_name] = True
         try:
             work = the_scope.create_mistakes()
         except:
             pass
         try:
-            mistakes_tasks.remove(task_name)
+            mistakes_tasks.pop(task_name)
         except:
             pass
-    else:
-        while task_name in mistakes_tasks:
-            time.sleep(1)
-        work = the_scope.mistakes
+
 
     print("Complated mistakes_tasks  task: ", scope)
     return work
 
 
+commit_message_tasks = {}
 
-required_test_types_tasks = []
+
+def create_commit_message_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    while task_name in commit_message_tasks:
+            time.sleep(1)
+
+    if not task_name in commit_message_tasks:
+        commit_message_tasks[task_name] = True
+        try:
+            work = the_scope.create_commit_message()
+        except:
+            pass
+        try:
+            commit_message_tasks.pop(task_name)
+        except:
+            pass
+
+
+    print("Complated commit_message_tasks  task: ", scope)
+    return work
+
+
+
+required_test_types_tasks = {}
 
 
 def create_required_test_types_of_scope_(scope, version):
@@ -344,26 +389,25 @@ def create_required_test_types_of_scope_(scope, version):
     else:
         the_scope = Scope(scope)
 
+    while task_name in required_test_types_tasks:
+            time.sleep(1)
+
     if not task_name in required_test_types_tasks:
-        required_test_types_tasks.append(task_name)
+        required_test_types_tasks[task_name] = True
         try:
             work = the_scope.create_required_test_types()
         except:
             pass
         try:
-            required_test_types_tasks.remove(task_name)
+            required_test_types_tasks.pop(task_name)
         except:
             pass
-    else:
-        while task_name in required_test_types_tasks:
-            time.sleep(1)
-        work = the_scope.required_test_types
 
     print("Complated required_test_types_tasks  task: ", scope)
     return work
 
 
-tags_tasks = []
+tags_tasks = {}
 
 
 def create_tags_of_scope_(scope, version):
@@ -374,53 +418,25 @@ def create_tags_of_scope_(scope, version):
     else:
         the_scope = Scope(scope)
 
+    while task_name in tags_tasks:
+            time.sleep(1)
+
     if not task_name in tags_tasks:
-        tags_tasks.append(task_name)
+        tags_tasks[task_name] = True
         try:
             work = the_scope.create_tags()
         except:
             pass
         try:
-            tags_tasks.remove(task_name)
+            tags_tasks.pop(task_name)
         except:
             pass
-    else:
-        while task_name in tags_tasks:
-            time.sleep(1)
-        work = the_scope.tags
+
 
     print("Complated tags_tasks  task: ", scope)
     return work
 
 
-security_analyses_tasks = []
-
-
-def create_security_analyses_of_scope_(scope, version):
-    task_name = scope
-    if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
-    else:
-        the_scope = Scope(scope)
-
-    if not task_name in security_analyses_tasks:
-        security_analyses_tasks.append(task_name)
-        try:
-            work = the_scope.create_security_analysis()
-        except:
-            pass
-        try:
-            security_analyses_tasks.remove(task_name)
-        except:
-            pass
-    else:
-        while task_name in security_analyses_tasks:
-            time.sleep(1)
-        work = the_scope.security_analysis
-
-    print("Complated security_analyses_tasks  task: ", scope)
-    return work
 
 
 @app.route(create_document_of_scope_url, methods=["POST"])
@@ -689,115 +705,172 @@ def get_default_ai_model():
     return jsonify({"status": True, "result": AI.default_model})
 
 
+security_analyses_tasks = {}
+
+
+def create_security_analyses_of_scope_(scope, version):
+    task_name = scope
+    if version != None:
+        task_name = scope+":"+version
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    while task_name in security_analyses_tasks:
+            time.sleep(1)
+
+    if not task_name in security_analyses_tasks:
+        security_analyses_tasks[task_name] = True
+        try:
+            work = the_scope.create_security_analysis()
+        except:
+            pass
+        try:
+            security_analyses_tasks.pop(task_name)
+        except:
+            pass
+
+
+    print("Complated security_analyses_tasks  task: ", scope)
+    return work
+
+
+readme_tasks = {}
+
+
 def create_readme_(top_library, version, request=None):
     global documentation_tasks
     print("CREATE README TASK for: ", top_library)
-    print()
 
 
-    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix = top_library)
-    all_scopes = []
-    for each_scope in all_scopes_response:
-        if version != None:
-            the_version_history_response = Scope(each_scope).version_history
-            the_version_history = []
-            for element in the_version_history_response:
-                the_version_history.append(element.replace(each_scope+":", ""))
-            if version in the_version_history:
-                all_scopes.append(each_scope)
-        else:
-            all_scopes.append(each_scope)
-
-    # order by alphabetical
-    all_scopes.sort()
-
-    result = f"{top_library}"
-    for i in all_scopes:
-        result += i + "\n"
-    
+    task_name = top_library
+    if version != None:
+        task_name = top_library+":"+version
 
 
-    summary_list = ""
-    for each_scope in all_scopes:
-            task_name = each_scope
-            if version == None:
-                the_scope = Scope(each_scope)
+    while task_name in readme_tasks:
+            print("TASK POOL: ", readme_tasks)
+            time.sleep(1)
+
+    try:
+        readme_tasks[task_name] = True
+
+        all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix = top_library)
+        all_scopes = []
+        for each_scope in all_scopes_response:
+            if version != None:
+                the_version_history_response = Scope(each_scope).version_history
+                the_version_history = []
+                for element in the_version_history_response:
+                    the_version_history.append(element.replace(each_scope+":", ""))
+                if version in the_version_history:
+                    all_scopes.append(each_scope)
             else:
-                task_name = each_scope+":"+version
-                the_scope = Scope.get_version(each_scope+":"+version)
+                all_scopes.append(each_scope)
 
+        # order by alphabetical
+        all_scopes.sort()
 
-            while task_name in documentation_tasks:
-                print("WAITING FOR TASK: ", task_name)
-                time.sleep(1)    
-
-            if the_scope.documentation == None:
-                documentation_tasks.append(task_name)
-                the_scope.create_documentation()
-                try:
-                    documentation_tasks.remove(task_name)
-                except:
-                    pass
-
-
-            summary_list += each_scope +" - " + str(the_scope.type) + "\n"
-            summary_list += str(the_scope.documentation) + "\n\n"
-
-
-
-
-    #Create sha256 hash of the result
-    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
-
-    result = AI.generate_readme(top_library, summary_list)
-
-    storage_4.set(sha256, result)
-
-
-    make_sync = False
-    if request != None:
-        make_sync = len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True
-    else:
-        make_sync = True
-    if make_sync:
-        path = top_library.replace(".", "/") if "." in top_library else top_library
-        path += f'/README.md'
+        result = f"{top_library}"
+        for i in all_scopes:
+            result += i + "\n"
         
 
 
-        code = ""
-        the_name = top_library.replace(".", "_")
-        code = f'{the_name} = upsonic.load_module("{top_library}")'
-                    
-        content = '<b class="custom_code_highlight_green">Imporing:</b><br>'
-        content +="\n```python\n"
-        content += code
-        content +="\n```\n"
-        content += "<br>"
+        summary_list = ""
+        for each_scope in all_scopes:
+                task_name_ = each_scope
+                if version == None:
+                    the_scope = Scope(each_scope)
+                else:
+                    task_ntask_name_ame = each_scope+":"+version
+                    the_scope = Scope.get_version(each_scope+":"+version)
 
-        content += result
 
-        content += '\n<br><b class="custom_code_highlight_green">Content:</b><br>\n'
-        for each in all_scopes:
-            content += f"  - {each}\n"
+                while task_name_ in documentation_tasks:
+                    time.sleep(1)    
+
+                if the_scope.documentation == None:
+                    documentation_tasks[task_name_] = True
+                    the_scope.create_documentation()
+                    try:
+                        documentation_tasks.pop(task_name_)
+                    except:
+                        pass
+
+
+                summary_list += each_scope +" - " + str(the_scope.type) + "\n"
+                summary_list += str(the_scope.documentation) + "\n\n"
+
+
+
+
+        #Create sha256 hash of the result
+        sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
+
+        result = AI.generate_readme(top_library, summary_list)
+
+        storage_4.set(sha256, result)
+
+
+        make_sync = False
+        if request != None:
+            make_sync = len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True
+        else:
+            make_sync = True
+        if make_sync:
+            path = top_library.replace(".", "/") if "." in top_library else top_library
+            path += f'/README.md'
+            
+
+
+            code = ""
+            the_name = top_library.replace(".", "_")
+            code = f'{the_name} = upsonic.load_module("{top_library}")'
+                        
+            content = '<b class="custom_code_highlight_green">Imporing:</b><br>'
+            content +="\n```python\n"
+            content += code
+            content +="\n```\n"
+            content += "<br>"
+
+            content += result
+
+            content += '\n<br><b class="custom_code_highlight_green">Content:</b><br>\n'
+            for each in all_scopes:
+                content += f"  - {each}\n"
+            
+            
+
+            # Inside your create_or_update_file function, before the PUT request
+            encoded_content = base64.b64encode(content.encode('utf-8')).decode('utf-8')
+            content = encoded_content    
+
+
+            github.create_or_update_file_(path, content, f"Changes for {path}")
+            sha_of_readme = github.get_sha_(path)
+
+
+            storage_4.set(sha256+"github_sha", sha_of_readme)
+            get_sha = storage_4.get(sha256+"github_sha")
         
-        
 
-        # Inside your create_or_update_file function, before the PUT request
-        encoded_content = base64.b64encode(content.encode('utf-8')).decode('utf-8')
-        content = encoded_content    
+        try:
+            readme_tasks.pop(task_name)
+        except:
+            traceback.print_exc()
+            pass
 
-        print("CREATE PATH: ", path)
-        github.create_or_update_file_(path, content, f"Changes for {path}")
-        sha_of_readme = github.get_sha_(path)
-        print("CREATE SHA: ", sha_of_readme)
+        print("Complated readme task for: ", top_library)
 
-        storage_4.set(sha256+"github_sha", sha_of_readme)
-        get_sha = storage_4.get(sha256+"github_sha")
-        print("RETRIVE_HASH", get_sha)        
-
-    return result
-
+        return result
+    except:
+        traceback.print_exc()
+        try:
+            readme_tasks.pop(task_name)
+        except:
+            traceback.print_exc()
+            pass
 
 @app.route(create_readme_url, methods=["POST"])
 def create_readme():
@@ -846,10 +919,10 @@ def get_readme_github_sync():
                 time.sleep(1)    
 
             if the_scope.documentation == None:
-                documentation_tasks.append(task_name)
+                documentation_tasks[task_name] = True
                 the_scope.create_documentation()
                 try:
-                    documentation_tasks.remove(task_name)
+                    documentation_tasks.pop(task_name)
                 except:
                     pass
 
@@ -868,9 +941,7 @@ def get_readme_github_sync():
     path += f'/README.md'
     
     github_sha = github.get_sha_(path)
-    print("CHECK PATH: ", path)
-    print("CHECK SHA: ", github_sha)
-    print("CHECK CURRENTLY SHA: ", the_currently_sha)
+
     result = the_currently_sha == github_sha
 
     if len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True:
@@ -918,10 +989,10 @@ def get_readme():
                 time.sleep(1)    
 
             if the_scope.documentation == None:
-                documentation_tasks.append(task_name)
+                documentation_tasks[task_name] = True
                 the_scope.create_documentation()
                 try:
-                    documentation_tasks.remove(task_name)
+                    documentation_tasks.pop(task_name)
                 except:
                     pass
 
@@ -964,7 +1035,7 @@ def create_version_prefix():
         if each_scope in write_scopes or user.is_admin:
             Scope(each_scope).create_version(version, user)
 
-    jsonify({"status": True, "result": True})
+    return jsonify({"status": True, "result": True})
 
 
 
@@ -984,7 +1055,7 @@ def delete_version_prefix():
             except:
                 pass
 
-    jsonify({"status": True, "result": True})    
+    return jsonify({"status": True, "result": True})    
 
 
 
@@ -1029,3 +1100,81 @@ def get_github_sync_of_scope():
 
     
     return jsonify({"status": True, "result": the_scope.is_it_github_synced()})
+
+
+
+def create_get_release_note_(top_library, version, request=None):
+    global documentation_tasks
+    print("RELEASE NOTE TASK for: ", top_library)
+
+
+    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix = top_library)
+    all_scopes = []
+    
+    for each_scope in all_scopes_response:
+        if version != None:
+            the_version_history_response = Scope(each_scope).version_history
+            the_version_history = []
+            for element in the_version_history_response:
+                the_version_history.append(element.replace(each_scope+":", ""))
+            if version in the_version_history:
+                all_scopes.append(each_scope)
+        else:
+            all_scopes.append(each_scope)
+
+    # order by alphabetical
+    all_scopes.sort()
+
+    result = f"{top_library}"
+    for i in all_scopes:
+        result += i + "\n"
+    
+
+
+    summary_list = ""
+    any_update = False
+    for each_scope in all_scopes:
+            task_name = each_scope
+            if version == None:
+                the_scope = Scope(each_scope)
+            else:
+                task_name = each_scope+":"+version
+                the_scope = Scope.get_version(each_scope+":"+version)
+
+
+
+            summary_list += each_scope +" - " + str(the_scope.type) + "\n"
+            the_release_note = the_scope.release_note
+            if the_release_note != None and the_release_note != "No Changes Made":
+                any_update = True
+            else:
+                the_release_note = "No Changes Made."
+            summary_list += str(the_release_note) + "\n\n"
+
+
+    print("summary list", summary_list)
+
+
+    #Create sha256 hash of the result
+    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
+
+    request_from = storage_4.get(sha256)
+    if request_from == None:
+        result = AI.generate_releate_note(top_library, summary_list, version) if any_update else "No Changes Made"
+
+        storage_4.set(sha256, result)
+    else:
+        result = request_from
+
+    print("Release Note task complated for: ", top_library)
+
+    return result
+
+
+
+@app.route(create_get_release_note_url, methods=["POST"])
+def create_get_release_note():
+    top_library = request.form.get("top_library")
+    version = request.form.get("version")
+
+    return jsonify({"status": True, "result": create_get_release_note_(top_library, version, request)})    
