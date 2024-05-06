@@ -87,7 +87,7 @@
             {% csrf_token %}
             <div class="col custom_form_col">
                 <div class="custom_form_field_head">Add Read Scope</div>
-                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope">
+                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope" required>
             </div>
         </div>
     </form>
@@ -125,7 +125,7 @@
             {% csrf_token %}
             <div class="col custom_form_col">
                 <div class="custom_form_field_head">Add Write Scope</div>
-                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope">
+                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope" required>
             </div>
         </div>
     </form>
@@ -143,7 +143,7 @@
             {% csrf_token %}
             <div class="col custom_form_col">
                 <div class="custom_form_field_head">User Special OpenAI API key</div>
-                <input type="text" name="openai_api_key" class="form-control" id="openai_api_key" placeholder="{{openai_api_key}}" value="{{openai_api_key}}">
+                <input type="text" name="openai_api_key" class="form-control" id="openai_api_key" placeholder="{{openai_api_key}}" value="{{openai_api_key}}" required>
             </div>
         </div>
     </form>

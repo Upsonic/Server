@@ -60,6 +60,7 @@
 
 
           <div class="mt-5">
+            <div class="mb-5">
               <div class="custom_page_header_top_margin">
                   <span class="custom_page_header_text">Settings</span>
               </div>                
@@ -71,6 +72,11 @@
               <a href="{% url 'activate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5" style="width: auto;">Activate Usage Analyses</a>
               {% endif %}
       
+            </div>
+              <a href="{% url 'delete_scope' id=control_library %}" >
+                <button class="btn btn-lg custom_button_red">Delete Scope</button>
+            </a>
+
           </div>
 
 

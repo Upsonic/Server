@@ -202,6 +202,18 @@ def get_dump_user_of_scope():
     object = Scope.get_dump(dump)
     return jsonify({"status": True, "result": object.user})
 
+@app.route(get_dump_time_of_scope_url, methods=["POST"])
+def get_dump_time_of_scope():
+    dump = request.form.get("dump")
+    object = Scope.get_dump(dump)
+    return jsonify({"status": True, "result": object.dump_time})
+
+@app.route(get_dump_difference_of_scope_url, methods=["POST"])
+def get_dump_difference_of_scope():
+    dump = request.form.get("dump")
+    object = Scope.get_dump(dump)
+    return jsonify({"status": True, "result": object.difference})
+
 
 @app.route(get_version_user_of_scope_url, methods=["POST"])
 def get_version_user_of_scope():
@@ -215,6 +227,18 @@ def get_version_code_of_scope():
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.code})
+
+@app.route(get_version_difference_of_scope_url, methods=["POST"])
+def get_version_difference_of_scope():
+    version = request.form.get("version")
+    object = Scope.get_version(version)
+    return jsonify({"status": True, "result": object.difference})
+
+@app.route(get_version_time_of_scope_url, methods=["POST"])
+def get_version_time_of_scope():
+    version = request.form.get("version")
+    object = Scope.get_version(version)
+    return jsonify({"status": True, "result": object.dump_time})
 
 documentation_tasks = []
 

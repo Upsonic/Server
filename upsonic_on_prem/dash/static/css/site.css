@@ -1208,8 +1208,8 @@ body.with-cookie-bar {
 .scrollabe_righ_side {
   overflow: overlay;
   padding-right: 15px;
-  height: 100%;
-  padding-bottom: 124px;
+  height: calc(100vh - 110px);
+  padding-bottom: 185px;
 }
 
 

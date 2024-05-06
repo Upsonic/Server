@@ -63,7 +63,7 @@
 
     {% endif %}
 
-    <div class="d-flex flex-column scrollabe_righ_side">
+    <div class="d-flex flex-column">
 
 
     
@@ -72,7 +72,7 @@
         <div class="d-flex flex-row justify-content-between">
 
 
-            <div class="flex-fill w-50 me-5">
+            <div class="flex-fill w-50 me-5 scrollabe_righ_side">
 
                 <div class="custom_page_header_top_bottom_margin">
                     <span class="custom_page_header_text">Documentation</span>
@@ -107,16 +107,14 @@
                 </div>                
                 <div class="custom_pharagraph_for_documentations">{{tags|safe}}</div>
 
-                <a href="{% url 'regenerate_documentation' id=control_library %}" class="btn btn-lg custom_button">Regenerate the doc</a>
-                <a href="{% url 'delete_scope' id=control_library %}" >
-                    <button class="btn btn-lg custom_button_red">Delete</button>
-                </a>
+          
+                
 
 
             </div>
 
 
-            <div class="flex-fill w-50" style="
+            <div class="flex-fill w-50 scrollabe_righ_side" style="
             position: -webkit-sticky; /* for Safari */
             position: sticky;
             top: 0;

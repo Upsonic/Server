@@ -16,6 +16,8 @@ from cryptography.fernet import Fernet
 
 import traceback
 
+import datetime
+
 load_dotenv(dotenv_path=".env")
 
 api_url = "http://localhost:3000"
@@ -646,6 +648,21 @@ class API_Integration:
         data = {"version": scope+":"+version}
         return self._send_request("POST", "/get_version_code_of_scope", data=data)
 
+    def get_version_difference(self, scope, version):
+        data = {"version": scope+":"+version}
+        return self._send_request("POST", "/get_version_difference_of_scope", data=data)
+
+
+
+    def get_version_date(self, scope, version):
+        data = {"version": scope+":"+version}
+        the_time = self._send_request("POST", "/get_version_time_of_scope", data=data)
+        print(the_time)
+        the_time = int(the_time)
+        return datetime.datetime.fromtimestamp(the_time).strftime('%c')
+
+
+
     def get_version_user(self, scope, version):
         data = {"version": scope+":"+version}
         return self._send_request("POST", "/get_version_user_of_scope", data=data)
@@ -654,6 +671,19 @@ class API_Integration:
     def get_dump_user(self, scope, dump):
         data = {"dump": scope+":"+dump}
         return self._send_request("POST", "/get_dump_user_of_scope", data=data)        
+
+
+    def get_dump_difference(self, scope, dump):
+        data = {"dump": scope+":"+dump}
+        return self._send_request("POST", "/get_dump_difference_of_scope", data=data)        
+
+
+    def get_dump_date(self, scope, dump):
+        data = {"dump": scope+":"+dump}
+        the_time = self._send_request("POST", "/get_dump_time_of_scope", data=data)
+        print(the_time)
+        the_time = int(the_time)
+        return datetime.datetime.fromtimestamp(the_time).strftime('%c')
 
 
     def get_last_runs(self, scope, n=None):

@@ -1,5 +1,7 @@
 .idea
 
+test.ipynb
+
 upsonic_on_prem/dash/staticfiles/*
 
 Upsonic-*/
