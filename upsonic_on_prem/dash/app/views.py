@@ -751,16 +751,18 @@ def control_element_version(request, id):
         for element in the_versions_response:
             code = None
             code_response = API_Integration(request.user.access_key).get_version_code(id, element)
+            difference = API_Integration(request.user.access_key).get_version_difference(id, element)
             if code_response != [None]:
                 code = code_response
             user = None
             user_response = API_Integration(request.user.access_key).get_version_user(id, element)
             if user_response != [None]:
-                user = models.User.objects.get(access_key=user_response).username              
-            data = {"version":element, "code": code, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element, "user":user}
+                user = models.User.objects.get(access_key=user_response).username    
+            date = API_Integration(request.user.access_key).get_version_date(id, element)         
+            data = {"version":element, "date":date, "code": code, "difference": difference, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element, "user":user}
             the_versions.append(data)
 
-
+    the_versions.reverse()
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
@@ -1250,8 +1252,9 @@ def control_element_commits(request, id):
         user_response = API_Integration(request.user.access_key).get_dump_user(id, dump_id)
         if user_response != [None]:
             user = models.User.objects.get(access_key=user_response).username
-
-        the_dumps.append({"dump_id": dump_id, "user":user})
+        the_date = API_Integration(request.user.access_key).get_dump_date(id, dump_id)
+        difference = API_Integration(request.user.access_key).get_dump_difference(id, dump_id)
+        the_dumps.append({"dump_id": dump_id, "user":user, "date":the_date, "difference": difference})
 
 
 

@@ -4,7 +4,7 @@ import redis
 import random
 import os
 import traceback
-
+import difflib
 from upsonic_on_prem.utils import storage_2, AI, storage_3, AccessKey, storage_5
 
 from upsonic_on_prem.utils.configs import admin_key
@@ -179,7 +179,12 @@ class Scope:
 
         key = self.key + ":" + str(version)
 
-        data = {"data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+        try:
+            the_prev_code = Scope.get_version(self.version_history[-1]).code
+        except:
+            the_prev_code = self.code
+
+        data = {"data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -437,6 +442,16 @@ class Scope:
             return None
         return self.the_storage.get(self.key)["data"]
 
+    @property
+    def dump_time(self):
+        if not self.specific:
+            return None
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            return the_resource["time"]
+
 
     @property
     def user(self):
@@ -447,6 +462,25 @@ class Scope:
             the_resource = self.the_storage.get(self.key)
 
             return the_resource["user"]
+
+    @property
+    def difference(self):
+        if not self.specific:
+            return None
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            new = the_resource["code"]
+            if "prev_code" in the_resource:
+                old = the_resource["prev_code"]
+            else:
+                old = new
+
+            d = difflib.Differ()
+            diff = d.compare(old.splitlines(keepends=True), new.splitlines(keepends=True))
+            return ''.join(diff)
+            
 
     @property
     def type(self):
@@ -484,6 +518,22 @@ class Scope:
      
         return source
 
+    @property
+    def prev_code(self):
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":prev_code")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["prev_code"]   
+     
+        return source
+
+
+
     def set_code(self, code):
         from upsonic_on_prem.api.operations.user import create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
         currently_code = self.code
@@ -500,6 +550,9 @@ class Scope:
             for i in readmes:
                 task_id = "create_readme_"+i
                 background_worker(task_id, create_readme_, top_library=i, version=None)
+
+        
+        self.the_storage.set(self.key + ":prev_code", self.the_storage.get(self.key + ":code"))
 
         return self.the_storage.set(self.key + ":code", code)
 
@@ -569,7 +622,7 @@ class Scope:
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+        data = {"data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
