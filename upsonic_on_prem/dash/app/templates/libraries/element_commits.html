@@ -63,9 +63,12 @@
                 </div>                
             {% for dump in dumps %}
             <div class="custom_code_block">
-                {{dump.user}}
+                {{dump.user}} - {{dump.date}}
                 <div class="custom_code_block_code">
-                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{dump.dump_id}}</code></pre></div>
+                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{dump.dump_id}}
+
+{{dump.difference}}
+                    </code></pre></div>
                 </div>
             </div>
             {% endfor %}
