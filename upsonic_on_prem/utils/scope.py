@@ -173,6 +173,12 @@ class Scope:
     def version_history(self):
         return self.the_storage.get(self.key + ":version_history") or []
 
+
+    @property
+    def latest_release_note(self):
+        return Scope.get_version(self.version_history[-1]).release_note
+
+
     def create_version(self, version, user: AccessKey):
         current_time = time.time()
         current = self.version_history
@@ -184,7 +190,27 @@ class Scope:
         except:
             the_prev_code = self.code
 
-        data = {"data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+        release_note = None
+        try:
+            commits = ""
+            all_commits = self.dump_history
+            print("total_commits len", len(all_commits))
+            index = all_commits.index(Scope.get_version(self.version_history[-1]).last_commit)
+            print("previously version commit ", Scope.get_version(self.version_history[-1]).last_commit)
+            print("currently last_commit", self.last_commit)
+            # Use list slicing to get all elements after number 3
+            all_commits = all_commits[:index]  
+            for each_commit in all_commits:
+                commits += str(self.get_dump(each_commit).commit_message) + "\n"
+            if commits == "":
+                    release_note = "No Changes Made"
+            else:
+                release_note = AI.commits_to_release_note(commits)
+        except:
+            release_note = "Newly Added"
+
+
+        data = {"commit_message":self.commit_message, "release_note":release_note, "last_commit":self.last_commit, "data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -245,6 +271,21 @@ class Scope:
      
         return source        
 
+    @property
+    def release_note(self):
+        source = None
+        if not self.specific:
+            return source
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+            if the_resource != None:
+                if "release_note" in the_resource:
+                    source = the_resource["release_note"]   
+     
+        return source        
+
+
 
 
     @property
@@ -261,6 +302,39 @@ class Scope:
      
         return source  
 
+
+    @property
+    def commit_message(self):
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":commit_message")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                if "commit_message" in the_resource:
+                    source = the_resource["commit_message"]   
+     
+        return source  
+
+    @property
+    def last_commit(self):
+        source = None
+        if not self.specific:
+            try:
+                source = self.dump_history[0]
+            except:
+                pass
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                if "last_commit" in the_resource:
+                    source = the_resource["last_commit"]   
+     
+        return source  
 
     @property
     def required_test_types(self):
@@ -372,6 +446,18 @@ class Scope:
             the_resource["mistakes"] = document
             self.the_storage.set(self.key, the_resource)
 
+    def create_commit_message(self, no_changes=False):
+        document = AI.difference_to_commit_message(self.difference) if not no_changes else "No Changes Made"
+
+        if not self.specific:
+            self.the_storage.set(self.key + ":commit_message", document)
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            the_resource["commit_message"] = document
+            self.the_storage.set(self.key, the_resource)
+
 
 
 
@@ -466,7 +552,14 @@ class Scope:
     @property
     def difference(self):
         if not self.specific:
-            return None
+            new = self.the_storage.get(self.key + ":code")
+            old = self.the_storage.get(self.key + ":prev_code")
+            if old == None:
+                old = new
+
+            d = difflib.Differ()
+            diff = d.compare(old.splitlines(keepends=True), new.splitlines(keepends=True))
+            return ''.join(diff)            
         else:
 
             the_resource = self.the_storage.get(self.key)
@@ -477,6 +570,9 @@ class Scope:
             else:
                 old = new
 
+            if old == None:
+                old = new
+
             d = difflib.Differ()
             diff = d.compare(old.splitlines(keepends=True), new.splitlines(keepends=True))
             return ''.join(diff)
@@ -484,7 +580,18 @@ class Scope:
 
     @property
     def type(self):
-        return self.the_storage.get(self.key + ":type")
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":type")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["type"]   
+     
+        return source        
+
 
     def set_type(self, type):
         return self.the_storage.set(self.key + ":type", type)
@@ -535,13 +642,17 @@ class Scope:
 
 
     def set_code(self, code):
-        from upsonic_on_prem.api.operations.user import create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
+        from upsonic_on_prem.api.operations.user import create_commit_message_of_scope_, create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
         currently_code = self.code
+        self.the_storage.set(self.key + ":prev_code", currently_code)
+        result = self.the_storage.set(self.key + ":code", code)
         if currently_code != code:
+            create_commit_message_of_scope_(scope=self.key, version=None)
             task_id = "create_documentation"+self.key
             background_worker(task_id, create_document_of_scope_, scope=self.key, version=None)
             background_worker("create_time_complexity_"+self.key, create_time_complexity_of_scope_, scope=self.key, version=None)
             background_worker("create_mistakes_"+self.key, create_mistakes_of_scope_, scope=self.key, version=None)
+            
             background_worker("create_required_test_types_"+self.key, create_required_test_types_of_scope_, scope=self.key, version=None)
             background_worker("create_tags_"+self.key, create_tags_of_scope_, scope=self.key, version=None)
             background_worker("create_security_analyses_"+self.key, create_security_analyses_of_scope_, scope=self.key, version=None)
@@ -550,11 +661,12 @@ class Scope:
             for i in readmes:
                 task_id = "create_readme_"+i
                 background_worker(task_id, create_readme_, top_library=i, version=None)
-
+        else:
+            self.create_commit_message(no_changes=True)
         
-        self.the_storage.set(self.key + ":prev_code", self.the_storage.get(self.key + ":code"))
+        
 
-        return self.the_storage.set(self.key + ":code", code)
+        return result
 
     @property
     def requirements(self):
@@ -622,7 +734,7 @@ class Scope:
         sha256 = hashlib.sha256(the_time.encode()).hexdigest()
         key = self.key + ":" + sha256
 
-        data = {"data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+        data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
         storage_3.set(key, data)
 
@@ -643,6 +755,9 @@ class Scope:
         if github_sha != False:
             self.set_github_sha(github.get_sha(self))
     
+
+
+
 
     def is_it_github_synced(self):
         print("test")

@@ -54,12 +54,12 @@
     <div class="d-flex flex-column scrollabe_righ_side">
 
 
-        <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex flex-row justify-content-between ">
 
 
 
 
-            <div class="flex-fill w-50 me-5">
+            <div class="flex-fill w-100 me-5">
                 <div class="custom_page_header_top_bottom_margin">
                     <span class="custom_page_header_text">Latest</span>
                 </div>
@@ -94,6 +94,11 @@
                 Author: {{v.user}} Date: {{v.date}}
                 <div class="custom_code_block">
                     <div class="custom_code_block_code">
+                        <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{v.release_note}}</code></pre></div>
+                    </div>
+                </div>                
+                <div class="custom_code_block">
+                    <div class="custom_code_block_code">
                         <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{v.using_code}}</code></pre></div>
                     </div>
                 </div>
@@ -109,7 +114,6 @@
                     
                 </div>
                 <a href="#" onclick="page_load('{% url 'control_element' id=v.link %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Element View for {{v.version}}</a>
-                <a href="{% url 'control_element_version_delete' id=control_library version=v.version %}" class="btn btn-lg custom_button_red mt-3">Delete {{v.version}}</a>
 
 
                 {% endfor %}
@@ -137,19 +141,6 @@
         ">
 
      
-
-<div class="custom_page_header_top_bottom_margin">
-    <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Create New Version</span></span>
-</div>
-<form method="POST" class="d-flex" action="{% url 'control_element_version_create' id=control_library %}">
-    {% csrf_token %}
-    <div>
-        <input type="text" id="version" name="version" required class="form-control me-2 search_bar" placeholder="Ex. v1">
-    </div>
-    <div>
-        <button class="btn btn-outline-success ms-3" type="submit">Create</button>
-    </div>
-</form>
 
   
 

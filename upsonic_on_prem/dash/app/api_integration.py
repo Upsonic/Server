@@ -22,6 +22,18 @@ load_dotenv(dotenv_path=".env")
 
 api_url = "http://localhost:3000"
 
+def bold_first_word(s):
+    # Split the string into a list of words
+    words = s.split(" ")
+
+    # Add the HTML bold tags to the first word
+    words[0] = "<b>" + words[0] + "</b>"
+
+    # Join the words back into a single string
+    s = " ".join(words)
+    
+    return s
+
 def transform_to_html_bold(text):
     try:
         # Find content within double asterisks
@@ -573,6 +585,13 @@ class API_Integration:
             data["version"] = version        
         return self._send_request("POST", "/create_readme", data=data)
     
+    def create_get_release_note(self, top_library, version):
+        
+        data = {"top_library": top_library, "version":version}
+   
+        return self._send_request("POST", "/create_get_release_note", data=data)
+
+
     def get_readme(self, top_library, version=None):
         data = {"top_library": top_library}
         if version != None:
@@ -667,6 +686,10 @@ class API_Integration:
         data = {"version": scope+":"+version}
         return self._send_request("POST", "/get_version_user_of_scope", data=data)
 
+    def get_version_release_note(self, scope, version):
+        data = {"version": scope+":"+version}
+        return self._send_request("POST", "/get_version_release_note_of_scope", data=data)
+
 
     def get_dump_user(self, scope, dump):
         data = {"dump": scope+":"+dump}
@@ -676,6 +699,16 @@ class API_Integration:
     def get_dump_difference(self, scope, dump):
         data = {"dump": scope+":"+dump}
         return self._send_request("POST", "/get_dump_difference_of_scope", data=data)        
+
+    def get_dump_commit_message(self, scope, dump):
+        data = {"dump": scope+":"+dump}
+        result = self._send_request("POST", "/get_dump_commit_message_of_scope", data=data)  
+        if result == [None] or result == None or result == "No Changes Made":
+            result = "No Commit Message"  
+        else:
+            result = bold_first_word(result)      
+        return result
+
 
 
     def get_dump_date(self, scope, dump):

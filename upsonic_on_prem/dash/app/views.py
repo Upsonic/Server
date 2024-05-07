@@ -304,6 +304,7 @@ def control_library(request,id):
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
+        "sub_module": True if "." in id else False,
         "control_library_with_version": id if version == None else id +":"+version,
         "top_control_library": id.split(".")[0],
         "content": the_content,
@@ -758,8 +759,9 @@ def control_element_version(request, id):
             user_response = API_Integration(request.user.access_key).get_version_user(id, element)
             if user_response != [None]:
                 user = models.User.objects.get(access_key=user_response).username    
+            release_note = API_Integration(request.user.access_key).get_version_release_note(id, element)
             date = API_Integration(request.user.access_key).get_version_date(id, element)         
-            data = {"version":element, "date":date, "code": code, "difference": difference, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element, "user":user}
+            data = {"release_note":release_note, "version":element, "date":date, "code": code, "difference": difference, "using_code":f'upsonic.load("{id}", version="{element}")()', "link":id+":"+element, "user":user}
             the_versions.append(data)
 
     the_versions.reverse()
@@ -829,21 +831,37 @@ def control_library_version(request,id):
     print(all_scopes_response)
     all_possible_versions = []
     the_version_history = []
+    counter = {}
     for each_scope in all_scopes_response:
         scope_versions = API_Integration(request.user.access_key).get_version_history(each_scope)
         for each_version in scope_versions:
-            if each_version not in all_possible_versions:
+            
                 user = None
                 user_response = API_Integration(request.user.access_key).get_version_user(each_scope, each_version)
                 if user_response != [None]:
-                    user = models.User.objects.get(access_key=user_response).username                   
-                all_possible_versions.append(each_version)
-                the_version_history.append([each_version, user])
+                    user = models.User.objects.get(access_key=user_response).username
+                if each_version not in counter:
+                    counter[each_version] = 0
+                counter[each_version] += 1
+                if each_version not in all_possible_versions:
+                    all_possible_versions.append(each_version)
+                    the_version_history.append([each_version, user])
     
+
+    
+
 
     the_versions = []
     for each_version in the_version_history:
-        the_versions.append({"version": each_version[0], "using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
+        number = counter[each_version[0]]
+
+        if number < len(all_scopes_response):
+            pass
+        else:
+            pass
+        the_versions.append({"version": each_version[0], "release_note":API_Integration(request.user.access_key).create_get_release_note(id, each_version[0]),"using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
+
+    
 
     no_version = False
     if len(the_versions) == 0:
@@ -854,6 +872,7 @@ def control_library_version(request,id):
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
+        "sub_module": True if "." in id else False,
         "control_library_with_version": id if version == None else id +":"+version,
         "top_control_library": id.split(".")[0],
         "content": the_content,
@@ -1254,7 +1273,8 @@ def control_element_commits(request, id):
             user = models.User.objects.get(access_key=user_response).username
         the_date = API_Integration(request.user.access_key).get_dump_date(id, dump_id)
         difference = API_Integration(request.user.access_key).get_dump_difference(id, dump_id)
-        the_dumps.append({"dump_id": dump_id, "user":user, "date":the_date, "difference": difference})
+        commit_message = API_Integration(request.user.access_key).get_dump_commit_message(id, dump_id)
+        the_dumps.append({"commit_message":commit_message, "dump_id": dump_id, "user":user, "date":the_date, "difference": difference})
 
 
 
@@ -1348,6 +1368,7 @@ def control_library_settings(request,id):
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
+        "sub_module": True if "." in id else False,
         "control_library_with_version": id if version == None else id +":"+version,
         "top_control_library": id.split(".")[0],
         "content": the_content,
