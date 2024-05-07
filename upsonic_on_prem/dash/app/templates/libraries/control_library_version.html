@@ -108,16 +108,54 @@
 <div class="custom_page_header_top_bottom_margin">
 <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Create New Version</span></span>
 </div>
-<form method="POST" class="d-flex"  action="{% url 'control_library_version_create' id=control_library %}">
-{% csrf_token %}
-<div>
-    <input type="text" id="version" name="version" required class="form-control me-2 search_bar" placeholder="Ex. v1">
-</div>
-<div>
-    <button class="btn btn-outline-success ms-3" type="submit">Create</button>
-</div>
+<form method="POST" class="d-flex" action="{% url 'control_library_version_create' id=control_library %}" id="versionForm">
+    {% csrf_token %}
+    <div>
+        <input type="text" id="version" name="version" required class="form-control me-2 search_bar" placeholder="Ex. v1">
+    </div>
+    <div>
+        <button class="btn btn-outline-success ms-3" type="submit" id="load1">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="button-text">Create</span>
+        </button>
+    </div>
 </form>
 
+<script>
+$(document).ready(function() {
+    $('#load1').on('click', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        var $this = $(this);
+        var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> Writing Release Notes, Wait';
+        
+        // Change button state
+        if ($this.html().indexOf('fa-spin') === -1) { // Check if not already spinning
+            $this.data('original-text', $this.html());
+            $('.spinner-border', $this).removeClass('d-none');
+            $('.button-text', $this).text('Writing Release Notes, Wait');
+            $this.prop('disabled', true);
+            
+            // Form submission via AJAX
+            $.ajax({
+                type: "POST",
+                url: $('#versionForm').attr('action'), // Assuming action is set correctly in your form
+                data: $('#versionForm').serialize(), // Serialized form data
+                success: function(response) {
+                    // Optionally handle response here if needed
+                    location.reload(); // Refresh page upon success
+                },
+                error: function(response) {
+                    // Optionally handle error
+                    console.log('Error:', response);
+                    $this.prop('disabled', false);
+                    $('.spinner-border', $this).addClass('d-none');
+                    $('.button-text', $this).text($this.data('original-text'));
+                }
+            });
+        }
+    });
+});
+</script>
 
 
 
