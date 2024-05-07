@@ -680,7 +680,12 @@ class API_Integration:
         the_time = int(the_time)
         return datetime.datetime.fromtimestamp(the_time).strftime('%c')
 
-
+    def get_version_time(self, scope, version):
+        data = {"version": scope+":"+version}
+        the_time = self._send_request("POST", "/get_version_time_of_scope", data=data)
+        print(the_time)
+        the_time = int(the_time)
+        return the_time
 
     def get_version_user(self, scope, version):
         data = {"version": scope+":"+version}

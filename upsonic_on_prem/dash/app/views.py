@@ -845,10 +845,12 @@ def control_library_version(request,id):
                 counter[each_version] += 1
                 if each_version not in all_possible_versions:
                     all_possible_versions.append(each_version)
-                    the_version_history.append([each_version, user])
+                    date = API_Integration(request.user.access_key).get_version_date(each_scope, each_version)  
+                    the_time = API_Integration(request.user.access_key).get_version_time(each_scope, each_version)
+                    the_version_history.append([each_version, user, date, the_time])
     
 
-    
+    the_version_history.sort(key=lambda x: x[3], reverse=True)
 
 
     the_versions = []
@@ -859,7 +861,7 @@ def control_library_version(request,id):
             pass
         else:
             pass
-        the_versions.append({"version": each_version[0], "release_note":API_Integration(request.user.access_key).create_get_release_note(id, each_version[0]),"using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
+        the_versions.append({"version": each_version[0], "date": each_version[2], "release_note":API_Integration(request.user.access_key).create_get_release_note(id, each_version[0]),"using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
 
     
 
