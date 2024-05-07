@@ -14,6 +14,7 @@ from flask import request
 import base64
 import time
 import traceback
+import requests
 
 
 @app.route(dump_url, methods=["POST"])
@@ -34,7 +35,7 @@ def dump_code():
 
     the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.set_code(code)})
+    return jsonify({"status": True, "result": the_scope.set_code(code, access_key=request.authorization.password)})
 
 
 @app.route(dump_type_url, methods=["POST"])
@@ -259,7 +260,7 @@ def get_version_release_note_of_scope():
 documentation_tasks = {}
 
 
-def create_document_of_scope_(scope, version):
+def create_document_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -272,24 +273,27 @@ def create_document_of_scope_(scope, version):
 
     if not task_name in documentation_tasks:
         documentation_tasks[task_name] = True
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"documentation", "key": scope, "access_key":access_key}).json()["id"] if create_ai_task else None
         try:
             work = the_scope.create_documentation()
         except:
             pass
         try:
             documentation_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             pass
 
 
     print("Complated doc task: ", scope)
+    
     return work
 
 
 time_complexity_tasks = {}
 
 
-def create_time_complexity_of_scope_(scope, version):
+def create_time_complexity_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -302,12 +306,15 @@ def create_time_complexity_of_scope_(scope, version):
 
     if not task_name in time_complexity_tasks:
         time_complexity_tasks[task_name] = True
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"time_complexity", "key": scope, "access_key":access_key}).json()["id"] if create_ai_task else None
+
         try:
             work = the_scope.create_time_complexity()
         except:
             pass
         try:
             time_complexity_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             pass
 
@@ -320,7 +327,7 @@ def create_time_complexity_of_scope_(scope, version):
 mistakes_tasks = {}
 
 
-def create_mistakes_of_scope_(scope, version):
+def create_mistakes_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -333,12 +340,14 @@ def create_mistakes_of_scope_(scope, version):
 
     if not task_name in mistakes_tasks:
         mistakes_tasks[task_name] = True
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"mistakes", "key": scope, "access_key":access_key}).json()["id"] if create_ai_task else None
         try:
             work = the_scope.create_mistakes()
         except:
             pass
         try:
             mistakes_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             pass
 
@@ -363,12 +372,14 @@ def create_commit_message_of_scope_(scope, version):
     work = None
     if not task_name in commit_message_tasks:
         commit_message_tasks[task_name] = True
+        
         try:
             work = the_scope.create_commit_message()
         except:
             pass
         try:
             commit_message_tasks.pop(task_name)
+
         except:
             pass
 
@@ -381,7 +392,7 @@ def create_commit_message_of_scope_(scope, version):
 required_test_types_tasks = {}
 
 
-def create_required_test_types_of_scope_(scope, version):
+def create_required_test_types_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -394,12 +405,14 @@ def create_required_test_types_of_scope_(scope, version):
 
     if not task_name in required_test_types_tasks:
         required_test_types_tasks[task_name] = True
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"required_test_types", "key": scope, "access_key":access_key}).json()["id"] if create_ai_task else None
         try:
             work = the_scope.create_required_test_types()
         except:
             pass
         try:
             required_test_types_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             pass
 
@@ -410,7 +423,7 @@ def create_required_test_types_of_scope_(scope, version):
 tags_tasks = {}
 
 
-def create_tags_of_scope_(scope, version):
+def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -423,12 +436,14 @@ def create_tags_of_scope_(scope, version):
 
     if not task_name in tags_tasks:
         tags_tasks[task_name] = True
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"tags", "key": scope, "access_key":access_key}).json()["id"] if create_ai_task else None
         try:
             work = the_scope.create_tags()
         except:
             pass
         try:
             tags_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             pass
 
@@ -708,7 +723,7 @@ def get_default_ai_model():
 security_analyses_tasks = {}
 
 
-def create_security_analyses_of_scope_(scope, version):
+def create_security_analyses_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
         task_name = scope+":"+version
@@ -721,12 +736,14 @@ def create_security_analyses_of_scope_(scope, version):
 
     if not task_name in security_analyses_tasks:
         security_analyses_tasks[task_name] = True
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"security_analyses", "key": scope, "access_key":access_key}).json()["id"] if create_ai_task else None
         try:
             work = the_scope.create_security_analysis()
         except:
             pass
         try:
             security_analyses_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             pass
 
@@ -738,7 +755,7 @@ def create_security_analyses_of_scope_(scope, version):
 readme_tasks = {}
 
 
-def create_readme_(top_library, version, request=None):
+def create_readme_(top_library, version, request=None, create_ai_task=False, access_key=None):
     global documentation_tasks
     print("CREATE README TASK for: ", top_library)
 
@@ -754,7 +771,8 @@ def create_readme_(top_library, version, request=None):
 
     try:
         readme_tasks[task_name] = True
-
+        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={"task_name":"readme", "key": top_library, "access_key":access_key}).json()["id"] if create_ai_task else None
+        
         all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix = top_library)
         all_scopes = []
         for each_scope in all_scopes_response:
@@ -857,6 +875,7 @@ def create_readme_(top_library, version, request=None):
 
         try:
             readme_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             traceback.print_exc()
             pass
@@ -868,6 +887,7 @@ def create_readme_(top_library, version, request=None):
         traceback.print_exc()
         try:
             readme_tasks.pop(task_name)
+            requests.post("http://localhost:3001/complate_ai_task", data={"id": the_task_id, "access_key":access_key}).json()["id"] if create_ai_task else None
         except:
             traceback.print_exc()
             pass

@@ -136,6 +136,7 @@ class AI_Task(models.Model):
     key = models.CharField(max_length=2000)
     status = models.BooleanField(default=False)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    not_start_task = models.BooleanField(default=False, null=True, blank=True)
 
     def sub_func(self, func):
             func(self.key)
@@ -178,20 +179,22 @@ class AI_Task(models.Model):
         if self.status:
             return
         any_task = True
+        not_start_task = self.not_start_task
+        print("FROM MODEL: ", not_start_task)
         if self.task_name == "documentation":
-            self.documentation_task()
+            self.documentation_task() if not not_start_task else None
         elif self.task_name == "mistakes":
-            self.mistakes_task()
+            self.mistakes_task() if not not_start_task else None
         elif self.task_name == "time_complexity":
-            self.time_complexity_task()
+            self.time_complexity_task() if not not_start_task else None
         elif self.task_name == "required_test_types":
-            self.required_test_types_task()
+            self.required_test_types_task() if not not_start_task else None
         elif self.task_name == "tags":
-            self.tags_task()
+            self.tags_task() if not not_start_task else None
         elif self.task_name == "security_analysis":
-            self.security_analysis_task()
+            self.security_analysis_task() if not not_start_task else None
         elif self.task_name == "readme":
-            self.readme_task()
+            self.readme_task() if not not_start_task else None
         else:
             any_task = False
         
@@ -204,7 +207,10 @@ class AI_Task(models.Model):
         global organizer_thread
         if organizer_thread is None:
             organizer_thread = threading.Thread(target=organizer_ai_tasks)
-            organizer_thread.start()       
+            organizer_thread.start()
+
+
+
         self.the_register()
         super().save(*args, **kwargs)
 

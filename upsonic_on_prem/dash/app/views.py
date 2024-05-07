@@ -1415,3 +1415,62 @@ def deactivate_usage_analyses_prefix(request, id):
 
     return redirect(to='control_library_settings', id=id)
 
+
+
+
+def add_ai_task(request):
+    if not request.method == 'POST':
+        redirect(to='home')
+
+    task_name = request.POST.get("task_name")
+    key = request.POST.get("key")
+    access_key = request.POST.get("access_key")
+
+
+
+    user = models.User.objects.get(access_key=access_key)
+
+
+    if not user.can_write(key):
+        redirect(to='home')
+
+    the_object = models.AI_Task(task_name=task_name, key=key, access_key=access_key, owner=user, not_start_task=True)
+    the_object.save()
+
+
+
+    the_json = {"id": the_object.id}
+
+    return JsonResponse(the_json, safe=False)
+
+def complate_ai_task(request):
+    if not request.method == 'POST':
+        redirect(to='home')
+
+
+    the_id = request.POST.get("id")
+    access_key = request.POST.get("access_key")
+
+
+
+    user = models.User.objects.get(access_key=access_key)
+
+
+
+    the_object = models.AI_Task.objects.get(id=the_id)
+
+    if not user.can_write(the_object.key):
+        redirect(to='home')
+
+    
+
+    
+
+
+
+    the_object.status = True
+    the_object.save()
+
+    the_json = {"id": the_object.id}
+
+    return JsonResponse(the_json, safe=False)
