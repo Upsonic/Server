@@ -18,7 +18,7 @@
 
             <div class="d-flex flex-row justify-content-between align-items-center">
 
-                <div class="flex-fill w-50 me-5">
+                <div class="flex-fill w-50 me-5>
                     {% if have_upper %}
                     <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
                     {% endif %}
@@ -28,7 +28,10 @@
                     <div class="row">
 
                         <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none; margin-left: auto;"><span class="header_text_not_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
+
+                        {%if not sub_module%}
                         <a href="#" onclick="page_load('{% url 'control_library_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        {%endif%}
                         <a href="#" onclick="page_load('{% url 'control_library_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
 
                     </div>
@@ -42,13 +45,13 @@
     <div class="d-flex flex-row justify-content-between">
 
 
-        <div class="flex-fill w-50 me-5">
+        <div class="flex-fill me-5" style="width: 70%;">
             <div class="custom_page_header_top_bottom_margin">
                 <span class="custom_page_header_text">Latest</span>
             </div>
             <div class="custom_code_block">
                 <div class="custom_code_block_code">
-                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{using_code}}</code></pre></div>
+                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html" >{{using_code}}</code></pre></div>
                 </div>
             </div>
             <a href="#" onclick="page_load('{% url 'control_library' id=control_library %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Latest</a>
@@ -64,6 +67,11 @@
                 <span class="custom_page_header_text">{{v.version}}</span>
             </div>
             Author: {{v.user}}
+            <div class="custom_code_block">
+                <div class="custom_code_block_code">
+                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html" style="text-wrap: pretty;">{{v.release_note}}</code></pre></div>
+                </div>
+            </div>            
             <div class="custom_code_block">
                 <div class="custom_code_block_code">
                     <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{v.using_code}}</code></pre></div>
@@ -87,7 +95,7 @@
 
         </div>
 
-        <div class="flex-fill w-50" style="
+        <div class="flex-fill" style="
         position: -webkit-sticky; /* for Safari */
         position: sticky;
         top: 0;
