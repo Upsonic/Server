@@ -641,7 +641,7 @@ class Scope:
 
 
 
-    def set_code(self, code):
+    def set_code(self, code, access_key=None):
         from upsonic_on_prem.api.operations.user import create_commit_message_of_scope_, create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
         currently_code = self.code
         self.the_storage.set(self.key + ":prev_code", currently_code)
@@ -649,18 +649,18 @@ class Scope:
         if currently_code != code:
             create_commit_message_of_scope_(scope=self.key, version=None)
             task_id = "create_documentation"+self.key
-            background_worker(task_id, create_document_of_scope_, scope=self.key, version=None)
-            background_worker("create_time_complexity_"+self.key, create_time_complexity_of_scope_, scope=self.key, version=None)
-            background_worker("create_mistakes_"+self.key, create_mistakes_of_scope_, scope=self.key, version=None)
+            background_worker(task_id, create_document_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+            background_worker("create_time_complexity_"+self.key, create_time_complexity_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+            background_worker("create_mistakes_"+self.key, create_mistakes_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
             
-            background_worker("create_required_test_types_"+self.key, create_required_test_types_of_scope_, scope=self.key, version=None)
-            background_worker("create_tags_"+self.key, create_tags_of_scope_, scope=self.key, version=None)
-            background_worker("create_security_analyses_"+self.key, create_security_analyses_of_scope_, scope=self.key, version=None)
+            background_worker("create_required_test_types_"+self.key, create_required_test_types_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+            background_worker("create_tags_"+self.key, create_tags_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+            background_worker("create_security_analyses_"+self.key, create_security_analyses_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
             readmes = split_dotted_string(self.key)
             print("Triggered readmes", readmes)
             for i in readmes:
                 task_id = "create_readme_"+i
-                background_worker(task_id, create_readme_, top_library=i, version=None)
+                background_worker(task_id, create_readme_, top_library=i, version=None, create_ai_task=True, access_key=access_key)
         else:
             self.create_commit_message(no_changes=True)
         
