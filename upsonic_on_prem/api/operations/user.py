@@ -1006,6 +1006,7 @@ def get_readme():
                 the_scope = Scope.get_version(each_scope+":"+version)
 
             while task_name in documentation_tasks:
+                return jsonify({"status": True, "result": None})
                 time.sleep(1)    
 
             if the_scope.documentation == None:
