@@ -447,7 +447,7 @@ class Scope:
             self.the_storage.set(self.key, the_resource)
 
     def create_commit_message(self, no_changes=False):
-        document = AI.difference_to_commit_message(self.difference) if not no_changes else "No Changes Made"
+        document = AI.difference_to_commit_message(self.prev_code, self.code) if not no_changes else "No Changes Made"
 
         if not self.specific:
             self.the_storage.set(self.key + ":commit_message", document)

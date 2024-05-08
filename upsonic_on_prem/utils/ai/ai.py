@@ -414,14 +414,17 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
 
 
-    def difference_to_commit_message(self, code):
+    def difference_to_commit_message(self, code_old, code_new):
         input_text = f"""
 In this task, your goal is to generate a commit message for the differences.
 
 
-```python difference
-{code}
+```python old version
+{code_old}
+```
 
+```python new version
+{code_new}
 ```
 
 Generate a smalll commit message. Maybe 1 or 2 sentence.
