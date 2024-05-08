@@ -138,7 +138,7 @@ class AI_:
     def completion(self, input_text, model):
         result = None
 
-        if model == "gemma-2b":
+        if model == "llama3-8b-2b":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
             result = self.gpt(input_text, model=model)
@@ -154,7 +154,7 @@ class AI_:
 
     @property
     def default_model(self):
-        return os.environ.get("default_model", "gemma-2b")
+        return os.environ.get("default_model", "llama3-8b-2b")
 
 
 
@@ -179,7 +179,7 @@ class AI_:
 
     def gemmma(self, input_text):
 
-        response = ollama.generate(model='gemma-2b-upsonic', prompt=input_text)
+        response = ollama.generate(model='llama3-8b-upsonic', prompt=input_text)
         result = response['response']
 
 
