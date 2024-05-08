@@ -8,7 +8,7 @@ folder = os.environ.get("folder", "")
 local_db_folder = os.environ.get("local_db_folder", "")
 white_list_ip = os.environ.get("white_list_ip", "")
 password = os.environ.get("password", "Upsonic")
-threads = os.environ.get("threads", 4)
+
 access_key = os.environ.get("access_key", "false").lower() == "true"
 access_key_folder = os.environ.get("access_key_folder", "")
 access_key_lists = os.environ.get("access_key_lists", "")
