@@ -263,7 +263,7 @@ Now, please identify potential mistakes in the following code:
 {code}
 ```
 
-Note: Please identify and describe the errors in a clear and informative manner.
+Note: Please identify and describe the errors in a clear and informative manner. Libraries already imported
 
 """
 
@@ -292,7 +292,7 @@ Now, considering a fresh scenario, please perform a security audit of the follow
 {code}
 ```
 
-In your response, give a clear outline of potential security issues present and elaborate on how one might strengthen the overall security. The focus is on text-based analysis, so no need to provide an actual piece of code in your response.
+In your response, give a clear outline of potential securityissues present and elaborate on how one might strengthen the overall security. Libraries already imported. The focus is on text-based analysis, so no need to provide an actual piece of code in your response.
 """
 
 
@@ -461,6 +461,9 @@ Reword home page text to be more welcoming
   
 Revise link to update it to the new URL
 ```
+
+
+Answer only with your commit message suggestion:
 """
 
 

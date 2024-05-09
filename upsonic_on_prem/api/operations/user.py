@@ -541,6 +541,19 @@ def get_type_of_scope():
     return jsonify({"status": True, "result": the_scope.type})
 
 
+@app.route(get_lock_of_scope_url, methods=["POST"])
+def get_lock_of_scope():
+    scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.lock})
+
+
 
 
 @app.route(get_python_version_of_scope_url, methods=["POST"])

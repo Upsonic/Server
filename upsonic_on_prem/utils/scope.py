@@ -65,6 +65,7 @@ class Scope:
         self.specific = specific
 
 
+
     def get_last_runs(self, n=10):
         result = []
         for i in self.run_history[-n:]:
@@ -596,6 +597,12 @@ class Scope:
     def set_type(self, type):
         return self.the_storage.set(self.key + ":type", type)
 
+    def set_lock(self, lock):
+        return self.the_storage.set(self.key + ":lock", lock)
+    @property
+    def lock(self):
+        return self.the_storage.get(self.key + ":lock")
+
     @property
     def python(self):
         if self.source is None:
@@ -642,29 +649,10 @@ class Scope:
 
 
     def set_code(self, code, access_key=None):
-        from upsonic_on_prem.api.operations.user import create_commit_message_of_scope_, create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
+       
         currently_code = self.code
         self.the_storage.set(self.key + ":prev_code", currently_code)
         result = self.the_storage.set(self.key + ":code", code)
-        if currently_code != code:
-            create_commit_message_of_scope_(scope=self.key, version=None)
-            task_id = "create_documentation"+self.key
-            background_worker(task_id, create_document_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-            background_worker("create_time_complexity_"+self.key, create_time_complexity_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-            background_worker("create_mistakes_"+self.key, create_mistakes_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-            
-            background_worker("create_required_test_types_"+self.key, create_required_test_types_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-            background_worker("create_tags_"+self.key, create_tags_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-            background_worker("create_security_analyses_"+self.key, create_security_analyses_of_scope_, scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-            readmes = split_dotted_string(self.key)
-            print("Triggered readmes", readmes)
-            for i in readmes:
-                task_id = "create_readme_"+i
-                background_worker(task_id, create_readme_, top_library=i, version=None, create_ai_task=True, access_key=access_key)
-        else:
-            self.create_commit_message(no_changes=True)
-        
-        
 
         return result
 
@@ -727,35 +715,67 @@ class Scope:
 
 
     def dump(self, data, user: AccessKey, pass_str=False):
-        if not pass_str:
-            data = data.decode()
-        current_time = time.time()
-        the_time = str(current_time) + "_" + str(random.randint(0, 100000))
-        sha256 = hashlib.sha256(the_time.encode()).hexdigest()
-        key = self.key + ":" + sha256
+        
+        def dump_operation(data, user, pass_str):
+            from upsonic_on_prem.api.operations.user import create_commit_message_of_scope_, create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
 
-        data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+            print("Dump Operation Started")
+            access_key = user.key
 
-        storage_3.set(key, data)
+            if self.prev_code != self.code:
+                create_commit_message_of_scope_(scope=self.key, version=None)
+                task_id = "create_documentation"+self.key
 
-        current = self.dump_history
-        current.append(key)
-        self.the_storage.set(self.key + ":dump_history", current)
+                create_document_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                create_time_complexity_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                create_mistakes_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                create_required_test_types_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                create_tags_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                create_security_analyses_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                readmes = split_dotted_string(self.key)
+                for i in readmes:
+                    task_id = "create_readme_"+i
+                    background_worker(task_id, create_readme_, top_library=i, version=None, create_ai_task=True, access_key=access_key)
+            else:
+                self.create_commit_message(no_changes=True)
 
-        self.the_storage.set(self.key, data)
+            if not pass_str:
+                data = data.decode()
+            current_time = time.time()
+            the_time = str(current_time) + "_" + str(random.randint(0, 100000))
+            sha256 = hashlib.sha256(the_time.encode()).hexdigest()
+            key = self.key + ":" + sha256
+
+            data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+
+            storage_3.set(key, data)
+
+            current = self.dump_history
+            current.append(key)
+            self.the_storage.set(self.key + ":dump_history", current)
+
+            self.the_storage.set(self.key, data)
 
 
-        if ":" in self.key:
-            path = self.key.split(":")[0].replace(".", "/")
-        else:
-            path = self.key.replace(".", "/")
-        path = f'{path}.py'     
+            if ":" in self.key:
+                path = self.key.split(":")[0].replace(".", "/")
+            else:
+                path = self.key.replace(".", "/")
+            path = f'{path}.py'     
 
-        github_sha = github.create_or_update_file(scope=self, message=f"New changes for {path} by {user.name}")
-        if github_sha != False:
-            self.set_github_sha(github.get_sha(self))
+            github_sha = github.create_or_update_file(scope=self, message=f"New changes for {path} by {user.name}")
+            if github_sha != False:
+                self.set_github_sha(github.get_sha(self))
     
+            self.set_lock(False)
+            print("Dump Operation Ended")
 
+
+        if not self.lock:
+            self.set_lock(True)
+            background_worker(str(random.randint(10000,25000)), dump_operation, data=data, user=user, pass_str=pass_str)        
+        else:
+            return "Requested scope locked"
 
 
 
