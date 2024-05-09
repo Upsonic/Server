@@ -138,7 +138,7 @@ class AI_:
     def completion(self, input_text, model):
         result = None
 
-        if model == "gemma-2b":
+        if model == "llama3-8b":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
             result = self.gpt(input_text, model=model)
@@ -154,7 +154,7 @@ class AI_:
 
     @property
     def default_model(self):
-        return os.environ.get("default_model", "gemma-2b")
+        return os.environ.get("default_model", "llama3-8b")
 
 
 
@@ -179,7 +179,7 @@ class AI_:
 
     def gemmma(self, input_text):
 
-        response = ollama.generate(model='gemma-2b-upsonic', prompt=input_text)
+        response = ollama.generate(model='llama3-8b-upsonic', prompt=input_text)
         result = response['response']
 
 
@@ -263,7 +263,7 @@ Now, please identify potential mistakes in the following code:
 {code}
 ```
 
-Note: Please identify and describe the errors in a clear and informative manner.
+Note: Please identify and describe the errors in a clear and informative manner. Libraries already imported
 
 """
 
@@ -292,7 +292,7 @@ Now, considering a fresh scenario, please perform a security audit of the follow
 {code}
 ```
 
-In your response, give a clear outline of potential security issues present and elaborate on how one might strengthen the overall security. The focus is on text-based analysis, so no need to provide an actual piece of code in your response.
+In your response, give a clear outline of potential securityissues present and elaborate on how one might strengthen the overall security. Libraries already imported. The focus is on text-based analysis, so no need to provide an actual piece of code in your response.
 """
 
 
@@ -414,14 +414,17 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
 
 
-    def difference_to_commit_message(self, code):
+    def difference_to_commit_message(self, code_old, code_new):
         input_text = f"""
 In this task, your goal is to generate a commit message for the differences.
 
 
-```python difference
-{code}
+```python old version
+{code_old}
+```
 
+```python new version
+{code_new}
 ```
 
 Generate a smalll commit message. Maybe 1 or 2 sentence.
@@ -458,6 +461,9 @@ Reword home page text to be more welcoming
   
 Revise link to update it to the new URL
 ```
+
+
+Answer only with your commit message suggestion:
 """
 
 
