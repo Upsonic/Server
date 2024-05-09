@@ -22,9 +22,6 @@ permissions:
   packages: write
   contents: write
 
-concurrency: 
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event }}
-  cancel-in-progress: true
 jobs:
   with_model:
     if: github.event.inputs.docker_type == 'with_model'
