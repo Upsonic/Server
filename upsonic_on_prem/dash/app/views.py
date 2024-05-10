@@ -248,8 +248,8 @@ def control_library(request,id):
                             the_id = id +":"+version         
                     tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
                     if len(tasks) == 0:
-                    
-                        models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+                        pass
+                        #models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
                     sub_doc = "Documentation is generating, it will be ready soon."
 
                 all_scopes.append([each_scope, sub_doc])
@@ -265,8 +265,8 @@ def control_library(request,id):
                             the_id = id +":"+version         
                     tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
                     if len(tasks) == 0:
-                    
-                        models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+                        pass
+                        #models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
                     sub_doc = "Documentation is generating, it will be ready soon."
 
             all_scopes.append([each_scope, sub_doc])            
@@ -286,8 +286,8 @@ def control_library(request,id):
             readme = "Generating..."
     
             if len(tasks) == 0:        
-
-                models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+                pass
+                #models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
     else:
         readme = "Generating..."
 
@@ -372,8 +372,8 @@ def control_element(request, id):
                 the_id = id +":"+version         
         tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
         if len(tasks) == 0:
-         
-            models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         documentation = "Documentation is generating, it will be ready soon."
 
     
@@ -385,8 +385,8 @@ def control_element(request, id):
                 the_id = id +":"+version 
         tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=the_id, status=False)
         if len(tasks) == 0:
-           
-            models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         time_complexity = "Time Complexity is generating, it will be ready soon."
 
 
@@ -399,8 +399,8 @@ def control_element(request, id):
                 the_id = id +":"+version 
         tasks = models.AI_Task.objects.filter(task_name="mistakes", key=the_id, status=False)
         if len(tasks) == 0:
-         
-            models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         mistakes = "Mistakes are generating, it will be ready soon."
 
 
@@ -412,8 +412,8 @@ def control_element(request, id):
                 the_id = id +":"+version 
         tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=the_id, status=False)
         if len(tasks) == 0:
-          
-            models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         required_test_types = "Required Test Types are generating, it will be ready soon."
 
 
@@ -426,8 +426,8 @@ def control_element(request, id):
                 the_id = id +":"+version  
         tasks = models.AI_Task.objects.filter(task_name="tags", key=the_id, status=False)
         if len(tasks) == 0:
-          
-            models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         tags = "Tags are generating, it will be ready soon."
 
 
@@ -440,8 +440,8 @@ def control_element(request, id):
                 the_id = id +":"+version            
         tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=the_id, status=False)
         if len(tasks) == 0:
-        
-            models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         security_analysis = "Security Analysis is generating, it will be ready soon."
 
 
@@ -1063,8 +1063,8 @@ def control_element(request, id):
                 the_id = id +":"+version         
         tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
         if len(tasks) == 0:
-         
-            models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         documentation = "Documentation is generating, it will be ready soon."
 
     
@@ -1076,8 +1076,8 @@ def control_element(request, id):
                 the_id = id +":"+version 
         tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=the_id, status=False)
         if len(tasks) == 0:
-           
-            models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         time_complexity = "Time Complexity is generating, it will be ready soon."
 
 
@@ -1090,8 +1090,8 @@ def control_element(request, id):
                 the_id = id +":"+version 
         tasks = models.AI_Task.objects.filter(task_name="mistakes", key=the_id, status=False)
         if len(tasks) == 0:
-         
-            models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         mistakes = "Mistakes are generating, it will be ready soon."
 
 
@@ -1103,8 +1103,8 @@ def control_element(request, id):
                 the_id = id +":"+version 
         tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=the_id, status=False)
         if len(tasks) == 0:
-          
-            models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         required_test_types = "Required Test Types are generating, it will be ready soon."
 
 
@@ -1117,8 +1117,8 @@ def control_element(request, id):
                 the_id = id +":"+version  
         tasks = models.AI_Task.objects.filter(task_name="tags", key=the_id, status=False)
         if len(tasks) == 0:
-          
-            models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         tags = "Tags are generating, it will be ready soon."
 
 
@@ -1131,8 +1131,8 @@ def control_element(request, id):
                 the_id = id +":"+version            
         tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=the_id, status=False)
         if len(tasks) == 0:
-        
-            models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
+            pass
+            #models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         security_analysis = "Security Analysis is generating, it will be ready soon."
 
 
