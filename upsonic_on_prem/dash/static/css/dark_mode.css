@@ -292,3 +292,10 @@
   [data-bs-theme=dark] .header_text_active {
     color: #ffffff;
   }
+
+
+
+  [data-bs-theme=dark] .custom_header_button{
+  color: #fff;
+
+}
