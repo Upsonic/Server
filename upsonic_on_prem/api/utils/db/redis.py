@@ -3,8 +3,8 @@ import random
 
 import redis
 
-from upsonic_on_prem.utils.configs import redis_host, redis_port, redis_password
-from upsonic_on_prem.utils.db.serialization import *
+from upsonic_on_prem.api.utils.configs import redis_host, redis_port, redis_password
+from upsonic_on_prem.api.utils.db.serialization import *
 
 
 class redis_client_():

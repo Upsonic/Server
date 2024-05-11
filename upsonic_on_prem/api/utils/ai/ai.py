@@ -18,9 +18,9 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
-from upsonic_on_prem.utils import storage
+from upsonic_on_prem.api.utils import storage
 
-from upsonic_on_prem.utils import debug, info, warning, failed, successfully
+from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
 
 import traceback
 from openai import OpenAI

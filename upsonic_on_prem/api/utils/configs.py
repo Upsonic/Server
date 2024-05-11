@@ -77,8 +77,11 @@ debugging = os.environ.get("debug", "false").lower() == "true"
 sentry = os.environ.get("sentry", "false").lower() == "true"
 sentry_flask_key = os.environ.get("sentry_flask_key", "https://557ac9191a887032087e4054dda517c4@o4506678585786368.ingest.sentry.io/4506678591225856")
 
-betterstack = os.environ.get("betterstack", "false").lower() == "true"
-betterstack_flask_key = os.environ.get("betterstack_flask_key", "HyjgwPt5AAiPWxEUqDL49151")
 
 
 openai_api_key = os.environ.get("openai_api_key")
+
+
+
+infrastackai = os.environ.get("infrastackai", "false").lower() == "true"
+infrastackai_api_key = os.environ.get("infrastackai_api_key", "")
