@@ -13,8 +13,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
 
-from upsonic_on_prem.utils import AccessKey
-from upsonic_on_prem.utils import storage, storage_2, Scope, AI, storage_3
+from upsonic_on_prem.api.utils import AccessKey
+from upsonic_on_prem.api.utils import storage, storage_2, Scope, AI, storage_3
 
 
 

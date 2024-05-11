@@ -3,7 +3,7 @@ from flask import request
 
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
-from upsonic_on_prem.utils import AccessKey, storage, Scope, AI
+from upsonic_on_prem.api.utils import AccessKey, storage, Scope, AI
 
 
 @app.route(get_admins_url, methods=["get"])

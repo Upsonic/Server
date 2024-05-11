@@ -1,7 +1,7 @@
 from upsonic_on_prem.api import limiter
 from flask import request
 
-from upsonic_on_prem.utils.configs import white_list_ip
+from upsonic_on_prem.api.utils.configs import white_list_ip
 
 
 @limiter.request_filter

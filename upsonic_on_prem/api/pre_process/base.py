@@ -1,7 +1,7 @@
 from upsonic_on_prem.api import app
 from flask import Flask, request, Response, jsonify
 
-from upsonic_on_prem.utils import AccessKey
+from upsonic_on_prem.api.utils import AccessKey
 
 from upsonic_on_prem.api.urls import *
 
