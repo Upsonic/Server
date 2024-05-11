@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.http.response import HttpResponse
 from app.api_integration import API_Integration
 from app import models
-from dash.settings import logger
+from dash.logs import logger
 from app import forms
 
 import os
@@ -634,7 +634,7 @@ def profile(request):
 
 @login_required
 def ai(request):
-
+    logger.debug("Hi")
     result = None
 
     if request.method == "POST":
