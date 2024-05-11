@@ -354,6 +354,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         self.assertEqual(the_scope.source, dumped_data.decode())
 
@@ -371,6 +372,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         self.assertEqual(the_scope.python(), my_function())
 
@@ -388,6 +390,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         the_scope.set_type("function")
         self.assertEqual(the_scope.type, "function")
@@ -406,6 +409,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
         the_scope.set_code("dsadasdadasdsa")
 
         self.assertEqual(the_scope.code, "dsadasdadasdsa")
@@ -457,6 +461,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(the_scope.dump_history, [])
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
         self.assertNotEqual(the_scope.dump_history, [])
         self.assertEqual(len(the_scope.dump_history), 1)
         self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
@@ -468,6 +473,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[-1]).source, the_scope.source)
 
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), True)
@@ -494,6 +500,7 @@ class Test_Accesskey(unittest.TestCase):
         the_scope.dump(dumped_data, AccessKey(id))
         Scope(id2).dump(dumped_data, AccessKey(id2))
         Scope(id3).dump(dumped_data, AccessKey(id2))
+        time.sleep(2)
 
         self.assertEqual(the_scope.get_all_scopes(),
                          ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
@@ -523,6 +530,7 @@ class Test_Accesskey(unittest.TestCase):
         the_scope.dump(dumped_data, user)
         Scope(id2).dump(dumped_data, user)
         Scope(id3).dump(dumped_data, user)
+        time.sleep(2)
 
         self.assertEqual(Scope.get_all_scopes_name(user), [])
 
@@ -563,6 +571,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         the_scope.delete()
         self.assertEqual(the_scope.code, None)
@@ -589,6 +598,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         self.assertEqual(the_scope.python(), "aaa")
 
@@ -603,6 +613,7 @@ class Test_Accesskey(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         self.assertEqual(the_scope.python(), "bbbb")
 
