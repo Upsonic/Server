@@ -15,7 +15,7 @@ from upsonic_on_prem.api.urls import *
 
 from upsonic_on_prem.api.utils import AccessKey
 from upsonic_on_prem.api.utils import storage, storage_2, Scope, AI, storage_3
-
+import time
 
 
 from requests.auth import HTTPBasicAuth
@@ -135,7 +135,7 @@ class Test_Storage(unittest.TestCase):
 
         
             response = requests.post("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id), data=data)
-
+            time.sleep(2)
 
 
 
@@ -605,6 +605,7 @@ class Test_Storage(unittest.TestCase):
             return response.json()["result"]
 
         the_scope.dump(dumped_data, accesskey)
+        time.sleep(2)
         self.assertEqual(get_document(), the_scope.documentation)
 
         storage_2.pop()
@@ -639,6 +640,7 @@ class Test_Storage(unittest.TestCase):
             return response.json()
 
         the_scope.dump(dumped_data, accesskey)
+        time.sleep(2)
         first = get_document()
         self.assertEqual(first, the_scope.documentation)
 
@@ -668,6 +670,7 @@ class Test_Storage(unittest.TestCase):
             return response.json()["result"]
 
         the_scope.dump(dumped_data, accesskey)
+        time.sleep(2)
 
         self.assertEqual(get_document(), the_scope.type)
 
@@ -700,6 +703,7 @@ class Test_Storage(unittest.TestCase):
         the_scope.dump(dumped_data, AccessKey(id))
         Scope(id2).dump(dumped_data, AccessKey(id2))
         Scope(id3).dump(dumped_data, AccessKey(id2))
+        time.sleep(2)
 
         self.assertEqual(the_scope.get_all_scopes(),
                          ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
@@ -752,6 +756,7 @@ class Test_Storage(unittest.TestCase):
         the_scope.dump(dumped_data, user)
         Scope(id2).dump(dumped_data, user)
         Scope(id3).dump(dumped_data, user)
+        time.sleep(2)
 
         self.assertEqual(Scope.get_all_scopes_name(user), [])
 
@@ -789,6 +794,7 @@ class Test_Storage(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         def get_document():
             data = {"scope": id}
@@ -827,6 +833,7 @@ class Test_Storage(unittest.TestCase):
         self.assertEqual(the_scope.dump_history, [])
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
         self.assertNotEqual(the_scope.dump_history, [])
         self.assertEqual(len(the_scope.dump_history), 1)
         self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
@@ -838,6 +845,7 @@ class Test_Storage(unittest.TestCase):
             cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
+        time.sleep(2)
 
         def get_document():
             data = {"scope": id}
