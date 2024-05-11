@@ -27,19 +27,24 @@
 
 
                 $ ('main').html(main_section);
-
-                // Extract the url from the response
-                this_url = doc.getElementById("this_url").innerHTML
-
-                // remove the current url from the history
-                window.history.replaceState("", "", this_url);
-
                 script_tag = document.getElementById("script_tag")
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
                 script.src = script_tag.src;
 
                 document.head.appendChild(script);
+
+                try {
+                    // Extract the url from the response
+                    this_url = doc.getElementById("this_url").innerHTML
+    
+                    // remove the current url from the history
+                    window.history.replaceState("", "", this_url);
+    
+                } catch (error) {
+                    
+                }
+
 
 
 
