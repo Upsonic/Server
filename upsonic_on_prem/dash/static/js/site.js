@@ -1,3 +1,7 @@
+
+hljs.highlightAll();
+
+
 !function(a, b) {
     "use strict";
     "function" == typeof define && define.amd ? define([], b) : "object" == typeof module && module.exports ? module.exports = b() : (a.AnchorJS = b(),
@@ -729,3 +733,4 @@ function() {
     },
     anchors.add('.bd-content > h2, .bd-content > h3, .bd-content > h4, .bd-content > h5')
 }()
+

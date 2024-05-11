@@ -266,3 +266,29 @@
 
 
   
+  [data-bs-theme=dark]  .search_bar {
+    background-color: #171717;
+
+  }
+
+  [data-bs-theme=dark] .library_table {
+    --bs-table-bg: #000;
+  }
+  
+
+  [data-bs-theme=dark] .library_item_a {
+    color: #fff;
+  }
+
+
+  [data-bs-theme=dark] .library_item {
+    filter: none;
+  }
+
+  [data-bs-theme=dark] .back_a {
+    color: #fff;
+  }
+
+  [data-bs-theme=dark] .header_text_active {
+    color: #ffffff;
+  }
