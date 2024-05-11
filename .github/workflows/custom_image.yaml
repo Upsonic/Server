@@ -87,7 +87,7 @@ jobs:
           
   without_models:
     if: github.event.inputs.docker_type == 'without_models'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: Deploys
 
 
