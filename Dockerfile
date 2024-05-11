@@ -26,7 +26,7 @@ COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
 
 COPY On-Prem/run.sh /
 
-COPY models On-Prem/upsonic_on_prem/utils/ai/
+COPY models On-Prem/upsonic_on_prem/api/utils/ai/
 
 WORKDIR /app/On-Prem
 
