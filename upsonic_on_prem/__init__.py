@@ -1,5 +1,7 @@
 import traceback
 
+__version__ = '0.22.0'
+
 from .api.utils import *
 
 
@@ -12,7 +14,6 @@ from .main import cli
 
 
 
-__version__ = '0.22.0'
 
 
 
