@@ -51,6 +51,10 @@ urlpatterns = [
     path('search', views.search, name="search"),
     path('add_ai_task', views.add_ai_task, name="add_ai_task"),
     path('complate_ai_task', views.complate_ai_task, name="complate_ai_task"),
+
+    path('settings/dark_mode', views.settings_dark_mode, name="settings_dark_mode"),
+    path('settings/light_mode', views.settings_light_mode, name="settings_light_mode"), 
+
     path('', RedirectView.as_view(url='/home', permanent=False), name='index')
 
 ]
