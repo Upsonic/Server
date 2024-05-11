@@ -19,6 +19,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
+from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode
 
 from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
 
@@ -380,7 +381,12 @@ Produce meaningful tags that succinctly summarize the significant components and
 
 
     def generate_readme(self, top_library, summary_list):
-        prompt = f"""
+        result = None
+        with tracer.start_span("readme-generate") as span:
+            try:
+                span.set_attribute("AI.default_model", AI.default_model)
+                span.set_attribute("summary_list_len", len(str(summary_list)))
+                prompt = f"""
 Hi there is an list of elements and summaries:
 
 {summary_list}
@@ -391,10 +397,10 @@ Explain the purpose of this '{top_library}' library and its elements in a few se
 
 
 
-        summary = self.default_completion(prompt)
+                summary = self.default_completion(prompt)
 
-        # Also generate the usage aim
-        prompt = f"""
+                # Also generate the usage aim
+                prompt = f"""
 Hi there is an list of elements and summaries:
 
 {summary_list}
@@ -402,12 +408,17 @@ Hi there is an list of elements and summaries:
 
 Explain the usage aim of this '{top_library}' library and its elements in a few sentences.
 """
-        
+                
 
-                    
-        usage_aim = self.default_completion(prompt)
+                            
+                usage_aim = self.default_completion(prompt)
 
-        result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
+                result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
+                span.set_status(Status(StatusCode.OK))
+            except Exception as ex:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
+
 
         return result
 

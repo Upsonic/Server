@@ -9,6 +9,8 @@ from upsonic_on_prem.api.utils import storage_2, AI, storage_3, AccessKey, stora
 
 from upsonic_on_prem.api.utils.configs import admin_key
 
+from upsonic_on_prem.api.tracer import tracer, Status, StatusCode
+
 from upsonic_on_prem.api.utils.github_sync import github
 
 
@@ -181,43 +183,44 @@ class Scope:
 
 
     def create_version(self, version, user: AccessKey):
-        current_time = time.time()
-        current = self.version_history
+        with tracer.start_span("scope-create-version") as span:
+            current_time = time.time()
+            current = self.version_history
 
-        key = self.key + ":" + str(version)
+            key = self.key + ":" + str(version)
 
-        try:
-            the_prev_code = Scope.get_version(self.version_history[-1]).code
-        except:
-            the_prev_code = self.code
+            try:
+                the_prev_code = Scope.get_version(self.version_history[-1]).code
+            except:
+                the_prev_code = self.code
 
-        release_note = None
-        try:
-            commits = ""
-            all_commits = self.dump_history
-            print("total_commits len", len(all_commits))
-            index = all_commits.index(Scope.get_version(self.version_history[-1]).last_commit)
-            print("previously version commit ", Scope.get_version(self.version_history[-1]).last_commit)
-            print("currently last_commit", self.last_commit)
-            # Use list slicing to get all elements after number 3
-            all_commits = all_commits[:index]  
-            for each_commit in all_commits:
-                commits += str(self.get_dump(each_commit).commit_message) + "\n"
-            if commits == "":
-                    release_note = "No Changes Made"
-            else:
-                release_note = AI.commits_to_release_note(commits)
-        except:
-            release_note = "Newly Added"
+            release_note = None
+            try:
+                commits = ""
+                all_commits = self.dump_history
+                print("total_commits len", len(all_commits))
+                index = all_commits.index(Scope.get_version(self.version_history[-1]).last_commit)
+                print("previously version commit ", Scope.get_version(self.version_history[-1]).last_commit)
+                print("currently last_commit", self.last_commit)
+                # Use list slicing to get all elements after number 3
+                all_commits = all_commits[:index]  
+                for each_commit in all_commits:
+                    commits += str(self.get_dump(each_commit).commit_message) + "\n"
+                if commits == "":
+                        release_note = "No Changes Made"
+                else:
+                    release_note = AI.commits_to_release_note(commits)
+            except:
+                release_note = "Newly Added"
 
 
-        data = {"commit_message":self.commit_message, "release_note":release_note, "last_commit":self.last_commit, "data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+            data = {"commit_message":self.commit_message, "release_note":release_note, "last_commit":self.last_commit, "data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
-        storage_3.set(key, data)
+            storage_3.set(key, data)
 
-        current.append(key)
+            current.append(key)
 
-        self.the_storage.set(self.key + ":version_history", current)
+            self.the_storage.set(self.key + ":version_history", current)
 
     @staticmethod
     def delete_version(version_id):
@@ -387,19 +390,29 @@ class Scope:
 
 
     def create_documentation(self):
-        document = AI.code_to_documentation(self.code)
+        with tracer.start_span("scope-create-documentation") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))                 
+            try:                
+                document = AI.code_to_documentation(self.code)
 
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":documentation", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":documentation", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["documentation"] = document
-            self.the_storage.set(self.key, the_resource)
-     
+                    the_resource["documentation"] = document
+                    self.the_storage.set(self.key, the_resource)
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
+
    
+        
 
 
     def set_github_sha(self, sha):
@@ -421,103 +434,168 @@ class Scope:
 
 
     def create_time_complexity(self):
-        document = AI.code_to_time_complexity(self.code)
+        with tracer.start_span("scope-create-time-complexity") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))                 
+            try:                
+                document = AI.code_to_time_complexity(self.code)
 
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":time_complexity", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":time_complexity", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["time_complexity"] = document
-            self.the_storage.set(self.key, the_resource)
+                    the_resource["time_complexity"] = document
+                    self.the_storage.set(self.key, the_resource)
+
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
 
 
 
     def create_mistakes(self):
-        document = AI.code_to_mistakes(self.code)
+        with tracer.start_span("scope-create-mistakes") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))                 
+            try:                
+                document = AI.code_to_mistakes(self.code)
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":mistakes", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":mistakes", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["mistakes"] = document
-            self.the_storage.set(self.key, the_resource)
+                    the_resource["mistakes"] = document
+                    self.the_storage.set(self.key, the_resource)
+
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
+
 
     def create_commit_message(self, no_changes=False):
-        document = AI.difference_to_commit_message(self.prev_code, self.code) if not no_changes else "No Changes Made"
+        with tracer.start_span("scope-create-commit-message") as span:
+            span.set_attribute("no_changes", no_changes)
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))     
+            the_prev_code = self.prev_code
+            span.set_attribute("prev_code_len", len(str(the_prev_code)))
+            try:
+                document = AI.difference_to_commit_message(the_prev_code, the_code) if not no_changes else "No Changes Made"
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":commit_message", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":commit_message", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["commit_message"] = document
-            self.the_storage.set(self.key, the_resource)
+                    the_resource["commit_message"] = document
+                    self.the_storage.set(self.key, the_resource)
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
+
 
 
 
 
     def create_required_test_types(self):
-        document = AI.code_to_required_test_types(self.code)
+        with tracer.start_span("scope-create-required-test-types") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))                 
+            try:        
+                document = AI.code_to_required_test_types(the_code)
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":required_test_types", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":required_test_types", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["required_test_types"] = document
-            self.the_storage.set(self.key, the_resource)
-
-
+                    the_resource["required_test_types"] = document
+                    self.the_storage.set(self.key, the_resource)
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
 
 
     def create_tags(self):
-        document = AI.code_to_tags(self.code)
+        with tracer.start_span("scope-create-tags") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))                
+            try:            
+                document = AI.code_to_tags(the_code)
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":tags", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":tags", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["tags"] = document
-            self.the_storage.set(self.key, the_resource)
-
+                    the_resource["tags"] = document
+                    self.the_storage.set(self.key, the_resource)
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
 
 
 
     def create_security_analysis(self):
-        document = AI.code_to_security_analysis(self.code)
+        with tracer.start_span("scope-create-security-analysis") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code
+            span.set_attribute("code_len", len(str(the_code)))               
+            try:            
+                document = AI.code_to_security_analysis(self.code)
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":security_analysis", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":security_analysis", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["security_analysis"] = document
-            self.the_storage.set(self.key, the_resource)
-
+                    the_resource["security_analysis"] = document
+                    self.the_storage.set(self.key, the_resource)
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
 
 
     def create_documentation_old(self):
-        document = AI.code_to_documentation(self.code_old)
+        with tracer.start_span("scope-create-documentation-old") as span:
+            span.set_attribute("AI.default_model", AI.default_model)
+            the_code = self.code_old
+            span.set_attribute("code_len", len(the_code))
+            try:                    
+                document = AI.code_to_documentation(the_code)
 
-        if not self.specific:
-            self.the_storage.set(self.key + ":documentation", document)
-        else:
+                if not self.specific:
+                    self.the_storage.set(self.key + ":documentation", document)
+                else:
 
-            the_resource = self.the_storage.get(self.key)
+                    the_resource = self.the_storage.get(self.key)
 
-            the_resource["documentation"] = document
-            self.the_storage.set(self.key, the_resource)
-
+                    the_resource["documentation"] = document
+                    self.the_storage.set(self.key, the_resource)
+                span.set_status(Status(StatusCode.OK))
+            except Exception as e:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(e)
 
 
 
@@ -718,65 +796,82 @@ class Scope:
         
         def dump_operation(data, user, pass_str):
 
+            with tracer.start_span("scope-dump") as span:
+                try:
+                    if self.the_storage.get(self.key) == None:
+                        span.set_attribute("new", True)
 
-            current_time = time.time()
-            the_time = str(current_time) + "_" + str(random.randint(0, 100000))
-            sha256 = hashlib.sha256(the_time.encode()).hexdigest()
-            key = self.key + ":" + sha256            
-            temp_data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
-            self.the_storage.set(self.key, temp_data)
-
-
-            from upsonic_on_prem.api.operations.user import create_commit_message_of_scope_, create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
-
-            print("Dump Operation Started")
-            access_key = user.key
-
-            if self.prev_code != self.code:
-                create_commit_message_of_scope_(scope=self.key, version=None)
-                task_id = "create_documentation"+self.key
-
-                create_document_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-                create_time_complexity_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-                create_mistakes_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-                create_required_test_types_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-                create_tags_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-                create_security_analyses_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
-                readmes = split_dotted_string(self.key)
-                for i in readmes:
-                    task_id = "create_readme_"+i
-                    background_worker(task_id, create_readme_, top_library=i, version=None, create_ai_task=True, access_key=access_key)
-            else:
-                self.create_commit_message(no_changes=True)
-
-            if not pass_str:
-                data = data.decode()
+                    current_time = time.time()
+                    the_time = str(current_time) + "_" + str(random.randint(0, 100000))
+                    sha256 = hashlib.sha256(the_time.encode()).hexdigest()
+                    key = self.key + ":" + sha256            
+                    temp_data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+                    self.the_storage.set(self.key, temp_data)
 
 
-            data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+                    from upsonic_on_prem.api.operations.user import create_commit_message_of_scope_, create_document_of_scope_, create_time_complexity_of_scope_, create_mistakes_of_scope_, create_required_test_types_of_scope_, create_tags_of_scope_, create_security_analyses_of_scope_, create_readme_
 
-            storage_3.set(key, data)
+                    print("Dump Operation Started")
+                    access_key = user.key
 
-            current = self.dump_history
-            current.append(key)
-            self.the_storage.set(self.key + ":dump_history", current)
+                    if self.prev_code != self.code:
+                        create_commit_message_of_scope_(scope=self.key, version=None)
+                        task_id = "create_documentation"+self.key
 
-            self.the_storage.set(self.key, data)
+                        create_document_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                        create_time_complexity_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                        create_mistakes_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                        create_required_test_types_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                        create_tags_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                        create_security_analyses_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
+                        readmes = split_dotted_string(self.key)
+                        for i in readmes:
+                            task_id = "create_readme_"+i
+                            background_worker(task_id, create_readme_, top_library=i, version=None, create_ai_task=True, access_key=access_key)
+                    else:
+                        self.create_commit_message(no_changes=True)
+
+                    if not pass_str:
+                        data = data.decode()
 
 
-            if ":" in self.key:
-                path = self.key.split(":")[0].replace(".", "/")
-            else:
-                path = self.key.replace(".", "/")
-            path = f'{path}.py'     
+                    data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
-            github_sha = github.create_or_update_file(scope=self, message=f"New changes for {path} by {user.name}")
-            if github_sha != False:
-                self.set_github_sha(github.get_sha(self))
-    
-            self.set_lock(False)
-            print("Dump Operation Ended")
+                    storage_3.set(key, data)
 
+                    current = self.dump_history
+                    current.append(key)
+                    self.the_storage.set(self.key + ":dump_history", current)
+
+                    self.the_storage.set(self.key, data)
+
+
+                    if ":" in self.key:
+                        path = self.key.split(":")[0].replace(".", "/")
+                    else:
+                        path = self.key.replace(".", "/")
+                    path = f'{path}.py'     
+
+                    with tracer.start_span("scope-dump-github-sync") as subspan:
+                        try:
+                            github_sha = github.create_or_update_file(scope=self, message=f"New changes for {path} by {user.name}")
+                            if github_sha != False:
+                                subspan.set_attribute("updated", True)
+                                self.set_github_sha(github.get_sha(self))
+                            subspan.set_status(Status(StatusCode.OK))
+                        except Exception as ex:
+                            subspan.set_status(Status(StatusCode.ERROR))
+                            subspan.record_exception(ex)
+                
+                    self.set_lock(False)
+                    span.set_status(Status(StatusCode.OK))
+                except Exception as ex:
+                    self.set_lock(False)
+                    span.set_status(Status(StatusCode.ERROR))
+                    span.record_exception(ex)
+                    traceback.print_exc()
+                    
+                    
 
         if not self.lock:
             self.set_lock(True)
@@ -802,13 +897,20 @@ class Scope:
 
     @staticmethod
     def get_all_scopes():
-        keys = storage_2.keys()
         scopes = []
-        for i in keys:
-            if not ":" in i and i != "":
-                scopes.append(i)
+        with tracer.start_span("scope-get-all-scopes") as span:
+            try:
+                keys = storage_2.keys()
+                
+                for i in keys:
+                    if not ":" in i and i != "":
+                        scopes.append(i)
 
-        scopes.sort()
+                scopes.sort()
+                span.set_status(Status(StatusCode.OK))
+            except Exception as ex:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(ex)
         return scopes
 
     @staticmethod

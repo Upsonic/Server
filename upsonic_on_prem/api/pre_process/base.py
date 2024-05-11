@@ -8,7 +8,8 @@ from upsonic_on_prem.api.urls import *
 from upsonic_on_prem.api.pre_process.admin import *
 
 from upsonic_on_prem.api.pre_process.user import *
-
+from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode
+from upsonic_on_prem.api.utils.logs import warning
 
 @app.before_request
 def check():
@@ -58,6 +59,7 @@ def check():
         pre_processor = user_pre_process
 
     if not pre_processor(the_access_key, request):
+        warning(f"Access denied for {endpoint}")
         return Response(
             "You don't have right to access this URL.\n"
             "You have to login with proper credentials",

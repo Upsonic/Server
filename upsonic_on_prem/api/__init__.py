@@ -42,35 +42,10 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 limiter = Limiter(get_remote_address, app=app, default_limits=rate_limit)
 
 
+from .tracer import provider
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
 
-if infrastackai:
-    from opentelemetry.sdk.resources import Resource
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor, SimpleSpanProcessor, ConsoleSpanExporter
-    from opentelemetry import trace
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.trace.export import (
-        BatchSpanProcessor,
-        ConsoleSpanExporter,
-    )
-
-    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-    from opentelemetry.instrumentation.flask import FlaskInstrumentor
-
-    # Creates a tracer from the global tracer provider
-    tracer = trace.get_tracer("my.tracer.name")
-    resource = Resource.create({"service.name": "API"})
-    provider = TracerProvider(resource=resource)
-    trace.set_tracer_provider(provider)
-
-    # Adds span processor with the OTLP exporter to the tracer provider
-    provider.add_span_processor(
-        SimpleSpanProcessor(OTLPSpanExporter(endpoint="https://collector-us1-http.infrastack.ai/v1/traces", headers=(("infrastack-api-key", infrastackai_api_key),)))
-    )
-
-
-    tracer = trace.get_tracer(__name__)
-
-    FlaskInstrumentor().instrument_app(app, tracer_provider=provider)
+FlaskInstrumentor().instrument_app(app, tracer_provider=provider)
 
 
 
@@ -83,8 +58,19 @@ def status():
 
 
 
+def version_info():
+    from upsonic_on_prem.api.utils.logs import successfully
+    from upsonic_on_prem.__init__ import __version__
+    successfully(f"Upsonic On-Prem Alive with version {str(__version__)}")
+
+
+version_info()
+
+
 
 from .limit import *
 from .pre_process import *
 
 from .operations import *
+
+
