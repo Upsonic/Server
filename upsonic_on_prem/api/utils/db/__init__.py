@@ -4,8 +4,8 @@ from .redis import *
 import traceback
 
 
-from upsonic_on_prem.utils.configs import redis_password, redis_host, redis_port
-from upsonic_on_prem.utils.logs import *
+from upsonic_on_prem.api.utils.configs import redis_password, redis_host, redis_port
+from upsonic_on_prem.api.utils.logs import *
 
 import threading
 

@@ -206,9 +206,6 @@ AUTHENTICATION_BACKENDS = [
 
 ]
 
-betterstack = os.environ.get("betterstack", "false").lower() == "true"
-betterstack_django_key = os.environ.get("betterstack_django_key", "9CaQtaX73ahSDCzDhpegB3iJ")
-# settings.py
 
 LOGGING = {
         "version": 1,
@@ -220,26 +217,6 @@ LOGGING = {
         },
     }
 
-if betterstack:
-    print("Betterstack is enabled")
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        'handlers': {
-            'logtail': {
-                'class': 'logtail.LogtailHandler',
-                'source_token': betterstack_django_key,
-            },
-        },
-        "loggers": {
-            "": {
-                "handlers": [
-                    "logtail",
-                ],
-                "level": "INFO",
-            },
-        },
-    }
 
 
 
@@ -274,3 +251,71 @@ PWA_APP_SHORTCUTS = [
         'description': 'View all libraries'
     },    
 ]
+
+
+
+infrastackai = os.environ.get("infrastackai", "false").lower() == "true"
+infrastackai_api_key = os.environ.get("infrastackai_api_key", "")
+
+
+if infrastackai:
+    from opentelemetry.sdk.resources import Resource
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor, SimpleSpanProcessor, ConsoleSpanExporter
+    from opentelemetry import trace
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import (
+        BatchSpanProcessor,
+        ConsoleSpanExporter,
+    )
+
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+    from opentelemetry.instrumentation.django import DjangoInstrumentor
+
+    # Creates a tracer from the global tracer provider
+    tracer = trace.get_tracer("my.tracer.name")
+    resource = Resource.create({"service.name": "WEB"})
+    provider = TracerProvider(resource=resource)
+    trace.set_tracer_provider(provider)
+
+    # Adds span processor with the OTLP exporter to the tracer provider
+    provider.add_span_processor(
+        SimpleSpanProcessor(OTLPSpanExporter(endpoint="https://collector-us1-http.infrastack.ai/v1/traces", headers=(("infrastack-api-key", infrastackai_api_key),)))
+    )
+
+
+    tracer = trace.get_tracer(__name__)
+
+
+    DjangoInstrumentor().instrument(tracer_provider=provider)
+
+
+import logging
+
+logger = logging.getLogger(__name__) 
+if not debug_mode:
+    logger.setLevel(logging.INFO)
+else:
+    logger.setLevel(logging.DEBUG)
+logger.handlers = []
+
+if infrastackai:
+   
+    from opentelemetry._logs import set_logger_provider
+    from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
+    from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+    from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
+    from opentelemetry.sdk.resources import Resource
+
+    resource = Resource.create({"service.name": "WEB"})
+    # Create and set the logger provider
+    logger_provider = LoggerProvider(resource=resource)
+    set_logger_provider(logger_provider)
+
+    # Create the OTLP log exporter that sends logs to configured destination
+    exporter = OTLPLogExporter(endpoint="https://collector-us1-http.infrastack.ai/v1/logs", headers=(("infrastack-api-key", infrastackai_api_key),))
+    logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
+
+    # Attach OTLP handler to root logger
+    handler = LoggingHandler(logger_provider=logger_provider)
+    logger.addHandler(handler)
+        

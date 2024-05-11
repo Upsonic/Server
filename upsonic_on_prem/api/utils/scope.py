@@ -5,11 +5,11 @@ import random
 import os
 import traceback
 import difflib
-from upsonic_on_prem.utils import storage_2, AI, storage_3, AccessKey, storage_5
+from upsonic_on_prem.api.utils import storage_2, AI, storage_3, AccessKey, storage_5
 
-from upsonic_on_prem.utils.configs import admin_key
+from upsonic_on_prem.api.utils.configs import admin_key
 
-from upsonic_on_prem.utils.github_sync import github
+from upsonic_on_prem.api.utils.github_sync import github
 
 
 import cloudpickle
