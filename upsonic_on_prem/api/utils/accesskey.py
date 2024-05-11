@@ -6,9 +6,9 @@ import os
 import traceback
 
 
-from upsonic_on_prem.utils import storage
+from upsonic_on_prem.api.utils import storage
 
-from upsonic_on_prem.utils.configs import admin_key
+from upsonic_on_prem.api.utils.configs import admin_key
 
 class AccessKey:
     def __init__(self, key):

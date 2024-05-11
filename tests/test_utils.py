@@ -10,10 +10,10 @@ import threading
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from upsonic_on_prem.utils import storage, storage_2, storage_3
-from upsonic_on_prem.utils import AccessKey
-from upsonic_on_prem.utils import Scope
-from upsonic_on_prem.utils import AI
+from upsonic_on_prem.api.utils import storage, storage_2, storage_3
+from upsonic_on_prem.api.utils import AccessKey
+from upsonic_on_prem.api.utils import Scope
+from upsonic_on_prem.api.utils import AI
 import cloudpickle
 import dill
 

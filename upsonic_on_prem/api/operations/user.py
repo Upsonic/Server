@@ -3,11 +3,11 @@ from upsonic_on_prem.api import app
 
 from upsonic_on_prem.api.urls import *
 
-from upsonic_on_prem.utils import storage, storage_2, storage_4, AccessKey, Scope, AI
+from upsonic_on_prem.api.utils import storage, storage_2, storage_4, AccessKey, Scope, AI
 
-from upsonic_on_prem.utils.configs import openai_api_key
+from upsonic_on_prem.api.utils.configs import openai_api_key
 
-from upsonic_on_prem.utils.github_sync import github
+from upsonic_on_prem.api.utils.github_sync import github
 
 from flask import jsonify
 from flask import request

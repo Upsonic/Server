@@ -17,10 +17,10 @@ from upsonic_on_prem.api import app
 
 
 
-from upsonic_on_prem.utils import storage
+from upsonic_on_prem.api.utils import storage
 
 
-from upsonic_on_prem.utils.configs import threads, url_scheme
+from upsonic_on_prem.api.utils.configs import threads, url_scheme
 
 class _cli:
 
