@@ -33,6 +33,7 @@ class TheNotifications(models.Model):
 class User(AbstractUser):
     notifications = models.ManyToManyField(TheNotifications, blank=True)
     access_key = models.CharField(max_length=300, default="")
+    dark_mode = models.BooleanField(default=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.the_register()

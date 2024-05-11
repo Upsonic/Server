@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.shortcuts import redirect
 from django.http.response import HttpResponse
+from django.http import HttpResponseRedirect
 from app.api_integration import API_Integration
 from app import models
 from dash.logs import logger
@@ -1477,3 +1478,21 @@ def complate_ai_task(request):
     the_json = {"id": the_object.id}
 
     return JsonResponse(the_json, safe=False)
+
+
+
+
+
+@login_required
+def settings_dark_mode(request):
+    request.user.dark_mode = True
+    request.user.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def settings_light_mode(request):
+    request.user.dark_mode = False
+    request.user.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    

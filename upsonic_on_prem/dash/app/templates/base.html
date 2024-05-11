@@ -8,8 +8,12 @@
 <div id="this_url" style="display: none;">https://{{request.get_host}}:7341{{request.get_full_path_info}}</div>
 
 
-<html lang="en" data-bs-theme="dark">
 
+{% if request.user.dark_mode %}
+<html lang="en" data-bs-theme="dark">
+{% else %}
+<html lang="en" data-bs-theme="light">
+{% endif %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +26,19 @@
     <link href='/static/css/site.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/dark_mode.css' rel='stylesheet' type='text/css'>
     <link href="/static/css/bootstrap-icons.css" rel="stylesheet">
-
+    {% if request.user.dark_mode %}
+    <link rel="stylesheet" href="/static/css/atom-one-dark.min.css">
+    {% else %}
+    <link rel="stylesheet" href="/static/css/atom-one-light.min.css">
+    {% endif %}    
+    
+    <script src="/static/js/highlight.min.js"></script>
+    
+    <!-- and it's easy to individually load additional languages -->
+    <script src="/static/js/python.min.js"></script>
+    <script src="/static/js/markdown.min.js"></script>
+    
+    
     {% include 'in_page_load.js.html' %}
 
     {% sentry as sentry %}

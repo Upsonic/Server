@@ -51,7 +51,7 @@
             </div>
             <div class="custom_code_block">
                 <div class="custom_code_block_code">
-                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html" >{{using_code}}</code></pre></div>
+                    <div class="highlight"><pre><code class="language-python"  style="text-wrap: pretty;">{{using_code}}</code></pre></div>
                 </div>
             </div>
             <a href="#" onclick="page_load('{% url 'control_library' id=control_library %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Latest</a>
@@ -69,12 +69,12 @@
             Author: {{v.user}} Date: {{v.date}}
             <div class="custom_code_block">
                 <div class="custom_code_block_code">
-                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html" style="text-wrap: pretty;">{{v.release_note}}</code></pre></div>
+                    <div class="highlight"><pre><code class="language-markdown"  style="text-wrap: pretty;">{{v.release_note}}</code></pre></div>
                 </div>
             </div>            
             <div class="custom_code_block">
                 <div class="custom_code_block_code">
-                    <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{v.using_code}}</code></pre></div>
+                    <div class="highlight"><pre><code class="language-python" style="text-wrap: pretty;">{{v.using_code}}</code></pre></div>
                 </div>
             </div>
             <a href="#" onclick="page_load('{% url 'control_library' id=v.link %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Library View for {{v.version}}</a>
