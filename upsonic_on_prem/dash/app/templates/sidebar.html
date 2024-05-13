@@ -42,7 +42,7 @@
                 <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
                 {% endif %}
                 <img class="{% if page_title != 'Search' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/search{% if page_title == 'Search' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg" {% if page_title == 'Search' %}style="filter: drop-shadow(2px 4px 6px black);"{%endif%}/>
+                     src="/static/images/search{% if page_title == 'Search' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg"/>
             </a>
             
             <div class="custom_side_bar_flex_column_nav_item_down_text">Search</div>
