@@ -915,6 +915,7 @@ class Scope:
                         scopes.append(i)
 
                 scopes.sort()
+                span.set_attribute("total_scopes", len(scopes))
                 span.set_status(Status(StatusCode.OK))
             except Exception as ex:
                 span.set_status(Status(StatusCode.ERROR))
