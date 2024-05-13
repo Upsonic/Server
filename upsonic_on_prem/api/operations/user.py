@@ -21,11 +21,12 @@ import requests
 def dump():
     scope = request.form.get("scope")
     data = request.form.get("data")
+    commit_message = request.form.get("commit_message")
 
     the_scope = Scope(scope)
 
     return jsonify(
-        {"status": True, "result": the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True)})
+        {"status": True, "result": the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True, commit_message=commit_message)})
 
 
 @app.route(dump_code_url, methods=["POST"])

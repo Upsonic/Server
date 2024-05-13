@@ -481,7 +481,7 @@ class Scope:
                 span.record_exception(e)
 
 
-    def create_commit_message(self, no_changes=False):
+    def create_commit_message(self, no_changes=False, custom_commit_message=None):
         with tracer.start_span("scope-create-commit-message") as span:
             span.set_attribute("no_changes", no_changes)
             span.set_attribute("AI.default_model", AI.default_model)
@@ -489,8 +489,13 @@ class Scope:
             span.set_attribute("code_len", len(str(the_code)))     
             the_prev_code = self.prev_code
             span.set_attribute("prev_code_len", len(str(the_prev_code)))
+            if custom_commit_message != None:
+                span.set_attribute("custom_commit_message", True)
             try:
-                document = AI.difference_to_commit_message(the_prev_code, the_code) if not no_changes else "No Changes Made"
+                if custom_commit_message != None:
+                    document = custom_commit_message
+                else:
+                    document = AI.difference_to_commit_message(the_prev_code, the_code) if not no_changes else "No Changes Made"
 
                 if not self.specific:
                     self.the_storage.set(self.key + ":commit_message", document)
@@ -792,9 +797,9 @@ class Scope:
         return self.the_storage.set(self.key + ":python_version", python_version)
 
 
-    def dump(self, data, user: AccessKey, pass_str=False):
+    def dump(self, data, user: AccessKey, pass_str=False, commit_message=None):
         
-        def dump_operation(data, user, pass_str):
+        def dump_operation(data, user, pass_str, commit_message):
 
             with tracer.start_span("scope-dump") as span:
                 try:
@@ -815,7 +820,10 @@ class Scope:
                     access_key = user.key
 
                     if self.prev_code != self.code:
-                        create_commit_message_of_scope_(scope=self.key, version=None)
+                        if commit_message == None:
+                            create_commit_message_of_scope_(scope=self.key, version=None)
+                        else:
+                            self.create_commit_message(custom_commit_message=commit_message)
                         task_id = "create_documentation"+self.key
 
                         create_document_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
@@ -875,7 +883,7 @@ class Scope:
 
         if not self.lock:
             self.set_lock(True)
-            background_worker(str(random.randint(10000,25000)), dump_operation, data=data, user=user, pass_str=pass_str)        
+            background_worker(str(random.randint(10000,25000)), dump_operation, data=data, user=user, pass_str=pass_str, commit_message=commit_message)        
         else:
             return "Requested scope locked"
 
