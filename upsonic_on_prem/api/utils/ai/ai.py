@@ -133,6 +133,7 @@ class AI_:
 
                 info(f"Returning {len(results)} results")
                 results = sorted(results, key=lambda x: x[2], reverse=True)
+                span.set_status(Status(StatusCode.OK))
             except Exception as ex:
                 traceback.print_exc()
                 failed("Failed to search by documentation")
