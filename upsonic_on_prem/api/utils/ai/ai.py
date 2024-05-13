@@ -36,104 +36,110 @@ class AI_:
     
 
     def search_by_documentation(self, the_contents, question, min_score=0, how_many_result=10):
-        info(f"Searching by documentation for {question}")
-        try:
-            from langchain.docstore.document import Document
+        with tracer.start_span("search") as span:
+            info(f"Searching by documentation for {len(str(question))}")
+            span.set_attribute("AI.default_search_model", AI.default_search_model)
+            try:
+                from langchain.docstore.document import Document
 
-            texts = []
-            ids = []
-            for content in the_contents:
-                text = content["name"] + ":" + str(content["documentation"])
-                ids.append(content["name"])
-                texts.append(Document(page_content=text, metadata={"name": content["name"]}))
+                texts = []
+                ids = []
+                for content in the_contents:
+                    text = content["name"] + ":" + str(content["documentation"])
+                    ids.append(content["name"])
+                    texts.append(Document(page_content=text, metadata={"name": content["name"]}))
 
-            text_salt = " ".join([text.page_content for text in texts])
-
-
-            if not self.default_search_model.startswith("text-embedding"):
-
-                oembed = OllamaEmbeddings(base_url="http://localhost:11434", model=self.default_search_model)
-            else:
-
-                oembed = OpenAIEmbeddings(model=self.default_search_model, openai_api_key=os.environ.get("openai_api_key"))
-
-            sha256_of_model = hashlib.sha256(self.default_search_model.encode()).hexdigest()
-
-            the_directory = "/db/embed_by_documents"+sha256_of_model
-            the_salt_name = ":embed_by_documents_salt"+sha256_of_model
+                text_salt = " ".join([text.page_content for text in texts])
 
 
-            if not os.path.exists(the_directory):
-                debug("Creating the_directory")
-                os.makedirs(the_directory)
+                if not self.default_search_model.startswith("text-embedding"):
 
-            pass_generate = False
+                    oembed = OllamaEmbeddings(base_url="http://localhost:11434", model=self.default_search_model)
+                else:
 
-            if not os.path.exists(the_directory+"/chroma.sqlite3"):
-                debug("Generating new vectorstore")
-                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
-                storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
-                pass_generate = True
-                debug("Generated new vectorstore")
+                    oembed = OpenAIEmbeddings(model=self.default_search_model, openai_api_key=os.environ.get("openai_api_key"))
 
+                sha256_of_model = hashlib.sha256(self.default_search_model.encode()).hexdigest()
+
+                the_directory = "/db/embed_by_documents"+sha256_of_model
+                the_salt_name = ":embed_by_documents_salt"+sha256_of_model
 
 
-            vectorstore = Chroma(persist_directory=the_directory, embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
+                if not os.path.exists(the_directory):
+                    debug("Creating the_directory")
+                    os.makedirs(the_directory)
 
-            if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(the_salt_name) and not pass_generate:
-                debug("Regenerating vectorstore")
-                vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
-                storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
-                debug("Regenerated vectorstore")
-                
-            currenly_get = vectorstore._collection.get()
-    
-            currently_docs = []
-            for doc in currenly_get["documents"]:
-                index_number = currenly_get["documents"].index(doc)
-                data = {"page_content": doc, "metadata": currenly_get["metadatas"][index_number]}
-                currently_docs.append(Document(page_content=data["page_content"], metadata=data["metadata"]))
-    
-            for doc in currently_docs:
+                pass_generate = False
+
+                if not os.path.exists(the_directory+"/chroma.sqlite3"):
+                    debug("Generating new vectorstore")
+                    vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
+                    storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
+                    pass_generate = True
+                    debug("Generated new vectorstore")
+
+
+
+                vectorstore = Chroma(persist_directory=the_directory, embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
+
+                if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(the_salt_name) and not pass_generate:
+                    debug("Regenerating vectorstore")
+                    span.set_attribute("regenerated_vectorstore", True)
+                    vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
+                    storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
+                    debug("Regenerated vectorstore")
                     
-                    if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
-                        _name = doc.metadata["name"]
-                        debug(f"Removing {_name}")
-                        vectorstore._collection.delete([doc.metadata["name"]])
-                    else:
-                        new_doc = None
-                        for text in texts:
-                            if doc.metadata["name"] == text.metadata["name"]:
-                                new_doc = text
+                currenly_get = vectorstore._collection.get()
+        
+                currently_docs = []
+                for doc in currenly_get["documents"]:
+                    index_number = currenly_get["documents"].index(doc)
+                    data = {"page_content": doc, "metadata": currenly_get["metadatas"][index_number]}
+                    currently_docs.append(Document(page_content=data["page_content"], metadata=data["metadata"]))
+        
+                for doc in currently_docs:
+                        
+                        if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
+                            _name = doc.metadata["name"]
+                            debug(f"Removing {_name}")
+                            vectorstore._collection.delete([doc.metadata["name"]])
+                        else:
+                            new_doc = None
+                            for text in texts:
+                                if doc.metadata["name"] == text.metadata["name"]:
+                                    new_doc = text
 
-                        if new_doc != None:
-                            if doc.page_content != new_doc.page_content:
-                                _name = doc.metadata["name"]
-                                debug(f"Updating {_name}")
-                                vectorstore.update_document(new_doc.metadata["name"], new_doc)
+                            if new_doc != None:
+                                if doc.page_content != new_doc.page_content:
+                                    _name = doc.metadata["name"]
+                                    debug(f"Updating {_name}")
+                                    vectorstore.update_document(new_doc.metadata["name"], new_doc)
 
-            
+                
 
 
-            docs = vectorstore.similarity_search_with_relevance_scores(question, k=how_many_result)
-            debug(f"Found {len(docs)} results")
+                docs = vectorstore.similarity_search_with_relevance_scores(question, k=how_many_result)
+                debug(f"Found {len(docs)} results")
+                span.set_attribute("found_results", len(docs))
 
-            results = []
+                results = []
 
-            for doc in docs:
-                if doc[1] >= min_score:
-                    doc = [doc[0].metadata["name"], doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
-                    results.append(doc)
+                for doc in docs:
+                    if doc[1] >= min_score:
+                        doc = [doc[0].metadata["name"], doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
+                        results.append(doc)
 
-            results = [list(t) for t in set(tuple(element) for element in results)]
+                results = [list(t) for t in set(tuple(element) for element in results)]
 
-            info(f"Returning {len(results)} results")
-            results = sorted(results, key=lambda x: x[2], reverse=True)
-        except:
-            traceback.print_exc()
-            failed("Failed to search by documentation")
-            results = []
-        return results
+                info(f"Returning {len(results)} results")
+                results = sorted(results, key=lambda x: x[2], reverse=True)
+            except Exception as ex:
+                traceback.print_exc()
+                failed("Failed to search by documentation")
+                results = []
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(ex)
+            return results
 
 
     def completion(self, input_text, model):
