@@ -24,13 +24,11 @@ def the_connection_code(request):
     custom_connection_url = os.getenv("custom_connection_url")
     
     if custom_connection_url == None:
-        the_connection_code = f"""
-from upsonic import Upsonic_On_Prem
+        the_connection_code = f"""from upsonic import Upsonic_On_Prem
 upsonic = Upsonic_On_Prem('https://{request.get_host()}:7340', '{request.user.access_key}')
 """
     else:
-        the_connection_code = f"""
-from upsonic import Upsonic_On_Prem
+        the_connection_code = f"""from upsonic import Upsonic_On_Prem
 upsonic = Upsonic_On_Prem('{custom_connection_url}', '{request.user.access_key}')
 """
     return the_connection_code
