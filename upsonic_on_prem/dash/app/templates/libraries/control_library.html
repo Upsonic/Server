@@ -76,10 +76,10 @@
         <tr>
 
             {% if value == False %}
-            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/object_fill_dark.svg" style="height: 13px;"/>{{key}}</a></td>
+            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/object_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}.svg" style="height: 13px;"/>{{key}}</a></td>
             
             {% else %}
-            <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/library_fill_dark.svg" style="height: 13px;"/>
+            <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/library_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}.svg" style="height: 13px;"/>
                 {{key}}</a></td>
             
             {% endif %}

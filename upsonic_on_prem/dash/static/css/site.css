@@ -373,6 +373,19 @@ html {
 
 }
 
+.custom_card_header_black_big {
+
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Gabarito;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 20.8px */
+
+  margin-top: 17px;
+
+}
 
 
 .custom_card_pharagraph {
@@ -399,7 +412,7 @@ html {
 
   border-radius: 5px;
 
-  background: #e9e9e9;
+  background: #f7f7f7;
 
   padding-left: 15px;
   padding-right: 15px;
@@ -514,7 +527,7 @@ html {
 .custom_code_block {
 
   border-radius: 10px;
-  background: #e9e9e9;
+  background: #f7f7f7;
   padding-top: 19px;
   padding-bottom: 19px;
   padding-left: 25px;
@@ -763,7 +776,7 @@ a.disabled {
 
 
 .custom_body {
-  background: #F6F5FF;
+  background: #f7f7f7;
 }
 
 
@@ -1114,7 +1127,8 @@ a.disabled {
   font-style: normal;
   font-weight: 400;
   line-height: 130%; /* 18.2px */
-  background-color: #e9e9e9;
+  background-color: #fff;
+  border: 0;
 }
 
 
@@ -1183,8 +1197,6 @@ body.with-cookie-bar {
 
 .library_item {
   vertical-align: baseline;
-  filter: drop-shadow(2px 2px 2px black);
-  
 }
 
 
@@ -1218,7 +1230,7 @@ body.with-cookie-bar {
 
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
