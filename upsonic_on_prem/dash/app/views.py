@@ -239,7 +239,7 @@ def control_library(request,id):
         if version != None:
             if version in API_Integration(request.user.access_key).get_version_history(each_scope):
                 sub_doc =  API_Integration(request.user.access_key).get_documentation(each_scope, version=version)
-                if sub_doc == None and write_right:
+                if sub_doc == None:
                     docs_are_ready = False
                     if version == None:
                             the_id = id
@@ -256,7 +256,7 @@ def control_library(request,id):
         else:
             sub_doc = API_Integration(request.user.access_key).get_documentation(each_scope)
 
-            if sub_doc == None and write_right:
+            if sub_doc == None:
                     docs_are_ready = False
                     if version == None:
                             the_id = id
@@ -365,7 +365,7 @@ def control_element(request, id):
         gpt_model = True
 
 
-    if documentation == None and write_right:
+    if documentation == None:
         if version == None:
                 the_id = id
         else:
@@ -378,7 +378,7 @@ def control_element(request, id):
 
     
     time_complexity = API_Integration(request.user.access_key).get_time_complexity(id, version=version)
-    if time_complexity == None and write_right:
+    if time_complexity == None:
         if version == None:
                 the_id = id
         else:
@@ -392,7 +392,7 @@ def control_element(request, id):
 
 
     mistakes = API_Integration(request.user.access_key).get_mistakes(id, version=version)
-    if mistakes == None and write_right and gpt_model:
+    if mistakes == None:
         if version == None:
                 the_id = id
         else:
@@ -405,7 +405,7 @@ def control_element(request, id):
 
 
     required_test_types = API_Integration(request.user.access_key).get_required_test_types(id, version=version)
-    if required_test_types == None and write_right:
+    if required_test_types == None:
         if version == None:
                 the_id = id
         else:
@@ -419,7 +419,7 @@ def control_element(request, id):
 
 
     tags = API_Integration(request.user.access_key).get_tags(id, version=version)
-    if tags == None and write_right:
+    if tags == None:
         if version == None:
                 the_id = id
         else:
@@ -433,7 +433,7 @@ def control_element(request, id):
 
 
     security_analysis = API_Integration(request.user.access_key).get_security_analysis(id, version=version)
-    if security_analysis == None and write_right:
+    if security_analysis == None:
         if version == None:
                 the_id = id
         else:
@@ -1024,169 +1024,7 @@ def control_element_runs(request, id):
     return render(request, f"templates/libraries/element_runs.html", data)    
 
 
-@login_required
-def control_element(request, id):
 
-    version = None
-    if ":" in id:
-        version = id.split(":")[1]
-        id = id.split(":")[0]
-
-    have_upper = False
-    the_upper = ""
-    if "." in id:
-        print("Have upper 1")
-        have_upper = True
-        last = id.split(".")[-1]
-        index_of_last = id.split(".").index(last)
-        the_upper = id.split(".")[:index_of_last]
-        print("the_upper", the_upper)
-        print("last", last)
-        the_upper = ".".join(the_upper)
-        if version != None:
-            the_upper = the_upper +":"+ version
-
-
-
-    using_code = ""
-    using_code = f'upsonic.load("{id}")()'
-
-    documentation = API_Integration(request.user.access_key).get_documentation(id, version=version)
-
-    write_right = request.user.can_write(id)
-
-
-    gpt_model = False
-    if API_Integration(request.user.access_key).get_default_ai_model().startswith("gpt"):
-        gpt_model = True
-
-
-    if documentation == None and write_right:
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version         
-        tasks = models.AI_Task.objects.filter(task_name="documentation", key=the_id, status=False)
-        if len(tasks) == 0:
-            pass
-            #models.AI_Task(task_name="documentation", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        documentation = "Documentation is generating, it will be ready soon."
-
-    
-    time_complexity = API_Integration(request.user.access_key).get_time_complexity(id, version=version)
-    if time_complexity == None and write_right:
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version 
-        tasks = models.AI_Task.objects.filter(task_name="time_complexity", key=the_id, status=False)
-        if len(tasks) == 0:
-            pass
-            #models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        time_complexity = "Time Complexity is generating, it will be ready soon."
-
-
-
-    mistakes = API_Integration(request.user.access_key).get_mistakes(id, version=version)
-    if mistakes == None and write_right and gpt_model:
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version 
-        tasks = models.AI_Task.objects.filter(task_name="mistakes", key=the_id, status=False)
-        if len(tasks) == 0:
-            pass
-            #models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        mistakes = "Mistakes are generating, it will be ready soon."
-
-
-    required_test_types = API_Integration(request.user.access_key).get_required_test_types(id, version=version)
-    if required_test_types == None and write_right:
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version 
-        tasks = models.AI_Task.objects.filter(task_name="required_test_types", key=the_id, status=False)
-        if len(tasks) == 0:
-            pass
-            #models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        required_test_types = "Required Test Types are generating, it will be ready soon."
-
-
-
-    tags = API_Integration(request.user.access_key).get_tags(id, version=version)
-    if tags == None and write_right:
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version  
-        tasks = models.AI_Task.objects.filter(task_name="tags", key=the_id, status=False)
-        if len(tasks) == 0:
-            pass
-            #models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        tags = "Tags are generating, it will be ready soon."
-
-
-
-    security_analysis = API_Integration(request.user.access_key).get_security_analysis(id, version=version)
-    if security_analysis == None and write_right:
-        if version == None:
-                the_id = id
-        else:
-                the_id = id +":"+version            
-        tasks = models.AI_Task.objects.filter(task_name="security_analysis", key=the_id, status=False)
-        if len(tasks) == 0:
-            pass
-            #models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        security_analysis = "Security Analysis is generating, it will be ready soon."
-
-
-
-
-
-
-    requirements = API_Integration(request.user.access_key).get_requirements(id, version=version)
-    the_type = API_Integration(request.user.access_key).get_type(id, version=version)
-    python_version = API_Integration(request.user.access_key).get_python_version(id, version=version)
-
-
-
-    
-    github_synced = False
-
-    github_url = f"https://github.com/{github_repo_owner}/{github_repo_name}/"
-    if github_active:
-        github_synced = API_Integration(request.user.access_key).get_github_sync(id, version=version)
-
-
-
-    data = {
-        "page_title": "Libraries",
-        "libraries": API_Integration(request.user.access_key).top_scopes,
-        "control_library": id,
-        "control_library_with_version": id if version == None else id +":"+version,
-        "top_control_library": id.split(".")[0],
-        "have_upper": have_upper,
-        "the_upper": the_upper,
-        "code": API_Integration(request.user.access_key).get_code(id, version=version),
-        "github_active":github_active,
-        "github_synced":github_synced, 
-        "github_url":github_url,       
-        "using_code": using_code,
-        "documentation": documentation,
-        "time_complexity": time_complexity,
-        "mistakes": mistakes,
-        "required_test_types": required_test_types,
-        "tags": tags,
-        "security_analysis": security_analysis,
-        "requirements": requirements,
-        "type": capitalize_first_letter(the_type),
-        "python_version": python_version,
-        "gpt_model": gpt_model,
-        "version": "" if version == None else version,
-        "can_write": request.user.can_write(id)
-    }
-    return render(request, f"templates/libraries/element.html", data)
 
 
 
