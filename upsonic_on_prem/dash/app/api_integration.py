@@ -57,7 +57,7 @@ def transform_to_html_bold(text):
         if text.startswith("<br><br>"):
             text = text[8:]            
     except:
-        traceback.print_exc()
+        print("Error in transform_to_html_bold")
 
 
 
@@ -130,11 +130,11 @@ class API_Integration:
                 return result
             except:  # pragma: no cover
                 print(f"Error on '{self.api_url + endpoint}': ", response.text)
-                traceback.print_exc()
+
                 return [None]  # pragma: no cover
         except:
             print("Error: Remote is down")
-            traceback.print_exc()
+
             return [None]
 
     @property
@@ -543,7 +543,8 @@ class API_Integration:
 
     def is_admin(self, key):
         data = {"key": key}
-        return self._send_request("POST", "/is_admin", data=data)
+        result = self._send_request("POST", "/is_admin", data=data)
+        return True if result == True else False
 
     def enable_admin(self, key):
         data = {"key": key}
@@ -665,16 +666,19 @@ class API_Integration:
 
     def get_version_code(self, scope, version):
         data = {"version": scope+":"+version}
+        data["scope"] = scope
         return self._send_request("POST", "/get_version_code_of_scope", data=data)
 
     def get_version_difference(self, scope, version):
         data = {"version": scope+":"+version}
+        data["scope"] = scope
         return self._send_request("POST", "/get_version_difference_of_scope", data=data)
 
 
 
     def get_version_date(self, scope, version):
         data = {"version": scope+":"+version}
+        data["scope"] = scope
         the_time = self._send_request("POST", "/get_version_time_of_scope", data=data)
         print(the_time)
         the_time = int(the_time)
@@ -682,6 +686,7 @@ class API_Integration:
 
     def get_version_time(self, scope, version):
         data = {"version": scope+":"+version}
+        data["scope"] = scope
         the_time = self._send_request("POST", "/get_version_time_of_scope", data=data)
         print(the_time)
         the_time = int(the_time)
@@ -689,25 +694,31 @@ class API_Integration:
 
     def get_version_user(self, scope, version):
         data = {"version": scope+":"+version}
+        data["scope"] = scope
         return self._send_request("POST", "/get_version_user_of_scope", data=data)
 
     def get_version_release_note(self, scope, version):
         data = {"version": scope+":"+version}
+        data["scope"] = scope
         return self._send_request("POST", "/get_version_release_note_of_scope", data=data)
 
 
     def get_dump_user(self, scope, dump):
         data = {"dump": scope+":"+dump}
+        data["scope"] = scope
         return self._send_request("POST", "/get_dump_user_of_scope", data=data)        
 
 
     def get_dump_difference(self, scope, dump):
         data = {"dump": scope+":"+dump}
+        data["scope"] = scope
         return self._send_request("POST", "/get_dump_difference_of_scope", data=data)        
 
     def get_dump_commit_message(self, scope, dump):
         data = {"dump": scope+":"+dump}
+        data["scope"] = scope
         result = self._send_request("POST", "/get_dump_commit_message_of_scope", data=data)  
+        print("Commit message ", result)
         if result == [None] or result == None or result == "No Changes Made":
             result = "No Commit Message"  
         else:
@@ -718,6 +729,7 @@ class API_Integration:
 
     def get_dump_date(self, scope, dump):
         data = {"dump": scope+":"+dump}
+        data["scope"] = scope
         the_time = self._send_request("POST", "/get_dump_time_of_scope", data=data)
         print(the_time)
         the_time = int(the_time)
