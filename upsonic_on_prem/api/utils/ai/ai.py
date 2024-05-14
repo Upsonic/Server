@@ -151,7 +151,9 @@ class AI_:
         elif model == "gpt-3.5-turbo":
             result = self.gpt(input_text, model=model)
         elif model == "gpt-4":
-            result = self.gpt(input_text, model=model)  
+            result = self.gpt(input_text, model=model)
+        elif model == "gpt-4o":
+            result = self.gpt(input_text, model=model)              
 
          
         return result
@@ -271,7 +273,7 @@ Now, please identify potential mistakes in the following code:
 {code}
 ```
 
-Note: Please identify and describe the errors in a clear and informative manner. Libraries already imported
+Note: Please identify and describe the errors in a clear and informative manner. Libraries already imported. There is no `Missing Imports`
 
 """
 
