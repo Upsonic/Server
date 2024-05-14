@@ -67,6 +67,23 @@ class User(AbstractUser):
 
         return control        
 
+    def full_access(self, scope):
+        
+        if API_Integration(self.access_key).is_admin(self.access_key):
+            return True
+
+
+        all_scopes = API_Integration(self.access_key).get_read_scopes_of_me()
+
+        control = False
+        
+        if scope+".*" in all_scopes:
+            control = True
+            
+
+        return control
+
+        
 
 
     def can_read(self, scope):
