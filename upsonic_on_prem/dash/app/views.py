@@ -284,8 +284,9 @@ def control_library(request,id):
         if readme == None:
             readme = "Generating..."
     
-            if len(tasks) == 0:        
-                pass
+            if len(tasks) == 0:
+                if not request.user.full_access(id):
+                    readme = "No readme"
                 #models.AI_Task(task_name="readme", key=the_id, access_key=request.user.access_key, owner=request.user).save()
     else:
         readme = "Generating..."
@@ -861,7 +862,11 @@ def control_library_version(request,id):
             pass
         else:
             pass
-        the_versions.append({"version": each_version[0], "date": each_version[2], "release_note":API_Integration(request.user.access_key).create_get_release_note(id, each_version[0]),"using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
+        if not request.user.full_access(id):
+            the_release_note = "No release note"
+        else:
+            the_release_note = API_Integration(request.user.access_key).create_get_release_note(id, each_version[0])
+        the_versions.append({"version": each_version[0], "date": each_version[2], "release_note":the_release_note,"using_code": f'{the_name} = upsonic.load_module("{id}", version="{each_version[0]}")', "link":id+":"+each_version[0], "user":each_version[1]})
 
     
 
