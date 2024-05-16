@@ -1,14 +1,11 @@
+from flask import Flask, Response, jsonify, request
+
 from upsonic_on_prem.api import app
-from flask import Flask, request, Response, jsonify
-
-from upsonic_on_prem.api.utils import AccessKey
-
-from upsonic_on_prem.api.urls import *
-
 from upsonic_on_prem.api.pre_process.admin import *
-
 from upsonic_on_prem.api.pre_process.user import *
-from upsonic_on_prem.api.tracer import tracer, Status, StatusCode
+from upsonic_on_prem.api.tracer import Status, StatusCode, tracer
+from upsonic_on_prem.api.urls import *
+from upsonic_on_prem.api.utils import AccessKey
 from upsonic_on_prem.api.utils.logs import warning
 
 
