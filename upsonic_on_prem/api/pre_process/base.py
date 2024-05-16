@@ -8,7 +8,7 @@ from upsonic_on_prem.api.urls import *
 from upsonic_on_prem.api.pre_process.admin import *
 
 from upsonic_on_prem.api.pre_process.user import *
-from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode
+from upsonic_on_prem.api.tracer import tracer, Status, StatusCode
 from upsonic_on_prem.api.utils.logs import warning
 
 
@@ -22,8 +22,7 @@ def check():
     if endpoint == status_url:
         return
 
-    the_datas = request.json if request.method in [
-        'POST', 'PUT'] else request.args
+    the_datas = request.json if request.method in ["POST", "PUT"] else request.args
 
     auth = request.authorization
 
@@ -31,7 +30,8 @@ def check():
     if "Authorization" in request.headers:
         if "Bearer " in request.headers.get("Authorization"):
             the_access_key = AccessKey(
-                request.headers.get("Authorization").split(" ")[1])
+                request.headers.get("Authorization").split(" ")[1]
+            )
 
     if "model" in the_datas:
         if "**" in the_datas["model"]:
