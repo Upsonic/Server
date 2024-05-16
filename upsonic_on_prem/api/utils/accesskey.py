@@ -113,16 +113,6 @@ class AccessKey:
         return self._set(self.key + ":scopes_read", [])
 
 
-    def set_openai_api_key(self, openai_api_key):
-        return self._set(self.key + ":openai_api_key", openai_api_key)
-
-    @property
-    def openai_api_key(self):
-        return self._get(self.key + ":openai_api_key")
-
-
-    def delete_openai_api_key(self):
-        return self._delete(self.key + ":openai_api_key")
 
     @property
     def scopes_write(self):

@@ -132,24 +132,7 @@
     <button type="submit" form="add_write_scope" class="btn btn-lg custom_button">Add</button>
 
 
-    {% if gpt_model %}
-    <div class="custom_page_header_top_bottom_margin">
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">OpenAI Settings</span></span>
-    </div>
 
-    <form method="post" action="{% url 'set_openai_api_key_user' id=user.id %}" id="set_openai_api_key"
-          style="margin-top: 69px;">
-        <div class="row">
-            {% csrf_token %}
-            <div class="col custom_form_col">
-                <div class="custom_form_field_head">User Special OpenAI API key</div>
-                <input type="text" name="openai_api_key" class="form-control" id="openai_api_key" placeholder="{{openai_api_key}}" value="{{openai_api_key}}" required>
-            </div>
-        </div>
-    </form>
-    <button type="submit" form="set_openai_api_key" class="btn btn-lg custom_button">Set OpenAI API key</button>
-    <a href="{% url 'delete_openai_api_key_user' id=user.id %}" class="btn btn-lg custom_button_red">Delete Special Key</a>
-    {% endif %}
 
 </div>
 </div>
