@@ -15,6 +15,14 @@ from upsonic_on_prem.api.utils.github_sync import github
 
 
 def forward_request_to_openai_ollama(path, method, headers, data):
+    """
+
+    :param path: 
+    :param method: 
+    :param headers: 
+    :param data: 
+
+    """
     url = f"http://localhost:11434/v1/{path}"
     headers["Authorization"] = f"Bearer {openai_api_key}"
 
@@ -34,6 +42,11 @@ def forward_request_to_openai_ollama(path, method, headers, data):
 
 @app.route("/openai_ollama/<path:path>", methods=["GET", "POST", "PUT", "DELETE"])
 def proxy_openai_ollama(path):
+    """
+
+    :param path: 
+
+    """
     try:
 
         # Forward the request to OpenAI
@@ -52,6 +65,14 @@ def proxy_openai_ollama(path):
 
 
 def forward_request_to_ollama(path, method, headers, data):
+    """
+
+    :param path: 
+    :param method: 
+    :param headers: 
+    :param data: 
+
+    """
     url = f"http://localhost:11434/{path}"
 
     unallowed_path_list = [
@@ -88,6 +109,11 @@ def forward_request_to_ollama(path, method, headers, data):
 
 @app.route("/ollama/<path:path>", methods=["GET", "POST", "PUT", "DELETE"])
 def proxy_ollama(path):
+    """
+
+    :param path: 
+
+    """
     try:
 
         # Forward the request to OpenAI
@@ -106,6 +132,14 @@ def proxy_ollama(path):
 
 
 def forward_request_to_openai(path, method, headers, data):
+    """
+
+    :param path: 
+    :param method: 
+    :param headers: 
+    :param data: 
+
+    """
     url = f"https://api.openai.com/v1/{path}"
     headers["Authorization"] = f"Bearer {openai_api_key}"
 
@@ -125,6 +159,11 @@ def forward_request_to_openai(path, method, headers, data):
 
 @app.route("/openai/<path:path>", methods=["GET", "POST", "PUT", "DELETE"])
 def proxy_openai(path):
+    """
+
+    :param path: 
+
+    """
     try:
 
         # Forward the request to OpenAI
@@ -144,6 +183,7 @@ def proxy_openai(path):
 
 @app.route(dump_url, methods=["POST"])
 def dump():
+    """ """
     scope = request.form.get("scope")
     data = request.form.get("data")
     commit_message = request.form.get("commit_message")
@@ -165,6 +205,7 @@ def dump():
 
 @app.route(dump_code_url, methods=["POST"])
 def dump_code():
+    """ """
     scope = request.form.get("scope")
     code = request.form.get("code")
 
@@ -182,6 +223,7 @@ def dump_code():
 
 @app.route(dump_type_url, methods=["POST"])
 def dump_type():
+    """ """
     scope = request.form.get("scope")
     type = request.form.get("type")
 
@@ -192,6 +234,7 @@ def dump_type():
 
 @app.route(load_url, methods=["POST"])
 def load():
+    """ """
     scope = request.form.get("scope")
 
     return jsonify({"status": True, "result": Scope(scope).source})
@@ -199,6 +242,7 @@ def load():
 
 @app.route(get_read_scopes_of_me_url, methods=["get"])
 def get_read_scopes_of_me():
+    """ """
     return jsonify(
         {
             "status": True,
@@ -209,6 +253,7 @@ def get_read_scopes_of_me():
 
 @app.route(get_write_scopes_of_me_url, methods=["get"])
 def get_write_scopes_of_me():
+    """ """
     return jsonify(
         {
             "status": True,
@@ -219,6 +264,7 @@ def get_write_scopes_of_me():
 
 @app.route(get_document_of_scope_url, methods=["POST"])
 def get_document_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -231,6 +277,7 @@ def get_document_of_scope():
 
 @app.route(get_requirements_of_scope_url, methods=["POST"])
 def get_requirements_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -243,6 +290,7 @@ def get_requirements_of_scope():
 
 @app.route(get_settings_of_scope_url, methods=["POST"])
 def get_settings_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -255,6 +303,7 @@ def get_settings_of_scope():
 
 @app.route(get_time_complexity_of_scope_url, methods=["POST"])
 def get_time_complexity_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -267,6 +316,7 @@ def get_time_complexity_of_scope():
 
 @app.route(get_mistakes_of_scope_url, methods=["POST"])
 def get_mistakes_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -279,6 +329,7 @@ def get_mistakes_of_scope():
 
 @app.route(get_required_test_types_of_scope_url, methods=["POST"])
 def get_required_test_types_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -291,6 +342,7 @@ def get_required_test_types_of_scope():
 
 @app.route(get_tags_of_scope_url, methods=["POST"])
 def get_tags_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -305,6 +357,7 @@ def get_tags_of_scope():
 
 @app.route(get_security_analysis_of_scope_url, methods=["POST"])
 def get_security_analysis_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -317,6 +370,7 @@ def get_security_analysis_of_scope():
 
 @app.route(get_code_of_scope_url, methods=["POST"])
 def get_code_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -329,6 +383,7 @@ def get_code_of_scope():
 
 @app.route(get_dump_user_of_scope_url, methods=["POST"])
 def get_dump_user_of_scope():
+    """ """
     dump = request.form.get("dump")
     object = Scope.get_dump(dump)
     return jsonify({"status": True, "result": object.user})
@@ -336,6 +391,7 @@ def get_dump_user_of_scope():
 
 @app.route(get_dump_time_of_scope_url, methods=["POST"])
 def get_dump_time_of_scope():
+    """ """
     dump = request.form.get("dump")
     object = Scope.get_dump(dump)
     return jsonify({"status": True, "result": object.dump_time})
@@ -343,6 +399,7 @@ def get_dump_time_of_scope():
 
 @app.route(get_dump_difference_of_scope_url, methods=["POST"])
 def get_dump_difference_of_scope():
+    """ """
     dump = request.form.get("dump")
     object = Scope.get_dump(dump)
     return jsonify({"status": True, "result": object.difference})
@@ -350,6 +407,7 @@ def get_dump_difference_of_scope():
 
 @app.route(get_dump_commit_message_of_scope_url, methods=["POST"])
 def get_dump_commit_message_of_scope():
+    """ """
     dump = request.form.get("dump")
     object = Scope.get_dump(dump)
     return jsonify({"status": True, "result": object.commit_message})
@@ -357,6 +415,7 @@ def get_dump_commit_message_of_scope():
 
 @app.route(get_version_user_of_scope_url, methods=["POST"])
 def get_version_user_of_scope():
+    """ """
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.user})
@@ -364,6 +423,7 @@ def get_version_user_of_scope():
 
 @app.route(get_version_code_of_scope_url, methods=["POST"])
 def get_version_code_of_scope():
+    """ """
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.code})
@@ -371,6 +431,7 @@ def get_version_code_of_scope():
 
 @app.route(get_version_difference_of_scope_url, methods=["POST"])
 def get_version_difference_of_scope():
+    """ """
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.difference})
@@ -378,6 +439,7 @@ def get_version_difference_of_scope():
 
 @app.route(get_version_time_of_scope_url, methods=["POST"])
 def get_version_time_of_scope():
+    """ """
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.dump_time})
@@ -385,6 +447,7 @@ def get_version_time_of_scope():
 
 @app.route(get_version_release_note_of_scope_url, methods=["POST"])
 def get_version_release_note_of_scope():
+    """ """
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.release_note})
@@ -394,6 +457,14 @@ documentation_tasks = {}
 
 
 def create_document_of_scope_(scope, version, create_ai_task=False, access_key=None):
+    """
+
+    :param scope: 
+    :param version: 
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -446,6 +517,14 @@ time_complexity_tasks = {}
 def create_time_complexity_of_scope_(
     scope, version, create_ai_task=False, access_key=None
 ):
+    """
+
+    :param scope: 
+    :param version: 
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -496,6 +575,14 @@ mistakes_tasks = {}
 
 
 def create_mistakes_of_scope_(scope, version, create_ai_task=False, access_key=None):
+    """
+
+    :param scope: 
+    :param version: 
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -541,6 +628,12 @@ commit_message_tasks = {}
 
 
 def create_commit_message_of_scope_(scope, version):
+    """
+
+    :param scope: 
+    :param version: 
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -574,6 +667,14 @@ required_test_types_tasks = {}
 def create_required_test_types_of_scope_(
     scope, version, create_ai_task=False, access_key=None
 ):
+    """
+
+    :param scope: 
+    :param version: 
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -623,6 +724,14 @@ tags_tasks = {}
 
 
 def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None):
+    """
+
+    :param scope: 
+    :param version: 
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -666,6 +775,7 @@ def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None)
 
 @app.route(create_document_of_scope_url, methods=["POST"])
 def create_document_of_scope():
+    """ """
     global documentation_tasks
 
     scope = request.form.get("scope")
@@ -678,6 +788,7 @@ def create_document_of_scope():
 
 @app.route(create_time_complexity_of_scope_url, methods=["POST"])
 def create_time_complexity_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
 
@@ -688,6 +799,7 @@ def create_time_complexity_of_scope():
 
 @app.route(create_mistakes_of_scope_url, methods=["POST"])
 def create_mistakes_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
 
@@ -698,6 +810,7 @@ def create_mistakes_of_scope():
 
 @app.route(create_required_test_types_of_scope_url, methods=["POST"])
 def create_required_test_types_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
 
@@ -708,6 +821,7 @@ def create_required_test_types_of_scope():
 
 @app.route(create_tags_of_scope_url, methods=["POST"])
 def create_tags_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -719,6 +833,7 @@ def create_tags_of_scope():
 
 @app.route(create_security_analysis_of_scope_url, methods=["POST"])
 def create_security_analysis_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -733,6 +848,7 @@ def create_security_analysis_of_scope():
 
 @app.route(create_document_of_scope_url_old, methods=["POST"])
 def create_document_of_scope_old():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -745,6 +861,7 @@ def create_document_of_scope_old():
 
 @app.route(get_type_of_scope_url, methods=["POST"])
 def get_type_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -757,6 +874,7 @@ def get_type_of_scope():
 
 @app.route(get_lock_of_scope_url, methods=["POST"])
 def get_lock_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -769,6 +887,7 @@ def get_lock_of_scope():
 
 @app.route(get_python_version_of_scope_url, methods=["POST"])
 def get_python_version_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -781,12 +900,14 @@ def get_python_version_of_scope():
 
 @app.route(get_all_scopes_user_url, methods=["get"])
 def get_all_scopes_user():
+    """ """
     user = AccessKey(request.authorization.password)
     return jsonify({"status": True, "result": Scope.get_all_scopes_name(user)})
 
 
 @app.route(delete_scope_url, methods=["POST"])
 def delete_scope():
+    """ """
     scope = request.form.get("scope")
     object = Scope(scope)
     return jsonify(
@@ -799,6 +920,7 @@ def delete_scope():
 
 @app.route(delete_version_url, methods=["POST"])
 def delete_version():
+    """ """
     version = request.form.get("version")
     object = Scope.delete_version(version)
     return jsonify({"status": True, "result": object})
@@ -806,6 +928,7 @@ def delete_version():
 
 @app.route(get_dump_history_url, methods=["POST"])
 def get_dump_history():
+    """ """
     scope = request.form.get("scope")
     object = Scope(scope)
     return jsonify({"status": True, "result": object.dump_history})
@@ -813,6 +936,7 @@ def get_dump_history():
 
 @app.route(get_version_history_url, methods=["POST"])
 def get_version_history():
+    """ """
     scope = request.form.get("scope")
     object = Scope(scope)
 
@@ -821,6 +945,7 @@ def get_version_history():
 
 @app.route(get_module_version_history_url, methods=["POST"])
 def get_module_version_history():
+    """ """
     top_library = request.form.get("top_library")
     user = AccessKey(request.authorization.password)
 
@@ -838,6 +963,7 @@ def get_module_version_history():
 
 @app.route(load_specific_dump_url, methods=["POST"])
 def load_specific_dump():
+    """ """
     dump_id = request.form.get("dump_id")
     object = Scope.get_dump(dump_id)
     return jsonify({"status": True, "result": object.source})
@@ -845,6 +971,7 @@ def load_specific_dump():
 
 @app.route(load_specific_version_url, methods=["POST"])
 def load_specific_version():
+    """ """
     version = request.form.get("version")
     object = Scope.get_version(version)
     return jsonify({"status": True, "result": object.source})
@@ -852,6 +979,7 @@ def load_specific_version():
 
 @app.route(get_all_scopes_name_prefix_url, methods=["POST"])
 def get_all_scopes_name_prefix():
+    """ """
     user = AccessKey(request.authorization.password)
     prefix = request.form.get("prefix")
     return jsonify(
@@ -861,6 +989,7 @@ def get_all_scopes_name_prefix():
 
 @app.route(create_version_url, methods=["POST"])
 def create_version():
+    """ """
     user = AccessKey(request.authorization.password)
     version = request.form.get("version")
     scope = request.form.get("scope")
@@ -870,6 +999,7 @@ def create_version():
 
 @app.route(dump_requirements_url, methods=["POST"])
 def dump_requirements():
+    """ """
     scope = request.form.get("scope")
     settings = request.form.get("requirements")
 
@@ -880,6 +1010,7 @@ def dump_requirements():
 
 @app.route(dump_settings_url, methods=["POST"])
 def dump_settings():
+    """ """
     scope = request.form.get("scope")
     settings = request.form.get("settings")
 
@@ -895,6 +1026,7 @@ def dump_settings():
 
 @app.route(dump_python_version_url, methods=["POST"])
 def dump_python_version():
+    """ """
     scope = request.form.get("scope")
     python_version = request.form.get("python_version")
 
@@ -907,6 +1039,7 @@ def dump_python_version():
 
 @app.route(search_by_documentation_url, methods=["POST"])
 def search_by_documentation():
+    """ """
     question = request.form.get("question")
     min_score = float(request.form.get("min_score", 0))
     how_many_result = int(request.form.get("how_many_result", 10))
@@ -932,6 +1065,7 @@ def search_by_documentation():
 
 @app.route(ai_completion_url, methods=["POST"])
 def ai_completion():
+    """ """
     message = request.form.get("message")
     model = request.form.get("model")
     result = None
@@ -944,6 +1078,7 @@ def ai_completion():
 
 @app.route(get_default_ai_model, methods=["get"])
 def get_default_ai_model():
+    """ """
     return jsonify({"status": True, "result": AI.default_model})
 
 
@@ -953,6 +1088,14 @@ security_analyses_tasks = {}
 def create_security_analyses_of_scope_(
     scope, version, create_ai_task=False, access_key=None
 ):
+    """
+
+    :param scope: 
+    :param version: 
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     task_name = scope
     if version != None:
         task_name = scope + ":" + version
@@ -1004,6 +1147,15 @@ readme_tasks = {}
 def create_readme_(
     top_library, version, request=None, create_ai_task=False, access_key=None
 ):
+    """
+
+    :param top_library: 
+    :param version: 
+    :param request:  (Default value = None)
+    :param create_ai_task:  (Default value = False)
+    :param access_key:  (Default value = None)
+
+    """
     global documentation_tasks
     print("CREATE README TASK for: ", top_library)
 
@@ -1160,6 +1312,7 @@ def create_readme_(
 
 @app.route(create_readme_url, methods=["POST"])
 def create_readme():
+    """ """
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
@@ -1170,6 +1323,7 @@ def create_readme():
 
 @app.route(get_readme_github_sync_url, methods=["POST"])
 def get_readme_github_sync():
+    """ """
     top_library = request.form.get("top_library")
     version = request.form.get("version")
     all_scopes_response = Scope.get_all_scopes_name_prefix(
@@ -1240,6 +1394,7 @@ def get_readme_github_sync():
 
 @app.route(get_readme_url, methods=["POST"])
 def get_readme():
+    """ """
     top_library = request.form.get("top_library")
     version = request.form.get("version")
     all_scopes_response = Scope.get_all_scopes_name_prefix(
@@ -1296,6 +1451,7 @@ def get_readme():
 
 @app.route(get_openai_api_key_user, methods=["get"])
 def get_openai_api_key_user():
+    """ """
     the_result = AccessKey(request.authorization.password).openai_api_key
     special = True
     if the_result == None:
@@ -1308,6 +1464,7 @@ def get_openai_api_key_user():
 
 @app.route(create_version_prefix_url, methods=["post"])
 def create_version_prefix():
+    """ """
     user = AccessKey(request.authorization.password)
     top_library = request.form.get("top_library")
     version = request.form.get("version")
@@ -1322,6 +1479,7 @@ def create_version_prefix():
 
 @app.route(delete_version_prefix_url, methods=["post"])
 def delete_version_prefix():
+    """ """
     user = AccessKey(request.authorization.password)
     top_library = request.form.get("top_library")
     version = request.form.get("version")
@@ -1340,6 +1498,7 @@ def delete_version_prefix():
 
 @app.route(dump_run_url, methods=["POST"])
 def dump_run():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     os_type = request.form.get("os_type")
@@ -1367,6 +1526,7 @@ def dump_run():
 
 @app.route(get_last_runs_url, methods=["POST"])
 def get_last_runs():
+    """ """
     scope = request.form.get("scope")
     last_runs = request.form.get("n")
     the_scope = Scope(scope)
@@ -1379,6 +1539,7 @@ def get_last_runs():
 
 @app.route(get_github_sync_of_scope_url, methods=["POST"])
 def get_github_sync_of_scope():
+    """ """
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
@@ -1390,6 +1551,13 @@ def get_github_sync_of_scope():
 
 
 def create_get_release_note_(top_library, version, request=None):
+    """
+
+    :param top_library: 
+    :param version: 
+    :param request:  (Default value = None)
+
+    """
     global documentation_tasks
     print("RELEASE NOTE TASK for: ", top_library)
 
@@ -1462,6 +1630,7 @@ def create_get_release_note_(top_library, version, request=None):
 
 @app.route(create_get_release_note_url, methods=["POST"])
 def create_get_release_note():
+    """ """
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
