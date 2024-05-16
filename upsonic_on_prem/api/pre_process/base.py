@@ -25,7 +25,8 @@ def check():
     if endpoint == status_url:
         return
 
-    the_datas = request.json if request.method in ["POST", "PUT"] else request.args
+    the_datas = request.json if request.method in ["POST", "PUT"
+                                                   ] else request.args
 
     auth = request.authorization
 
@@ -33,8 +34,7 @@ def check():
     if "Authorization" in request.headers:
         if "Bearer " in request.headers.get("Authorization"):
             the_access_key = AccessKey(
-                request.headers.get("Authorization").split(" ")[1]
-            )
+                request.headers.get("Authorization").split(" ")[1])
 
     if "model" in the_datas:
         if "**" in the_datas["model"]:
