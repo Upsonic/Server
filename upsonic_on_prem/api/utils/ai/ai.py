@@ -26,6 +26,9 @@ from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
 import traceback
 from openai import OpenAI
 
+bypass_ai = os.environ.get("bypass_ai", "false").lower() == "true"
+
+
 class AI_:
     def __init__(self):
         pass
@@ -144,6 +147,8 @@ class AI_:
 
 
     def completion(self, input_text, model):
+        if bypass_ai:
+            return "BYPASSED"
         result = None
 
         if model == "llama3-8b":
