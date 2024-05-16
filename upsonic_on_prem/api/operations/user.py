@@ -3,7 +3,14 @@ from upsonic_on_prem.api import app
 
 from upsonic_on_prem.api.urls import *
 
-from upsonic_on_prem.api.utils import storage, storage_2, storage_4, AccessKey, Scope, AI
+from upsonic_on_prem.api.utils import (
+    storage,
+    storage_2,
+    storage_4,
+    AccessKey,
+    Scope,
+    AI,
+)
 
 from upsonic_on_prem.api.utils.configs import openai_api_key
 
@@ -19,42 +26,39 @@ import requests
 
 def forward_request_to_openai_ollama(path, method, headers, data):
     url = f"http://localhost:11434/v1/{path}"
-    headers['Authorization'] = f'Bearer {openai_api_key}'
+    headers["Authorization"] = f"Bearer {openai_api_key}"
 
-    if method == 'GET':
+    if method == "GET":
         response = requests.get(url, headers=headers, params=data)
-    elif method == 'POST':
+    elif method == "POST":
         response = requests.post(url, headers=headers, json=data)
-    elif method == 'PUT':
+    elif method == "PUT":
         response = requests.put(url, headers=headers, json=data)
-    elif method == 'DELETE':
+    elif method == "DELETE":
         response = requests.delete(url, headers=headers, json=data)
     else:
-        return jsonify({'error': 'Unsupported HTTP method'}), 405
+        return jsonify({"error": "Unsupported HTTP method"}), 405
 
     return response
 
 
-@app.route('/openai_ollama/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route("/openai_ollama/<path:path>", methods=["GET", "POST", "PUT", "DELETE"])
 def proxy_openai_ollama(path):
     try:
 
         # Forward the request to OpenAI
-        headers = {key: value for (
-            key, value) in request.headers if key != 'Host'}
-        data = request.json if request.method in [
-            'POST', 'PUT'] else request.args
+        headers = {key: value for (key, value) in request.headers if key != "Host"}
+        data = request.json if request.method in ["POST", "PUT"] else request.args
 
         # Call the forward_request function
 
-        response = forward_request_to_openai_ollama(
-            path, request.method, headers, data)
+        response = forward_request_to_openai_ollama(path, request.method, headers, data)
 
         # Pass the response back to the client
 
         return response.content
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 
 def forward_request_to_ollama(path, method, headers, data):
@@ -76,82 +80,76 @@ def forward_request_to_ollama(path, method, headers, data):
     # if path incude something from the unallowed_path_list, return error
     for each in unallowed_path_list:
         if each in path:
-            return jsonify({'error': 'Unsupported HTTP method'}), 405
+            return jsonify({"error": "Unsupported HTTP method"}), 405
 
-    if method == 'GET':
+    if method == "GET":
         response = requests.get(url, headers=headers, params=data)
-    elif method == 'POST':
+    elif method == "POST":
         response = requests.post(url, headers=headers, json=data)
-    elif method == 'PUT':
+    elif method == "PUT":
         response = requests.put(url, headers=headers, json=data)
-    elif method == 'DELETE':
+    elif method == "DELETE":
         response = requests.delete(url, headers=headers, json=data)
     else:
-        return jsonify({'error': 'Unsupported HTTP method'}), 405
+        return jsonify({"error": "Unsupported HTTP method"}), 405
 
     return response
 
 
-@app.route('/ollama/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route("/ollama/<path:path>", methods=["GET", "POST", "PUT", "DELETE"])
 def proxy_ollama(path):
     try:
 
         # Forward the request to OpenAI
-        headers = {key: value for (
-            key, value) in request.headers if key != 'Host'}
-        data = request.json if request.method in [
-            'POST', 'PUT'] else request.args
+        headers = {key: value for (key, value) in request.headers if key != "Host"}
+        data = request.json if request.method in ["POST", "PUT"] else request.args
 
         # Call the forward_request function
 
-        response = forward_request_to_ollama(
-            path, request.method, headers, data)
+        response = forward_request_to_ollama(path, request.method, headers, data)
 
         # Pass the response back to the client
 
         return response.content
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 
 def forward_request_to_openai(path, method, headers, data):
     url = f"https://api.openai.com/v1/{path}"
-    headers['Authorization'] = f'Bearer {openai_api_key}'
+    headers["Authorization"] = f"Bearer {openai_api_key}"
 
-    if method == 'GET':
+    if method == "GET":
         response = requests.get(url, headers=headers, params=data)
-    elif method == 'POST':
+    elif method == "POST":
         response = requests.post(url, headers=headers, json=data)
-    elif method == 'PUT':
+    elif method == "PUT":
         response = requests.put(url, headers=headers, json=data)
-    elif method == 'DELETE':
+    elif method == "DELETE":
         response = requests.delete(url, headers=headers, json=data)
     else:
-        return jsonify({'error': 'Unsupported HTTP method'}), 405
+        return jsonify({"error": "Unsupported HTTP method"}), 405
 
     return response
 
 
-@app.route('/openai/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route("/openai/<path:path>", methods=["GET", "POST", "PUT", "DELETE"])
 def proxy_openai(path):
     try:
 
         # Forward the request to OpenAI
-        headers = {key: value for (
-            key, value) in request.headers if key != 'Host'}
-        data = request.json if request.method in [
-            'POST', 'PUT'] else request.args
+        headers = {key: value for (key, value) in request.headers if key != "Host"}
+        data = request.json if request.method in ["POST", "PUT"] else request.args
 
         # Call the forward_request function
 
-        response = forward_request_to_openai(
-            path, request.method, headers, data)
+        response = forward_request_to_openai(path, request.method, headers, data)
 
         # Pass the response back to the client
 
         return response.content
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route(dump_url, methods=["POST"])
@@ -163,7 +161,16 @@ def dump():
     the_scope = Scope(scope)
 
     return jsonify(
-        {"status": True, "result": the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True, commit_message=commit_message)})
+        {
+            "status": True,
+            "result": the_scope.dump(
+                data,
+                AccessKey(request.authorization.password),
+                pass_str=True,
+                commit_message=commit_message,
+            ),
+        }
+    )
 
 
 @app.route(dump_code_url, methods=["POST"])
@@ -173,7 +180,14 @@ def dump_code():
 
     the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.set_code(code, access_key=request.authorization.password)})
+    return jsonify(
+        {
+            "status": True,
+            "result": the_scope.set_code(
+                code, access_key=request.authorization.password
+            ),
+        }
+    )
 
 
 @app.route(dump_type_url, methods=["POST"])
@@ -195,12 +209,22 @@ def load():
 
 @app.route(get_read_scopes_of_me_url, methods=["get"])
 def get_read_scopes_of_me():
-    return jsonify({"status": True, "result": AccessKey(request.authorization.password).scopes_read})
+    return jsonify(
+        {
+            "status": True,
+            "result": AccessKey(request.authorization.password).scopes_read,
+        }
+    )
 
 
 @app.route(get_write_scopes_of_me_url, methods=["get"])
 def get_write_scopes_of_me():
-    return jsonify({"status": True, "result": AccessKey(request.authorization.password).scopes_write})
+    return jsonify(
+        {
+            "status": True,
+            "result": AccessKey(request.authorization.password).scopes_write,
+        }
+    )
 
 
 @app.route(get_document_of_scope_url, methods=["POST"])
@@ -208,7 +232,7 @@ def get_document_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -220,7 +244,7 @@ def get_requirements_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -232,7 +256,7 @@ def get_settings_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -244,7 +268,7 @@ def get_time_complexity_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -256,7 +280,7 @@ def get_mistakes_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -268,7 +292,7 @@ def get_required_test_types_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -280,7 +304,7 @@ def get_tags_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -294,7 +318,7 @@ def get_security_analysis_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -306,7 +330,7 @@ def get_code_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -382,8 +406,8 @@ documentation_tasks = {}
 def create_document_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -392,16 +416,32 @@ def create_document_of_scope_(scope, version, create_ai_task=False, access_key=N
 
     if not task_name in documentation_tasks:
         documentation_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "documentation", "key": scope, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={
+                    "task_name": "documentation",
+                    "key": scope,
+                    "access_key": access_key,
+                },
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
         try:
             work = the_scope.create_documentation()
         except:
             pass
         try:
             documentation_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             pass
 
@@ -413,11 +453,13 @@ def create_document_of_scope_(scope, version, create_ai_task=False, access_key=N
 time_complexity_tasks = {}
 
 
-def create_time_complexity_of_scope_(scope, version, create_ai_task=False, access_key=None):
+def create_time_complexity_of_scope_(
+    scope, version, create_ai_task=False, access_key=None
+):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -426,8 +468,18 @@ def create_time_complexity_of_scope_(scope, version, create_ai_task=False, acces
 
     if not task_name in time_complexity_tasks:
         time_complexity_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "time_complexity", "key": scope, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={
+                    "task_name": "time_complexity",
+                    "key": scope,
+                    "access_key": access_key,
+                },
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
 
         try:
             work = the_scope.create_time_complexity()
@@ -435,8 +487,14 @@ def create_time_complexity_of_scope_(scope, version, create_ai_task=False, acces
             pass
         try:
             time_complexity_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             pass
 
@@ -450,8 +508,8 @@ mistakes_tasks = {}
 def create_mistakes_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -460,16 +518,28 @@ def create_mistakes_of_scope_(scope, version, create_ai_task=False, access_key=N
 
     if not task_name in mistakes_tasks:
         mistakes_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "mistakes", "key": scope, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={"task_name": "mistakes", "key": scope, "access_key": access_key},
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
         try:
             work = the_scope.create_mistakes()
         except:
             pass
         try:
             mistakes_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             pass
 
@@ -483,8 +553,8 @@ commit_message_tasks = {}
 def create_commit_message_of_scope_(scope, version):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -511,11 +581,13 @@ def create_commit_message_of_scope_(scope, version):
 required_test_types_tasks = {}
 
 
-def create_required_test_types_of_scope_(scope, version, create_ai_task=False, access_key=None):
+def create_required_test_types_of_scope_(
+    scope, version, create_ai_task=False, access_key=None
+):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -524,16 +596,32 @@ def create_required_test_types_of_scope_(scope, version, create_ai_task=False, a
 
     if not task_name in required_test_types_tasks:
         required_test_types_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "required_test_types", "key": scope, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={
+                    "task_name": "required_test_types",
+                    "key": scope,
+                    "access_key": access_key,
+                },
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
         try:
             work = the_scope.create_required_test_types()
         except:
             pass
         try:
             required_test_types_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             pass
 
@@ -547,8 +635,8 @@ tags_tasks = {}
 def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -557,16 +645,28 @@ def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None)
 
     if not task_name in tags_tasks:
         tags_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "tags", "key": scope, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={"task_name": "tags", "key": scope, "access_key": access_key},
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
         try:
             work = the_scope.create_tags()
         except:
             pass
         try:
             tags_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             pass
 
@@ -581,7 +681,9 @@ def create_document_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
 
-    return jsonify({"status": True, "result": create_document_of_scope_(scope, version)})
+    return jsonify(
+        {"status": True, "result": create_document_of_scope_(scope, version)}
+    )
 
 
 @app.route(create_time_complexity_of_scope_url, methods=["POST"])
@@ -589,7 +691,9 @@ def create_time_complexity_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
 
-    return jsonify({"status": True, "result": create_time_complexity_of_scope_(scope, version)})
+    return jsonify(
+        {"status": True, "result": create_time_complexity_of_scope_(scope, version)}
+    )
 
 
 @app.route(create_mistakes_of_scope_url, methods=["POST"])
@@ -597,7 +701,9 @@ def create_mistakes_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
 
-    return jsonify({"status": True, "result": create_mistakes_of_scope_(scope, version)})
+    return jsonify(
+        {"status": True, "result": create_mistakes_of_scope_(scope, version)}
+    )
 
 
 @app.route(create_required_test_types_of_scope_url, methods=["POST"])
@@ -605,7 +711,9 @@ def create_required_test_types_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
 
-    return jsonify({"status": True, "result": create_required_test_types_of_scope_(scope, version)})
+    return jsonify(
+        {"status": True, "result": create_required_test_types_of_scope_(scope, version)}
+    )
 
 
 @app.route(create_tags_of_scope_url, methods=["POST"])
@@ -613,7 +721,7 @@ def create_tags_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
     return jsonify({"status": True, "result": create_tags_of_scope_(scope, version)})
@@ -624,11 +732,13 @@ def create_security_analysis_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": create_security_analyses_of_scope_(scope, version)})
+    return jsonify(
+        {"status": True, "result": create_security_analyses_of_scope_(scope, version)}
+    )
 
 
 @app.route(create_document_of_scope_url_old, methods=["POST"])
@@ -636,7 +746,7 @@ def create_document_of_scope_old():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -648,7 +758,7 @@ def get_type_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -660,7 +770,7 @@ def get_lock_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -672,7 +782,7 @@ def get_python_version_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -689,7 +799,12 @@ def get_all_scopes_user():
 def delete_scope():
     scope = request.form.get("scope")
     object = Scope(scope)
-    return jsonify({"status": True, "result": object.delete(AccessKey(request.authorization.password))})
+    return jsonify(
+        {
+            "status": True,
+            "result": object.delete(AccessKey(request.authorization.password)),
+        }
+    )
 
 
 @app.route(delete_version_url, methods=["POST"])
@@ -749,7 +864,9 @@ def load_specific_version():
 def get_all_scopes_name_prefix():
     user = AccessKey(request.authorization.password)
     prefix = request.form.get("prefix")
-    return jsonify({"status": True, "result": Scope.get_all_scopes_name_prefix(user, prefix)})
+    return jsonify(
+        {"status": True, "result": Scope.get_all_scopes_name_prefix(user, prefix)}
+    )
 
 
 @app.route(create_version_url, methods=["POST"])
@@ -793,7 +910,9 @@ def dump_python_version():
 
     the_scope = Scope(scope)
 
-    return jsonify({"status": True, "result": the_scope.set_python_version(python_version)})
+    return jsonify(
+        {"status": True, "result": the_scope.set_python_version(python_version)}
+    )
 
 
 @app.route(search_by_documentation_url, methods=["POST"])
@@ -810,8 +929,7 @@ def search_by_documentation():
     if len(scopes) == 0:
         return jsonify({"status": False, "result": "No scope has documentation"})
 
-    results = AI.search_by_documentation(
-        scopes, question, min_score, how_many_result)
+    results = AI.search_by_documentation(scopes, question, min_score, how_many_result)
 
     # Remove the results that not able to access by the user
     access_control_list = []
@@ -842,11 +960,13 @@ def get_default_ai_model():
 security_analyses_tasks = {}
 
 
-def create_security_analyses_of_scope_(scope, version, create_ai_task=False, access_key=None):
+def create_security_analyses_of_scope_(
+    scope, version, create_ai_task=False, access_key=None
+):
     task_name = scope
     if version != None:
-        task_name = scope+":"+version
-        the_scope = Scope.get_version(scope+":"+version)
+        task_name = scope + ":" + version
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -855,16 +975,32 @@ def create_security_analyses_of_scope_(scope, version, create_ai_task=False, acc
 
     if not task_name in security_analyses_tasks:
         security_analyses_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "security_analyses", "key": scope, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={
+                    "task_name": "security_analyses",
+                    "key": scope,
+                    "access_key": access_key,
+                },
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
         try:
             work = the_scope.create_security_analysis()
         except:
             pass
         try:
             security_analyses_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             pass
 
@@ -875,13 +1011,15 @@ def create_security_analyses_of_scope_(scope, version, create_ai_task=False, acc
 readme_tasks = {}
 
 
-def create_readme_(top_library, version, request=None, create_ai_task=False, access_key=None):
+def create_readme_(
+    top_library, version, request=None, create_ai_task=False, access_key=None
+):
     global documentation_tasks
     print("CREATE README TASK for: ", top_library)
 
     task_name = top_library
     if version != None:
-        task_name = top_library+":"+version
+        task_name = top_library + ":" + version
 
     while task_name in readme_tasks:
         print("TASK POOL: ", readme_tasks)
@@ -889,20 +1027,33 @@ def create_readme_(top_library, version, request=None, create_ai_task=False, acc
 
     try:
         readme_tasks[task_name] = True
-        the_task_id = requests.post("http://localhost:3001/add_ai_task", data={
-                                    "task_name": "readme", "key": top_library, "access_key": access_key}).json()["id"] if create_ai_task else None
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={
+                    "task_name": "readme",
+                    "key": top_library,
+                    "access_key": access_key,
+                },
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
 
-        all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(
-            request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix=top_library)
+        all_scopes_response = (
+            Scope.get_all_scopes_name_prefix(
+                AccessKey(request.authorization.password), top_library
+            )
+            if request != None
+            else Scope.get_all_scopes_name_prefix(prefix=top_library)
+        )
         all_scopes = []
         for each_scope in all_scopes_response:
             if version != None:
-                the_version_history_response = Scope(
-                    each_scope).version_history
+                the_version_history_response = Scope(each_scope).version_history
                 the_version_history = []
                 for element in the_version_history_response:
-                    the_version_history.append(
-                        element.replace(each_scope+":", ""))
+                    the_version_history.append(element.replace(each_scope + ":", ""))
                 if version in the_version_history:
                     all_scopes.append(each_scope)
             else:
@@ -921,8 +1072,8 @@ def create_readme_(top_library, version, request=None, create_ai_task=False, acc
             if version == None:
                 the_scope = Scope(each_scope)
             else:
-                task_ntask_name_ame = each_scope+":"+version
-                the_scope = Scope.get_version(each_scope+":"+version)
+                task_ntask_name_ame = each_scope + ":" + version
+                the_scope = Scope.get_version(each_scope + ":" + version)
 
             while task_name_ in documentation_tasks:
                 time.sleep(1)
@@ -939,8 +1090,7 @@ def create_readme_(top_library, version, request=None, create_ai_task=False, acc
             summary_list += str(the_scope.documentation) + "\n\n"
 
         # Create sha256 hash of the result
-        sha256 = hashlib.sha256(
-            (summary_list+top_library).encode()).hexdigest()
+        sha256 = hashlib.sha256((summary_list + top_library).encode()).hexdigest()
 
         result = AI.generate_readme(top_library, summary_list)
 
@@ -948,14 +1098,15 @@ def create_readme_(top_library, version, request=None, create_ai_task=False, acc
 
         make_sync = False
         if request != None:
-            make_sync = len(AccessKey(request.authorization.password).scopes_read) == [
-                "*"] or AccessKey(request.authorization.password).is_admin == True
+            make_sync = (
+                len(AccessKey(request.authorization.password).scopes_read) == ["*"]
+                or AccessKey(request.authorization.password).is_admin == True
+            )
         else:
             make_sync = True
         if make_sync:
-            path = top_library.replace(
-                ".", "/") if "." in top_library else top_library
-            path += f'/README.md'
+            path = top_library.replace(".", "/") if "." in top_library else top_library
+            path += f"/README.md"
 
             code = ""
             the_name = top_library.replace(".", "_")
@@ -974,20 +1125,25 @@ def create_readme_(top_library, version, request=None, create_ai_task=False, acc
                 content += f"  - {each}\n"
 
             # Inside your create_or_update_file function, before the PUT request
-            encoded_content = base64.b64encode(
-                content.encode('utf-8')).decode('utf-8')
+            encoded_content = base64.b64encode(content.encode("utf-8")).decode("utf-8")
             content = encoded_content
 
             github.create_or_update_file_(path, content, f"Changes for {path}")
             sha_of_readme = github.get_sha_(path)
 
-            storage_4.set(sha256+"github_sha", sha_of_readme)
-            get_sha = storage_4.get(sha256+"github_sha")
+            storage_4.set(sha256 + "github_sha", sha_of_readme)
+            get_sha = storage_4.get(sha256 + "github_sha")
 
         try:
             readme_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             traceback.print_exc()
             pass
@@ -999,8 +1155,14 @@ def create_readme_(top_library, version, request=None, create_ai_task=False, acc
         traceback.print_exc()
         try:
             readme_tasks.pop(task_name)
-            requests.post("http://localhost:3001/complate_ai_task", data={
-                          "id": the_task_id, "access_key": access_key}).json()["id"] if create_ai_task else None
+            (
+                requests.post(
+                    "http://localhost:3001/complate_ai_task",
+                    data={"id": the_task_id, "access_key": access_key},
+                ).json()["id"]
+                if create_ai_task
+                else None
+            )
         except:
             traceback.print_exc()
             pass
@@ -1011,7 +1173,9 @@ def create_readme():
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
-    return jsonify({"status": True, "result": create_readme_(top_library, version, request)})
+    return jsonify(
+        {"status": True, "result": create_readme_(top_library, version, request)}
+    )
 
 
 @app.route(get_readme_github_sync_url, methods=["POST"])
@@ -1019,14 +1183,15 @@ def get_readme_github_sync():
     top_library = request.form.get("top_library")
     version = request.form.get("version")
     all_scopes_response = Scope.get_all_scopes_name_prefix(
-        AccessKey(request.authorization.password), top_library)
+        AccessKey(request.authorization.password), top_library
+    )
     all_scopes = []
     for each_scope in all_scopes_response:
         if version != None:
             the_version_history_response = Scope(each_scope).version_history
             the_version_history = []
             for element in the_version_history_response:
-                the_version_history.append(element.replace(each_scope+":", ""))
+                the_version_history.append(element.replace(each_scope + ":", ""))
             if version in the_version_history:
                 all_scopes.append(each_scope)
         else:
@@ -1045,8 +1210,8 @@ def get_readme_github_sync():
         if version == None:
             the_scope = Scope(each_scope)
         else:
-            task_name = each_scope+":"+version
-            the_scope = Scope.get_version(each_scope+":"+version)
+            task_name = each_scope + ":" + version
+            the_scope = Scope.get_version(each_scope + ":" + version)
 
         while task_name in documentation_tasks:
             return jsonify({"status": True, "result": None})
@@ -1064,17 +1229,20 @@ def get_readme_github_sync():
         summary_list += str(the_scope.documentation) + "\n\n"
 
     # Create sha256 hash of the result
-    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
+    sha256 = hashlib.sha256((summary_list + top_library).encode()).hexdigest()
 
-    the_currently_sha = storage_4.get(sha256+"github_sha")
+    the_currently_sha = storage_4.get(sha256 + "github_sha")
     path = top_library.replace(".", "/") if "." in top_library else top_library
-    path += f'/README.md'
+    path += f"/README.md"
 
     github_sha = github.get_sha_(path)
 
     result = the_currently_sha == github_sha
 
-    if len(AccessKey(request.authorization.password).scopes_read) == ["*"] or AccessKey(request.authorization.password).is_admin == True:
+    if (
+        len(AccessKey(request.authorization.password).scopes_read) == ["*"]
+        or AccessKey(request.authorization.password).is_admin == True
+    ):
         return jsonify({"status": True, "result": result})
     else:
         result = None
@@ -1085,14 +1253,15 @@ def get_readme():
     top_library = request.form.get("top_library")
     version = request.form.get("version")
     all_scopes_response = Scope.get_all_scopes_name_prefix(
-        AccessKey(request.authorization.password), top_library)
+        AccessKey(request.authorization.password), top_library
+    )
     all_scopes = []
     for each_scope in all_scopes_response:
         if version != None:
             the_version_history_response = Scope(each_scope).version_history
             the_version_history = []
             for element in the_version_history_response:
-                the_version_history.append(element.replace(each_scope+":", ""))
+                the_version_history.append(element.replace(each_scope + ":", ""))
             if version in the_version_history:
                 all_scopes.append(each_scope)
         else:
@@ -1111,8 +1280,8 @@ def get_readme():
         if version == None:
             the_scope = Scope(each_scope)
         else:
-            task_name = each_scope+":"+version
-            the_scope = Scope.get_version(each_scope+":"+version)
+            task_name = each_scope + ":" + version
+            the_scope = Scope.get_version(each_scope + ":" + version)
 
         while task_name in documentation_tasks:
             return jsonify({"status": True, "result": None})
@@ -1130,7 +1299,7 @@ def get_readme():
         summary_list += str(the_scope.documentation) + "\n\n"
 
     # Create sha256 hash of the result
-    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
+    sha256 = hashlib.sha256((summary_list + top_library).encode()).hexdigest()
 
     return jsonify({"status": True, "result": storage_4.get(sha256)})
 
@@ -1172,7 +1341,7 @@ def delete_version_prefix():
     for each_scope in all_scopes:
         if each_scope in write_scopes or user.is_admin:
             try:
-                Scope(each_scope).delete_version(each_scope+":"+version)
+                Scope(each_scope).delete_version(each_scope + ":" + version)
             except:
                 pass
 
@@ -1192,8 +1361,17 @@ def dump_run():
     memory_usage = request.form.get("memory_usage")
     elapsed_time = request.form.get("elapsed_time")
     the_scope = Scope(scope)
-    op = the_scope.add_run_history(version=version, os_type=os_type, os_architecture=os_architecture, os_version=os_version,
-                                   python_version=python_version, type=_type, cpu_usage=cpu_usage, memory_usage=memory_usage, elapsed_time=elapsed_time)
+    op = the_scope.add_run_history(
+        version=version,
+        os_type=os_type,
+        os_architecture=os_architecture,
+        os_version=os_version,
+        python_version=python_version,
+        type=_type,
+        cpu_usage=cpu_usage,
+        memory_usage=memory_usage,
+        elapsed_time=elapsed_time,
+    )
     return jsonify({"status": True, "result": op})
 
 
@@ -1214,7 +1392,7 @@ def get_github_sync_of_scope():
     scope = request.form.get("scope")
     version = request.form.get("version")
     if version != None:
-        the_scope = Scope.get_version(scope+":"+version)
+        the_scope = Scope.get_version(scope + ":" + version)
     else:
         the_scope = Scope(scope)
 
@@ -1225,8 +1403,13 @@ def create_get_release_note_(top_library, version, request=None):
     global documentation_tasks
     print("RELEASE NOTE TASK for: ", top_library)
 
-    all_scopes_response = Scope.get_all_scopes_name_prefix(AccessKey(
-        request.authorization.password), top_library) if request != None else Scope.get_all_scopes_name_prefix(prefix=top_library)
+    all_scopes_response = (
+        Scope.get_all_scopes_name_prefix(
+            AccessKey(request.authorization.password), top_library
+        )
+        if request != None
+        else Scope.get_all_scopes_name_prefix(prefix=top_library)
+    )
     all_scopes = []
 
     for each_scope in all_scopes_response:
@@ -1234,7 +1417,7 @@ def create_get_release_note_(top_library, version, request=None):
             the_version_history_response = Scope(each_scope).version_history
             the_version_history = []
             for element in the_version_history_response:
-                the_version_history.append(element.replace(each_scope+":", ""))
+                the_version_history.append(element.replace(each_scope + ":", ""))
             if version in the_version_history:
                 all_scopes.append(each_scope)
         else:
@@ -1254,8 +1437,8 @@ def create_get_release_note_(top_library, version, request=None):
         if version == None:
             the_scope = Scope(each_scope)
         else:
-            task_name = each_scope+":"+version
-            the_scope = Scope.get_version(each_scope+":"+version)
+            task_name = each_scope + ":" + version
+            the_scope = Scope.get_version(each_scope + ":" + version)
 
         summary_list += each_scope + " - " + str(the_scope.type) + "\n"
         the_release_note = the_scope.release_note
@@ -1268,12 +1451,15 @@ def create_get_release_note_(top_library, version, request=None):
     print("summary list", summary_list)
 
     # Create sha256 hash of the result
-    sha256 = hashlib.sha256((summary_list+top_library).encode()).hexdigest()
+    sha256 = hashlib.sha256((summary_list + top_library).encode()).hexdigest()
 
     request_from = storage_4.get(sha256)
     if request_from == None:
-        result = AI.generate_releate_note(
-            top_library, summary_list, version) if any_update else "No Changes Made"
+        result = (
+            AI.generate_releate_note(top_library, summary_list, version)
+            if any_update
+            else "No Changes Made"
+        )
 
         storage_4.set(sha256, result)
     else:
@@ -1289,4 +1475,9 @@ def create_get_release_note():
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
-    return jsonify({"status": True, "result": create_get_release_note_(top_library, version, request)})
+    return jsonify(
+        {
+            "status": True,
+            "result": create_get_release_note_(top_library, version, request),
+        }
+    )
