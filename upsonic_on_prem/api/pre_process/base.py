@@ -11,6 +11,7 @@ from upsonic_on_prem.api.utils.logs import warning
 
 @app.before_request
 def check():
+    """ """
     the_endpoint = request.endpoint
     if request.endpoint == None:
         the_endpoint = ""
