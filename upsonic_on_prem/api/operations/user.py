@@ -1191,16 +1191,6 @@ def get_readme():
 
 
 
-@app.route(get_openai_api_key_user, methods=["get"])
-def get_openai_api_key_user():
-    the_result = AccessKey(request.authorization.password).openai_api_key
-    special = True
-    if the_result == None:
-        the_result = openai_api_key
-        special = False
-
-    the_result = {"api_key": the_result, "special": special}
-    return jsonify({"status": True, "result": the_result})
 
 
 
