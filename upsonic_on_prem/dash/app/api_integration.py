@@ -624,16 +624,7 @@ class API_Integration:
     def get_default_ai_model(self):
         return self._send_request("GET", "/get_default_ai_model")
 
-    def set_openai_api_key_user(self, key, openai_api_key_user):
-        data = {"key": key, "openai_api_key":openai_api_key_user}
-        return self._send_request("POST", "/set_openai_api_key_user", data=data)
 
-    def get_openai_api_key_user(self):
-        return self._send_request("GET", "/get_openai_api_key_user")
-    
-    def delete_openai_api_key_user(self, key):
-        data = {"key": key}
-        return self._send_request("POST", "/delete_openai_api_key_user", data=data)
 
 
     def get_dump_history(self, scope):
