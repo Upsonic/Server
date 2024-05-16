@@ -17,6 +17,104 @@ import traceback
 import requests
 
 
+
+
+def forward_request_to_ollama(path, method, headers, data):
+    url = f"http://localhost:11434/{path}"
+
+
+    unallowed_path_list = [
+        "/api/push",
+        "/api/create",
+        "/api/blobs/",
+        "/api/tags",
+        "/api/show",
+        "/api/copy",
+        "/api/delete",
+        "/api/pull",
+        "/api/delete",
+        "/api/delete",
+    ]
+
+    # if path incude something from the unallowed_path_list, return error
+    for each in unallowed_path_list:
+        if each in path:
+            return jsonify({'error': 'Unsupported HTTP method'}), 405
+
+
+    if method == 'GET':
+        response = requests.get(url, headers=headers, params=data)
+    elif method == 'POST':
+        response = requests.post(url, headers=headers, json=data)
+    elif method == 'PUT':
+        response = requests.put(url, headers=headers, json=data)
+    elif method == 'DELETE':
+        response = requests.delete(url, headers=headers, json=data)
+    else:
+        return jsonify({'error': 'Unsupported HTTP method'}), 405
+
+    return response
+
+@app.route('/ollama/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def proxy_ollama(path):
+    try:
+
+        # Forward the request to OpenAI
+        headers = {key: value for (key, value) in request.headers if key != 'Host'}
+        data = request.json if request.method in ['POST', 'PUT'] else request.args
+
+        # Call the forward_request function
+
+        response = forward_request_to_ollama(path, request.method, headers, data)
+
+
+        # Pass the response back to the client
+
+        return response.content
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+
+def forward_request_to_openai(path, method, headers, data):
+    url = f"https://api.openai.com/v1/{path}"
+    headers['Authorization'] = f'Bearer {openai_api_key}'
+
+    if method == 'GET':
+        response = requests.get(url, headers=headers, params=data)
+    elif method == 'POST':
+        response = requests.post(url, headers=headers, json=data)
+    elif method == 'PUT':
+        response = requests.put(url, headers=headers, json=data)
+    elif method == 'DELETE':
+        response = requests.delete(url, headers=headers, json=data)
+    else:
+        return jsonify({'error': 'Unsupported HTTP method'}), 405
+
+    return response
+
+@app.route('/openai/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def proxy_openai(path):
+    try:
+
+        # Forward the request to OpenAI
+        headers = {key: value for (key, value) in request.headers if key != 'Host'}
+        data = request.json if request.method in ['POST', 'PUT'] else request.args
+
+        # Call the forward_request function
+
+        response = forward_request_to_openai(path, request.method, headers, data)
+
+
+        # Pass the response back to the client
+
+        return response.content
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
 @app.route(dump_url, methods=["POST"])
 def dump():
     scope = request.form.get("scope")
