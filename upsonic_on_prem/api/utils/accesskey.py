@@ -134,7 +134,7 @@ class AccessKey:
     def events(self):
        
         from_db = self._get(self.key + ":events")
-        print("from db", from_db)
+
         if from_db == None:
             return {}
         return from_db
@@ -143,8 +143,7 @@ class AccessKey:
         currently = self.events
         the_time = str(time.time()) + "_" + str(random.randint(0, 100000))
         currently[the_time] = event
-        print("Event recording",event )
-        print("Savıng dicg", currently)
+
 
         self._set(self.key + ":events", currently)
 
@@ -152,7 +151,7 @@ class AccessKey:
         # get last x element of dict but return should be a dict
         all_events = self.events
 
-        print("all_evebts", all_events)
+
         last_x_events = {}
         for i in list(all_events.keys())[-x:]:
             last_x_events[i] = all_events[i]

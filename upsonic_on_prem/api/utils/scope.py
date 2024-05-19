@@ -871,7 +871,7 @@ class Scope:
                             subspan.set_status(Status(StatusCode.ERROR))
                             subspan.record_exception(ex)
                     user.event(f"DUMP {self.key} - {self.commit_messag}")
-                    print("AL EVENTS ", user.events)
+
                     self.set_lock(False)
                     span.set_status(Status(StatusCode.OK))
 
