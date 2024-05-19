@@ -231,7 +231,7 @@ def event():
 @app.route(get_last_x_event_url, methods=["post"])
 def get_last_x_event():
     key = request.form.get("key")
-    print("KEY NAME", key)
+
     user = AccessKey(key)
     x = request.form.get("x", type=int)
     return jsonify({"status": True, "result": user.get_last_x_events(x)})

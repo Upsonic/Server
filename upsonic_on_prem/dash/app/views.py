@@ -1326,7 +1326,7 @@ def analyze_user(request, id):
 
     events = API_Integration(request.user.access_key).get_last_x_events(the_user.access_key)
 
-    print("events", events)
+
 
     data = {
         "page_title": "Analyze User",
