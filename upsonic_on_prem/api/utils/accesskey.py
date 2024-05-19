@@ -4,15 +4,21 @@ import redis
 import random
 import os
 import traceback
-
+import json
 
 from upsonic_on_prem.api.utils import storage
 
 from upsonic_on_prem.api.utils.configs import admin_key
 
+
+
 class AccessKey:
     def __init__(self, key):
         self.key = key
+
+        self.robust_allowed = [
+            self.key+":events"
+        ]
 
     def set_robust(self, robust):
         return self._set(self.key + ":robust", robust)
@@ -24,7 +30,8 @@ class AccessKey:
 
     def _set(self, key, value):
         if self.robust:
-            return False
+            if key not in self.robust_allowed:
+                return False
 
         return storage.set(key, value)
 
@@ -125,17 +132,27 @@ class AccessKey:
 
     @property
     def events(self):
-        return self._get(self.key + ":events") or {}
+       
+        from_db = self._get(self.key + ":events")
+        print("from db", from_db)
+        if from_db == None:
+            return {}
+        return from_db
 
     def event(self, event):
         currently = self.events
         the_time = str(time.time()) + "_" + str(random.randint(0, 100000))
         currently[the_time] = event
+        print("Event recording",event )
+        print("Savıng dicg", currently)
+
         self._set(self.key + ":events", currently)
 
     def get_last_x_events(self, x):
         # get last x element of dict but return should be a dict
         all_events = self.events
+
+        print("all_evebts", all_events)
         last_x_events = {}
         for i in list(all_events.keys())[-x:]:
             last_x_events[i] = all_events[i]

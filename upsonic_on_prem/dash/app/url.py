@@ -30,6 +30,7 @@ urlpatterns = [
     path('regenerate_readme/<id>', views.regenerate_readme, name="regenerate_readme"),
     path('delete_scope/<id>', views.delete_scope, name="delete_scope"),
     path('control_user/<id>', views.control_user, name="control_user"),
+    path('analyze_user/<id>', views.analyze_user, name="analyze_user"),
     path('add_user', views.add_user, name="add_user"),
     path('profile', views.profile, name="profile"),
     path('delete_user/<id>', views.delete_user, name="delete_user"),
