@@ -433,6 +433,34 @@ class API_Integration:
         return self._send_request(
             "POST", "/create_security_analysis_of_scope", data=data
         )    
+    
+
+    def get_last_x_events(self, user, x=10):
+        data = {"key": user}
+        data["x"] = x
+        response = self._send_request("POST", "/get_last_x_event", data=data)
+
+        new_dict = {}
+        try:
+            for each,value in response.items():
+                new_key = datetime.datetime.fromtimestamp(int(each.split(".")[0])).strftime('%c')
+                new_dict[new_key] = value
+        except:
+            print("error")
+            traceback.print_exc()
+
+
+
+        print("the_ return", new_dict)
+
+        new_list = []
+        for each, value in new_dict.items():
+            new_list.append({"time": each, "event": value})
+
+        #reverse it
+        new_list.reverse()
+
+        return new_list
 
 
     def get_read_scopes_of_user(self, key):

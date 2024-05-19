@@ -1311,3 +1311,29 @@ def settings_light_mode(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     
+
+
+
+
+
+
+@login_required
+def analyze_user(request, id):
+    if not request.user.is_admin:
+        return HttpResponse(status=403)
+    the_user = models.User.objects.get(id=id)
+
+
+    events = API_Integration(request.user.access_key).get_last_x_events(the_user.access_key)
+
+    print("events", events)
+
+    data = {
+        "page_title": "Analyze User",
+        "user": the_user,
+        "events": events,
+
+
+        "user_form": forms.UpdateUserForm(instance=the_user),
+    }
+    return render(request, "templates/analyze_user.html", data)    
