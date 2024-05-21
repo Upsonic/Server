@@ -564,10 +564,10 @@ class Test_Storage(unittest.TestCase):
         accesskey = AccessKey(id)
         accesskey.enable()
 
-        accesskey.event("Test a")
-        accesskey.event("Test b")
-        accesskey.event("Test c")
-        accesskey.event("Test d")
+        accesskey.event("Test a", "target", "detail")
+        accesskey.event("Test b", "target", "detail")
+        accesskey.event("Test c", "target", "detail")
+        accesskey.event("Test d", "target", "detail")
 
         id_admin = "test_events_get_x_api_admin"
         the_admin_access_key = AccessKey(id_admin)

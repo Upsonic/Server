@@ -316,7 +316,7 @@ class Test_Accesskey(unittest.TestCase):
         accesskey = AccessKey(id)
         accesskey.enable()
 
-        accesskey.event("Test a")
+        accesskey.event("Test a", "target", "detail")
 
         the_events = [value for value in accesskey.events.values()]
 
@@ -331,10 +331,10 @@ class Test_Accesskey(unittest.TestCase):
         accesskey = AccessKey(id)
         accesskey.enable()
 
-        accesskey.event("Test a")
-        accesskey.event("Test b")
-        accesskey.event("Test c")
-        accesskey.event("Test d")
+        accesskey.event("Test a", "target", "detail")
+        accesskey.event("Test b", "target", "detail")
+        accesskey.event("Test c", "target", "detail")
+        accesskey.event("Test d", "target", "detail")
 
         the_events = [value for value in accesskey.get_last_x_events(2).values()]
 
