@@ -63,7 +63,7 @@
                 #cy {
                   height: 400px;
                   width: 100%;
-                  border: 1px solid #ccc;
+                  {% if request.user.dark_mode %}border: 1px solid #ccc;,{% else %}border: 1px solid #000;{% endif %}
                   margin-top: 20px;
                 }
               </style>
@@ -87,8 +87,8 @@
                   
                   // "Out" nodes and edges
                   {% for node in dependency.out %}
-                  { data: { id: '{{ node }}', url:'{% url 'control_element' id=node %}', name: '{{ node }}' }, position: { x: 170, y: start_y + ({{ forloop.counter0 }} * increment_y) } },
-                  { data: { id: control_library + '{{ node }}', source: '{{ node }}', target: control_library, type: 'out' } },
+                  { data: { id: '{{ node.name }}', url:'{% url 'control_element' id=node.name %}', name: '{{ node.name }}' }, position: { x: 170, y: start_y + ({{ forloop.counter0 }} * increment_y) } },
+                  { data: { id: control_library + '{{ node.name }}', source: '{{ node.name }}', target: control_library, type: 'out' } },
                   {% endfor %}
                   
                   // "In" nodes and edges
@@ -160,6 +160,11 @@
                 n.data('grabbable', false);
                 });
             </script>
+
+            {% else %}
+            <div class="d-flex flex-column">
+                No dependencies found.
+            </div>
             {% endif %}
 
 

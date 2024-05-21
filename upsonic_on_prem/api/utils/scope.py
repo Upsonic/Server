@@ -146,7 +146,7 @@ class Scope:
             
 
         for each_dependency in self.dependency["out"]:
-
+            each_dependency = each_dependency["name"]
             if each_dependency in self.get_all_scopes():
                 the_scope = Scope(each_dependency)
                 the_scope.unset_linked(self.key)
@@ -771,9 +771,14 @@ class Scope:
             match = []
      
 
+        last_match = []
+        for each in match:
+            last_match.append({"name":each, "type":"scope"})
+
+
         dependency = {}
 
-        dependency["out"] = match
+        dependency["out"] = last_match
 
         dependency["in"] = self.linked
 
@@ -942,7 +947,7 @@ class Scope:
                     user.event("DUMP", self.key, self.commit_message, scope_target=True, meta={"commit_id": key})
 
                     for each_dependency in self.dependency["out"]:
-
+                        each_dependency = each_dependency["name"]
                         if each_dependency in self.get_all_scopes():
                             the_scope = Scope(each_dependency)
                             the_scope.set_linked(self.key)
