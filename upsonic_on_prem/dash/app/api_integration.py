@@ -455,7 +455,12 @@ class API_Integration:
 
         new_list = []
         for each, value in new_dict.items():
-            new_list.append({"time": each, "event": value})
+            try:
+                new_list.append({"time": each, "event": value["event"], "target":value["target"], "detail":value["detail"], "scope_target": value["scope_target"], "meta": value["meta"]})
+            except:
+                print()
+                print(value)
+                pass
 
         #reverse it
         new_list.reverse()

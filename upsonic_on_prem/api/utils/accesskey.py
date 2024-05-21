@@ -139,10 +139,13 @@ class AccessKey:
             return {}
         return from_db
 
-    def event(self, event):
+    def event(self, event, target, detail, scope_target=False, meta={}):
         currently = self.events
         the_time = str(time.time()) + "_" + str(random.randint(0, 100000))
-        currently[the_time] = event
+        the_event = {"event": event, "target":target, "detail":detail}
+        the_event["scope_target"] = scope_target
+        the_event["meta"] = meta
+        currently[the_time] = the_event
 
 
         self._set(self.key + ":events", currently)
