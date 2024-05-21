@@ -25,7 +25,7 @@ import textwrap
 import time
 
 import threading
-
+import re
 
 
 
@@ -145,6 +145,12 @@ class Scope:
                         github.delete_file_(path, message=f"Deleted {path} by {user.name}")
             
 
+        for each_dependency in self.dependency["out"]:
+
+            if each_dependency in self.get_all_scopes():
+                the_scope = Scope(each_dependency)
+                the_scope.unset_linked(self.key)
+
         self.the_storage.delete(self.key)
         for i in self.dump_history:
             storage_3.delete(i)
@@ -160,6 +166,7 @@ class Scope:
         self.the_storage.delete(self.key + ":security_analysis")
         self.the_storage.delete(self.key + ":code")
         self.the_storage.delete(self.key + ":requirements")
+
         self.the_storage.delete(self.key + ":version_history")
         self.the_storage.delete(self.key + ":python_version")
 
@@ -214,7 +221,7 @@ class Scope:
                 release_note = "Newly Added"
 
 
-            data = {"commit_message":self.commit_message, "release_note":release_note, "last_commit":self.last_commit, "data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+            data = {"linked":self.linked, "commit_message":self.commit_message, "release_note":release_note, "last_commit":self.last_commit, "data": self.source, "user": user.key, "time": current_time, "settings": self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":the_prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
             storage_3.set(key, data)
 
@@ -754,9 +761,71 @@ class Scope:
         return source        
         
 
+    @property
+    def dependency(self):
+        the_code = self.code
+     
+        try:
+            match = re.findall(r'upsonic\.load\(["\']([^"\']*)', the_code)
+        except:
+            match = []
+     
+
+        dependency = {}
+
+        dependency["out"] = match
+
+        dependency["in"] = self.linked
+
+
+
+        return dependency
+
+    
+
+
+        
+
     def set_requirements(self, requirements):
         return self.the_storage.set(self.key + ":requirements", requirements)
 
+
+
+    @property
+    def linked(self):
+        source = None
+        if not self.specific:
+            source = self.the_storage.get(self.key + ":linked")
+        else:
+
+            the_resource = self.the_storage.get(self.key)
+
+            if the_resource != None:
+                source = self.the_storage.get(self.key)["linked"]   
+     
+
+        if source == None:
+            source = []
+
+        return source   
+
+    def set_linked(self, linked_name):
+        currently_list = self.linked
+        currently_list.append(linked_name)
+        return self.the_storage.set(self.key + ":linked", currently_list)
+
+    def unset_linked(self, linked_name):
+        currently_list = self.linked
+        try:
+            currently_list.remove(linked_name)
+        except:
+            pass
+
+        if len(currently_list) == 0:
+            self.the_storage.delete(self.key + ":linked")
+        else:
+
+            return self.the_storage.set(self.key + ":linked", currently_list)
 
     @property
     def settings(self):
@@ -810,7 +879,7 @@ class Scope:
                     the_time = str(current_time) + "_" + str(random.randint(0, 100000))
                     sha256 = hashlib.sha256(the_time.encode()).hexdigest()
                     key = self.key + ":" + sha256            
-                    temp_data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+                    temp_data = {"linked":self.linked,"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
                     self.the_storage.set(self.key, temp_data)
 
 
@@ -843,7 +912,7 @@ class Scope:
                         data = data.decode()
 
 
-                    data = {"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
+                    data = {"linked":self.linked,"commit_message":self.commit_message, "last_commit":key, "data": data, "user": user.key, "time": current_time, "settings":self.settings, "type":self.type, "requirements":self.requirements, "python_version":self.python_version, "tags":self.tags, "code": self.code, "prev_code":self.prev_code, "documentation": self.documentation, "github_sha": self.github_sha, "time_complexity":self.time_complexity, "mistakes":self.mistakes, "required_test_types":self.required_test_types, "security_analysis":self.security_analysis}
 
                     storage_3.set(key, data)
 
@@ -871,6 +940,12 @@ class Scope:
                             subspan.set_status(Status(StatusCode.ERROR))
                             subspan.record_exception(ex)
                     user.event("DUMP", self.key, self.commit_message, scope_target=True, meta={"commit_id": key})
+
+                    for each_dependency in self.dependency["out"]:
+
+                        if each_dependency in self.get_all_scopes():
+                            the_scope = Scope(each_dependency)
+                            the_scope.set_linked(self.key)
 
                     self.set_lock(False)
                     span.set_status(Status(StatusCode.OK))

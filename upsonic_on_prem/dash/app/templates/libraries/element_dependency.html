@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+<div class="d-flex cloud_left_section">
+{% include 'cloud_side_bar.html' %}
+
+</div>
+<div class="w-100 custom_right_side">
+
+
+
+    <div class="d-flex flex-column">
+
+        <div class="custom_page_header_bottom_margin">
+
+            <div class="d-flex flex-row justify-content-between align-items-center">
+
+                <div class="flex-fill w-100 me-5">
+                    {% if have_upper %}
+                    <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
+                    {% endif %}
+                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column">
+
+        <div class="custom_page_header_bottom_margin">
+
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <div class="flex-fill w-100 me-5">
+                    <div class="row">
+
+                        <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Commits </span><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Run History </span><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_active">Dependency </span><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;  margin-right: auto;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="d-flex flex-column">
+
+
+    
+
+
+        <div class="d-flex flex-row justify-content-between scrollabe_righ_side">
+
+            <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+            <style>
+                #cy {
+                  height: 400px;
+                  width: 100%;
+                  border: 1px solid #ccc;
+                  margin-top: 20px;
+                }
+              </style>
+
+            {% if any_dependency %}
+
+
+
+                <div id="cy"></div>
+  
+              <script>
+                var control_library = '{{ control_library }}';
+            
+                var start_y = 120;
+                var increment_y = 10;
+                var control_position = { x: 200, y: 125 };
+            
+                var elements = [
+                  // Control node
+                  { data: { id: control_library, name: control_library }, position: control_position },
+                  
+                  // "Out" nodes and edges
+                  {% for node in dependency.out %}
+                  { data: { id: '{{ node }}', url:'{% url 'control_element' id=node %}', name: '{{ node }}' }, position: { x: 170, y: start_y + ({{ forloop.counter0 }} * increment_y) } },
+                  { data: { id: control_library + '{{ node }}', source: '{{ node }}', target: control_library, type: 'out' } },
+                  {% endfor %}
+                  
+                  // "In" nodes and edges
+                  {% for node in dependency.in %}
+                  { data: { id: '{{ node }}', url:'{% url 'control_element' id=node %}', name: '{{ node }}' }, position: { x: 230, y: start_y + ({{ forloop.counter0 }} * increment_y) } },
+                  { data: { id: control_library + '{{ node }}', source: control_library, target: '{{ node }}', type: 'in' } },
+                  {% endfor %}
+                ];
+            
+                // Initialize Cytoscape
+                var cy = cytoscape({
+                  container: document.getElementById('cy'),
+                  elements: elements,
+                  layout: {
+                    name: 'preset' // Use 'preset' layout for manual positioning
+                  },
+                  style: [
+                    {
+                      selector: 'node',
+                      style: {
+                        'width': 5,
+                        'height': 5,
+                        'background-color': '#007bff',
+                        'label': 'data(name)',
+                        {% if request.user.dark_mode %}'color': 'white',{% else %}'color': 'black',{% endif %}
+                        'font-size': '2px',
+                        'text-valign': 'center'
+                      }
+                    },
+                    {
+                      selector: 'edge',
+                      style: {
+                        'width': 0.5,
+                        'line-color': '#bbb',
+                        'target-arrow-color': '#bbb',
+                        'target-arrow-shape': 'triangle'
+                      }
+                    },
+                    {
+                      selector: 'edge[type="in"]',
+                      style: {
+                        'line-color': 'green',
+                        'target-arrow-color': 'green',
+                      }
+                    },
+                    {
+                      selector: 'edge[type="out"]',
+                      style: {
+                        'line-color': 'red',
+                        'target-arrow-color': 'red',
+                      }
+                    }
+                  ],
+                  userZoomingEnabled: false, // Disable zooming
+
+                  boxSelectionEnabled: false // Disable box selection
+                });
+            
+                // Redirect on node click, unless it's the control node
+                cy.on('tap', 'node', function(evt){
+                var node = evt.target;
+                if(node.data('id') !== control_library) {
+                    window.open(node.data('url'), '_blank'); // open the URL in a new tab
+                }
+                });
+
+                // Ensure nodes cannot be moved
+                cy.nodes().forEach(function (n) {
+                n.data('grabbable', false);
+                });
+            </script>
+            {% endif %}
+
+
+    </div>
+
+</div>
+
+
+
+</div>
+
+
+
+{% endblock content %}

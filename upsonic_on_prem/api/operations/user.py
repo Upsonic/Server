@@ -236,6 +236,17 @@ def get_requirements_of_scope():
     
     return jsonify({"status": True, "result": the_scope.requirements})
 
+@app.route(get_dependency_of_scope_url, methods=["POST"])
+def get_dependency_of_scope():
+    scope = request.form.get("scope")
+    version = request.form.get("version")
+    if version != None:
+        the_scope = Scope.get_version(scope+":"+version)
+    else:
+        the_scope = Scope(scope)
+
+    
+    return jsonify({"status": True, "result": the_scope.dependency})
 
 
 @app.route(get_settings_of_scope_url, methods=["POST"])
