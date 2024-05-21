@@ -1019,6 +1019,14 @@ def control_element_runs(request, id):
 
         each_run["data"]["version"] = "Latest" if each_run["data"]["version"] == latest_commit else each_run["data"]["version"]
 
+        number = float(each_run["data"]["cpu_usage"])
+        each_run["data"]["cpu_usage"] = float(f"{number:.1f}")
+
+        number2 = float(each_run["data"]["elapsed_time"])
+        each_run["data"]["elapsed_time"] = float(f"{number2:.1f}")
+
+
+
 
     cpu_usage_analyses_response = API_Integration(request.user.access_key).get_settings(id)
     if cpu_usage_analyses_response == None:

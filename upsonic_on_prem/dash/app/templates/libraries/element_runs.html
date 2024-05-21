@@ -64,13 +64,15 @@
             </div>            
             {% endif %}
 
-            <table class="table">
+            <table class="table table-hover align-middle library_table">
                 <thead>
-                  <tr>
+                  <tr style="
+            border-bottom-color: #01EE8D;
+        ">
                     <th scope="col">Version</th>
-                    <th scope="col">CPU Usage (one core) %</th>
-                    <th scope="col">Memory Usage MB</th>
-                    <th scope="col">Elapsed Time Second</th>
+                    <th scope="col">CPU Usage (one core)</th>
+                    <th scope="col">Memory Usage</th>
+                    <th scope="col">Elapsed Time</th>
                     <th scope="col">Type</th>
                   </tr>
                 </thead>
@@ -79,9 +81,9 @@
                 {% for run in get_last_runs%}
                   <tr>
                     <th>{{run.data.version}}</th>
-                    <td>{{run.data.cpu_usage}}</td>
-                    <td>{{run.data.memory_usage}}</td>
-                    <td>{{run.data.elapsed_time}}</td>
+                    <td>{{run.data.cpu_usage}}%</td>
+                    <td>{{run.data.memory_usage}}mb</td>
+                    <td>{{run.data.elapsed_time}}s</td>
                     <td>{{run.data.type}}</td>
                   </tr>
 
