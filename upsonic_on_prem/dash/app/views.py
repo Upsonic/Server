@@ -117,6 +117,8 @@ def control_user(request, id):
             "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key),
             "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_user(the_user.access_key),
             "scope_form": forms.ScopeForm(),
+            "is_enabled": API_Integration(request.user.access_key).is_enabed_user(the_user.access_key),
+            "is_admin": API_Integration(request.user.access_key).is_admin(the_user.access_key),
         }
         return render(request, "templates/control_user.html", data)
 
