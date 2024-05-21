@@ -504,6 +504,55 @@ def control_element(request, id):
     return render(request, f"templates/libraries/element.html", data)
 
 
+@login_required
+def control_element_dependency(request, id):
+
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
+
+    dependency = API_Integration(request.user.access_key).get_dependency(id, version=version)
+
+    any_dependency = False
+    if dependency["in"] != []:
+        any_dependency = True
+    if dependency["out"] != []:
+        any_dependency = True
+
+
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
+        "top_control_library": id.split(".")[0],
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+
+        "version": "" if version == None else version,
+
+        "dependency":dependency,
+        "any_dependency": any_dependency
+    }
+    return render(request, f"templates/libraries/element_dependency.html", data)
+
 # Write a view to regererate the documentation
 @login_required
 def regenerate_documentation(request, id):

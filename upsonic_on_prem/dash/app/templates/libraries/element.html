@@ -39,7 +39,8 @@
                         <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
                         <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Commits </span><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
                         <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Run History </span><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none; margin-right: auto;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Dependency </span><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>
+                        <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;  margin-right: auto;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
 
 
 
@@ -78,6 +79,7 @@
                     <span class="custom_page_header_text">Documentation</span>
                 </div>
                 <div class="custom_pharagraph_for_documentations">{{documentation|safe}}</div>
+
 
 
                 <div class="custom_page_header_top_bottom_margin">
@@ -152,6 +154,7 @@
                     </div>
                 </div>
                 {% endif %}
+
 
 
     </div>

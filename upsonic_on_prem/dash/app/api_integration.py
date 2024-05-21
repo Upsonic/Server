@@ -311,6 +311,16 @@ class API_Integration:
         return requirements
 
 
+    def get_dependency(self, scope, version=None):
+        data = {"scope": scope}
+        if version != None:
+            data["version"] = version        
+        requirements = self._send_request("POST", "/get_dependency_of_scope", data=data)
+
+
+        return requirements
+
+
     def get_settings(self, scope, version=None):
         data = {"scope": scope}
         if version != None:
