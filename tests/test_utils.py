@@ -320,7 +320,7 @@ class Test_Accesskey(unittest.TestCase):
 
         the_events = [value for value in accesskey.events.values()]
 
-        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail"}])
+        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}])
 
         storage.pop()
 
@@ -338,7 +338,7 @@ class Test_Accesskey(unittest.TestCase):
 
         the_events = [value for value in accesskey.get_last_x_events(2).values()]
 
-        self.assertEqual(the_events, [{"event": "Test d", "target":"target", "detail":"detail"}, {"event": "Test c", "target":"target", "detail":"detail"}])
+        self.assertEqual(the_events, [{"event": "Test d", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}, {"event": "Test c", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}])
 
         storage.pop()
 

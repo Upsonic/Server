@@ -553,7 +553,7 @@ class Test_Storage(unittest.TestCase):
 
         the_events = [value for value in accesskey.events.values()]
 
-        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail"}])
+        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}])
 
         storage.pop()
 
