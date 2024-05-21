@@ -7,18 +7,42 @@
 
     <div class="d-flex flex-column">
     <div class="custom_page_header_bottom_margin">
+        <a href="#" class="back_a" onclick="page_load('{% url 'community' %}');event.preventDefault();">< </a>
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">User {{user.username}}</span></span>
     </div>
 
 
-     <a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();">Back</a>
-
 
     </div>
 
+
+
+
      <div class="d-flex flex-column scrollabe_righ_side">
 
-    <div class="custom_code_block">
+        <div class="custom_page_header_top_bottom_margin">
+            <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Controls</span></span>
+        </div>
+    
+        <div class="d-flex ">
+        {% if is_enabled %}
+        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'disable_user' id=user.id %}');event.preventDefault();">Disable</a>
+        {% else %}
+        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'enable_user' id=user.id %}');event.preventDefault();">Enable</a>
+        {% endif %}
+        
+        {% if is_admin %}
+        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'disable_admin' id=user.id %}');event.preventDefault();">Unset Admin</a>
+        {% else %}
+        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'enable_admin' id=user.id %}');event.preventDefault();">Set Admin</a>
+        {% endif %}
+    
+        <a class="btn btn-lg custom_button_red" href="#" onclick="page_load('{% url 'delete_user' id=user.id %}');event.preventDefault();">Delete</a>
+        </div>
+    
+
+
+    <div class="custom_code_block mt-5">
         Access Key
             <div class="custom_code_block_code">
                 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{user.access_key}}</code></pre></div>
@@ -26,7 +50,7 @@
         </div>
 
 
-      <form method="post" id="save" style="margin-left: 100px; margin-top: 69px;">
+      <form method="post" id="save" style="margin-top: 69px;">
         <div class="row">
         {% csrf_token %}
         <div class="col custom_form_col">
@@ -61,9 +85,11 @@
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Read Scopes</span></span>
     </div>
 
-    <table class="table">
+    <table class="table table-hover align-middle library_table">
         <thead>
-        <tr>
+            <tr style="
+            border-bottom-color: #01EE8D;
+        ">
             <th scope="col">Name</th>
             <th scope="col">Actions</th>
         </tr>
@@ -82,7 +108,7 @@
     </table>
 
     <form method="post" action="{% url 'add_read_scope' id=user.id %}" id="add_read_scope"
-          style="margin-left: 100px; margin-top: 69px;">
+          style="margin-top: 69px;">
         <div class="row">
             {% csrf_token %}
             <div class="col custom_form_col">
@@ -98,9 +124,11 @@
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Write Scopes</span></span>
     </div>
 
-    <table class="table">
+    <table class="table table-hover align-middle library_table">
         <thead>
-        <tr>
+            <tr style="
+            border-bottom-color: #01EE8D;
+        ">
             <th scope="col">Name</th>
             <th scope="col">Actions</th>
         </tr>
@@ -120,7 +148,7 @@
 
 
     <form method="post" action="{% url 'add_write_scope' id=user.id %}" id="add_write_scope"
-          style="margin-left: 100px; margin-top: 69px;">
+          style="margin-top: 69px;">
         <div class="row">
             {% csrf_token %}
             <div class="col custom_form_col">

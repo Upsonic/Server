@@ -7,11 +7,12 @@
 
     <div class="d-flex flex-column">
     <div class="custom_page_header_bottom_margin">
+        <a href="#" class="back_a" onclick="page_load('{% url 'community' %}');event.preventDefault();">< </a>
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">User {{user.username}}</span></span>
     </div>
 
 
-     <a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();">Back</a>
+    
 
 
     </div>
@@ -26,9 +27,11 @@
         <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Events</span></span>
     </div>
 
-    <table class="table">
+    <table class="table table-hover align-middle library_table">
         <thead>
-        <tr>
+            <tr style="
+            border-bottom-color: #01EE8D;
+        ">
             <th scope="col">Time</th>
             <th scope="col">Event</th>
             <th scope="col">Target</th>

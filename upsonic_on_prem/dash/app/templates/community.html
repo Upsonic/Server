@@ -13,13 +13,19 @@
 
     <div class="d-flex flex-column scrollabe_righ_side">
 
-<table class="table">
+<table class="table table-hover align-middle library_table">
     <thead>
-      <tr>
+        <tr style="
+        border-bottom-color: #01EE8D;
+    ">
           <th scope="col">Name</th>
           <th scope="col">Enabled</th>
           <th scope="col">Admin</th>
-          <th scope="col">Actions</th>
+          <th scope="col" style="
+          text-align: end;
+          padding: 1rem 1rem;
+          padding-right: 115px;
+      ">Actions</th>
 
       </tr>
     </thead>
@@ -27,17 +33,18 @@
         {% for key in users %}
         <tr>
 
-            <td>{{key.0}}</td>
+            <td><a href="#" onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/object_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}.svg" style="height: 13px;"/>{{key.0}}</a></td>
+            
+   
             <td>{{key.1}}</td>
             <td>{{key.2}}</td>
-            <td>
-                <a href="#" onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();">Edit</a>
-                <a href="#" onclick="page_load('{% url 'delete_user' id=key.3 %}');event.preventDefault();">Delete</a>
-                <a href="#" onclick="page_load('{% url 'enable_user' id=key.3 %}');event.preventDefault();">Enable</a>
-                <a href="#" onclick="page_load('{% url 'disable_user' id=key.3 %}');event.preventDefault();">Disable</a>
-                <a href="#" onclick="page_load('{% url 'enable_admin' id=key.3 %}');event.preventDefault();">Set Admin</a>
-                <a href="#" onclick="page_load('{% url 'disable_admin' id=key.3 %}');event.preventDefault();">Unset Admin</a>
-                <a href="#" onclick="page_load('{% url 'analyze_user' id=key.3 %}');event.preventDefault();">Analyze User</a>
+            <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
+
+
+                <a href="#" onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_edit.svg" style="height: 20px;margin-right: 10px;"/></a>
+
+                <a href="#" onclick="page_load('{% url 'analyze_user' id=key.3 %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_analyze.svg" style="height: 20px;margin-right: 10px;"/></a>
+
 
             </td>
 
