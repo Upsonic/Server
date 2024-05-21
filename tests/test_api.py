@@ -546,14 +546,14 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        data = {"key": id, "event": "Test a"}
+        data = {"key": id, "event": "Test a", "target":"target", "detail":"detail"}
         response = requests.post("http://127.0.0.1:7777" + event_url,
                                  auth=HTTPBasicAuth("", id_admin),
                                  data=data)
 
         the_events = [value for value in accesskey.events.values()]
 
-        self.assertEqual(the_events, ["Test a"])
+        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail"}])
 
         storage.pop()
 

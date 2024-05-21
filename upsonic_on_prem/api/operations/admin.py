@@ -224,8 +224,10 @@ def scopes_read_clear():
 def event():
     key = request.form.get("key")
     event = request.form.get("event")
+    target = request.form.get("target")
+    detail = request.form.get("detail")
     user = AccessKey(key)
-    return jsonify({"status": True, "resul": user.event(event)})
+    return jsonify({"status": True, "resul": user.event(event, target, detail)})
 
 
 @app.route(get_last_x_event_url, methods=["post"])
