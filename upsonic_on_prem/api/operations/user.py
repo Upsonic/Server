@@ -161,6 +161,38 @@ def proxy_openai(path):
 
 
 
+@app.route(dump_together_url, methods=["POST"])
+def dump_together():
+    scope = request.form.get("scope")
+    the_scope = Scope(scope)
+
+    #code
+    code = request.form.get("code")
+    the_scope.set_code(code, access_key=request.authorization.password)
+
+    #type
+    type = request.form.get("type")
+    the_scope.set_type(type)
+
+    #requirements
+    requirements = request.form.get("requirements")
+    the_scope.set_requirements(requirements)
+
+
+    #python_version
+    python_version = request.form.get("python_version")
+    the_scope.set_python_version(python_version)
+
+
+    data = request.form.get("data")
+    commit_message = request.form.get("commit_message")
+
+    
+
+    return jsonify(
+        {"status": True, "result": the_scope.dump(data, AccessKey(request.authorization.password), pass_str=True, commit_message=commit_message)})
+
+
 @app.route(dump_url, methods=["POST"])
 def dump():
     scope = request.form.get("scope")
