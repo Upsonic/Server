@@ -1,6 +1,5 @@
 status_url = "/status"
 
-
 dump_together_url = "/dump_together"
 
 dump_url = "/dump"
@@ -71,7 +70,6 @@ get_required_test_types_of_scope_url = "/get_required_test_types_of_scope"
 get_tags_of_scope_url = "/get_tags_of_scope"
 get_security_analysis_of_scope_url = "/get_security_analysis_of_scope"
 
-
 get_code_of_scope_url = "/get_code_of_scope"
 get_version_code_of_scope_url = "/get_version_code_of_scope"
 get_version_difference_of_scope_url = "/get_version_difference_of_scope"
@@ -94,7 +92,6 @@ create_required_test_types_of_scope_url = "/create_required_test_types_of_scope"
 create_tags_of_scope_url = "/create_tags_of_scope"
 create_security_analysis_of_scope_url = "/create_security_analysis_of_scope"
 
-
 create_document_of_scope_url_old = "/create_document_of_scope_old"
 
 get_type_of_scope_url = "/get_type_of_scope"
@@ -107,7 +104,6 @@ ai_code_to_document_url = "/ai_code_to_document"
 
 get_all_scopes_user_url = "/get_all_scopes_user"
 
-
 delete_scope_url = "/delete_scope"
 delete_version_url = "/delete_version"
 
@@ -119,7 +115,6 @@ get_module_version_history_url = "/get_module_version_history"
 load_specific_dump_url = "/load_specific_dump"
 load_specific_version_url = "/load_specific_version"
 
-
 get_all_scopes_name_prefix_url = "/get_all_scopes_name_prefix"
 
 create_version_url = "/create_version"
@@ -130,12 +125,10 @@ dump_requirements_url = "/dump_requirements"
 dump_settings_url = "/dump_settings"
 dump_python_version_url = "/dump_python_version"
 
-
 search_by_documentation_url = "/search_by_documentation"
 
 ai_completion_url = "/ai_completion"
 get_default_ai_model = "/get_default_ai_model"
-
 
 create_readme_url = "/create_readme"
 get_readme_url = "/get_readme"
@@ -143,10 +136,8 @@ get_readme_github_sync_url = "/get_readme_github_sync"
 
 create_get_release_note_url = "/create_get_release_note"
 
-
 dump_run_url = "/dump_run"
 get_last_runs_url = "/get_last_runs"
-
 
 user_urs = [
     get_dump_user_of_scope_url,
