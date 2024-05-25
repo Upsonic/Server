@@ -2,6 +2,8 @@
 
 import os
 
+os.environ["TRACELOOP_TRACE_CONTENT"] = "false"
+
 from dotenv import load_dotenv
 import requests
 
@@ -13,18 +15,24 @@ this_dir = os.path.dirname(os.path.abspath(__file__))
 import hashlib
 
 import ollama
-
+from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
-from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode
+from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode, provider
 
 from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
 
 import traceback
 from openai import OpenAI
+
+OpenAIInstrumentor().instrument(tracer_provider = provider)
+
+from opentelemetry.instrumentation.chromadb import ChromaInstrumentor
+
+ChromaInstrumentor().instrument(tracer_provider = provider)
 
 bypass_ai = os.environ.get("bypass_ai", "false").lower() == "true"
 
