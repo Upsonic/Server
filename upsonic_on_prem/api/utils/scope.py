@@ -169,6 +169,7 @@ class Scope:
 
         self.the_storage.delete(self.key + ":version_history")
         self.the_storage.delete(self.key + ":python_version")
+        self.the_storage.delete(self.key + ":lock")
 
     @property
     def dump_history(self):
