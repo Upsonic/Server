@@ -17,7 +17,7 @@ Upsonic is solves your spaghetti codes and maintanence problems of shared librar
 Upsonic team is working hard to making updates and keeping up to date the documents. If you have any other specific question you can use our social channels and GitHub repositories directly. Please feel free to open an issue.
 
 
-## Advisors
+## Supporters
 
 
 <table>
