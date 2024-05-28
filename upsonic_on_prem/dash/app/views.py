@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
@@ -1017,13 +1018,19 @@ def control_element_runs(request, id):
 
     for each_run in get_last_runs:
 
-        each_run["data"]["version"] = "Latest" if each_run["data"]["version"] == latest_commit else each_run["data"]["version"]
+        
+        if each_run["data"]["version"] == latest_commit:
+            each_run["data"]["version_short"] = "Latest"
+            each_run["data"]["version_tag"] = "Latest"
+        else:
+            each_run["data"]["version_short"] = each_run["data"]["version"][:4] + "..." + each_run["data"]["version"][-4:]
 
         number = float(each_run["data"]["cpu_usage"])
         each_run["data"]["cpu_usage"] = float(f"{number:.1f}")
 
         number2 = float(each_run["data"]["elapsed_time"])
         each_run["data"]["elapsed_time"] = float(f"{number2:.1f}")
+        each_run["data"]["time"] = datetime.datetime.fromtimestamp(int(str(each_run["data"]["time"]).split(".")[0])).strftime('%c')
 
 
 
@@ -1056,6 +1063,76 @@ def control_element_runs(request, id):
     }
     return render(request, f"templates/libraries/element_runs.html", data)    
 
+
+
+
+@login_required
+def control_element_runs_analyze(request, id, run_sha):
+
+    version = None
+    if ":" in id:
+        version = id.split(":")[1]
+        id = id.split(":")[0]
+
+    have_upper = False
+    the_upper = ""
+    if "." in id:
+        print("Have upper 1")
+        have_upper = True
+        last = id.split(".")[-1]
+        index_of_last = id.split(".").index(last)
+        the_upper = id.split(".")[:index_of_last]
+        print("the_upper", the_upper)
+        print("last", last)
+        the_upper = ".".join(the_upper)
+        if version != None:
+            the_upper = the_upper +":"+ version
+
+
+
+    get_last_run = API_Integration(request.user.access_key).get_run(id, run_sha)
+    latest_commit = API_Integration(request.user.access_key).get_dump_history(id)[0].split(":")[1]
+
+
+
+    if get_last_run["data"]["version"] == latest_commit:
+        get_last_run["data"]["version_short"] = "Latest"
+        get_last_run["data"]["version_tag"] = "Latest"
+    else:
+        get_last_run["data"]["version_short"] = get_last_run["data"]["version"][:4] + "..." + get_last_run["data"]["version"][-4:]
+
+    number = float(get_last_run["data"]["cpu_usage"])
+    get_last_run["data"]["cpu_usage"] = float(f"{number:.1f}")
+
+    number2 = float(get_last_run["data"]["elapsed_time"])
+    get_last_run["data"]["elapsed_time"] = float(f"{number2:.1f}")
+
+    username = None
+    try:
+        access_key = get_last_run["data"]["access_key"]
+        username = models.User.objects.get(access_key=access_key).username
+    except:
+        pass
+
+    get_last_run["data"]["username"] = username
+
+
+    get_last_run["data"]["time"] = datetime.datetime.fromtimestamp(int(str(get_last_run["data"]["time"]).split(".")[0])).strftime('%c')
+
+    data = {
+        "page_title": "Libraries",
+        "libraries": API_Integration(request.user.access_key).top_scopes,
+        "control_library": id,
+        "control_library_with_version": id if version == None else id +":"+version,
+        "top_control_library": id.split(".")[0],
+        "have_upper": have_upper,
+        "the_upper": the_upper,
+        "code": API_Integration(request.user.access_key).get_code(id, version=version),
+        "run": get_last_run["data"],
+        "version": "" if version == None else version,
+        "can_write": request.user.can_write(id)
+    }
+    return render(request, f"templates/libraries/element_runs_analyze.html", data)    
 
 
 

@@ -18,6 +18,7 @@ urlpatterns = [
     path('control_element/<id>', views.control_element, name="control_element"),
     path('control_element_dependency/<id>', views.control_element_dependency, name="control_element_dependency"),
     path('control_element_runs/<id>', views.control_element_runs, name="control_element_runs"),
+    path('control_element_runs_analyze/<id>/<run_sha>', views.control_element_runs_analyze, name="control_element_runs_analyze"),
     path('control_element_settings/<id>', views.control_element_settings, name="control_element_settings"),
     path('control_element_commits/<id>', views.control_element_commits, name="control_element_commits"),
     path('control_element_version/<id>', views.control_element_version, name="control_element_version"),

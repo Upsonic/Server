@@ -72,10 +72,14 @@ class Scope:
         result = []
         for i in self.run_history[-n:]:
             the_run = storage_5.get(i)
+            the_run["id"] = i
             result.append(the_run)
 
         result.reverse()
         return result
+        
+    def get_run(self, run_sha):
+        return storage_5.get(run_sha)
         
 
 
@@ -83,11 +87,11 @@ class Scope:
     def run_history(self):
         return self.the_storage.get(self.key + ":run_history") or []
 
-    def add_run_history(self, version=None, os_type=None, os_architecture=None, os_version=None, python_version=None, type=None, cpu_usage=None, memory_usage=None, elapsed_time=None):
+    def add_run_history(self, version=None, os_type=None, os_architecture=None, os_version=None, os_name=None, python_version=None, type=None, params=None, cpu_usage=None, memory_usage=None, elapsed_time=None, access_key=None):
         current_time = time.time()
         current = self.run_history
 
-        data = {"version":version, "os_type": os_type, "os_architecture": os_architecture, "os_version": os_version, "python_version": python_version, "type": type, "cpu_usage": cpu_usage, "memory_usage": memory_usage, "elapsed_time": elapsed_time, "time": current_time}
+        data = {"version":version, "os_type": os_type, "os_architecture": os_architecture, "os_version": os_version, "os_name": os_name, "python_version": python_version, "type": type, "params":params, "cpu_usage": cpu_usage, "memory_usage": memory_usage, "elapsed_time": elapsed_time, "time": current_time, "access_key": access_key}
 
         sha_256 = hashlib.sha256((str(current_time)+str(version)+str(self.key)).encode()).hexdigest()
 
