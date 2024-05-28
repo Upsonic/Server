@@ -775,3 +775,9 @@ class API_Integration:
         if n != None:
             data["n"] = n
         return self._send_request("POST", "/get_last_runs", data=data)
+    
+    def get_run(self, scope, run_sha):
+        data = {"scope": scope}
+        data["run_sha"] = run_sha
+
+        return self._send_request("POST", "/get_run", data=data)    

@@ -53,50 +53,125 @@
 
 
 <div class="d-flex flex-column scrollabe_righ_side">
+    
+    
 
+    <div class="custom_page_header_bottom_margin">
 
+      <div class="d-flex flex-row justify-content-between align-items-center">
+
+          <div class="flex-fill w-100 me-5">
+            <a href="#" class="back_a" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();">< </a>
+            <span class="custom_page_header_text_bold">{{run.time}}</span></span></span>             
+          </div>
+      </div>
+  </div>
 
         <div>
-            {% if cpu_usage_analyses == False %}
-            
-            <div class="custom_page_header_top_bottom_margin">
-                <span class="custom_page_header_text">Please enable Usage Analyses for catching new runs.</span>
-            </div>            
-            {% endif %}
+
 
             <table class="table table-hover align-middle library_table">
                 <thead>
                   <tr style="
             border-bottom-color: #01EE8D;
         ">
-                    <th scope="col">Version</th>
+
                     <th scope="col">CPU Usage (one core)</th>
                     <th scope="col">Memory Usage</th>
                     <th scope="col">Elapsed Time</th>
                     <th scope="col">Type</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Actions</th>
+
                   </tr>
                 </thead>
                 <tbody>
                 
-                {% for run in get_last_runs%}
+     
                   <tr>
-                    <td><a href="#" onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="library_item_a">
-                      {{run.data.version_short}}</a></td>
-                  
-                    <td>{{run.data.cpu_usage}}%</td>
-                    <td>{{run.data.memory_usage}}mb</td>
-                    <td>{{run.data.elapsed_time}}s</td>
-                    <td>{{run.data.type}}</td>
-                    <td>{{run.data.time}}</td>
-                    <td><a href="#" onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="library_item_a"><img  src="/static/images/icons/action_analyze.svg" style="height: 20px;margin-right: 10px;"/>Analyze</a></td>
+
+                    <td>{{run.cpu_usage}}%</td>
+                    <td>{{run.memory_usage}}mb</td>
+                    <td>{{run.elapsed_time}}s</td>
+                    <td>{{run.type}}</td>
+
                   </tr>
 
-                {% endfor %}
 
                 </tbody>
               </table>
+
+
+              <table class="table table-hover align-middle library_table">
+                <thead>
+                  <tr style="
+            border-bottom-color: #01EE8D;
+        ">
+  
+                    <th scope="col">Os Name</th>
+                    <th scope="col">Python Version</th>
+                    <th scope="col">User</th>
+                  </tr>
+                </thead>
+                <tbody>
+                
+     
+                  <tr>
+  
+                    <td>{{run.os_name}}</td>
+                    <td>{{run.python_version}}</td>
+                    <td>{{run.username}}</td>
+                  </tr>
+  
+  
+                </tbody>
+              </table>
+        
+              
+              <table class="table table-hover align-middle library_table">
+                <thead>
+                  <tr style="
+            border-bottom-color: #01EE8D;
+        ">
+  
+                    <th scope="col">Commit</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                
+     
+                  <tr>
+  
+                    <td>{{run.version_tag}} - {{run.version}}</td>
+                  </tr>
+  
+  
+                </tbody>
+              </table>
+  
+
+            <table class="table table-hover align-middle library_table">
+              <thead>
+                <tr style="
+          border-bottom-color: #01EE8D;
+      ">
+
+                  <th scope="col">Args</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+              
+   
+                <tr>
+
+                  <td>{{run.params}}</td>
+                </tr>
+
+
+              </tbody>
+            </table>
+
+
 
 
         </div>

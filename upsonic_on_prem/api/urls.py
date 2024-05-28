@@ -138,6 +138,7 @@ create_get_release_note_url = "/create_get_release_note"
 
 dump_run_url = "/dump_run"
 get_last_runs_url = "/get_last_runs"
+get_run_url = "/get_run"
 
 user_urs = [
     get_dump_user_of_scope_url,
@@ -146,6 +147,7 @@ user_urs = [
     get_dump_difference_of_scope_url,
     dump_run_url,
     get_last_runs_url,
+    get_run_url,
     create_get_release_note_url,
     create_readme_url,
     get_default_ai_model,
@@ -229,6 +231,7 @@ user_read_urls = [
     get_dump_commit_message_of_scope_url,
     get_dump_difference_of_scope_url,
     get_last_runs_url,
+    get_run_url,
     load_url,
     get_document_of_scope_url,
     get_github_sync_of_scope_url,

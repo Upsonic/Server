@@ -1577,7 +1577,9 @@ def dump_run():
     os_architecture = request.form.get("os_architecture")
     os_version = request.form.get("os_version")
     python_version = request.form.get("python_version")
+    os_name = request.form.get("os_name")
     _type = request.form.get("type")
+    params = request.form.get("params")
     cpu_usage = request.form.get("cpu_usage")
     memory_usage = request.form.get("memory_usage")
     elapsed_time = request.form.get("elapsed_time")
@@ -1587,11 +1589,14 @@ def dump_run():
         os_type=os_type,
         os_architecture=os_architecture,
         os_version=os_version,
+        os_name=os_name,
         python_version=python_version,
         type=_type,
+        params=params,
         cpu_usage=cpu_usage,
         memory_usage=memory_usage,
         elapsed_time=elapsed_time,
+        access_key=request.authorization.password,
     )
     return jsonify({"status": True, "result": op})
 
@@ -1607,6 +1612,15 @@ def get_last_runs():
     else:
         op = the_scope.get_last_runs()
     return jsonify({"status": True, "result": op})
+
+@app.route(get_run_url, methods=["POST"])
+def get_run():
+    """ """
+    scope = request.form.get("scope")
+    run_sha = request.form.get("run_sha")
+    the_scope = Scope(scope)
+    return jsonify({"status": True, "result": the_scope.get_run(run_sha)})
+
 
 
 @app.route(get_github_sync_of_scope_url, methods=["POST"])
