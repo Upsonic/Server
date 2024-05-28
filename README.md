@@ -19,7 +19,6 @@ Upsonic team is working hard to making updates and keeping up to date the docume
 
 
 
-
 ## Supporters
 
 
