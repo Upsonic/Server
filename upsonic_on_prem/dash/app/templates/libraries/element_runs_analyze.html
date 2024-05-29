@@ -172,7 +172,29 @@
             </table>
 
 
+            {% if run.type == 'Failed' %}
+            <table class="table table-hover align-middle library_table">
+              <thead>
+                <tr style="
+          border-bottom-color: #01EE8D;
+      ">
 
+                  <th scope="col">Exception Log</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+              
+   
+                <tr>
+
+                  <td>{{run.exception_log|linebreaks}}</td>
+                </tr>
+
+
+              </tbody>
+            </table>
+            {% endif %}
 
         </div>
       </div>

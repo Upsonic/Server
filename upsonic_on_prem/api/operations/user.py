@@ -1583,6 +1583,7 @@ def dump_run():
     cpu_usage = request.form.get("cpu_usage")
     memory_usage = request.form.get("memory_usage")
     elapsed_time = request.form.get("elapsed_time")
+    exception_log = request.form.get("exception_log")
     the_scope = Scope(scope)
     op = the_scope.add_run_history(
         version=version,
@@ -1597,6 +1598,7 @@ def dump_run():
         memory_usage=memory_usage,
         elapsed_time=elapsed_time,
         access_key=request.authorization.password,
+        exception_log=exception_log,
     )
     return jsonify({"status": True, "result": op})
 
