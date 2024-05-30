@@ -9,6 +9,7 @@
 
 
 
+
 {% if request.user.dark_mode %}
 <html lang="en" data-bs-theme="dark">
 {% else %}
@@ -19,13 +20,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{page_title}} - Upsonic</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
 
     <link href='/static/css/gabarito.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/poppins.css' rel='stylesheet' type='text/css'>
-    <link href='/static/css/site.css' rel='stylesheet' type='text/css'>
-    <link href='/static/css/dark_mode.css' rel='stylesheet' type='text/css'>
-    <link href="/static/css/bootstrap-icons.css" rel="stylesheet">
+
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/franken-ui-releases@0.0.12/dist/green.min.css"
+  />
+
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.4/dist/js/uikit-icons.min.js"></script>
+
+  <script>
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (
+      localStorage.getItem("color-theme") === "dark" ||
+      (!("color-theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
+
     {% if request.user.dark_mode %}
     <link rel="stylesheet" href="/static/css/atom-one-dark.min.css">
     {% else %}
@@ -38,7 +58,7 @@
     <script src="/static/js/python.min.js"></script>
     <script src="/static/js/markdown.min.js"></script>
     
-    
+
     {% include 'in_page_load.js.html' %}
 
     {% sentry as sentry %}
@@ -82,23 +102,12 @@
 
     {% progressive_web_app_meta %}
 </head>
-<body class="custom_body">
+<body class="bg-background">
 
 {% include 'header.html' %}
 
-<main class="d-flex flex-nowrap" id="the_content">
+<main id="the_content" >
 
-    {% include 'sidebar.html' %}
-
-      {% if page_title == 'Search' %}
-      <script>
-      document.getElementById("header_search_div").style.display = "none";
-      </script>
-      {% else %}
-      <script>
-      document.getElementById("header_search_div").style.display = "block";
-      </script>      
-      {% endif %}
 
     {% block content %}{% endblock content %}
 
@@ -114,5 +123,7 @@
 <script>
 hljs.highlightAll();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit-icons.min.js"></script>
 </body>
 </html>
