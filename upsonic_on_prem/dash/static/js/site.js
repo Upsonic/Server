@@ -698,17 +698,17 @@ function() {
     c && c.addEventListener('click', function() {
         c.parentNode.querySelector('.progress-bar-striped').classList.toggle('progress-bar-animated')
     }),
-    g = '<div class="bd-clipboard"><button type="button" class="btn-clipboard uk-button uk-button-default" title="Copy to clipboard" style="width: 1px;"><span uk-icon="icon: copy"></span></button></div>',
+    g = '<div class="bd-clipboard"><button type="button" class="btn-clipboarda uk-button uk-button-default" title="Copy to clipboard" style="width: 3px;"><span uk-icon="icon: copy"></span></button></div>',
     document.querySelectorAll('div.highlight').forEach(function(a) {
         a.insertAdjacentHTML('beforebegin', g)
     }),
-    document.querySelectorAll('.btn-clipboard').forEach(function(a) {
+    document.querySelectorAll('.btn-clipboarda').forEach(function(a) {
         var b = new bootstrap.Tooltip(a);
         a.addEventListener('mouseleave', function() {
             b.hide()
         })
     }),
-    e = new ClipboardJS('.btn-clipboard',{
+    e = new ClipboardJS('.btn-clipboarda',{
         target: function(a) {
             return a.parentNode.nextElementSibling
         }
