@@ -16,12 +16,28 @@
 
 
 
+[data-bs-theme=dark] .custom_login_header { 
+  color: #FFF;
+
+}
+[data-bs-theme=dark] .custom_price_card_bottom_button_text_disabled {
+  color: #1E1E1F;
+}
 
 
 
+[data-bs-theme=dark] .login_background { 
+  background: #000;
+}
 
 
-
+[data-bs-theme=dark] .custom_login_card { 
+  border-radius: 31px;
+  border: 1px solid #FFF;
+  
+  background: #171717;
+  scale: 0.8;
+}
 
 
 [data-bs-theme=dark] .btn-clipboard {

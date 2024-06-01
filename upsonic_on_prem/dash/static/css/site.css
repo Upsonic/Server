@@ -85,3 +85,109 @@
 .custom_code_highlight_title {
   color: #01EE8A;
 }
+.login_left_image {
+  background:url('/static/images/login_left.png');
+  background-position: center;
+  background-size: cover;
+
+}
+
+.custom_login_card {
+
+
+  flex-shrink: 0;
+
+
+  border-radius: 31px;
+  border: 2px solid rgba(77, 56, 255, 0.50);
+  background: #F6F5FF;
+
+  padding-bottom: 42px;
+  padding-top: 35px;
+  padding-left: 47px;
+  padding-right: 47px;
+
+  margin-left: 150px;
+  margin-right: 150px;
+
+}
+
+.custom_price_card_bottom_button {
+  width: 113px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #01EE8A;
+
+  margin-top: 18px;
+}
+
+
+.custom_price_card_bottom_button_text {
+
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+
+  color: #4D38FF;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Gabarito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 18.2px */
+
+}
+
+
+
+
+.custom_price_card_bottom_button_disabled {
+  width: 113px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #4D38FF;
+  border: 0px solid #000;
+
+  margin-top: 18px;
+}
+.custom_price_card_bottom_button_text_disabled {
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+
+  color: #4D38FF;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Gabarito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 18.2px */
+
+
+ 
+
+
+}
+
+.custom_login_header {
+  color: #4D38FF; 
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Gabarito;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 62.4px */
+
+}
+
+
+
+.custom_login_socials {
+  width: 20px;
+  margin-left: 27.68px;
+}
