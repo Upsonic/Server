@@ -69,9 +69,9 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <li class=" uk-margin-small-top uk-margin-small-right uk-margin-small-left uk-margin-small-bottom">
 
-        <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();" class="uk-button uk-button-{% if page_title != 'Profile' %}ghost{% else %}primary{% endif %}" style="display: inline-grid;"><span uk-icon="user"></span></a>
+        <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();" class="uk-button uk-button-{% if page_title != 'Profile' %}ghost{% else %}primary{% endif %}" style="display: inline-grid;" uk-tooltip="Profile"><span uk-icon="user"></span></a>
         {% if request.user.dark_mode %}
-        <a href="{% url 'settings_light_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default ">
+        <a href="{% url 'settings_light_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default " uk-tooltip="Light">
         
           <svg
           id="theme-toggle-light-icon"
@@ -99,7 +99,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
       
         </a>
         {% else %}
-        <a href="{% url 'settings_dark_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default ">
+        <a href="{% url 'settings_dark_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default " uk-tooltip="Dark Mode">
           <svg
     id="theme-toggle-dark-icon"
     xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
 
 
-        <a href="{% url 'account_logout' %}" class="uk-button uk-button-default " style="display: inline-grid;"><span uk-icon="sign-out"></span></a>
+        <a href="{% url 'account_logout' %}" class="uk-button uk-button-default " style="display: inline-grid;" uk-tooltip="Logout"><span uk-icon="sign-out"></span></a>
 
 
       </li>

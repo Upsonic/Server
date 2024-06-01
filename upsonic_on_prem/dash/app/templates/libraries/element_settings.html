@@ -39,10 +39,10 @@
    
                         
                             {% if cpu_usage_analyses == True %}
-                            <a  href="#" onclick="page_load('{% url 'deactivate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-danger">Close</a>
+                            <a  href="#" onclick="page_load('{% url 'deactivate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-danger">Disable Tracking</a>
                             {% else %}
 
-                            <a  href="#" onclick="page_load('{% url 'activate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-primary">Open</a>
+                            <a  href="#" onclick="page_load('{% url 'activate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-primary">Enable Tracking</a>
                             {% endif %}
 
                     
@@ -54,20 +54,27 @@
 
                 <div>
                     
-                    <div class="uk-card uk-card-body uk-card-default">
+                  <div class=" uk-card">
+                    <div class="uk-card-header">
                       <h3 class="uk-card-title">Object Settings</h3>
-      
-   
-                          <ul class="uk-navbar-nav uk-margin-small-top">
-  
-                              
-     
-                            <a href="{% url 'delete_scope' id=control_library %}"class="uk-button uk-button-danger">Delete Object</a>
-
-                              </ul>
-  
-                      
+                      <p class="uk-margin-small-top uk-text-small text-muted-foreground">
+                        Please be careful.
+                      </p>
                     </div>
+                    <div class="uk-card-body uk-padding-remove-top uk-padding-remove-bottom">
+ 
+                   
+
+                    </div>
+                   
+                    <div class="uk-card-footer uk-flex uk-flex-between uk-margin-small-top">
+                      <a href="{% url 'delete_scope' id=control_library %}"class="uk-button uk-button-danger">Delete Object</a>
+                    </div>
+                  </div>
+
+
+
+
                   </div>
 
                 
