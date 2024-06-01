@@ -191,3 +191,8 @@
   width: 20px;
   margin-left: 27.68px;
 }
+
+
+:root {
+  --primary: 154.68 99.16% 46.86%;
+}
