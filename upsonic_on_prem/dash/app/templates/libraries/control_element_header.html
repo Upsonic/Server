@@ -14,8 +14,7 @@
     {% if version != "" %}
     <span class="uk-badge" style="height: 35px;"><span uk-icon="history" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">{{version}}</span></span>
     {% endif %}
-    <span class="uk-badge" style="height: 35px;"><span uk-icon="github-alt" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">GitHub Synced</span></span>
- 
+
     {% if version == "" and github_active %}
     {% if github_synced %}
         <span class="uk-badge" style="height: 35px;"><span uk-icon="github-alt" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">GitHub Synced</span></span>

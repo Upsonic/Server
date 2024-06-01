@@ -240,7 +240,8 @@ def control_library(request,id):
     docs_are_ready = True
 
     all_scopes = []
-    for each_scope in API_Integration(request.user.access_key).get_all_scopes_name_prefix(id):
+    all_scopes_source = API_Integration(request.user.access_key).get_all_scopes_name_prefix(id)
+    for each_scope in all_scopes_source:
         write_right = request.user.can_write(each_scope)
         if version != None:
             if version in API_Integration(request.user.access_key).get_version_history(each_scope):
@@ -306,6 +307,9 @@ def control_library(request,id):
         github_synced = API_Integration(request.user.access_key).get_readme_github_sync(id, version=version)
 
 
+    total_sub_amount = len(all_scopes_source)
+
+
     data = {
         "page_title": "Libraries",
         "sub_page_title": "Home",
@@ -320,6 +324,7 @@ def control_library(request,id):
         "code": code,
         "readme": readme,
         "all_scopes": all_scopes,
+        "total_sub_amount": total_sub_amount,
         "version": "" if version == None else version,
         "github_synced": github_synced,
         "github_url": github_url,
