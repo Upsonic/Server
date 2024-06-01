@@ -1,7 +1,91 @@
 {% extends "base.html" %}
 
+{% load tags %}
 
 {% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: calc(100vh - 130px);">
+        <div uk-grid class="uk-margin-medium-bottom ">
+          <div class="uk-width-expand">
+          <h1 class="uk-h3 uk-margin text-foreground">Search</h1>
+          </div>
+
+      </div>
+        <li style="width: 100%;" id="header_search_div">
+          <form action="{% url 'search' %}" method="post">
+            <div class="uk-margin-small-top ">
+              <div class="uk-inline" style="width: 100%;">
+                
+                <input class="uk-input" style="width: 200%;" type="text" placeholder="" aria-label="Search" name="question" required/>
+              </div>
+            </div>
+           
+
+          </form></li>
+
+          {% if searched %}
+          <div uk-grid class="uk-margin-medium-bottom uk-margin-large-top">
+            <div class="uk-width-expand">
+            <h1 class="uk-h3 uk-margin text-foreground">Results</h1>
+            Query: {{question}}
+            </div>
+
+        </div>
+
+
+        {% for result in results %}
+
+
+        
+        <div class="uk-width-1-1 uk-margin-medium-top">
+
+          <div class=" uk-card uk-card-body uk-card-default">
+              <h3 class="uk-card-title"><a href="{% url 'control_element' id=result.0 %}">{{result.0}}</a></h3>
+              <p class="uk-margin">
+    
+                  <div class="custom_pharagraph_for_documentations"></div>
+                  <div class="custom_code_block">
+                      <div class="custom_code_block_code">
+                          <div>
+                              <pre><code class="language-python">{{result.3}}</code></pre>
+                          </div>
+                      </div>
+          
+                      
+                  </div>
+          
+                  <div class="custom_code_block uk-card">
+                      <div class="custom_code_block_code">
+                          <div class="highlight"><pre><code class="language-python">{{result.4}}</code></pre></div>
+                      </div>
+                  </div>
+
+              </p>
+            </div>
+    
+      </div>
+          
+    
+        {% endfor %}
+    
+    
+        {% endif %}
+
+
+</div>
+
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
 
 
 
@@ -41,6 +125,9 @@
     <div class="custom_pharagraph_for_documentations">Score: {{result.2}}</div>
     
 
+
+
+
     {% endfor %}
 
 
@@ -49,5 +136,3 @@
 </div>
 </div>
 
-
-{% endblock content %}

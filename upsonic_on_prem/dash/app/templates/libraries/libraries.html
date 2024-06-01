@@ -4,24 +4,38 @@
 
 
 
-<div class="d-flex cloud_left_section">
-  {% include 'cloud_side_bar.html' %}
-  </div>
+<div class="uk-container uk-width-expand scrollable_side" uk-height-viewport="offset-top: true" style="overflow: unset;">
+    <div  uk-grid>
+        <div class="uk-width-auto" style=" padding-left: 0px;">
 
-<div class="w-100 custom_right_side">
-
-    <div>
-        <div class="custom_page_header_bottom_margin">
-            <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Connection</span> Code</span>
+          {% include 'cloud_side_bar_other.html' %}
         </div>
+    
+        <div class="uk-width-expand uk-margin-medium-top">
 
-
-        <div class="custom_code_block">
-            <div class="custom_code_block_code">
-<div class="highlight"><pre class="chroma"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
+          <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+            <h1 class="uk-h2 uk-margin text-foreground">Connection Code</h1>
             </div>
+
         </div>
 
-    </div>
+
+
+        <div class="custom_code_block uk-card">
+          <div class="custom_code_block_code">
+<div class="highlight"><pre class="chroma"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
+          </div>
+      </div>
+
+
+
+      
+        </div>
+      </div>
+    
+</div>
+
+
 
 {% endblock content %}

@@ -2,17 +2,17 @@
 
 
 <nav class="uk-navbar-container " uk-navbar style="">
-    <div class="uk-navbar-left">
-        <ul class="uk-navbar-nav uk-margin-medium-left uk-margin-small-top uk-margin-small-bottom">
-          <a class="uk-navbar-item uk-logo" href="#"><img src="/static/images/logo_name_dark.svg" alt="Logo" width="140"
+    <div class="uk-navbar-left uk-margin-small-left" style="width: 70%;">
+        <ul class="uk-navbar-nav uk-margin-small-left uk-margin-small-top uk-margin-small-bottom" style="width: 100%;">
+          <a class="uk-navbar-item uk-logo" href="#"><img src="/static/images/logo_name{% if request.user.dark_mode %}_dark.svg{% else %}.svg{% endif %}" alt="Logo" style="width: 124px; max-width: unset;"
               class="d-inline-block align-text-top align-middle"></a>
 
-          <li>
-            <form>
+          <li style="width: 100%;" id="header_search_div">
+            <form action="{% url 'search' %}" method="post">
               <div class="uk-margin-small-top ">
-                <div class="uk-inline">
+                <div class="uk-inline" style="width: 30%;">
                   
-                  <input class="uk-input" type="text" placeholder="Search" aria-label="Search" />
+                  <input class="uk-input" style="width: 200%;" type="text" placeholder="Search" aria-label="Search" name="question" required/>
                 </div>
               </div>
              
@@ -32,10 +32,7 @@
 
 
 
-        <button class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Docs</button>
-
-
-        <button class="uk-button uk-button-default"><span uk-icon="sign-out"></span></button>
+        <a  href="https://docs.upsonic.co/" target="_blank" class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Docs</a>
 
 
 

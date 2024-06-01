@@ -1,16 +1,35 @@
 
-<div class="row">
 
 
+
+<div class="uk-grid uk-margin-small-left">
     {% for scope in top_scopes %}
-    <div class="position-relative custom_card_section">
-        <div class="custom_card">
-            <img src="/static/images/strong_variables.svg">
-            <h5 class="custom_card_header_black_big">{{scope}} </h5>
+    <div class="uk-width-1-6 uk-card uk-margin-medium-right" style="padding: 0;!important">
+        <div class="uk-card-header">
+          <div class="uk-flex">
+            <div>
+              <h3 class="uk-card-title text-foreground">{{scope}}</h3>
+              <p class="uk-margin-small-top uk-text-small text-muted-foreground">
+                
+              </p>
+            </div>
+            <div class="flex items-center space-x-2 uk-margin-auto-left">
+                 
+                <a href="#" onclick="page_load('{% url 'control_library_settings' id=scope %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="settings"></span></a>          
+            </div>
+          </div>
 
-            <a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="stretched-link"></a>
         </div>
-    </div>
-    {% endfor %}
 
-</div>
+       
+        <div class="uk-card-footer uk-flex uk-flex-between">
+          
+          <button onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="uk-button uk-button-primary "><span uk-icon="home" class="uk-margin-small-right"></span>Use   </span
+            ></button>
+            <button onclick="page_load('{% url 'control_library_version' id=scope %}');event.preventDefault();" class="uk-button uk-button-default">Releases</button>
+
+           
+        </div>
+      </div>
+    {% endfor %}             
+    </div>

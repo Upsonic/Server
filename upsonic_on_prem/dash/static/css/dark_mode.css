@@ -3,4 +3,28 @@
     fill: #fff;
 
 }
-  
+[data-bs-theme=dark] .custom_code_block {
+
+
+}
+
+[data-bs-theme=dark] .custom_code_block_code {
+
+  color: #E5E2FF;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+[data-bs-theme=dark] .btn-clipboard {
+  background-color: #1E1E1F;
+  color: #B6B3B3;
+}

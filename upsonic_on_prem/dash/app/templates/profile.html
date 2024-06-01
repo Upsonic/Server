@@ -1,7 +1,154 @@
 {% extends "base.html" %}
 
+{% load tags %}
 
 {% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: calc(100vh - 130px);">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                <h1 class="uk-h2 uk-margin text-foreground">{{request.user.username}}</h1>
+            </div>
+
+        </div>
+
+                
+        <div class="custom_code_block uk-card">
+            <div class="custom_code_block_code">
+                <div class="highlight"><pre><code class="language-python">{{request.user.access_key}}</code></pre></div>
+            </div>
+        </div>
+
+        
+        {% if not user.is_admin %}
+
+          <div class=" uk-card uk-card-body uk-card-default uk-margin-medium-top">
+            <h3 class="uk-card-title">Read Scopes</h3>
+        
+            <p class="uk-margin">
+                
+                <table class="uk-table">
+                    <caption></caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+          
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if not any_read_scope %}
+                        <tr>
+                            <td>No Read Scopes</td>
+                        </tr>
+                        {% endif %}
+                        {% for scope in read_scopes %}
+                      <tr>
+                        <td>{{scope}}</td>
+
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+                  </table>
+                  
+
+
+
+
+            </p>
+          </div>
+          <div class=" uk-card uk-card-body uk-card-default uk-margin-medium-top">
+            <h3 class="uk-card-title">Write Scopes</h3>
+        
+            <p class="uk-margin">
+                
+                <table class="uk-table">
+                    <caption></caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+             
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if not any_write_scope %}
+                        <tr>
+                            <td>No Write Scopes</td>
+                        </tr>
+                        {% endif %}
+                        {% for scope in write_scopes %}
+                      <tr>
+                        <td>{{scope}}</td>
+ 
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+                  </table>
+                  
+
+
+
+
+            </p>
+          </div>          
+     
+       
+          {% endif %}
+
+</div>
+
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="w-100 custom_right_side">
 
 
@@ -76,5 +223,3 @@
 
 </div>
 
-
-{% endblock content %}

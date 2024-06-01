@@ -1,40 +1,25 @@
+<table class="uk-table uk-table-divider">
+  <thead>
+    <tr>
+      <th class="uk-table-expand">Name</th>
+      <th class="uk-table-shrink uk-text-nowrap">Action</th>
 
+    </tr>
+  </thead>
+  <tbody>
+    {% for scope in top_scopes %}
+    <tr>
+      <td class="text-foreground">{{scope}}</td>
+      <td>
+        <div class="uk-flex">
+        <button onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="uk-button uk-button-primary uk-margin-small-right"><span uk-icon="home" class="uk-margin-small-right"></span>Use   </span
+          ></button>
+          <button onclick="page_load('{% url 'control_library_version' id=scope %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right">Releases</button>
+        <a href="#" onclick="page_load('{% url 'control_library_settings' id=scope %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right" style="width: 1px;"><span uk-icon="settings"></span></a>        
+      </div>
+      </td>
 
-
-
-<table class="table table-hover align-middle library_table">
-    <thead>
-      <tr style="
-      border-bottom-color: #01EE8D;
-  ">
-
-        <th scope="col">Name</th>
-          <th scope="col" style="
-          text-align: end;
-          padding: 1rem 1rem;
-          padding-right: 70px;
-      ">Action</th>
-
-      </tr>
-    </thead>
-    <tbody>
-        {% for scope in top_scopes %}
-        <tr>
-
-            <td><a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="library_item_a">{{scope}}</a></td>
-
-            <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
-
-              <a href="#" onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-              <a href="#" onclick="page_load('{% url 'control_library_version' id=scope %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-              <a href="#" onclick="page_load('{% url 'control_library_settings' id=scope %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
-               
-            </td>
-
-          </tr>
-
-        {% endfor %}
-
-
-    </tbody>
-  </table>
+    </tr>
+    {% endfor %} 
+  </tbody>
+</table>

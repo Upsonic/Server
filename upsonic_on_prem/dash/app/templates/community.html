@@ -1,67 +1,87 @@
 {% extends "base.html" %}
 
+{% load tags %}
 
 {% block content %}
-<div class="w-100 custom_right_side">
 
 
-    <div class="d-flex flex-column">
-    <div class="custom_page_header_bottom_margin">
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Users</span></span>
-    </div>
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: calc(100vh - 130px);">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                <h1 class="uk-h2 uk-margin text-foreground">Users</h1>
+            </div>
+            <div  class="uk-margin-small-bottom" >
+
+                <div class="uk-navbar-right ">
+                  <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+              
+               
+     
+    
+                    <a href="#" onclick="page_load('{% url 'add_user' %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="plus" class="uk-margin-small-right"></span>Create User</a>
+                    
+    
+                  </ul>
+                </div>  
+              
+                </div>
+    
+        </div>
+
+
+
+        <table class="uk-table uk-table-divider">
+            <thead>
+              <tr>
+                <th class="">Name</th>
+                <th class="">Enabled</th>
+                <th class="">Admin</th>
+                <th class="uk-table-shrink uk-text-nowrap">Actions</th>
+          
+              </tr>
+            </thead>
+            <tbody>
+                {% for key in users %}
+              <tr>
+                <td class="text-foreground">{{key.0}}</td>
+                {% if key.1 %}
+                <td><span uk-icon="icon: check"></span></td>
+                {% else %}
+                <td><span uk-icon="icon: close"></span></td>
+                {% endif %}
+       
+                {% if key.2 %}
+                <td><span uk-icon="icon: check"></span></td>
+                {% else %}
+                <td><span uk-icon="icon: close"></span></td>
+                {% endif %}
+                <td>
+                  <div class="uk-flex">
+                  <button onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();" class="uk-button uk-button-primary uk-margin-small-right"><span uk-icon="pencil" class="uk-margin-small-right"></span>Edit   </span
+                    ></button>
+                    <button onclick="page_load('{% url 'analyze_user' id=key.3 %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right"><span uk-icon="clock" class="uk-margin-small-right"></span>Logs   </span
+                        ></button>  
+                </div>
+                </td>
+          
+              </tr>
+              {% endfor %} 
+              
+            </tbody>
+          </table>
+
+
+
+
+
 </div>
 
-    <div class="d-flex flex-column scrollabe_righ_side">
-
-<table class="table table-hover align-middle library_table">
-    <thead>
-        <tr style="
-        border-bottom-color: #01EE8D;
-    ">
-          <th scope="col">Name</th>
-          <th scope="col">Enabled</th>
-          <th scope="col">Admin</th>
-          <th scope="col" style="
-          text-align: end;
-          padding: 1rem 1rem;
-          padding-right: 115px;
-      ">Actions</th>
-
-      </tr>
-    </thead>
-    <tbody>
-        {% for key in users %}
-        <tr>
-
-            <td><a href="#" onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/object_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}.svg" style="height: 13px;"/>{{key.0}}</a></td>
-            
-   
-            <td>{{key.1}}</td>
-            <td>{{key.2}}</td>
-            <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
-
-
-                <a href="#" onclick="page_load('{% url 'control_user' id=key.3 %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_edit.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-                <a href="#" onclick="page_load('{% url 'analyze_user' id=key.3 %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_analyze.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-
-            </td>
-
-
-          </tr>
-
-        {% endfor %}
-
-
-    </tbody>
-  </table>
-
-    <a href="#" onclick="page_load('{% url 'add_user' %}');event.preventDefault();" class="btn btn-lg custom_button">Create User</a>
 
 
 
-</div>
-</div>
+
+
 
 {% endblock content %}
+
+

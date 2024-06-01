@@ -606,7 +606,7 @@ class API_Integration:
         try:
             if response != [None]:
                 for i in response:
-                    result.append([i[0], transform_to_html_bold(i[1]), i[2]])
+                    result.append([i[0], transform_to_html_bold(i[1]), i[2], self.get_code(i[0]), f'upsonic.load("{i[0]}")()'])
         except:
             traceback.print_exc()
         return result

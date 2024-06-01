@@ -698,7 +698,7 @@ function() {
     c && c.addEventListener('click', function() {
         c.parentNode.querySelector('.progress-bar-striped').classList.toggle('progress-bar-animated')
     }),
-    g = '<div class="bd-clipboard"><button type="button" class="btn-clipboard" title="Copy to clipboard"><img class="btn-clipboard-img" src="/static/images/copy.svg"></button></div>',
+    g = '<div class="bd-clipboard"><button type="button" class="btn-clipboard uk-button uk-button-default" title="Copy to clipboard" style="width: 1px;"><span uk-icon="icon: copy"></span></button></div>',
     document.querySelectorAll('div.highlight').forEach(function(a) {
         a.insertAdjacentHTML('beforebegin', g)
     }),

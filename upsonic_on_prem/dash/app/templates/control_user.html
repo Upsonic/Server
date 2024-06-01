@@ -1,169 +1,223 @@
 {% extends "base.html" %}
 
+{% load tags %}
 
 {% block content %}
-<div class="w-100 custom_right_side">
 
 
-    <div class="d-flex flex-column">
-    <div class="custom_page_header_bottom_margin">
-        <a href="#" class="back_a" onclick="page_load('{% url 'community' %}');event.preventDefault();">< </a>
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">User {{user.username}}</span></span>
-    </div>
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: calc(100vh - 130px);">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                <h1 class="uk-h2 uk-margin text-foreground"><a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="chevron-left"></span></a>
+                {{user.username}}</h1>
+            </div>
 
-
-
-    </div>
-
-
-
-
-     <div class="d-flex flex-column scrollabe_righ_side">
-
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Controls</span></span>
         </div>
-    
-        <div class="d-flex ">
-        {% if is_enabled %}
-        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'disable_user' id=user.id %}');event.preventDefault();">Disable</a>
-        {% else %}
-        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'enable_user' id=user.id %}');event.preventDefault();">Enable</a>
-        {% endif %}
+        <div  class="uk-margin-small-bottom" style="margin-top: 1.5rem;">
+
+            <div class="uk-navbar-right ">
+              <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+          
+           
+                {% if is_enabled %}
+                <a href="#" onclick="page_load('{% url 'disable_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="close" class="uk-margin-small-right"></span>Disable</a>
+                {% else %}
+                <a href="#" onclick="page_load('{% url 'enable_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="check" class="uk-margin-small-right"></span>Enable</a>
+                {% endif %}
+
+          
+                 
         
-        {% if is_admin %}
-        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'disable_admin' id=user.id %}');event.preventDefault();">Unset Admin</a>
-        {% else %}
-        <a class="btn btn-lg custom_button" href="#" onclick="page_load('{% url 'enable_admin' id=user.id %}');event.preventDefault();">Set Admin</a>
-        {% endif %}
-    
-        <a class="btn btn-lg custom_button_red" href="#" onclick="page_load('{% url 'delete_user' id=user.id %}');event.preventDefault();">Delete</a>
-        </div>
-    
+                {% if is_admin %}
+                <a href="#" onclick="page_load('{% url 'disable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="close" class="uk-margin-small-right"></span>Unset Admin</a>
+                {% else %}
+                <a href="#" onclick="page_load('{% url 'enable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="check" class="uk-margin-small-right"></span>Set Admin</a>
+                {% endif %}   
 
+                <a href="#" onclick="page_load('{% url 'delete_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-danger"><span uk-icon="close" class="uk-margin-small-right"></span>Delete User</a>
+                
 
-    <div class="custom_code_block mt-5">
-        Access Key
+              </ul>
+            </div>  
+          
+            </div>
+
+                
+        <div class="custom_code_block uk-card">
             <div class="custom_code_block_code">
-                <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html">{{user.access_key}}</code></pre></div>
+                <div class="highlight"><pre><code class="language-python">{{user.access_key}}</code></pre></div>
             </div>
         </div>
 
+        
+        <div class=" uk-card uk-card-body uk-card-default uk-margin-small-top">
+            <h3 class="uk-card-title">Edit</h3>
+        
+            <p class="uk-margin">
 
-      <form method="post" id="save" style="margin-top: 69px;">
-        <div class="row">
-        {% csrf_token %}
-        <div class="col custom_form_col">
-          <div class="custom_form_field_head">Name</div>
-          {{ user_form.first_name }}
 
-        </div>
-        <div class="col custom_form_col">
+                <form  method="post" id="save">
+                    <div class="uk-margin-small-top ">
+                      <div class="uk-inline" style="width: 100%;">
+                        {% csrf_token %}
+                        <legend class="uk-legend">First Name</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="{{user.first_name}}" value="{{user.first_name}}" aria-label="Search" name="first_name" required/>
+        
+                        <legend class="uk-legend">Last Name</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="{{user.last_name}}" value="{{user.last_name}}" aria-label="Search" name="last_name" required/>
+                        
+                        <legend class="uk-legend">Username</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="{{user.username}}" value="{{user.username}}" aria-label="Search" name="username" required/>
+                        
+                        <legend class="uk-legend">Password</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="" aria-label="Search" name="password" required/>
+                      </div>
+                    </div>
+                   
+        
+                  </form>
+        
+                <button type="submit" form="save" class="uk-button uk-button-default uk-margin-small-top">Save</button>
 
-          <div class="custom_form_field_head">Surname</div>
-          {{ user_form.last_name }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col custom_form_col">
-          <div class="custom_form_field_head">Username</div>
-          {{ user_form.username }}
-
+            </p>
           </div>
-        <div class="col custom_form_col">
-          <div class="custom_form_field_head">Pass</div>
-          {{ user_form.password }}
 
+          {% if not user.is_admin %}
+          <div uk-grid  style="gap: 1rem; margin-left: 0px;">
+          <div class="uk-width-1-3 uk-card uk-card-body uk-card-default uk-margin-medium-top">
+            <h3 class="uk-card-title">Read Scopes</h3>
+        
+            <p class="uk-margin">
+                
+                <table class="uk-table">
+                    <caption></caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if not any_read_scope %}
+                        <tr>
+                            <td>No Read Scopes</td>
+                        </tr>
+                        {% endif %}
+                        {% for scope in read_scopes %}
+                      <tr>
+                        <td>{{scope}}</td>
+                        <td>
+                            <a href="#" onclick="page_load('{% url 'delete_read_scope' id=user.id scope=scope %}');event.preventDefault();">Delete</a>
+                            
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+                  </table>
+                  
+
+
+                <form  method="post" action="{% url 'add_read_scope' id=user.id %}" id="add_read_scope">
+                    <div class="uk-margin-small-top ">
+                      <div class="uk-inline" style="width: 100%;">
+                        {% csrf_token %}
+                        
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="Add" aria-label="Search" name="scope" id="scope" required/>
+                      </div>
+                    </div>
+                   
+        
+                  </form>
+        
+                <button type="submit" form="add_read_scope" class="uk-button uk-button-default uk-margin-small-top">Add</button>
+
+
+
+            </p>
           </div>
-        </div>
+          <div class="uk-width-1-3 uk-card uk-card-body uk-card-default uk-margin-medium-top">
+            <h3 class="uk-card-title">Write Scopes</h3>
+        
+            <p class="uk-margin">
+                
+                <table class="uk-table">
+                    <caption></caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if not any_write_scope %}
+                        <tr>
+                            <td>No Write Scopes</td>
+                        </tr>
+                        {% endif %}
+                        {% for scope in write_scopes %}
+                      <tr>
+                        <td>{{scope}}</td>
+                        <td>
+                            <a href="#" onclick="page_load('{% url 'delete_write_scope' id=user.id scope=scope %}');event.preventDefault();">Delete</a>
+                            
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
 
-    </form>
-
-    <button type="submit" form="save" class="btn btn-lg custom_button">Save</button>
-
-    <div class="custom_page_header_top_bottom_margin">
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Read Scopes</span></span>
-    </div>
-
-    <table class="table table-hover align-middle library_table">
-        <thead>
-            <tr style="
-            border-bottom-color: #01EE8D;
-        ">
-            <th scope="col">Name</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for scope in read_scopes %}
-        <tr>
-            <td>{{scope}}</td>
-            <td>
-                <a href="#"
-                   onclick="page_load('{% url 'delete_read_scope' id=user.id scope=scope %}');event.preventDefault();">Delete</a>
-            </td>
-            {% endfor %}
-        </tr>
-        </tbody>
-    </table>
-
-    <form method="post" action="{% url 'add_read_scope' id=user.id %}" id="add_read_scope"
-          style="margin-top: 69px;">
-        <div class="row">
-            {% csrf_token %}
-            <div class="col custom_form_col">
-                <div class="custom_form_field_head">Add Read Scope</div>
-                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope" required>
-            </div>
-        </div>
-    </form>
-    <button type="submit" form="add_read_scope" class="btn btn-lg custom_button">Add</button>
+                  </table>
+                  
 
 
-    <div class="custom_page_header_top_bottom_margin">
-        <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Write Scopes</span></span>
-    </div>
-
-    <table class="table table-hover align-middle library_table">
-        <thead>
-            <tr style="
-            border-bottom-color: #01EE8D;
-        ">
-            <th scope="col">Name</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for scope in write_scopes %}
-        <tr>
-            <td>{{scope}}</td>
-            <td>
-                <a href="#"
-                   onclick="page_load('{% url 'delete_write_scope' id=user.id scope=scope %}');event.preventDefault();">Delete</a>
-            </td>
-            {% endfor %}
-        </tr>
-        </tbody>
-    </table>
+                <form  method="post" action="{% url 'add_write_scope' id=user.id %}" id="add_write_scope">
+                    <div class="uk-margin-small-top ">
+                      <div class="uk-inline" style="width: 100%;">
+                        {% csrf_token %}
+                        
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="Add" aria-label="Search" name="scope" id="scope" required/>
+                      </div>
+                    </div>
+                   
+        
+                  </form>
+        
+                <button type="submit" form="add_write_scope" class="uk-button uk-button-default uk-margin-small-top">Add</button>
 
 
-    <form method="post" action="{% url 'add_write_scope' id=user.id %}" id="add_write_scope"
-          style="margin-top: 69px;">
-        <div class="row">
-            {% csrf_token %}
-            <div class="col custom_form_col">
-                <div class="custom_form_field_head">Add Write Scope</div>
-                <input type="text" name="scope" class="form-control" id="scope" placeholder="Scope" required>
-            </div>
-        </div>
-    </form>
-    <button type="submit" form="add_write_scope" class="btn btn-lg custom_button">Add</button>
 
-
+            </p>
+          </div>          
+          </div>
+        {% endif %}
 
 
 </div>
-</div>
+
+
+
+
+
 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

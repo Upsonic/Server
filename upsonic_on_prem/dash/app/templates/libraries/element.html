@@ -3,179 +3,159 @@
 {% load tags %}
 
 {% block content %}
-<div class="d-flex cloud_left_section">
-{% include 'cloud_side_bar.html' %}
-
-</div>
-<div class="w-100 custom_right_side">
 
 
 
-    <div class="d-flex flex-column">
+<div class="uk-container uk-width-expand   ">
+    <div  uk-grid class="uk-height-1-1">
+        <div class="uk-width-auto"  style=" padding-left: 0px;">
 
-        <div class="custom_page_header_bottom_margin">
-
-            <div class="d-flex flex-row justify-content-between align-items-center">
-
-                <div class="flex-fill w-100 me-5">
-                    {% if have_upper %}
-                    <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
-                    {% endif %}
-                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
-                </div>
-            </div>
+          {% include 'cloud_side_bar.html' %}
         </div>
-    </div>
-
-    <div class="d-flex flex-column">
-
-        <div class="custom_page_header_bottom_margin">
-
-            <div class="d-flex flex-row justify-content-between align-items-center">
-                <div class="flex-fill w-100 me-5">
-                    <div class="row">
-
-                        <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Commits </span><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Run History </span><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Dependency </span><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;  margin-right: auto;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% if version == "" and github_active %}
-    <div class="mb-1">
-        <a href="{{github_url}}" target="_blank" style="text-decoration: none;">
-        <img src="/static/images/github.png" style="height: 15px;"/>
-        {% if github_synced %}
-        <span>Synced</span>
-        {% else %}
-        <span >Not Synced</span>
-        {% endif %}
-    </a>
-    </div>
-
-    {% endif %}
-
-    <div class="d-flex flex-column">
-
-
     
+        <div class="uk-width-expand uk-margin-medium-top">
 
 
-        <div class="d-flex flex-row justify-content-between">
+            
 
 
-            <div class="flex-fill w-50 me-5 scrollabe_righ_side">
 
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Documentation</span>
-                </div>
+
+
+
+
+            {% include 'libraries/control_element_header.html' %}
+
+
+
+
+
+
+
+
+              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="scrollable_side">
+            <div uk-grid>
+
+
+            <div class="uk-width-1-2 uk-margin-medium-top">
+
+                
+                <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Intro</h2>
                 <div class="custom_pharagraph_for_documentations">{{documentation|safe}}</div>
 
 
 
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Time Complexity</span>
-                </div>                
+                <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Time Complexity</h2>
                 <div class="custom_pharagraph_for_documentations">{{time_complexity|safe}}</div>
 
-                {% if gpt_model %}
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Mistakes</span>
-                </div>                
+
+        
+                <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Mistakes</h2>
                 <div class="custom_pharagraph_for_documentations">{{mistakes|safe}}</div>
-                {% endif %}
+           
                 
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Required Test Types</span>
-                </div>                
+
+                <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Required Test Types</h2>
                 <div class="custom_pharagraph_for_documentations">{{required_test_types|safe}}</div>
 
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Security Analysis</span>
-                </div>                
+
+                <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Security Analysis</h2>
                 <div class="custom_pharagraph_for_documentations">{{security_analysis|safe}}</div>                
 
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Tags</span>
-                </div>                
+            
+                <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Tags</h2>
                 <div class="custom_pharagraph_for_documentations">{{tags|safe}}</div>
-
-          
-                
-
 
             </div>
 
 
-            <div class="flex-fill w-50 scrollabe_righ_side" style="
-            position: -webkit-sticky; /* for Safari */
-            position: sticky;
-            top: 0;
-            align-self: flex-start; /* <-- this is the fix */
-              /* Not necessary -- for example only */
-        ">
+              <div class="uk-width-1-2 uk-margin-medium-top">
 
-                <div class="custom_page_header_top_bottom_margin">
-                    <span class="custom_page_header_text">Code</span>
-                </div> 
-                <div class="custom_pharagraph_for_documentations">{{type}} - {{python_version}}</div>
-                <div class="custom_code_block">
-                    <div class="custom_code_block_code">
-                        <div class="highlight">
-                            <pre><code class="language-python">{{code}}</code></pre>
+                <div class=" uk-card uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Object</h3>
+                    <div class="uk-margin-small-top">
+                    <span class="uk-badge">Type {{type}}</span>
+                    <span class="uk-badge">Python {{python_version}}</span>
+                    </div>
+                
+                    <p class="uk-margin">
+
+                        <div class="custom_pharagraph_for_documentations"></div>
+                        <div class="custom_code_block">
+                            <div class="custom_code_block_code">
+                                <div>
+                                    <pre><code class="language-python">{{code}}</code></pre>
+                                </div>
+                            </div>
+                
+                            
                         </div>
-                    </div>
-        
-                    
-                </div>
-        
-                <div class="custom_code_block">
-                    <div class="custom_code_block_code">
-                        <div class="highlight"><pre><code class="language-python">{{using_code}}</code></pre></div>
-                    </div>
-                </div>
-                {% if requirements != "" %}
                 
+                        <div class="custom_code_block uk-card">
+                            <div class="custom_code_block_code">
+                                <div class="highlight"><pre><code class="language-python">{{using_code}}</code></pre></div>
+                            </div>
+                        </div>
+                        {% if requirements != "" %}
+                        
+                        
+        
+                        <div class="custom_pharagraph_for_documentations">Requirements</div>
+                        <div class="custom_code_block">
+                            <div class="custom_code_block_code">
+                                <div class="highlight"><pre><code class="language-python">{{requirements}}</code></pre></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </p>
+                  </div>
+
+            </div>
                 
-
-                <div class="custom_pharagraph_for_documentations">Requirements</div>
-                <div class="custom_code_block">
-                    <div class="custom_code_block_code">
-                        <div class="highlight"><pre><code class="language-python">{{requirements}}</code></pre></div>
-                    </div>
-                </div>
-                {% endif %}
-
-
-
-    </div>
+              </div>
+              
+            </div> 
+            </div>
+        </div>
+      </div>
+    
 </div>
 
 
 
-    <div>
 
 
-
-
-
-    </div>
-
-</div>
-
-
-
-</div>
 
 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
