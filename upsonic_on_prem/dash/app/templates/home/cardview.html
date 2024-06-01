@@ -4,7 +4,7 @@
 
 <div class="uk-grid uk-margin-small-left">
     {% for scope in top_scopes %}
-    <div class=" uk-card uk-margin-medium-right" style="padding: 0;!important">
+    <div class=" uk-card uk-margin-medium-right uk-card uk-margin-medium-bottom" style="padding: 0;!important">
         <div class="uk-card-header">
           <div class="uk-flex">
             <div>
@@ -21,7 +21,7 @@
             <div class="">
 
 
-                <button href="#" onclick="page_load('{% url 'control_library' id=scope.name %}');event.preventDefault();" class="uk-button active uk-button-primary uk-width-1-1 " style="  display: flex;
+                <button href="#" onclick="page_load('{% url 'control_library' id=scope.name %}');event.preventDefault();" class="uk-button active uk-button-default uk-width-1-1 " style="  display: flex;
                 align-items: center;
                 justify-content: flex-start; /* Align items to the left */">
                   <span uk-icon="home" class="uk-margin-small-right uk-icon"></span>
