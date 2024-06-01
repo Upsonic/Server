@@ -109,14 +109,21 @@ def control_user(request, id):
         if API_Integration(request.user.access_key).get_default_ai_model().startswith("gpt"):
             gpt_model = True
 
+        the_read_scopes = API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key)
+        the_write_scopes = API_Integration(request.user.access_key).get_write_scopes_of_user(the_user.access_key)
+        any_read_scope = True if len(the_read_scopes) != 0 else False
+        any_write_scope = True if len(the_write_scopes) != 0 else False
+
         data = {
             "page_title": "Control User",
             "user": the_user,
 
             "gpt_model": gpt_model,
             "user_form": forms.UpdateUserForm(instance=the_user),
-            "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_user(the_user.access_key),
-            "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_user(the_user.access_key),
+            "read_scopes": the_read_scopes,
+            "write_scopes": the_write_scopes,
+            "any_read_scope": any_read_scope,
+            "any_write_scope": any_write_scope,
             "scope_form": forms.ScopeForm(),
             "is_enabled": API_Integration(request.user.access_key).is_enabed_user(the_user.access_key),
             "is_admin": API_Integration(request.user.access_key).is_admin(the_user.access_key),
@@ -301,6 +308,7 @@ def control_library(request,id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Home",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "sub_module": True if "." in id else False,
@@ -481,6 +489,7 @@ def control_element(request, id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Home",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -542,6 +551,7 @@ def control_element_dependency(request, id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Dependency",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -670,10 +680,17 @@ def add_user(request):
 
 @login_required
 def profile(request):
+    the_read_scopes = API_Integration(request.user.access_key).get_read_scopes_of_me()
+    the_write_scopes = API_Integration(request.user.access_key).get_write_scopes_of_me()
+
+    any_read_scope = True if len(the_read_scopes) != 0 else False
+    any_write_scope = True if len(the_write_scopes) != 0 else False
     data = {
         "page_title": "Profile",
-        "read_scopes": API_Integration(request.user.access_key).get_read_scopes_of_me(),
-        "write_scopes": API_Integration(request.user.access_key).get_write_scopes_of_me(),
+        "read_scopes": the_read_scopes,
+        "write_scopes": the_write_scopes,
+        "any_read_scope": any_read_scope,
+        "any_write_scope": any_write_scope,
     }
     return render(request, "templates/profile.html", data)
 
@@ -794,6 +811,7 @@ def control_element_version(request, id):
     the_versions.reverse()
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Version",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -903,6 +921,7 @@ def control_library_version(request,id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Version",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "sub_module": True if "." in id else False,
@@ -1049,6 +1068,7 @@ def control_element_runs(request, id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Runs",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -1121,6 +1141,7 @@ def control_element_runs_analyze(request, id, run_sha):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Runs",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -1178,6 +1199,7 @@ def control_element_settings(request, id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Settings",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -1236,6 +1258,7 @@ def control_element_commits(request, id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Commits",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "control_library_with_version": id if version == None else id +":"+version,
@@ -1321,6 +1344,7 @@ def control_library_settings(request,id):
 
     data = {
         "page_title": "Libraries",
+        "sub_page_title": "Settings",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "control_library": id,
         "sub_module": True if "." in id else False,

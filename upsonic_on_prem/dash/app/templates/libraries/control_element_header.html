@@ -1,0 +1,58 @@
+
+
+<div uk-grid class="uk-margin-small-bottom">
+    <div class="uk-width-expand">
+        
+    <h1 class="uk-h2 uk-margin text-foreground">
+        {% if have_upper %}
+        <a href="#" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="chevron-left"></span></a>
+        
+  
+        {% endif %}
+        {{control_library}}
+    </h1>
+    {% if version != "" %}
+    <span class="uk-badge" style="height: 35px;"><span uk-icon="history" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">{{version}}</span></span>
+    {% endif %}
+    <span class="uk-badge" style="height: 35px;"><span uk-icon="github-alt" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">GitHub Synced</span></span>
+ 
+    {% if version == "" and github_active %}
+    {% if github_synced %}
+        <span class="uk-badge" style="height: 35px;"><span uk-icon="github-alt" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">GitHub Synced</span></span>
+    {% else %}
+        <span class="uk-badge" style="height: 35px;"><span uk-icon="github-alt" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">GitHub Not Synced</span></span>
+    {% endif %}
+    {% endif %}
+  
+    </div>
+
+  </div>
+
+  <div  class="uk-margin-small-bottom" style="margin-top: 1.5rem;">
+
+  <div class="uk-navbar-right ">
+    <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+
+ 
+
+    <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Home' %}-primary{% else %}-default{% endif %}"><span uk-icon="home" class="uk-margin-small-right"></span>Home</a>
+
+
+    <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Version' %}-primary{% else %}-default{% endif %}"><span uk-icon="history" class="uk-margin-small-right"></span>Versions</a>
+                
+    <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Commits' %}-primary{% else %}-default{% endif %}"><span uk-icon="push" class="uk-margin-small-right"></span>Commits</a>
+    <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Runs' %}-primary{% else %}-default{% endif %}"><span uk-icon="server" class="uk-margin-small-right"></span>Run History</a>
+       
+    <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Dependency' %}-primary{% else %}-default{% endif %}"><span uk-icon="thumbnails" class="uk-margin-small-right"></span>Dependency</a>
+       
+
+
+    
+    <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Settings' %}-primary{% else %}-default{% endif %}"><span uk-icon="settings" class="uk-margin-small-right"></span>Settings</a>
+       
+
+
+    </ul>
+  </div>  
+
+  </div>

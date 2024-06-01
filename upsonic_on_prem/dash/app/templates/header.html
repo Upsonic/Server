@@ -1,76 +1,45 @@
 {% load tags %}
 
 
-<div class="d-flex align-items-center w-100 pb-1 pt-4" style="height: 10vh;">
-    <a class="navbar-brand" href="{% url 'home' %}">
-        <div class="p-2 bd-highlight mb-2 mt-3">
+<nav class="uk-navbar-container " uk-navbar style="">
+    <div class="uk-navbar-left uk-margin-small-left" style="width: 70%;">
+        <ul class="uk-navbar-nav uk-margin-small-left uk-margin-small-top uk-margin-small-bottom" style="width: 100%;">
+          <a class="uk-navbar-item uk-logo" href="#"><img src="/static/images/logo_name{% if request.user.dark_mode %}_dark.svg{% else %}.svg{% endif %}" alt="Logo" style="width: 124px; max-width: unset;"
+              class="d-inline-block align-text-top align-middle"></a>
 
-            <div class="d-flex flex-row bd-highlight">
-
-
-                <div class="ps-4 mb-2 bd-highlight ">
-                    {%if request.user.dark_mode%}
-                    <img src="/static/images/logo_name_dark.svg" alt="Logo" width="170"
-                         class="d-inline-block align-text-top align-middle">
-                    {% else %}
-                    <img src="/static/images/logo_name.png" alt="Logo" width="170"
-                         class="d-inline-block align-text-top align-middle">     
-                    {% endif %}               
+          <li style="width: 100%;" id="header_search_div">
+            <form action="{% url 'search' %}" method="post">
+              <div class="uk-margin-small-top ">
+                <div class="uk-inline" style="width: 30%;">
+                  
+                  <input class="uk-input" style="width: 200%;" type="text" placeholder="Search" aria-label="Search" name="question" required/>
                 </div>
-            </div>
+              </div>
+             
+
+            </form></li>
+
+            
+        </ul>
+      </div>
+      <div class="uk-navbar-center">
+       
+      </div>
+      <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav uk-margin-medium-right">
+
+          
 
 
-        </div>
-    </a>
 
-    <div class="ms-5" id="header_search_div">
-    <form class="d-flex form-control search_bar" role="search" action="{% url 'search' %}" method="post">
-        <img class="" src="/static/images/search.svg">        
-        <input class=" me-2 ms-2" type="search" placeholder="Search" aria-label="Search" name="question" style="
-    background-color: #0000;
-    border: 0px;
-    outline: 0px; width: 100%;
-" required>
-
-      </form>
-    </div>
+        <a  href="https://docs.upsonic.co/" target="_blank" class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Docs</a>
 
 
-    <div class="p-2 bd-highlight ms-auto ">
 
-        <div class="d-flex flex-row align-items-center">
+        </ul>
+      </div>
+  </nav>
 
-
-            <a href="https://docs.upsonic.co/" style="text-decoration: none;" class="me-2" target="_blank">
-                <button type="button" class="btn btn-primary custom_header_button ">
-                    <div class="d-flex flex-row align-items-center p-2">
-                        <img class="me-1" src="/static/images/documents.svg" style="height: 20px;margin-right: 10px;">
-                        Documentation
-                    </div>
-                </button>
-            </a>
-
-
-            <div class="p-2">
-                <a href="{% url 'account_logout' %}">
-                    <div class="d-flex flex-column align-items-center">
-
-                        <div class=""><img src="/static/images/logout.svg" alt="Logout" width="24" height="24"></div>
-                        <div class=""><a class="navbar-brand custom_header_logout_text"
-                                         href="{% url 'account_logout' %}">Log out {{ request.user.get_short_name }}</a></div>
-                    </div>
-                </a>
-            </div>
-
-
-        </div>
-
-
-    </div>
-
-
-</div>
-    
 
 
 

@@ -1,93 +1,112 @@
+
+
 {% extends "base.html" %}
 
 {% load tags %}
 
 {% block content %}
-<div class="d-flex cloud_left_section">
-{% include 'cloud_side_bar.html' %}
-
-</div>
-<div class="w-100 custom_right_side">
 
 
 
+<div class="uk-container uk-width-expand ">
+    <div  uk-grid class="uk-height-1-1">
+        <div class="uk-width-auto" style=" padding-left: 0px;">
 
-
-
-    <div class="d-flex flex-column">
-
-        <div class="custom_page_header_bottom_margin">
-
-            <div class="d-flex flex-row justify-content-between align-items-center">
-
-                <div class="flex-fill w-100 me-5">
-                    {% if have_upper %}
-                    <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
-                    {% endif %}
-                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
-                </div>
-            </div>
+          {% include 'cloud_side_bar.html' %}
         </div>
-    </div>
+    
+        <div class="uk-width-expand uk-margin-medium-top">
 
-    <div class="d-flex flex-column">
+            {% include 'libraries/control_element_header.html' %}
 
-        <div class="custom_page_header_bottom_margin">
-
-            <div class="d-flex flex-row justify-content-between align-items-center">
-                <div class="flex-fill w-100 me-5">
-                    <div class="row">
-                        <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Commits </span><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Run History </span><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Dependency </span><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;  margin-right: auto;"><span class="header_text_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+            <div class="scrollable_side">
 
 
+
+            <div class="uk-child-width-1-5 uk-grid-small uk-grid-match uk-margin-medium-top" uk-grid>
+                <div>
+                    
+                  <div class="uk-card uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Run History</h3>
+                    <p class="uk-margin">
+                        Track your CPU, Memory and elapsed time of objects.
+                      </p>
+
+ 
+                        <ul class="uk-navbar-nav uk-margin-small-top">
+
+                            
+   
+                        
+                            {% if cpu_usage_analyses == True %}
+                            <a  href="#" onclick="page_load('{% url 'deactivate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-danger">Close</a>
+                            {% else %}
+
+                            <a  href="#" onclick="page_load('{% url 'activate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-primary">Open</a>
+                            {% endif %}
+
+                    
+                            </ul>
+
+                    
+                  </div>
+                </div>
+
+                <div>
+                    
+                    <div class="uk-card uk-card-body uk-card-default">
+                      <h3 class="uk-card-title">Object Settings</h3>
+      
+   
+                          <ul class="uk-navbar-nav uk-margin-small-top">
+  
+                              
+     
+                            <a href="{% url 'delete_scope' id=control_library %}"class="uk-button uk-button-danger">Delete Object</a>
+
+                              </ul>
+  
+                      
                     </div>
-                </div>
+                  </div>
+
+                
+
+
+
+              </div>
+
+
+
+  
+               
+   
+              
+            </div> 
             </div>
         </div>
-    </div>
-
-
-
-
-    <div class="d-flex flex-column scrollabe_righ_side">
-
-
-
-        <div>
-
-
-          <div class="mt-5">
-            <div class="mb-5">
-              <div class="custom_page_header_top_margin">
-                  <span class="custom_page_header_text">Settings</span>
-              </div>                
-      
-              {% if cpu_usage_analyses == True %}
-              <a href="{% url 'deactivate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5" style="width: auto;">Deactivate Usage Analyses</a>
-              {% endif %}
-              {% if cpu_usage_analyses == False %}
-              <a href="{% url 'activate_usage_analyses' id=control_library %}" class="btn btn-lg custom_button mt-5" style="width: auto;">Activate Usage Analyses</a>
-              {% endif %}
-      
-            </div>
-              <a href="{% url 'delete_scope' id=control_library %}" >
-                <button class="btn btn-lg custom_button_red">Delete Scope</button>
-            </a>
-
-          </div>
-
-
-
-        </div>
-    </div>
-
+      </div>
+    
 </div>
+
+
+
+
+
 
 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+

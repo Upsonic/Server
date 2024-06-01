@@ -1,121 +1,151 @@
 {% load tags %}
 
-<div class="d-flex flex-column flex-shrink-0 m-3 custom_side_bar_database justify-content-start custom_side_bar_flex_column">
-    <ul class="nav nav-pills flex-column align-items-start side_bar_top">
 
 
-        <li class="nav-item ">
-            <a href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();"
-               class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
-               aria-current="page">
-                {% if page_title == 'Home' %}
-                <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
-                {% endif %}
-                <img class="{% if page_title != 'Home' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/home{% if page_title == 'Home' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg"/>
-            </a>
-            <div class="custom_side_bar_flex_column_nav_item_down_text">Home</div>
-        </li>
-
-
-        <li class="nav-item custom_side_bar_flex_column_nav_item">
-            <a href="#" onclick="page_load('{% url 'libraries' %}');event.preventDefault();"
-               class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
-               aria-current="page">
-                {% if page_title == 'Libraries' %}
-                <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
-                {% endif %}
-                <img class="{% if page_title != 'Libraries' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/library{% if page_title == 'Libraries' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg" />
-            </a>
-            
-            <div class="custom_side_bar_flex_column_nav_item_down_text">Libraries</div>
-        </li>
+<div class="uk-width-auto uk-background-default  " style="border-right-width: 1px;
+border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
 
 
-        <li class="nav-item custom_side_bar_flex_column_nav_item">
-            <a href="#" onclick="page_load('{% url 'search' %}');event.preventDefault();"
-               class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
-               aria-current="page">
-                {% if page_title == 'Search' %}
-                <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
-                {% endif %}
-                <img class="{% if page_title != 'Search' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/search{% if page_title == 'Search' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg"/>
-            </a>
-            
-            <div class="custom_side_bar_flex_column_nav_item_down_text">Search</div>
-        </li>
+    <ul class="uk-flex uk-nav uk-height-1-1 uk-nav-default uk-iconnav-outline  uk-margin-small-left uk-margin-small-right " uk-nav style="flex-direction: column;">
+
+
+      <li class="uk-active uk-margin-small-left uk-margin-small-top uk-margin-small-right ">
+
+        <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-{% if page_title != 'Home' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align items to the left */" >
+          <span uk-icon="home" class="uk-margin-small-right uk-icon"></span>
+          Home
+      </button>
+
+      </li>
+
+      <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
+
+        <button href="#" onclick="page_load('{% url 'libraries' %}');event.preventDefault();" class="uk-button  uk-button-{% if page_title != 'Libraries' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align items to the left */" >
+          <span uk-icon="database" class="uk-margin-small-right uk-icon"></span>
+          Libraries
+      </button>
+
+
+      </li>
+
+
+      <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
+
+        <button href="#" onclick="page_load('{% url 'search' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Search' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align items to the left */">
+          <span uk-icon="search" class="uk-margin-small-right uk-icon"></span>
+          AI Search
+        </button>
+
+
+        
+      </li>
 
 
 
+
+
+      <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
+
+        <button href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Community' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align items to the left */">
+          <span uk-icon="users" class="uk-margin-small-right uk-icon"></span>
+          Users
+        </button>
+
+
+        
+      </li>
+
+
+      <hr style="margin-top: auto;" class="uk-divider-icon" />
+
+      <li class=" uk-margin-small-top uk-margin-small-right uk-margin-small-left uk-margin-small-bottom">
+
+        <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();" class="uk-button uk-button-{% if page_title != 'Profile' %}default{% else %}primary{% endif %}" style="display: inline-grid;"><span uk-icon="user"></span></a>
+        {% if request.user.dark_mode %}
+        <a href="{% url 'settings_light_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default ">
+        
+          <svg
+          id="theme-toggle-light-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-sun dark:hidden"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+      
+        </a>
+        {% else %}
+        <a href="{% url 'settings_dark_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default ">
+          <svg
+    id="theme-toggle-dark-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="lucide lucide-moon hidden dark:block"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+        </a>
+        {% endif %}
+
+
+
+
+
+        <a href="{% url 'account_logout' %}" class="uk-button uk-button-default " style="display: inline-grid;"><span uk-icon="sign-out"></span></a>
+
+
+      </li>
 
     </ul>
 
-
-    <div class="mt-auto">
-
-
-        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center ms-auto side_bar_bottom">
-
-
-            {% if request.user.is_admin %}
-            <li class="nav-item custom_side_bar_flex_column_nav_item">
-                <a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();"
-               class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
-               aria-current="page">
-                {% if page_title == 'Community' %}
-                <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/menu_active.png"/>
-                {% endif %}
-                <img class="{% if page_title != 'Community' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/community{% if page_title == 'Community' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg" />
-            </a>
-                <div class="custom_side_bar_flex_column_nav_item_down_text">Users</div>
-            </li>
-            {% endif %}
-
-
-           <li class="nav-item custom_side_bar_flex_column_nav_item">
-                <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();"
-               class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"
-               aria-current="page">
-                {% if page_title == 'Profile' %}
-                <img class="custom_side_bar_flex_column_nav_item_left_image" src="/static/images/men u_active.png"/>
-                {% endif %}
-                <img class="{% if page_title != 'Profile' %} custom_side_bar_flex_column_nav_item_image {% else %} custom_side_bar_flex_column_nav_item_image_active {% endif %}"
-                     src="/static/images/profile{% if page_title == 'Profile' %}_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}{% endif %}.svg"/>
-            </a>
-                <div class="custom_side_bar_flex_column_nav_item_down_text">Profile</div>
-            </li>
-
-
-            {% if request.user.dark_mode %}
-            <li class="nav-item custom_side_bar_flex_column_nav_item_down">
-              <a href="{% url 'settings_light_mode' %}" class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"  aria-current="page" >
-      
-                  <img class="custom_side_bar_flex_column_nav_item_down_switch" src="/static/images/light.png" />
-                  
-              </a>
-              <div class="custom_side_bar_flex_column_nav_item_down_text">Light</div>
-            </li>
-            {% else %}
-            <li class="nav-item custom_side_bar_flex_column_nav_item_down">
-              <a href="{% url 'settings_dark_mode' %}" class="nav-link custom_side_bar_nav_item_text_database align-items-center custom_side_bar_flex_column_nav_item_a"  aria-current="page" >
-      
-                  <img class="custom_side_bar_flex_column_nav_item_down_switch" src="/static/images/dark.png" />
-              </a>
-              <div class="custom_side_bar_flex_column_nav_item_down_text">Dark</div>
-            </li>   
-            {% endif %}
-      
+    
+  </div>
 
 
 
-        </ul>
-    </div>
 
-</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

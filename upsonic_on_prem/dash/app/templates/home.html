@@ -4,55 +4,47 @@
 
 {% block content %}
 
-<div class="w-100 custom_right_side">
 
-
-
-    <div class="d-flex flex-column">
-    <div class="custom_page_header_bottom_margin">
-
-        <div class="d-flex flex-row justify-content-between align-items-center">
-
-            <div class="flex-fill w-50 me-5">
-                <span class="custom_page_header_text">Your <span class="custom_page_header_text_bold">Libraries</span></span>
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+            <h1 class="uk-h2 uk-margin text-foreground">Your Libraries</h1>
             </div>
-            <div class="flex-fill w-50 me-5">
-                <div class="row">
-                    <span class="page_header_right_text">View</span>
-
-                    <a href="#" onclick="page_load('{% url 'home' %}?view=card');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/cardview{%if the_view == 'card' %}_active{% endif %}.svg"/></a>
-                    <a href="#" onclick="page_load('{% url 'home' %}?view=table');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/tableview{%if the_view == 'table' %}_active{% endif %}.svg"/></a>
-
-                </div>
-            </div>
+            <div class="uk-width-auto">
+            <ul class="uk-tab-alt ml-auto max-w-40"> <li class="{% if the_view == 'card' %}uk-active{% endif %}" uk-filter-control="filter: .tag-mail"> <a href="#" onclick="page_load('{% url 'home' %}?view=card');event.preventDefault();" role="button">Card</a> </li> <li class="{% if the_view == 'table' %}uk-active{% endif %}" uk-filter-control="filter: .tag-unread"> <a href="#" onclick="page_load('{% url 'home' %}?view=table');event.preventDefault();" role="button">Table</a> </li> </ul>
+            </div>  
         </div>
-    </div>
-</div>
 
-<div class="d-flex flex-column scrollabe_righ_side">
-    {% if the_view == 'card' %}
+        {% if the_view == 'card' %}
         {% include 'home/cardview.html' %}
 
     {% elif the_view == 'table' %}
         {% include 'home/tableview.html' %}
     {% endif %}
 
-
-    <div>
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text"><span class="custom_page_header_text_bold">Connection</span> Code</span>
-        </div>
-
-        <div class="custom_code_block">
-            <div class="custom_code_block_code">
-                <div class="highlight"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
+          <div uk-grid class="uk-margin-medium-bottom uk-margin-large-top">
+            <div class="uk-width-expand">
+            <h1 class="uk-h2 uk-margin text-foreground">Connection Code</h1>
             </div>
+
         </div>
 
-    </div>
+
+
+        <div class="custom_code_block uk-card">
+          <div class="custom_code_block_code">
+<div class="highlight"><pre class="chroma"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
+          </div>
+      </div>
+
+
 
 </div>
-</div>
+
+
+
+
+
 
 
 {% endblock content %}

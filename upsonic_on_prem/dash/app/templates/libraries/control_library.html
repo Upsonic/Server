@@ -3,145 +3,116 @@
 {% load tags %}
 
 {% block content %}
-<div class="d-flex cloud_left_section">
-{% include 'cloud_side_bar.html' %}
 
-</div>
-<div class="w-100 custom_right_side">
 
-    <div class="d-flex flex-column">
 
-        <div class="custom_page_header_bottom_margin">
+<div class="uk-container uk-width-expand ">
+    <div  uk-grid class="uk-height-1-1">
+        <div class="uk-width-auto" style=" padding-left: 0px;">
 
-            <div class="d-flex flex-row justify-content-between align-items-center">
+          {% include 'cloud_side_bar.html' %}
+        </div>
+    
+        <div class="uk-width-expand uk-margin-medium-top">
 
-                <div class="flex-fill w-50 me-5">
-                    {% if have_upper %}
-                    <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
+            {% include 'libraries/control_library_header.html' %}
+
+            <div class="scrollable_side">
+            <table class="uk-table uk-table-divider">
+                <thead>
+                  <tr>
+                    <th class="uk-table-shrink">Type</th>
+                    <th class="uk-table-expand">Name</th>
+                    <th class="uk-width-small">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+
+                {% for key,value in content.items%}
+           
+                  <tr>
+                    <td>
+                        {% if value == False %}
+                        <span class="uk-badge">Object</span>
+                        {% else %}
+                        <span class="uk-badge">Library</span>
+                        {% endif %}
+                    </td>
+                    {% if value == False %}
+                    <td class="text-foreground"><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="library_item_a">{{key}}</a></td>
+                    {% else %}
+                    <td class="text-foreground"><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="library_item_a">{{key}}</a></td>
                     {% endif %}
-                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
-                </div>
-                <div class="flex-fill w-50 me-5">
-                    <div class="row">
+                    <td>
+
+                        <div class="uk-navbar-right">
+                            <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+                    
+                                {% if value == False %}
+
+                            <a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="home"></span></a>
+                            
+                            <a href="#" onclick="page_load('{% url 'control_element_version' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="history"></span></a>
+                            <a href="#" onclick="page_load('{% url 'control_element_commits' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="push"></span></a>
+                            <a href="#" onclick="page_load('{% url 'control_element_runs' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="server"></span></a>
+                            <a href="#" onclick="page_load('{% url 'control_element_dependency' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="thumbnails"></span></a>
+                            <a href="#" onclick="page_load('{% url 'control_element_settings' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="settings"></span></a>
+                            {% else %}
+                            <a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="home"></span></a>
+                            <a href="#" onclick="page_load('{% url 'control_library_settings' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="settings"></span></a>
+                            {% endif %}
+                    
+        
+                            </ul>
+                        </div>
 
 
-                        <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none; margin-left: auto;"><span class="header_text_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        
-                        {%if not sub_module%}
-                        <a href="#" onclick="page_load('{% url 'control_library_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        {%endif%}
-                        <a href="#" onclick="page_load('{% url 'control_library_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+                    </td>
+                  </tr>
+
+                {% endfor %}
 
 
+
+                </tbody>
+              </table>
+            
+            
+              <div>
+                <div uk-grid class="uk-margin-small-bottom uk-margin-medium-top">
+                    <div class="uk-width-expand">
+                    <h1 class="uk-h2 uk-margin text-foreground">Readme</h1>
                     </div>
+        
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="d-flex flex-column scrollabe_righ_side">
-
-    {% if version == "" and github_active %}
-    <div class="mb-1">
-        <a href="{{github_url}}" target="_blank" style="text-decoration: none;">
-        <img src="/static/images/github.png" style="height: 15px;"/>
-        {% if github_synced %}
-        <span>Synced</span>
-        {% else %}
-        <span >Not Synced</span>
-        {% endif %}
-    </a>
-    </div>
-
-    {% endif %}
-
-
-<table class="table table-hover align-middle library_table">
-    <thead>
-      <tr style="
-      border-bottom-color: #01EE8D;
-  ">
-
-        <th scope="col">Name</th>
-          <th scope="col" style="
-          text-align: end;
-          padding: 1rem 1rem;
-          padding-right: 115px;
-      ">Action</th>
-
-      </tr>
-    </thead>
-    <tbody>
-        {% for key,value in content.items%}
-        <tr>
-
-            {% if value == False %}
-            <td><a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/object_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}.svg" style="height: 13px;"/>{{key}}</a></td>
+        
+                <div class="custom_code_block uk-card">
+                  <div class="custom_code_block_code">
+        <div class="highlight"><pre class="chroma text-muted-foreground"><pre style="text-wrap: wrap;
+            text-align: justify;">
             
-            {% else %}
-            <td><a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="library_item_a"><img class="library_item me-1 ms-1" src="/static/images/library_fill_dark{%if not request.user.dark_mode%}_dark{%endif%}.svg" style="height: 13px;"/>
-                {{key}}</a></td>
-            
-            {% endif %}
-            <td style="text-align: end;padding: 1rem 1rem;padding-right: 55px;">
-                {% if value == False %}
-                <a href="#" onclick="page_load('{% url 'control_element' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_version' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_commits' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_runs' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_dependency' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>                
-                <a href="#" onclick="page_load('{% url 'control_element_settings' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-                {% else %}
-                <a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_library_version' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_library_settings' id=key %}');event.preventDefault();" class="" style="width: auto;"><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-                {% endif %}
-            </td>
-
-          </tr>
-
-        {% endfor %}
-
-
-    </tbody>
-  </table>
-
-    <div>
-        <div class="custom_page_header_top_bottom_margin">
-            <span class="custom_page_header_text">Readme</span>
-        </div>
-
-
-        <div class="custom_code_block">
-            <div class="custom_code_block_code">
-                <div class="highlight">
-                    <pre class="chroma" style="text-wrap: wrap;">
-                        <code class="language-html" data-lang="html">
-<b class="custom_code_highlight_green">Importing:</b>
+<b class="custom_code_highlight_title">Importing:</b>
 <pre><code class="language-python" style="font-size: 12px;">{{code}}</code></pre>
 {{readme|safe}}
 
-<b class="custom_code_highlight_green">Content:</b>
-{% for key,value in all_scopes%}
-<b>{{key}}</b>: {{value|safe}}<br>
-{% endfor %}
 
-                        </code>
-                    </pre>
-                </div>
+                            
+        </pre></div>
+                  </div>
+              </div>
             </div>
         </div>
-
-    </div>
-
+        </div>
+      </div>
     
-
-
 </div>
 
-</div>
+
+
+
+
 
 
 

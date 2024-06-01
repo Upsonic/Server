@@ -1,205 +1,243 @@
+
+
 {% extends "base.html" %}
 
 {% load tags %}
 
 {% block content %}
-<div class="d-flex cloud_left_section">
-{% include 'cloud_side_bar.html' %}
-
-</div>
-<div class="w-100 custom_right_side">
 
 
 
+<div class="uk-container uk-width-expand ">
+    <div  uk-grid class="uk-height-1-1">
+        <div class="uk-width-auto" style=" padding-left: 0px;">
+
+          {% include 'cloud_side_bar.html' %}
+        </div>
+    
+        <div class="uk-width-expand uk-margin-medium-top">
+
+            {% include 'libraries/control_element_header.html' %}
+
+            <div class="scrollable_side">
+
+              <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-medium-top" ><span uk-icon="chevron-left" class="uk-margin-auto-right"></span> Back</a>
+        
+
+              <div class=" uk-grid-small  uk-margin-medium-top" uk-grid>
+                <div class="uk-width-1-3">
+                  <div class="uk-card   uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Metrics</h3>
+                    <p class="uk-margin">
+
+                      <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1  uk-margin-small-bottom" style="  display: flex;
+                      align-items: center;
+                      justify-content: flex-start; /* Align items to the left */" >
+                        <span uk-icon="file-text" class="uk-margin-small-right uk-icon"></span>
+                        {{run.cpu_usage}} Core CPU
+                    </button>
+
+                    <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1  uk-margin-small-bottom" style="  display: flex;
+                    align-items: center;
+                    justify-content: flex-start; /* Align items to the left */" >
+                      <span uk-icon="file-text" class="uk-margin-small-right uk-icon"></span>
+                      {{run.memory_usage}} MB Ram
+                  </button>
+
+                  <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-primary uk-width-1-1 " style="  display: flex;
+                  align-items: center;
+                  justify-content: flex-start; /* Align items to the left */" >
+                    <span uk-icon="clock" class="uk-margin-small-right uk-icon"></span>
+                    {{run.elapsed_time}}s
+                </button>
 
 
 
-<div class="d-flex flex-column">
+                    </p>
+                  </div>
+                </div>
 
-  <div class="custom_page_header_bottom_margin">
+  
 
-      <div class="d-flex flex-row justify-content-between align-items-center">
 
-          <div class="flex-fill w-100 me-5">
-              {% if have_upper %}
-              <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
-              {% endif %}
-              <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
-          </div>
-      </div>
-  </div>
-</div>
+                <div class="uk-width-1-3">
+                  <div class="uk-card   uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Execution</h3>
+                    <p class="uk-margin">
 
-<div class="d-flex flex-column">
+                      <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1  uk-margin-small-bottom" style="  display: flex;
+                      align-items: center;
+                      justify-content: flex-start; /* Align items to the left */" >
+                        <span uk-icon="file-text" class="uk-margin-small-right uk-icon"></span>
+                        {{run.os_name}}
+                    </button>
 
-  <div class="custom_page_header_bottom_margin">
+                    <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1  uk-margin-small-bottom" style="  display: flex;
+                    align-items: center;
+                    justify-content: flex-start; /* Align items to the left */" >
+                      <span uk-icon="file-text" class="uk-margin-small-right uk-icon"></span>
+                      Python {{run.python_version}}
+                  </button>
 
-      <div class="d-flex flex-row justify-content-between align-items-center">
-          <div class="flex-fill w-100 me-5">
-              <div class="row">
-                <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Commits </span><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_active">Run History </span><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Dependency </span><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;  margin-right: auto;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
+                  <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1 " style="  display: flex;
+                  align-items: center;
+                  justify-content: flex-start; /* Align items to the left */" >
+                    <span uk-icon="user" class="uk-margin-small-right uk-icon"></span>
+                    Executor {{run.username}}
+                </button>
+
+
+
+                    </p>
+                  </div>
+                </div>
+
+                <div class="uk-width-1-3">
+                  <div class="uk-card   uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Records</h3>
+                    <p class="uk-margin">
+
+                      <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1  uk-margin-small-bottom" style="  display: flex;
+                      align-items: center;
+                      justify-content: flex-start; /* Align items to the left */" >
+                        <span uk-icon="clock" class="uk-margin-small-right uk-icon"></span>
+                        {{run.time}}
+                    </button>
+
+                    <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-default uk-width-1-1  uk-margin-small-bottom" style="  display: flex;
+                    align-items: center;
+                    justify-content: flex-start; /* Align items to the left */" >
+                      <span uk-icon="server" class="uk-margin-small-right uk-icon"></span>
+                      {{run.version_short}}
+                  </button>
+
+                  <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-primary uk-width-1-1 " style="  display: flex;
+                  align-items: center;
+                  justify-content: flex-start; /* Align items to the left */" >
+                    <span uk-icon="crosshairs" class="uk-margin-small-right uk-icon"></span>
+                    Status {{run.type}}
+                </button>
+
+
+
+                    </p>
+                  </div>
+                </div>
+
+                <progress
+                id="js-progressbar"
+                class="uk-progress uk-margin-medium-top"
+                {% if run.type == 'Failed' %}value="0"{% else %}value="100"{% endif %}
+                max="100"
+              ></progress>
+
+
+              <div class="uk-width-1-2">
+                <div class="uk-card   uk-card-body uk-card-default">
+                  <h3 class="uk-card-title">Arguments</h3>
+                  <p class="uk-margin">
+
+                    <div class="custom_code_block uk-card">
+                      <div class="custom_code_block_code">
+                          <div class="highlight"><pre><code class="language-python">{{run.params}}</code></pre></div>
+                      </div>
+                  </div>
+
+
+                  </p>
+                </div>
+              </div>
+
+              <div class="uk-width-1-2">
+                <div class="uk-card   uk-card-body uk-card-default">
+                  <h3 class="uk-card-title">Exception</h3>
+                  <p class="uk-margin">
+
+                    <div class="custom_code_block uk-card">
+                      <div class="custom_code_block_code">
+                          <div class="highlight"><pre><code class="language-python">{{run.exception_log}}</code></pre></div>
+                      </div>
+                  </div>
+
+                  </p>
+                </div>
+              </div>
+
 
               </div>
-          </div>
-      </div>
-  </div>
-</div>
+
+
+            <div>
 
 
 
-<div class="d-flex flex-column scrollabe_righ_side">
-    
-    
-
-    <div class="custom_page_header_bottom_margin">
-
-      <div class="d-flex flex-row justify-content-between align-items-center">
-
-          <div class="flex-fill w-100 me-5">
-            <a href="#" class="back_a" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();">< </a>
-            <span class="custom_page_header_text_bold">{{run.time}}</span></span></span>             
-          </div>
-      </div>
-  </div>
-
-        <div>
-
-
-            <table class="table table-hover align-middle library_table">
-                <thead>
-                  <tr style="
-            border-bottom-color: #01EE8D;
-        ">
-
-                    <th scope="col">CPU Usage (one core)</th>
-                    <th scope="col">Memory Usage</th>
-                    <th scope="col">Elapsed Time</th>
-                    <th scope="col">Type</th>
-
-                  </tr>
-                </thead>
-                <tbody>
                 
-     
-                  <tr>
-
-                    <td>{{run.cpu_usage}}%</td>
-                    <td>{{run.memory_usage}}mb</td>
-                    <td>{{run.elapsed_time}}s</td>
-                    <td>{{run.type}}</td>
-
-                  </tr>
-
-
-                </tbody>
-              </table>
-
-
-              <table class="table table-hover align-middle library_table">
-                <thead>
-                  <tr style="
-            border-bottom-color: #01EE8D;
-        ">
-  
-                    <th scope="col">Os Name</th>
-                    <th scope="col">Python Version</th>
-                    <th scope="col">User</th>
-                  </tr>
-                </thead>
-                <tbody>
-                
-     
-                  <tr>
-  
-                    <td>{{run.os_name}}</td>
-                    <td>{{run.python_version}}</td>
-                    <td>{{run.username}}</td>
-                  </tr>
-  
-  
-                </tbody>
-              </table>
-        
+              </div>
               
-              <table class="table table-hover align-middle library_table">
-                <thead>
-                  <tr style="
-            border-bottom-color: #01EE8D;
-        ">
-  
-                    <th scope="col">Commit</th>
-                    
-                  </tr>
-                </thead>
-                <tbody>
-                
-     
-                  <tr>
-  
-                    <td>{{run.version_tag}} - {{run.version}}</td>
-                  </tr>
-  
-  
-                </tbody>
-              </table>
-  
-
-            <table class="table table-hover align-middle library_table">
-              <thead>
-                <tr style="
-          border-bottom-color: #01EE8D;
-      ">
-
-                  <th scope="col">Args</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-              
-   
-                <tr>
-
-                  <td>{{run.params}}</td>
-                </tr>
-
-
-              </tbody>
-            </table>
-
-
-            {% if run.type == 'Failed' %}
-            <table class="table table-hover align-middle library_table">
-              <thead>
-                <tr style="
-          border-bottom-color: #01EE8D;
-      ">
-
-                  <th scope="col">Exception Log</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-              
-   
-                <tr>
-
-                  <td>{{run.exception_log|linebreaks}}</td>
-                </tr>
-
-
-              </tbody>
-            </table>
-            {% endif %}
-
+            </div> 
+            </div>
         </div>
       </div>
+    
 </div>
+
+
+
+
+
 
 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

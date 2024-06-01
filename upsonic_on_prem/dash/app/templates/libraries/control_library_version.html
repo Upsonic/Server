@@ -3,168 +3,228 @@
 {% load tags %}
 
 {% block content %}
-<div class="d-flex cloud_left_section">
-{% include 'cloud_side_bar.html' %}
-
-</div>
-<div class="w-100 custom_right_side">
 
 
 
+<div class="uk-container uk-width-expand ">
+    <div  uk-grid class="uk-height-1-1">
+        <div class="uk-width-auto" style=" padding-left: 0px;">
 
-    <div class="d-flex flex-column">
-
-        <div class="custom_page_header_bottom_margin">
-
-            <div class="d-flex flex-row justify-content-between align-items-center">
-
-                <div class="flex-fill w-50 me-5">
-                    {% if have_upper %}
-                    <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
-                    {% endif %}
-                    <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                 
-                </div>
-                <div class="flex-fill w-50 me-5">
-                    <div class="row">
-
-                        <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none; margin-left: auto;"><span class="header_text_not_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-                        {%if not sub_module%}
-                        <a href="#" onclick="page_load('{% url 'control_library_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                        {%endif%}
-                        <a href="#" onclick="page_load('{% url 'control_library_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-                    </div>
-                </div>
-            </div>
+          {% include 'cloud_side_bar.html' %}
         </div>
-    </div>
     
-    <div class="d-flex flex-column scrollabe_righ_side">
+        <div class="uk-width-expand uk-margin-medium-top">
 
-    <div class="d-flex flex-row justify-content-between">
+            {% include 'libraries/control_library_header.html' %}
+
+            <div class="scrollable_side">
+            <div uk-grid>
 
 
-        <div class="flex-fill me-5" style="width: 70%;">
-            <div class="custom_page_header_top_bottom_margin">
-                <span class="custom_page_header_text">Latest</span>
-            </div>
-            <div class="custom_code_block">
-                <div class="custom_code_block_code">
-                    <div class="highlight"><pre><code class="language-python"  style="text-wrap: pretty;">{{using_code}}</code></pre></div>
+            <div class="uk-child-width-2-2 uk-grid-small uk-grid-match uk-width-2-3 uk-margin-medium-top" uk-grid>
+                <div>
+                  <div class="uk-card uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Latest</h3>
+                    <p class="uk-margin">
+
+                        <div class="custom_code_block uk-card">
+                            <div class="custom_code_block_code">
+                  <div class="highlight"><pre class="chroma"><pre><code class="language-python">{{using_code}}</code></pre></div>
+                            </div>
+                        </div>
+
+                        <ul class="uk-navbar-nav uk-margin-small-top">
+
+          
+
+
+
+                            <a  href="#" onclick="page_load('{% url 'control_library' id=control_library %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Go to Docs</a>
+                    
+
+                    
+                            </ul>
+
+                    </p>
+                  </div>
                 </div>
-            </div>
-            <a href="#" onclick="page_load('{% url 'control_library' id=control_library %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Latest</a>
 
+                {% if not no_version %}
+                {% for v in the_versions %}
+                <div>
+                    <div class="uk-card uk-card-body uk-card-default">
+                      <h3 class="uk-card-title">{{v.version}}</h3>
+                      <p class="uk-margin">
 
+                        <span class="uk-badge" style="height: 35px;"><span uk-icon="user" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">{{v.user}}</span></span>
+                        <span class="uk-badge" style="height: 35px;"><span uk-icon="calendar" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">{{v.date}}</span></span>
 
-            {% if not no_version %}
-
-
-            {% for v in the_versions %}
-
-            <div class="custom_page_header_top_bottom_margin">
-                <span class="custom_page_header_text">{{v.version}}</span>
-            </div>
-            Author: {{v.user}} Date: {{v.date}}
-            <div class="custom_code_block">
-                <div class="custom_code_block_code">
-                    <div class="highlight"><pre><code class="language-markdown"  style="text-wrap: pretty;">{{v.release_note}}</code></pre></div>
-                </div>
-            </div>            
-            <div class="custom_code_block">
-                <div class="custom_code_block_code">
-                    <div class="highlight"><pre><code class="language-python" style="text-wrap: pretty;">{{v.using_code}}</code></pre></div>
-                </div>
-            </div>
-            <a href="#" onclick="page_load('{% url 'control_library' id=v.link %}');event.preventDefault();" class="btn btn-lg custom_button mt-3">Library View for {{v.version}}</a>
-            <a href="{% url 'control_library_version_delete' id=control_library version=v.version %}" class="btn btn-lg custom_button_red mt-3">Delete {{v.version}}</a>
-
-            {% endfor %}
-
-            {% else %}
-
-
-            <div class="custom_page_header_top_bottom_margin">
-                <span class="custom_page_header_text">- No Version Found</span>
-            </div>
-
-
-            {% endif %}
-
-
-        </div>
-
-        <div class="flex-fill" style="
-        position: -webkit-sticky; /* for Safari */
-        position: sticky;
-        top: 0;
-        align-self: flex-start; /* <-- this is the fix */
-          /* Not necessary -- for example only */
-    ">
-
- 
-
-<div class="custom_page_header_top_bottom_margin">
-<span class="custom_page_header_text"><span class="custom_page_header_text_bold">Create New Version</span></span>
-</div>
-<form method="POST" class="d-flex" action="{% url 'control_library_version_create' id=control_library %}" id="versionForm">
-    {% csrf_token %}
-    <div>
-        <input type="text" id="version" name="version" required class="form-control me-2 search_bar" placeholder="Ex. v1">
-    </div>
-    <div>
-        <button class="btn btn-outline-success ms-3" type="submit" id="load1">
-            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-            <span class="button-text">Create</span>
-        </button>
-    </div>
-</form>
-
-<script>
-$(document).ready(function() {
-    $('#load1').on('click', function(event) {
-        event.preventDefault(); // Prevent default form submission
-        var $this = $(this);
-        var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> Writing Release Notes, Wait';
-        
-        // Change button state
-        if ($this.html().indexOf('fa-spin') === -1) { // Check if not already spinning
-            $this.data('original-text', $this.html());
-            $('.spinner-border', $this).removeClass('d-none');
-            $('.button-text', $this).text('Writing Release Notes, Wait');
-            $this.prop('disabled', true);
+                        <div class="custom_code_block uk-card">
+                            <div class="custom_code_block_code">
+                  <div class="highlight"><pre class="chroma"><pre  style="text-wrap: wrap;
+                    text-align: justify;"><code class="language-markdown">{{v.release_note}}</code></pre></div>
+                            </div>
+                        </div>                         
+                          <div class="custom_code_block uk-card">
+                              <div class="custom_code_block_code">
+                    <div class="highlight"><pre class="chroma"><pre><code class="language-python">{{v.using_code}}</code></pre></div>
+                              </div>
+                          </div>
+  
+                          <ul class="uk-navbar-nav uk-margin-small-top">
+  
             
-            // Form submission via AJAX
-            $.ajax({
-                type: "POST",
-                url: $('#versionForm').attr('action'), // Assuming action is set correctly in your form
-                data: $('#versionForm').serialize(), // Serialized form data
-                success: function(response) {
-                    // Optionally handle response here if needed
-                    location.reload(); // Refresh page upon success
-                },
-                error: function(response) {
-                    // Optionally handle error
-                    console.log('Error:', response);
-                    $this.prop('disabled', false);
-                    $('.spinner-border', $this).addClass('d-none');
-                    $('.button-text', $this).text($this.data('original-text'));
-                }
+  
+  
+  
+                              <a href="#" onclick="page_load('{% url 'control_library' id=v.link %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Go to Docs</a>
+                              <a href="{% url 'control_library_version_delete' id=control_library version=v.version %}" class="uk-button uk-button-default"><span uk-icon="trash" class="uk-margin-small-right"></span>Delete</a>
+                      
+  
+  
+                      
+                              </ul>
+  
+                      </p>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  {% else %}
+
+
+                  <div class="custom_page_header_top_bottom_margin">
+                      <span class="custom_page_header_text">- No Version Found</span>
+                  </div>
+      
+      
+                  {% endif %}
+
+
+              </div>
+
+
+
+              <div class="uk-width-1-3 uk-margin-medium-top">
+
+                <div class=" uk-card uk-card-body uk-card-default">
+                    <h3 class="uk-card-title">Create New Version</h3>
+                    <p class="uk-margin">
+                        <form method="POST" action="{% url 'control_library_version_create' id=control_library %}" id="versionForm">
+                            <fieldset class="uk-fieldset">
+   
+                              <div class="uk-margin">
+                                <input
+                                  class="uk-input"
+                                  type="text"
+                                  placeholder="Tag"
+                                  aria-label="Tag"
+                                  id="version" 
+                                  name="version"
+                                  required
+                                />
+                              </div>
+                           
+
+                              <div class="flex flex-col gap-3">
+ 
+                                <button class="uk-button uk-button-primary uk-width-1-1" type="submit" id="load1">Create</button>
+                              </div>
+                    
+                            </fieldset>
+                          </form>
+                    </p>
+                  </div>
+
+            </div>
+
+            <script>
+            $(document).ready(function() {
+                $('#load1').on('click', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+                    var $this = $(this);
+                    var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> Writing Release Notes, Wait';
+                    
+                    // Change button state
+                    if ($this.html().indexOf('fa-spin') === -1) { // Check if not already spinning
+                        $this.data('original-text', $this.html());
+                        $('.spinner-border', $this).removeClass('d-none');
+                        $('.button-text', $this).text('Writing Release Notes, Wait');
+                        $this.prop('disabled', true);
+                        
+                        // Form submission via AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: $('#versionForm').attr('action'), // Assuming action is set correctly in your form
+                            data: $('#versionForm').serialize(), // Serialized form data
+                            success: function(response) {
+                                // Optionally handle response here if needed
+                                location.reload(); // Refresh page upon success
+                            },
+                            error: function(response) {
+                                // Optionally handle error
+                                console.log('Error:', response);
+                                $this.prop('disabled', false);
+                                $('.spinner-border', $this).addClass('d-none');
+                                $('.button-text', $this).text($this.data('original-text'));
+                            }
+                        });
+                    }
+                });
             });
-        }
-    });
-});
-</script>
-
-
-
+            </script>                
+              </div>
+              
+            </div> 
+            </div>
+        </div>
+      </div>
+    
 </div>
 
-</div>
 
-</div>
+
+
+
 
 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

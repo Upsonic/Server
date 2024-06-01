@@ -1,108 +1,126 @@
+
+
 {% extends "base.html" %}
 
 {% load tags %}
 
 {% block content %}
-<div class="d-flex cloud_left_section">
-{% include 'cloud_side_bar.html' %}
-
-</div>
-<div class="w-100 custom_right_side">
 
 
 
+<div class="uk-container uk-width-expand ">
+    <div  uk-grid class="uk-height-1-1">
+        <div class="uk-width-auto" style=" padding-left: 0px;">
 
+          {% include 'cloud_side_bar.html' %}
+        </div>
+    
+        <div class="uk-width-expand uk-margin-medium-top">
 
+            {% include 'libraries/control_element_header.html' %}
 
-<div class="d-flex flex-column">
+            <div class="scrollable_side">
+            <div>
 
-  <div class="custom_page_header_bottom_margin">
-
-      <div class="d-flex flex-row justify-content-between align-items-center">
-
-          <div class="flex-fill w-100 me-5">
-              {% if have_upper %}
-              <a href="#" class="back_a" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();">< </a>
-              {% endif %}
-              <span class="custom_page_header_text_bold">{{control_library}} {{version}}</span></span></span>                
-          </div>
-      </div>
-  </div>
-</div>
-
-<div class="d-flex flex-column">
-
-  <div class="custom_page_header_bottom_margin">
-
-      <div class="d-flex flex-row justify-content-between align-items-center">
-          <div class="flex-fill w-100 me-5">
-              <div class="row">
-                <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Home </span><img  src="/static/images/icons/action_home.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Version </span><img  src="/static/images/icons/action_version.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Commits </span><img  src="/static/images/icons/action_commit.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_active">Run History </span><img  src="/static/images/icons/action_run.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_dependency' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;"><span class="header_text_not_active">Dependency </span><img  src="/static/images/icons/action_dependency.svg" style="height: 20px;margin-right: 10px;"/></a>
-                <a href="#" onclick="page_load('{% url 'control_element_settings' id=control_library_with_version %}');event.preventDefault();" class="" style="width: auto; text-decoration: none;  margin-right: auto;"><span class="header_text_not_active">Settings </span><img  src="/static/images/icons/action_settings.svg" style="height: 20px;margin-right: 10px;"/></a>
-
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-
-
-
-<div class="d-flex flex-column scrollabe_righ_side">
-
-
-
-        <div>
-            {% if cpu_usage_analyses == False %}
+              {% if cpu_usage_analyses != True %}
             
-            <div class="custom_page_header_top_bottom_margin">
-                <span class="custom_page_header_text">Please enable Usage Analyses for catching new runs.</span>
-            </div>            
-            {% endif %}
+              <div class="custom_page_header_top_bottom_margin">
+                  <span class="custom_page_header_text">Please enable Usage Analyses for catching new runs.</span>
+              </div>            
+              {% endif %}
 
-            <table class="table table-hover align-middle library_table">
+              <table class="uk-table uk-table-divider">
                 <thead>
-                  <tr style="
-            border-bottom-color: #01EE8D;
-        ">
-                    <th scope="col">Version</th>
-                    <th scope="col">CPU Usage (one core)</th>
-                    <th scope="col">Memory Usage</th>
-                    <th scope="col">Elapsed Time</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Actions</th>
+                  <tr>
+                    <th scope="">Time</th>
+                    <th scope="uk-table-shrink">Version</th>
+                    <th scope="">CPU Usage (one core)</th>
+                    <th scope="">Memory Usage</th>
+                    <th scope="">Elapsed Time</th>
+                    
+                    <th scope="">Type</th>
+                    <th scope="uk-width-small">Actions</th>                    
                   </tr>
                 </thead>
                 <tbody>
-                
-                {% for run in get_last_runs%}
+
+
+
+
+                  {% for run in get_last_runs%}
+           
                   <tr>
+                    <td>{{run.data.time}}</td>
                     <td><a href="#" onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="library_item_a">
-                      {{run.data.version_short}}</a></td>
+                      <span class="uk-badge">{{run.data.version_short}}</span></a></td>
                   
                     <td>{{run.data.cpu_usage}}%</td>
                     <td>{{run.data.memory_usage}}mb</td>
                     <td>{{run.data.elapsed_time}}s</td>
-                    <td>{{run.data.type}}</td>
-                    <td>{{run.data.time}}</td>
-                    <td><a href="#" onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="library_item_a"><img  src="/static/images/icons/action_analyze.svg" style="height: 20px;margin-right: 10px;"/>Analyze</a></td>
+
+                    <td><span class="uk-badge {% if run.data.type == 'Failed' %}uk-badge-danger{% else %}uk-badge-primary{% endif %}">{{run.data.type}}</span></td>
+                    
+                    <td><button onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="uk-button uk-button-primary uk-margin-small-right"><span uk-icon="crosshairs" class="uk-margin-small-right"></span>Analyze</span
+                      ></button></td>
                   </tr>
 
                 {% endfor %}
 
+
+
                 </tbody>
               </table>
+            
+            
 
 
+                
+              </div>
+              
+            </div> 
+            </div>
         </div>
       </div>
+    
 </div>
 
 
 
+
+
+
+
+
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

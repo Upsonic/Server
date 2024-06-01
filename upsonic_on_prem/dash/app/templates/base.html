@@ -8,24 +8,98 @@
 <div id="this_url" style="display: none;">https://{{request.get_host}}:7341{{request.get_full_path_info}}</div>
 
 
+<script>
+  var themeToggleBtn = document.getElementById("theme-toggle");
+ 
+  themeToggleBtn.addEventListener("click", function () {
+    // if set via local storage previously
+    if (localStorage.getItem("color-theme")) {
+      if (localStorage.getItem("color-theme") === "light") {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      }
+ 
+      // if NOT set via local storage previously
+    } else {
+      if (document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      } else {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      }
+    }
+  });
+</script>
 
 {% if request.user.dark_mode %}
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark" style="color-scheme: dark;">
 {% else %}
 <html lang="en" data-bs-theme="light">
+{% endif %}
+
+{% if request.user.dark_mode %}
+<script>
+  if (localStorage.getItem("color-theme")) {
+        
+        document.documentElement.classList.remove("light");
+        localStorage.setItem("color-theme", "dark");
+      
+  
+      // if NOT set via local storage previously
+    } else {
+  
+        document.documentElement.classList.remove("light");
+        localStorage.setItem("color-theme", "dark");
+      
+    }
+  
+    </script>
+
+{% else %}
+<script>
+
+  if (localStorage.getItem("color-theme")) {
+        
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        
+   
+        // if NOT set via local storage previously
+      } else {
+    
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("color-theme", "light");
+        
+      }
+  
+  
+  </script>
 {% endif %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{page_title}} - Upsonic</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
 
     <link href='/static/css/gabarito.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/poppins.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/site.css' rel='stylesheet' type='text/css'>
-    <link href='/static/css/dark_mode.css' rel='stylesheet' type='text/css'>
-    <link href="/static/css/bootstrap-icons.css" rel="stylesheet">
+
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/franken-ui-releases@0.0.12/dist/green.min.css"
+  />
+
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.4/dist/js/uikit-icons.min.js"></script>
+
+
+
     {% if request.user.dark_mode %}
     <link rel="stylesheet" href="/static/css/atom-one-dark.min.css">
     {% else %}
@@ -38,7 +112,7 @@
     <script src="/static/js/python.min.js"></script>
     <script src="/static/js/markdown.min.js"></script>
     
-    
+
     {% include 'in_page_load.js.html' %}
 
     {% sentry as sentry %}
@@ -82,26 +156,27 @@
 
     {% progressive_web_app_meta %}
 </head>
-<body class="custom_body">
+<body class="bg-background">
 
 {% include 'header.html' %}
 
-<main class="d-flex flex-nowrap" id="the_content">
+<main id="the_content" >
 
+  <div uk-grid class="bg-background">
     {% include 'sidebar.html' %}
 
-      {% if page_title == 'Search' %}
-      <script>
-      document.getElementById("header_search_div").style.display = "none";
-      </script>
-      {% else %}
-      <script>
-      document.getElementById("header_search_div").style.display = "block";
-      </script>      
-      {% endif %}
+    {% if page_title == 'Search' %}
+    <script>
+    document.getElementById("header_search_div").style.display = "none";
+    </script>
+    {% else %}
+    <script>
+    document.getElementById("header_search_div").style.display = "block";
+    </script>      
+    {% endif %}
 
     {% block content %}{% endblock content %}
-
+  </div>
 </main>
 
 <iframe style="display: none;" name="transFrame" id="transFrame"></iframe>
@@ -114,5 +189,7 @@
 <script>
 hljs.highlightAll();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit-icons.min.js"></script>
 </body>
 </html>
