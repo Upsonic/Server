@@ -44,3 +44,9 @@
   background-color: #1E1E1F;
   color: #B6B3B3;
 }
+
+
+
+[data-bs-theme=dark] :root {
+  --primary: 154.68 99.16% 46.86%;
+}
