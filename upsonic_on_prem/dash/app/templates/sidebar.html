@@ -12,7 +12,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <li class="uk-active uk-margin-small-left uk-margin-small-top uk-margin-small-right ">
 
-        <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-{% if page_title != 'Home' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        <button href="#" onclick="page_load('{% url 'home' %}');event.preventDefault();" class="uk-button  uk-button-{% if page_title != 'Home' %}ghost{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
         align-items: center;
         justify-content: flex-start; /* Align items to the left */" >
           <span uk-icon="home" class="uk-margin-small-right uk-icon"></span>
@@ -23,7 +23,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
 
-        <button href="#" onclick="page_load('{% url 'libraries' %}');event.preventDefault();" class="uk-button  uk-button-{% if page_title != 'Libraries' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        <button href="#" onclick="page_load('{% url 'libraries' %}');event.preventDefault();" class="uk-button  uk-button-{% if page_title != 'Libraries' %}ghost{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
         align-items: center;
         justify-content: flex-start; /* Align items to the left */" >
           <span uk-icon="database" class="uk-margin-small-right uk-icon"></span>
@@ -36,7 +36,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
 
-        <button href="#" onclick="page_load('{% url 'search' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Search' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        <button href="#" onclick="page_load('{% url 'search' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Search' %}ghost{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
         align-items: center;
         justify-content: flex-start; /* Align items to the left */">
           <span uk-icon="search" class="uk-margin-small-right uk-icon"></span>
@@ -53,7 +53,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
 
-        <button href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Community' %}default{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        <button href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Community' %}ghost{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
         align-items: center;
         justify-content: flex-start; /* Align items to the left */">
           <span uk-icon="users" class="uk-margin-small-right uk-icon"></span>
@@ -69,7 +69,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <li class=" uk-margin-small-top uk-margin-small-right uk-margin-small-left uk-margin-small-bottom">
 
-        <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();" class="uk-button uk-button-{% if page_title != 'Profile' %}default{% else %}primary{% endif %}" style="display: inline-grid;"><span uk-icon="user"></span></a>
+        <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();" class="uk-button uk-button-{% if page_title != 'Profile' %}ghost{% else %}primary{% endif %}" style="display: inline-grid;"><span uk-icon="user"></span></a>
         {% if request.user.dark_mode %}
         <a href="{% url 'settings_light_mode' %}" style="display: inline-grid;" class="uk-button uk-button-default ">
         
