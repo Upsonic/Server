@@ -84,7 +84,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{page_title}} - Upsonic</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
-
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          document.body.style.visibility = "visible";
+      });
+  </script>
+  <style>
+      body {
+          visibility: hidden;
+      }
+  </style>
     <link href='/static/css/franken.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/gabarito.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/poppins.css' rel='stylesheet' type='text/css'>
@@ -165,8 +174,7 @@
     {% progressive_web_app_meta %}
 </head>
 <body class="bg-background">
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit-icons.min.js"></script>
+
 {% include 'header.html' %}
 
 <main id="the_content" >
@@ -191,7 +199,8 @@
 <iframe style="display: none;" name="transFrame" id="transFrame"></iframe>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.20.8/dist/js/uikit-icons.min.js"></script>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/popper.min.js"></script>
 <script src="/static/js/site.js" id="script_tag"></script>
