@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th class="uk-table-expand">Name</th>
+      <th class="">Meta</th>
       <th class="uk-table-shrink uk-text-nowrap">Action</th>
 
     </tr>
@@ -9,13 +10,15 @@
   <tbody>
     {% for scope in top_scopes %}
     <tr>
-      <td class="text-foreground">{{scope}}</td>
+      <td class="text-foreground">{{scope.name}}</td>
+      <td><span class="uk-badge" style="height: 35px;"><span uk-icon="code" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Total Object Number {{scope.total_sub_amount}}</span></span>
+      </td>
       <td>
         <div class="uk-flex">
-        <button onclick="page_load('{% url 'control_library' id=scope %}');event.preventDefault();" class="uk-button uk-button-primary uk-margin-small-right"><span uk-icon="home" class="uk-margin-small-right"></span>Use   </span
+        <button onclick="page_load('{% url 'control_library' id=scope.name %}');event.preventDefault();" class="uk-button uk-button-primary uk-margin-small-right"><span uk-icon="home" class="uk-margin-small-right"></span>Use   </span
           ></button>
-          <button onclick="page_load('{% url 'control_library_version' id=scope %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right">Releases</button>
-        <a href="#" onclick="page_load('{% url 'control_library_settings' id=scope %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right" style="width: 1px;"><span uk-icon="settings"></span></a>        
+          <button onclick="page_load('{% url 'control_library_version' id=scope.name %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right">Releases</button>
+        <a href="#" onclick="page_load('{% url 'control_library_settings' id=scope.name %}');event.preventDefault();" class="uk-button uk-button-default uk-margin-small-right" style="width: 1px;"><span uk-icon="settings"></span></a>        
       </div>
       </td>
 

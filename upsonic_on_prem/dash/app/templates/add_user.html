@@ -1,7 +1,96 @@
 {% extends "base.html" %}
 
+{% load tags %}
 
 {% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: calc(100vh - 130px);">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                <h1 class="uk-h2 uk-margin text-foreground"><a href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="chevron-left"></span></a>
+                Create User</h1>
+            </div>
+
+        </div>
+
+
+                
+
+        
+        <div class=" uk-card uk-card-body uk-card-default uk-margin-small-top">
+
+        
+            <p class="uk-margin">
+
+
+                <form  method="post" id="save">
+                    <div class="uk-margin-small-top ">
+                      <div class="uk-inline" style="width: 100%;">
+                        {% csrf_token %}
+                        <legend class="uk-legend">First Name</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="" value="" aria-label="Search" name="first_name" required/>
+        
+                        <legend class="uk-legend">Last Name</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="" value="" aria-label="Search" name="last_name" required/>
+                        
+                        <legend class="uk-legend">Username</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="" value="" aria-label="Search" name="username" required/>
+                        
+                        <legend class="uk-legend">Password</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="" aria-label="Search" name="password1" required/>
+                        <legend class="uk-legend">Password Again</legend>
+                        <input class="uk-input" style="width: 200%;" type="text" placeholder="" aria-label="Search" name="password2" required/>
+                      </div>
+                    </div>
+                   
+        
+                  </form>
+        
+                <button type="submit" form="save" class="uk-button uk-button-default uk-margin-small-top">Save</button>
+
+            </p>
+          </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="w-100 custom_right_side">
 
     <div class="custom_page_header_bottom_margin">
@@ -57,5 +146,3 @@
 
 
 </div>
-
-{% endblock content %}

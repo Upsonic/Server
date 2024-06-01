@@ -44,10 +44,16 @@ def home(request, exception=None):
         the_view = "card"
          
 
+    the_top_scopes = []
+    for each in API_Integration(request.user.access_key).top_scopes:
+        all_scopes_source = API_Integration(request.user.access_key).get_all_scopes_name_prefix(each)
+        total_sub_amount = len(all_scopes_source)        
+        the_top_scopes.append({"name":each, "total_sub_amount":total_sub_amount})
+
 
     data = {
         "page_title": "Home",
-        "top_scopes": API_Integration(request.user.access_key).top_scopes,
+        "top_scopes": the_top_scopes,
         "the_connection_code": the_connection_code(request),
         "the_view": the_view
     }
@@ -924,6 +930,8 @@ def control_library_version(request,id):
         no_version = True
 
 
+    total_sub_amount = len(all_scopes_response)
+
     data = {
         "page_title": "Libraries",
         "sub_page_title": "Version",
@@ -936,6 +944,7 @@ def control_library_version(request,id):
         "have_upper": have_upper,
         "the_upper": the_upper,
         "the_versions": the_versions,
+        "total_sub_amount":total_sub_amount,
         "no_version": no_version,
         "version": "" if version == None else version,
         "using_code": f'{the_name} = upsonic.load_module("{id}")'
@@ -1347,6 +1356,9 @@ def control_library_settings(request,id):
 
     print(total_usage_analyses)
 
+    all_scopes_response = API_Integration(request.user.access_key).get_all_scopes_name_prefix(id)
+    total_sub_amount = len(all_scopes_response)
+
     data = {
         "page_title": "Libraries",
         "sub_page_title": "Settings",
@@ -1358,6 +1370,7 @@ def control_library_settings(request,id):
         "content": the_content,
         "have_upper": have_upper,
         "the_upper": the_upper,
+        "total_sub_amount":total_sub_amount,
         "total_usage_analyses":total_usage_analyses,
         "version": "" if version == None else version,
     }
