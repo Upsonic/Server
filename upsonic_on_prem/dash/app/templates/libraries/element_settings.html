@@ -23,42 +23,44 @@
 
 
 
-            <div class="uk-child-width-1-5 uk-grid-small uk-grid-match uk-margin-medium-top" uk-grid>
-                <div>
-                    
-                  <div class="uk-card uk-card-body uk-card-default">
-                    <h3 class="uk-card-title">Run History</h3>
-                    <p class="uk-margin">
-                        Track your CPU, Memory and elapsed time of objects.
-                      </p>
-
- 
-                        <ul class="uk-navbar-nav uk-margin-small-top">
-
-                            
-   
-                        
-                            {% if cpu_usage_analyses == True %}
-                            <a  href="#" onclick="page_load('{% url 'deactivate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-danger">Disable Tracking</a>
-                            {% else %}
-
-                            <a  href="#" onclick="page_load('{% url 'activate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-primary">Enable Tracking</a>
-                            {% endif %}
-
-                    
-                            </ul>
-
-                    
-                  </div>
+            <div class="uk-child-width-1-5 uk-grid-small uk-grid-match uk-margin-medium-top uk-margin-small-left" uk-grid style="gap: 1rem;">
+          
+              <div class=" uk-card" style="padding-left: 0px;">
+                <div class="uk-card-header">
+                  <h3 class="uk-card-title">Run History</h3>
+                  <p class="uk-margin-small-top uk-text-small text-muted-foreground">
+                    Track your CPU, Memory and elapsed time of objects.
+                  </p>
                 </div>
+                <div class="uk-card-body uk-padding-remove-top uk-padding-remove-bottom">
 
-                <div>
+               
+
+                </div>
+               
+                <div class="uk-card-footer uk-flex uk-flex-between uk-margin-small-top">
+                  {% if cpu_usage_analyses == True %}
+                  <a  href="#" onclick="page_load('{% url 'deactivate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-danger">Disable Tracking</a>
+                  {% else %}
+
+                  <a  href="#" onclick="page_load('{% url 'activate_usage_analyses' id=control_library %}');event.preventDefault();" class="uk-button uk-button-primary">Enable Tracking</a>
+                  {% endif %}
+
+       
+                </div>
+              </div>
+
+              
+ 
+               
+
+          
                     
-                  <div class=" uk-card">
+                  <div class=" uk-card" style="padding-left: 0px;">
                     <div class="uk-card-header">
                       <h3 class="uk-card-title">Object Settings</h3>
                       <p class="uk-margin-small-top uk-text-small text-muted-foreground">
-                        Please be careful.
+                        Please be careful.<br><br>
                       </p>
                     </div>
                     <div class="uk-card-body uk-padding-remove-top uk-padding-remove-bottom">
