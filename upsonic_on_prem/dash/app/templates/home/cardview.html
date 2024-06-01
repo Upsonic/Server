@@ -2,60 +2,34 @@
 
 
 
-<div class="uk-grid uk-margin-small-left">
+<div class="uk-grid ">
     {% for scope in top_scopes %}
+    <a href="#" onclick="page_load('{% url 'control_library_version' id=scope.name %}');event.preventDefault();" class="uk-width-1-4">
     <div class=" uk-card uk-margin-medium-right uk-card uk-margin-medium-bottom" style="padding: 0 !important;border-bottom: 2px solid #01ee8a;">
         <div class="uk-card-header">
-          <div class="uk-flex">
+          <span uk-icon="menu" style="fill: #01ee8a;"></span>
+          <div class="uk-flex uk-margin-small-top">
+            
             <div>
-              <h3 class="uk-card-title text-foreground">{{scope.name}}</h3>
+              <h3 class="uk-h4 text-foreground">{{scope.name}}</h3>
             </div>
           </div>
+        </div>
+
+        <div class="uk-card-body uk-padding-remove-top">
+          <div class="">
+
+
+
+          </div>
+
         </div>
 
 
 
 
 
-          <div class="uk-card-body uk-padding-remove-top uk-padding-remove-bottom">
-            <div class="">
-
-
-                <button href="#" onclick="page_load('{% url 'control_library' id=scope.name %}');event.preventDefault();" class="uk-button active uk-button-default uk-width-1-1 " style="  display: flex;
-                align-items: center;
-                justify-content: flex-start; /* Align items to the left */">
-                  <span uk-icon="home" class="uk-margin-small-right uk-icon"></span>
-                  Home
-                </button>
-
-            </div>
-
-          </div>
-
-          <div class="uk-card-body  uk-padding-remove-bottom">
-            <div class="">
-
-
-              <button href="#" onclick="page_load('{% url 'control_library_version' id=scope.name %}');event.preventDefault();" class="uk-button active uk-button-default uk-width-1-1 " style="  display: flex;
-              align-items: center;
-              justify-content: flex-start; /* Align items to the left */">
-                <span uk-icon="history" class="uk-margin-small-right uk-icon"></span>
-                Releases
-              </button>
-
-
-          
-
-                
-            </div>
-
-          </div>
-
-
-        <div class="uk-card-footer uk-flex uk-flex-between">
-          <span class="uk-badge" style="height: 35px;"><span uk-icon="code" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Total Object Number {{scope.total_sub_amount}}</span></span>
-
-        </div>
       </div>
+    </a>
     {% endfor %}             
     </div>
