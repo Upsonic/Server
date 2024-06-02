@@ -47,6 +47,8 @@
 
 
 
-[data-bs-theme=dark] :root {
+.dark {
   --primary: 154.68 99.16% 46.86%;
+  --background: 0 0% 0%!important;
 }
+
