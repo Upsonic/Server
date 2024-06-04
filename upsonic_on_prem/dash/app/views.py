@@ -668,7 +668,7 @@ def add_user(request):
 
         if user_form.is_valid():
             user_form.save()
-            user_form.user.add_user(request.user.access_key)
+            
             request.user.notify("User Added", f"User {user_form.cleaned_data.get('username')} added successfully")
             return redirect(to='community')
         else:

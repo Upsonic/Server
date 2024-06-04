@@ -34,14 +34,19 @@ class User(AbstractUser):
     notifications = models.ManyToManyField(TheNotifications, blank=True)
     access_key = models.CharField(max_length=300, default="")
     dark_mode = models.BooleanField(default=True, blank=True, null=True)
+    register = models.BooleanField(default=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.the_register()
+        if self.register:
+            self.add_user(self.access_key)
+            self.register = False
         super().save(*args, **kwargs)
 
     def the_register(self):
         if self.access_key == "":
             self.access_key = API_Integration.create_access_key()
+            
 
     def add_user(self, id):
         API_Integration(id).add_user(self.access_key)
