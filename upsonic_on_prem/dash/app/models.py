@@ -15,6 +15,8 @@ import os
 load_dotenv(dotenv_path=".env")
 import time
 
+from django_currentuser.middleware import (
+    get_current_user, get_current_authenticated_user)
 
 class TheNotifications(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -39,7 +41,8 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         self.the_register()
         if self.register:
-            self.add_user(self.access_key)
+            currently_user_id = get_current_user().access_key
+            self.add_user(currently_user_id)
             self.register = False
         super().save(*args, **kwargs)
 
