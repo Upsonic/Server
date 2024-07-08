@@ -1723,3 +1723,23 @@ def create_get_release_note():
         "result":
         create_get_release_note_(top_library, version, request),
     })
+
+
+
+
+
+from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
+@app.route(detect_credentials_url, methods=["POST"])
+def detect_credentials_view():
+    """
+    Returns true if there is an credential in code
+    """
+    code_string = request.form.get("code")
+
+
+    return jsonify({
+        "status":
+        True,
+        "result":
+        detect_credentials(code_string),
+    })
