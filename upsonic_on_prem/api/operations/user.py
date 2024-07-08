@@ -212,7 +212,7 @@ def dump_together():
     # code
     code = request.form.get("code")
     if detect_credentials(code):
-        return jsonify({"status": "denied", "message": "Credentials detected in the code."}), 403
+        return jsonify({"status": False, "result": "Credentials detected in the code."}), 403
     the_scope.set_code(code, access_key=request.authorization.password)
 
     # type
