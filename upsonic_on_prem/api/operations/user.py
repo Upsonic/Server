@@ -17,6 +17,7 @@ from upsonic_on_prem.api.utils import storage_2
 from upsonic_on_prem.api.utils import storage_4
 from upsonic_on_prem.api.utils.configs import openai_api_key
 from upsonic_on_prem.api.utils.github_sync import github
+from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
 
 
 def forward_request_to_openai_ollama(path, method, headers, data):
@@ -210,6 +211,8 @@ def dump_together():
 
     # code
     code = request.form.get("code")
+    if detect_credentials(code):
+        return jsonify({"status": "denied", "message": "Credentials detected in the code."}), 403
     the_scope.set_code(code, access_key=request.authorization.password)
 
     # type
@@ -1728,7 +1731,6 @@ def create_get_release_note():
 
 
 
-from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
 @app.route(detect_credentials_url, methods=["POST"])
 def detect_credentials_view():
     """
