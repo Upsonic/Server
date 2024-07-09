@@ -1280,8 +1280,8 @@ def create_readme_(top_library,
 
         all_scopes_response = (Scope.get_all_scopes_name_prefix(
             AccessKey(request.authorization.password), top_library) if request
-                               != None else Scope.get_all_scopes_name_prefix(
-                                   prefix=top_library))
+            != None else Scope.get_all_scopes_name_prefix(
+            prefix=top_library))
         all_scopes = []
         for each_scope in all_scopes_response:
             if version != None:
@@ -1661,8 +1661,8 @@ def create_get_release_note_(top_library, version, request=None):
 
     all_scopes_response = (Scope.get_all_scopes_name_prefix(
         AccessKey(request.authorization.password), top_library) if request
-                           != None else Scope.get_all_scopes_name_prefix(
-                               prefix=top_library))
+        != None else Scope.get_all_scopes_name_prefix(
+        prefix=top_library))
     all_scopes = []
 
     for each_scope in all_scopes_response:
