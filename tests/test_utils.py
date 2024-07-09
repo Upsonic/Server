@@ -151,7 +151,8 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_write("ahmet.mehmet"), False)
         accesskey.set_scope_write("ahmet.mehmet")
         self.assertEqual(accesskey.can_access_write("ahmet.mehmet"), True)
-        self.assertEqual(accesskey.can_access_write("ahmet.mehmet.cengiz"), False)
+        self.assertEqual(accesskey.can_access_write("ahmet.mehmet.cengiz"),
+                         False)
 
         self.assertEqual(accesskey.can_access_write("oo.aa.bb.cc"), False)
         accesskey.set_scope_write("oo.aa.bb")
@@ -190,7 +191,8 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_read("ahmet.mehmet"), False)
         accesskey.set_scope_read("ahmet.mehmet")
         self.assertEqual(accesskey.can_access_read("ahmet.mehmet"), True)
-        self.assertEqual(accesskey.can_access_read("ahmet.mehmet.cengiz"), False)
+        self.assertEqual(accesskey.can_access_read("ahmet.mehmet.cengiz"),
+                         False)
 
         self.assertEqual(accesskey.can_access_read("oo.aa.bb.cc"), False)
         accesskey.set_scope_read("oo.aa.bb")
@@ -324,15 +326,13 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(
             the_events,
-            [
-                {
-                    "event": "Test a",
-                    "target": "target",
-                    "detail": "detail",
-                    "scope_target": False,
-                    "meta": {},
-                }
-            ],
+            [{
+                "event": "Test a",
+                "target": "target",
+                "detail": "detail",
+                "scope_target": False,
+                "meta": {},
+            }],
         )
 
         storage.pop()
@@ -350,7 +350,9 @@ class Test_Accesskey(unittest.TestCase):
         accesskey.event("Test c", "target", "detail")
         accesskey.event("Test d", "target", "detail")
 
-        the_events = [value for value in accesskey.get_last_x_events(2).values()]
+        the_events = [
+            value for value in accesskey.get_last_x_events(2).values()
+        ]
 
         self.assertEqual(
             the_events,
@@ -385,8 +387,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -406,8 +409,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -427,8 +431,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -449,8 +454,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -505,8 +511,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         self.assertEqual(the_scope.dump_history, [])
 
@@ -515,25 +522,27 @@ class Test_Accesskey(unittest.TestCase):
         self.assertNotEqual(the_scope.dump_history, [])
         self.assertEqual(len(the_scope.dump_history), 1)
         self.assertEqual(
-            Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source
-        )
+            Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
 
         def my_function():
             """ """
             return False
 
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
         self.assertNotEqual(
-            Scope.get_dump(the_scope.dump_history[-1]).source, the_scope.source
-        )
+            Scope.get_dump(the_scope.dump_history[-1]).source,
+            the_scope.source)
 
-        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), True)
-        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[1]).python(), False)
+        self.assertNotEqual(
+            Scope.get_dump(the_scope.dump_history[0]).python(), True)
+        self.assertNotEqual(
+            Scope.get_dump(the_scope.dump_history[1]).python(), False)
         self.assertEqual(the_scope.python(), False)
 
         storage_2.pop()
@@ -551,8 +560,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         self.assertEqual(the_scope.get_all_scopes(), [])
 
@@ -563,7 +573,10 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(
             the_scope.get_all_scopes(),
-            ["onur.my_function", "onur.sub.my_awesome", "onur.sub.my_sub_function"],
+            [
+                "onur.my_function", "onur.sub.my_awesome",
+                "onur.sub.my_sub_function"
+            ],
         )
 
         storage_2.pop()
@@ -585,8 +598,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         self.assertEqual(Scope.get_all_scopes_name(user), [])
 
@@ -608,10 +622,14 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(
             Scope.get_all_scopes_name(user),
-            ["aa.sub.my_awesome", "test_accesskey_get_all_scopes_name.my_function"],
+            [
+                "aa.sub.my_awesome",
+                "test_accesskey_get_all_scopes_name.my_function"
+            ],
         )
 
-        user.set_scope_read("test_accesskey_get_all_scopes_name.sub.my_sub_function")
+        user.set_scope_read(
+            "test_accesskey_get_all_scopes_name.sub.my_sub_function")
 
         self.assertEqual(
             Scope.get_all_scopes_name(user),
@@ -624,16 +642,14 @@ class Test_Accesskey(unittest.TestCase):
 
         self.assertEqual(
             Scope.get_all_scopes_name_prefix(
-                user, "test_accesskey_get_all_scopes_name"
-            ),
+                user, "test_accesskey_get_all_scopes_name"),
             [
                 "test_accesskey_get_all_scopes_name.my_function",
                 "test_accesskey_get_all_scopes_name.sub.my_sub_function",
             ],
         )
-        self.assertEqual(
-            Scope.get_all_scopes_name_prefix(user, "aa"), ["aa.sub.my_awesome"]
-        )
+        self.assertEqual(Scope.get_all_scopes_name_prefix(user, "aa"),
+                         ["aa.sub.my_awesome"])
 
         storage.pop()
         storage_2.pop()
@@ -650,8 +666,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -680,8 +697,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -697,8 +715,9 @@ class Test_Accesskey(unittest.TestCase):
 
         the_scope = Scope(id)
         dumped_data = Fernet(
-            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
-        ).encrypt(cloudpickle.dumps(my_function))
+            base64.urlsafe_b64encode(
+                hashlib.sha256("u".encode()).digest())).encrypt(
+                    cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -706,8 +725,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(the_scope.python(), "bbbb")
 
         self.assertEqual(
-            Scope.get_version(the_scope.version_history[0]).python(), "aaa"
-        )
+            Scope.get_version(the_scope.version_history[0]).python(), "aaa")
 
         storage_2.pop()
         storage_3.pop()

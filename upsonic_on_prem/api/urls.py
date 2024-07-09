@@ -1,9 +1,7 @@
 status_url = "/status"
 
-
 # Utilies
 detect_credentials_url = "/detect_credentials"
-
 
 dump_together_url = "/dump_together"
 
