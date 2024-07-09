@@ -16,16 +16,17 @@ from upsonic_on_prem.api.utils import storage
 from upsonic_on_prem.api.utils import storage_2
 from upsonic_on_prem.api.utils import storage_4
 from upsonic_on_prem.api.utils.configs import openai_api_key
+from upsonic_on_prem.api.utils.credential_detection.main import \
+    detect_credentials
 from upsonic_on_prem.api.utils.github_sync import github
-from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
 
 
 def forward_request_to_openai_ollama(path, method, headers, data):
     """
 
-    :param path:
+    :param path: param method:
+    :param headers: param data:
     :param method:
-    :param headers:
     :param data:
 
     """
@@ -79,9 +80,9 @@ def proxy_openai_ollama(path):
 def forward_request_to_ollama(path, method, headers, data):
     """
 
-    :param path:
+    :param path: param method:
+    :param headers: param data:
     :param method:
-    :param headers:
     :param data:
 
     """
@@ -151,9 +152,9 @@ def proxy_ollama(path):
 def forward_request_to_openai(path, method, headers, data):
     """
 
-    :param path:
+    :param path: param method:
+    :param headers: param data:
     :param method:
-    :param headers:
     :param data:
 
     """
@@ -212,7 +213,13 @@ def dump_together():
     # code
     code = request.form.get("code")
     if detect_credentials(code):
-        return jsonify({"status": False, "result": "Credentials detected in the code."}), 403
+        return (
+            jsonify({
+                "status": False,
+                "result": "Credentials detected in the code."
+            }),
+            403,
+        )
     the_scope.set_code(code, access_key=request.authorization.password)
 
     # type
@@ -535,10 +542,10 @@ def create_document_of_scope_(scope,
                               access_key=None):
     """
 
-    :param scope:
+    :param scope: param version:
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     task_name = scope
@@ -591,10 +598,10 @@ def create_time_complexity_of_scope_(scope,
                                      access_key=None):
     """
 
-    :param scope:
+    :param scope: param version:
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     task_name = scope
@@ -647,10 +654,10 @@ def create_mistakes_of_scope_(scope,
                               access_key=None):
     """
 
-    :param scope:
+    :param scope: param version:
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     task_name = scope
@@ -699,7 +706,7 @@ commit_message_tasks = {}
 def create_commit_message_of_scope_(scope, version):
     """
 
-    :param scope:
+    :param scope: param version:
     :param version:
 
     """
@@ -739,10 +746,10 @@ def create_required_test_types_of_scope_(scope,
                                          access_key=None):
     """
 
-    :param scope:
+    :param scope: param version:
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     task_name = scope
@@ -794,10 +801,10 @@ def create_tags_of_scope_(scope,
                           access_key=None):
     """
 
-    :param scope:
+    :param scope: param version:
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     task_name = scope
@@ -1186,10 +1193,10 @@ def create_security_analyses_of_scope_(scope,
                                        access_key=None):
     """
 
-    :param scope:
+    :param scope: param version:
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     task_name = scope
@@ -1242,11 +1249,11 @@ def create_readme_(top_library,
                    access_key=None):
     """
 
-    :param top_library:
+    :param top_library: param version:
+    :param request: Default value = None)
+    :param create_ai_task: Default value = False)
+    :param access_key: Default value = None)
     :param version:
-    :param request:  (Default value = None)
-    :param create_ai_task:  (Default value = False)
-    :param access_key:  (Default value = None)
 
     """
     global documentation_tasks
@@ -1618,6 +1625,7 @@ def get_last_runs():
         op = the_scope.get_last_runs()
     return jsonify({"status": True, "result": op})
 
+
 @app.route(get_run_url, methods=["POST"])
 def get_run():
     """ """
@@ -1625,7 +1633,6 @@ def get_run():
     run_sha = request.form.get("run_sha")
     the_scope = Scope(scope)
     return jsonify({"status": True, "result": the_scope.get_run(run_sha)})
-
 
 
 @app.route(get_github_sync_of_scope_url, methods=["POST"])
@@ -1644,9 +1651,9 @@ def get_github_sync_of_scope():
 def create_get_release_note_(top_library, version, request=None):
     """
 
-    :param top_library:
+    :param top_library: param version:
+    :param request: Default value = None)
     :param version:
-    :param request:  (Default value = None)
 
     """
     global documentation_tasks
@@ -1728,20 +1735,12 @@ def create_get_release_note():
     })
 
 
-
-
-
 @app.route(detect_credentials_url, methods=["POST"])
 def detect_credentials_view():
-    """
-    Returns true if there is an credential in code
-    """
+    """Returns true if there is an credential in code"""
     code_string = request.form.get("code")
 
-
     return jsonify({
-        "status":
-        True,
-        "result":
-        detect_credentials(code_string),
+        "status": True,
+        "result": detect_credentials(code_string),
     })
