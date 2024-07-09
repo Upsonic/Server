@@ -7,7 +7,7 @@ from detect_secrets.settings import default_settings
 
 def detect_credentials(code):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".py") as tmpfile:
-        tmpfile.write(code.encode('utf-8'))
+        tmpfile.write(code.encode("utf-8"))
         tmpfile.close()
 
         secrets = SecretsCollection()
