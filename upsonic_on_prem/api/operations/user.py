@@ -27,7 +27,7 @@ def forward_request_to_openai_ollama(path, method, headers, data):
     :param path: param method:
     :param headers: param data:
     :param method: param data:
-    :param data: 
+    :param data:
 
     """
     url = f"http://localhost:11434/v1/{path}"
@@ -51,7 +51,7 @@ def forward_request_to_openai_ollama(path, method, headers, data):
 def proxy_openai_ollama(path):
     """
 
-    :param path: 
+    :param path:
 
     """
     try:
@@ -77,7 +77,7 @@ def forward_request_to_ollama(path, method, headers, data):
     :param path: param method:
     :param headers: param data:
     :param method: param data:
-    :param data: 
+    :param data:
 
     """
     url = f"http://localhost:11434/{path}"
@@ -118,7 +118,7 @@ def forward_request_to_ollama(path, method, headers, data):
 def proxy_ollama(path):
     """
 
-    :param path: 
+    :param path:
 
     """
     try:
@@ -144,7 +144,7 @@ def forward_request_to_openai(path, method, headers, data):
     :param path: param method:
     :param headers: param data:
     :param method: param data:
-    :param data: 
+    :param data:
 
     """
     url = f"https://api.openai.com/v1/{path}"
@@ -168,7 +168,7 @@ def forward_request_to_openai(path, method, headers, data):
 def proxy_openai(path):
     """
 
-    :param path: 
+    :param path:
 
     """
     try:
@@ -525,7 +525,7 @@ def create_document_of_scope_(scope, version, create_ai_task=False, access_key=N
     :param scope: param version:
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -585,7 +585,7 @@ def create_time_complexity_of_scope_(
     :param scope: param version:
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -643,7 +643,7 @@ def create_mistakes_of_scope_(scope, version, create_ai_task=False, access_key=N
     :param scope: param version:
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -694,7 +694,7 @@ def create_commit_message_of_scope_(scope, version):
     """
 
     :param scope: param version:
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -735,7 +735,7 @@ def create_required_test_types_of_scope_(
     :param scope: param version:
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -792,7 +792,7 @@ def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None)
     :param scope: param version:
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -1156,7 +1156,7 @@ def create_security_analyses_of_scope_(
     :param scope: param version:
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     task_name = scope
@@ -1216,7 +1216,7 @@ def create_readme_(
     :param request: Default value = None)
     :param create_ai_task: Default value = False)
     :param access_key: Default value = None)
-    :param version: 
+    :param version:
 
     """
     global documentation_tasks
@@ -1621,7 +1621,7 @@ def create_get_release_note_(top_library, version, request=None):
 
     :param top_library: param version:
     :param request: Default value = None)
-    :param version: 
+    :param version:
 
     """
     global documentation_tasks
