@@ -644,6 +644,7 @@ class Test_Accesskey(unittest.TestCase):
 
         test_code_3 = '''
         def safe_function():
+            api_key = os.getenv("api_key")
             print("This is safe code")
         '''
 
