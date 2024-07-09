@@ -1273,8 +1273,8 @@ def create_readme_(top_library,
 
         all_scopes_response = (Scope.get_all_scopes_name_prefix(
             AccessKey(request.authorization.password), top_library) if request
-                               != None else Scope.get_all_scopes_name_prefix(
-                                   prefix=top_library))
+            != None else Scope.get_all_scopes_name_prefix(
+            prefix=top_library))
         all_scopes = []
         for each_scope in all_scopes_response:
             if version != None:
@@ -1618,6 +1618,7 @@ def get_last_runs():
         op = the_scope.get_last_runs()
     return jsonify({"status": True, "result": op})
 
+
 @app.route(get_run_url, methods=["POST"])
 def get_run():
     """ """
@@ -1625,7 +1626,6 @@ def get_run():
     run_sha = request.form.get("run_sha")
     the_scope = Scope(scope)
     return jsonify({"status": True, "result": the_scope.get_run(run_sha)})
-
 
 
 @app.route(get_github_sync_of_scope_url, methods=["POST"])
@@ -1654,8 +1654,8 @@ def create_get_release_note_(top_library, version, request=None):
 
     all_scopes_response = (Scope.get_all_scopes_name_prefix(
         AccessKey(request.authorization.password), top_library) if request
-                           != None else Scope.get_all_scopes_name_prefix(
-                               prefix=top_library))
+        != None else Scope.get_all_scopes_name_prefix(
+        prefix=top_library))
     all_scopes = []
 
     for each_scope in all_scopes_response:
@@ -1728,16 +1728,12 @@ def create_get_release_note():
     })
 
 
-
-
-
 @app.route(detect_credentials_url, methods=["POST"])
 def detect_credentials_view():
     """
     Returns true if there is an credential in code
     """
     code_string = request.form.get("code")
-
 
     return jsonify({
         "status":
