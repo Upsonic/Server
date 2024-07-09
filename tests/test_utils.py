@@ -14,8 +14,12 @@ import cloudpickle
 import dill
 from cryptography.fernet import Fernet
 
-from upsonic_on_prem.api.utils import (AI, AccessKey, Scope, storage,
-                                       storage_2, storage_3)
+from upsonic_on_prem.api.utils import AccessKey
+from upsonic_on_prem.api.utils import AI
+from upsonic_on_prem.api.utils import Scope
+from upsonic_on_prem.api.utils import storage
+from upsonic_on_prem.api.utils import storage_2
+from upsonic_on_prem.api.utils import storage_3
 from upsonic_on_prem.api.utils.credential_detection.main import \
     detect_credentials
 
