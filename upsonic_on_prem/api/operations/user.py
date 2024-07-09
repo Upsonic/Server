@@ -4,20 +4,16 @@ import time
 import traceback
 
 import requests
-from flask import jsonify
-from flask import request
+from flask import jsonify, request
 
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
-from upsonic_on_prem.api.utils import AccessKey
-from upsonic_on_prem.api.utils import AI
-from upsonic_on_prem.api.utils import Scope
-from upsonic_on_prem.api.utils import storage
-from upsonic_on_prem.api.utils import storage_2
-from upsonic_on_prem.api.utils import storage_4
+from upsonic_on_prem.api.utils import (AI, AccessKey, Scope, storage,
+                                       storage_2, storage_4)
 from upsonic_on_prem.api.utils.configs import openai_api_key
+from upsonic_on_prem.api.utils.credential_detection.main import \
+    detect_credentials
 from upsonic_on_prem.api.utils.github_sync import github
-from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
 
 
 def forward_request_to_openai_ollama(path, method, headers, data):

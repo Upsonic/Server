@@ -1,5 +1,6 @@
-import tempfile
 import os
+import tempfile
+
 from detect_secrets import SecretsCollection
 from detect_secrets.core.scan import scan_file
 from detect_secrets.settings import default_settings
