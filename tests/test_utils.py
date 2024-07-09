@@ -14,6 +14,8 @@ from upsonic_on_prem.api.utils import storage, storage_2, storage_3
 from upsonic_on_prem.api.utils import AccessKey
 from upsonic_on_prem.api.utils import Scope
 from upsonic_on_prem.api.utils import AI
+from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
+
 import cloudpickle
 import dill
 
@@ -622,6 +624,37 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
         storage_3.pop()
 
+
+
+
+    def test_detect_credentials(self):
+
+        # Testing the function
+        test_code_1 = '''
+        def my_function():
+            password = "my_secret_password"
+            print(password)
+        '''
+
+        test_code_2 = '''
+        def another_function():
+            api_key = "my_api_key"
+            print(api_key)
+        '''
+
+        test_code_3 = '''
+        def safe_function():
+            api_key = os.getenv("api_key")
+            print("This is safe code")
+        '''
+
+        r_1 = detect_credentials(test_code_1)  # Should return True
+        r_2 = detect_credentials(test_code_2)  # Should return True
+        r_3 = detect_credentials(test_code_3)  # Should return False
+
+        self.assertEqual(r_1, True)
+        self.assertEqual(r_2, True)
+        self.assertEqual(r_3, False)
 
 
 backup = sys.argv

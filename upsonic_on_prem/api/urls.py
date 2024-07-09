@@ -1,5 +1,8 @@
 status_url = "/status"
 
+# Utilies
+detect_credentials_url = "/detect_credentials"
+
 dump_together_url = "/dump_together"
 
 dump_url = "/dump"
@@ -141,6 +144,8 @@ get_last_runs_url = "/get_last_runs"
 get_run_url = "/get_run"
 
 user_urs = [
+    # Utilites
+    detect_credentials_url,
     get_dump_user_of_scope_url,
     get_dump_time_of_scope_url,
     get_dump_commit_message_of_scope_url,
