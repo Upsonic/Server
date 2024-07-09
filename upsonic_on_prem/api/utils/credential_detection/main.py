@@ -9,7 +9,7 @@ from detect_secrets.settings import default_settings
 def detect_credentials(code):
     """
 
-    :param code:
+    :param code: 
 
     """
     with tempfile.NamedTemporaryFile(delete=False, suffix=".py") as tmpfile:

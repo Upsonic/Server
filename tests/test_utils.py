@@ -23,26 +23,33 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 
 class Test_Storage(unittest.TestCase):
+    """ """
 
     @classmethod
     def setUpClass(cls):
+        """ """
         storage.pop()
 
     def test_status(self):
+        """ """
         self.assertTrue(storage.status())
 
     def test_set(self):
+        """ """
         storage.set("test", "test")
         self.assertEqual(storage.get("test"), "test")
 
     def test_total_size(self):
+        """ """
         self.assertTrue(storage.total_size() > 0)
 
     def test_delete(self):
+        """ """
         storage.delete("test")
         self.assertEqual(storage.get("test"), None)
 
     def test_pop(self):
+        """ """
         storage.set("test", "test")
         self.assertEqual(storage.get("test"), "test")
         storage.pop()
@@ -50,12 +57,15 @@ class Test_Storage(unittest.TestCase):
 
 
 class Test_Accesskey(unittest.TestCase):
+    """ """
 
     @classmethod
     def setUpClass(cls):
+        """ """
         storage.pop()
 
     def test_name(self):
+        """ """
         id = "test_name"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.name, None)
@@ -63,6 +73,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.name, "test")
 
     def test_scope_write(self):
+        """ """
         id = "test_scope"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.scopes_write, [])
@@ -77,6 +88,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.scopes_write, [])
 
     def test_scope_read(self):
+        """ """
         id = "test_scope"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.scopes_read, [])
@@ -91,6 +103,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.scopes_read, [])
 
     def test_scope_read_clear(self):
+        """ """
         id = "test_scope_read_clear"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.scopes_read, [])
@@ -103,6 +116,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.scopes_read, [])
 
     def test_scope_write_clear(self):
+        """ """
         id = "test_scope_write_clear"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.scopes_write, [])
@@ -115,6 +129,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.scopes_write, [])
 
     def test_is_admin(self):
+        """ """
         id = "test_is_admin"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.is_admin, False)
@@ -122,6 +137,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.is_admin, True)
 
     def test_can_access_write_star(self):
+        """ """
         id = "test_can_access"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.can_access_write("onur.ulusoy"), False)
@@ -160,6 +176,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_write("ee.aa"), True)
 
     def test_can_access_read_star(self):
+        """ """
         id = "test_can_access"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.can_access_read("onur.ulusoy"), False)
@@ -198,6 +215,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_read("ee.aa"), True)
 
     def test_delete(self):
+        """ """
         id = "test_delete"
         accesskey = AccessKey(id)
         accesskey.set_scope_write("onur.*")
@@ -211,6 +229,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.scopes_read, [])
 
     def test_get_admins(self):
+        """ """
         id = "test_get_admins"
         id_2 = "test_get_admins_"
         accesskey = AccessKey(id)
@@ -227,6 +246,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(len(accesskey.get_admins()), 2)
 
     def test_robust(self):
+        """ """
         id = "test_robust"
         accesskey = AccessKey(id)
         self.assertEqual(accesskey.robust, False)
@@ -245,6 +265,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.robust, True)
 
     def test_get_users(self):
+        """ """
         id = "test_get_users"
         id_2 = "test_get_users_"
         accesskey = AccessKey(id)
@@ -261,6 +282,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(len(accesskey.get_users_keys()), 2)
 
     def test_get_users_len(self):
+        """ """
         storage.pop()
         id = "test_get_users_len"
         accesskey = AccessKey(id)
@@ -269,6 +291,7 @@ class Test_Accesskey(unittest.TestCase):
         storage.pop()
 
     def test_get_admins_len(self):
+        """ """
         storage.pop()
         the_first = AccessKey.get_len_of_admins()
         id = "test_get_admins_len"
@@ -284,6 +307,7 @@ class Test_Accesskey(unittest.TestCase):
         storage.pop()
 
     def test_events(self):
+        """ """
         storage.pop()
 
         id = "test_events"
@@ -310,6 +334,7 @@ class Test_Accesskey(unittest.TestCase):
         storage.pop()
 
     def test_events_get_x(self):
+        """ """
         storage.pop()
 
         id = "test_events"
@@ -346,10 +371,12 @@ class Test_Accesskey(unittest.TestCase):
         storage.pop()
 
     def test_scope_dump_source(self):
+        """ """
         storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
+            """ """
             return True
 
         the_scope = Scope(id)
@@ -365,10 +392,12 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
     def test_scope_python(self):
+        """ """
         storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
+            """ """
             return "aaa"
 
         the_scope = Scope(id)
@@ -384,10 +413,12 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
     def test_scope_type(self):
+        """ """
         storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
+            """ """
             return "aaa"
 
         the_scope = Scope(id)
@@ -404,10 +435,12 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
     def test_scope_code(self):
+        """ """
         storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
+            """ """
             return "aaa"
 
         the_scope = Scope(id)
@@ -425,10 +458,12 @@ class Test_Accesskey(unittest.TestCase):
 
     """
     def test_scope_documentation(self):
+        """ """
         storage_2.pop()
         id = "test_scope_documentation"
 
         def my_function():
+            """ """
             return "aaa"
 
         the_scope = Scope(id)
@@ -446,6 +481,7 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()"""
     """
     def test_ai_code_to_document(self):
+        """ """
         storage_2.pop()
 
         print(AI.code_to_documentation("def my_function():\n    return \"aaa\"\n"))
@@ -455,10 +491,12 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()"""
 
     def test_scope_dump_history(self):
+        """ """
         storage_2.pop()
         id = "test_scope_dump_source"
 
         def my_function():
+            """ """
             return True
 
         the_scope = Scope(id)
@@ -477,6 +515,7 @@ class Test_Accesskey(unittest.TestCase):
         )
 
         def my_function():
+            """ """
             return False
 
         dumped_data = Fernet(
@@ -496,12 +535,14 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
     def test_scope_get_all_scopes(self):
+        """ """
         storage_2.pop()
         id = "onur.my_function"
         id2 = "onur.sub.my_awesome"
         id3 = "onur.sub.my_sub_function"
 
         def my_function():
+            """ """
             return True
 
         the_scope = Scope(id)
@@ -524,6 +565,7 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
     def test_accesskey_get_all_scopes_name_and_prefix(self):
+        """ """
         storage.pop()
         storage_2.pop()
 
@@ -534,6 +576,7 @@ class Test_Accesskey(unittest.TestCase):
         user.enable()
 
         def my_function():
+            """ """
             return True
 
         the_scope = Scope(id)
@@ -592,11 +635,13 @@ class Test_Accesskey(unittest.TestCase):
         storage_2.pop()
 
     def test_scope_delete(self):
+        """ """
         storage_2.pop()
         storage_3.pop()
         id = "test_scope_delete"
 
         def my_function():
+            """ """
             return "aaa"
 
         the_scope = Scope(id)
@@ -620,11 +665,13 @@ class Test_Accesskey(unittest.TestCase):
         storage_3.pop()
 
     def test_scope_version(self):
+        """ """
         storage_2.pop()
         storage_3.pop()
         id = "test_scope_version"
 
         def my_function():
+            """ """
             return "aaa"
 
         the_scope = Scope(id)
@@ -641,6 +688,7 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(the_scope.python(), "aaa")
 
         def my_function():
+            """ """
             return "bbbb"
 
         the_scope = Scope(id)
@@ -661,22 +709,26 @@ class Test_Accesskey(unittest.TestCase):
         storage_3.pop()
 
     def test_detect_credentials(self):
+        """ """
 
         # Testing the function
         test_code_1 = """
         def my_function():
+            """ """
             password = "my_secret_password"
             print(password)
         """
 
         test_code_2 = """
         def another_function():
+            """ """
             api_key = "my_api_key"
             print(api_key)
         """
 
         test_code_3 = """
         def safe_function():
+            """ """
             api_key = os.getenv("api_key")
             print("This is safe code")
         """
