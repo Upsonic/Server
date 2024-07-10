@@ -1,1 +1,1 @@
-FROM llama3
+FROM qwen2:1.5b

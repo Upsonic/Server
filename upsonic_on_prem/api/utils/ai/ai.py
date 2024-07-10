@@ -159,7 +159,7 @@ class AI_:
             return "BYPASSED"
         result = None
 
-        if model == "llama3-8b":
+        if model == "upsonic_local_model":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
             result = self.gpt(input_text, model=model)
@@ -177,7 +177,7 @@ class AI_:
 
     @property
     def default_model(self):
-        return os.environ.get("default_model", "llama3-8b")
+        return os.environ.get("default_model", "upsonic_local_model")
 
 
 
@@ -202,7 +202,7 @@ class AI_:
 
     def gemmma(self, input_text):
 
-        response = ollama.generate(model='llama3-8b-upsonic', prompt=input_text)
+        response = ollama.generate(model='upsonic_local_model', prompt=input_text)
         result = response['response']
 
 
