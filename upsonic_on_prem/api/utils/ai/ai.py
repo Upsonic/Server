@@ -437,7 +437,7 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
                 result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
                 span.set_status(Status(StatusCode.OK))
-            except Exception as ex:
+            except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 
