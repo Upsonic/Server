@@ -1,5 +1,10 @@
 status_url = "/status"
 
+
+# Super Admin
+get_all_ai_calls_url = "/get_all_ai_calls"
+
+
 # Utilies
 detect_credentials_url = "/detect_credentials"
 
