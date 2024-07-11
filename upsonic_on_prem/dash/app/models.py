@@ -41,8 +41,11 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         self.the_register()
         if self.register:
-            currently_user_id = get_current_user().access_key
-            self.add_user(currently_user_id)
+            try:
+                currently_user_id = get_current_user().access_key
+                self.add_user(currently_user_id)
+            except:
+                print("Passed registering process")
             self.register = False
         super().save(*args, **kwargs)
 
