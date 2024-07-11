@@ -24,7 +24,7 @@ def get_all_ai_calls():
     return call_dict
 
 def reset_ai_calls():
-    storage_ai_history.pop()
+    return storage_ai_history.pop()
 
 
 def save_ai_call(input, output, model_name):
@@ -34,5 +34,5 @@ def save_ai_call(input, output, model_name):
 
     call_data["timestampt"] = timestampt
 
-    storage_ai_history.set(hash_of_call, call_data)
+    return storage_ai_history.set(hash_of_call, call_data)
 
