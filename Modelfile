@@ -1,1 +1,1 @@
-FROM qwen2:1.5b
+FROM phi3
