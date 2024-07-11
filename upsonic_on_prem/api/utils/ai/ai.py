@@ -21,6 +21,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
+from upsonic_on_prem.api.utils.ai.ai_history import active_ai_history, save_ai_call
 from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode, provider
 
 from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
@@ -168,6 +169,9 @@ class AI_:
         elif model == "gpt-4o":
             result = self.gpt(input_text, model=model)              
 
+
+        if active_ai_history:
+            save_ai_call(input_text, result, model)
          
         return result
 
