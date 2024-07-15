@@ -21,6 +21,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
+from upsonic_on_prem.api.utils.ai.ai_history import active_ai_history, save_ai_call
 from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode, provider
 
 from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
@@ -159,7 +160,7 @@ class AI_:
             return "BYPASSED"
         result = None
 
-        if model == "llama3-8b":
+        if model == "upsonic_local_model":
             result = self.gemmma(input_text)
         elif model == "gpt-3.5-turbo":
             result = self.gpt(input_text, model=model)
@@ -168,6 +169,9 @@ class AI_:
         elif model == "gpt-4o":
             result = self.gpt(input_text, model=model)              
 
+
+        if active_ai_history:
+            save_ai_call(input_text, result, model)
          
         return result
 
@@ -177,7 +181,7 @@ class AI_:
 
     @property
     def default_model(self):
-        return os.environ.get("default_model", "llama3-8b")
+        return os.environ.get("default_model", "upsonic_local_model")
 
 
 
@@ -202,7 +206,7 @@ class AI_:
 
     def gemmma(self, input_text):
 
-        response = ollama.generate(model='llama3-8b-upsonic', prompt=input_text)
+        response = ollama.generate(model='upsonic_local_model', prompt=input_text)
         result = response['response']
 
 
@@ -437,7 +441,7 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
                 result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
                 span.set_status(Status(StatusCode.OK))
-            except Exception as ex:
+            except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 

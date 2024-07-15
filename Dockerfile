@@ -18,7 +18,7 @@ COPY On-Prem/requirements.txt /requirements.txt
 COPY On-Prem/ollama_install.sh /ollama_install.sh
 RUN pip3 install -r /requirements.txt --break-system-packages
 RUN sh /ollama_install.sh
-RUN (ollama serve &) && sleep 30 && ollama pull llama3 && ollama pull nomic-embed-text
+RUN (ollama serve &) && sleep 30 && ollama pull phi3 && ollama pull nomic-embed-text
 
 COPY On-Prem On-Prem
 

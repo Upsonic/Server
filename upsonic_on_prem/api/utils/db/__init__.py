@@ -37,6 +37,7 @@ with tracer.start_span("redis-startup") as span:
             storage_3 = redis_client_(db=2)
             storage_4 = redis_client_(db=2)
             storage_5 = redis_client_(db=2)
+            storage_ai_history = redis_client_(db=3)
             succed = True
         except Exception as ex:
             the_exception = ex

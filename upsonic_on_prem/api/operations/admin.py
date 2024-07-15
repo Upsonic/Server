@@ -4,6 +4,17 @@ from flask import request
 from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
 from upsonic_on_prem.api.utils import AccessKey, storage, Scope, AI
+from upsonic_on_prem.api.utils.ai.ai_history import get_all_ai_calls, reset_ai_calls
+
+
+@app.route(get_all_ai_calls_url, methods=["GET"])
+def get_all_ai_calls_view():
+    return jsonify({"status": True, "result": get_all_ai_calls()})
+
+@app.route(reset_ai_calls_url, methods=["GET"])
+def reset_ai_calls_view():
+    return jsonify({"status": True, "result": reset_ai_calls()})
+
 
 
 @app.route(get_admins_url, methods=["get"])
