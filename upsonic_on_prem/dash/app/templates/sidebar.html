@@ -64,6 +64,34 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
         
       </li>
 
+      {% pages as pages %}
+      {% pages_len as pages_len %}
+      {% if pages_len != 0 %}
+      <hr class="uk-divider-icon" />
+
+
+      
+      {% for page in pages %}
+      
+
+
+      <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
+
+        <button href="#" onclick="page_load('/{{page.1}}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != page.0 %}ghost{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align items to the left */">
+
+          {{page.0}}
+        </button>
+
+
+        
+      </li>
+
+      {% endfor %}
+      {% endif %}
+      
+
 
       <hr style="margin-top: auto;" class="uk-divider-icon" />
 

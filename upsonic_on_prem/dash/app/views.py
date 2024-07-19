@@ -708,26 +708,6 @@ def profile(request):
 
 
 
-@login_required
-def ai(request):
-    logger.debug("Hi")
-    result = None
-
-    if request.method == "POST":
-        input_data = request.POST.get("ai_input")
-        result = API_Integration(request.user.access_key).ai_completion(input_data)
-
-    the_list = models.AI_Task.objects.filter(status=False)
-    tasks = []
-    for task in the_list:
-        if request.user.can_read(task.key):
-            tasks.append(task)
-    data = {
-        "page_title": "AI",
-        "tasks": tasks,
-        "result": result,
-    }
-    return render(request, "templates/ai.html", data)
 
 
 @login_required
