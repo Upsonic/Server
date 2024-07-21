@@ -31,7 +31,7 @@ def get_current_directory_name():
 def get_scope_name(request_):
     """
 
-    :param request_: 
+    :param request_:
 
     """
     scope = request_.form.get("scope")
