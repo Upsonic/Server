@@ -213,7 +213,7 @@ class AI_:
         return result
 
 
-    def code_to_time_complexity(self, code):
+    def code_to_time_complexity(self, code, return_prompt=False):
         input_text = f"""
 In this task, your goal is to generate the time complexity of a given piece of Python code. The complexity should be expressed in Big-O notation which describes the worst-case scenario in terms of time complexity. The time complexity would describe how the runtime of the code scales with the size of its input. Here's an example:
 
@@ -235,6 +235,9 @@ Now, please generate the time complexity of the following code:
 
 Consider loops, recursive calls, and other structures that might affect the scalability of the code when determining the time complexity.
 """
+        
+        if return_prompt:
+            return input_text
 
 
         result = self.default_completion(input_text)

@@ -625,9 +625,10 @@ def create_time_complexity_of_scope_(scope,
                 "task_name": "time_complexity",
                 "key": scope,
                 "access_key": access_key,
+                "user_input": the_scope.create_time_complexity(return_prompt=True)
             },
         ).json()["id"] if create_ai_task else None)
-
+        work = None
         try:
             work = the_scope.create_time_complexity()
         except:
@@ -638,7 +639,8 @@ def create_time_complexity_of_scope_(scope,
                 "http://localhost:3001/complate_ai_task",
                 data={
                     "id": the_task_id,
-                    "access_key": access_key
+                    "access_key": access_key,
+                    "ai_output": work
                 },
             ).json()["id"] if create_ai_task else None)
         except:

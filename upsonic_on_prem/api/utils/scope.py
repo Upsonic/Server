@@ -448,7 +448,10 @@ class Scope:
         
 
 
-    def create_time_complexity(self):
+    def create_time_complexity(self, return_prompt=False):
+        if return_prompt:
+            return AI.code_to_time_complexity(self.code, return_prompt=return_prompt)
+
         with tracer.start_span("scope-create-time-complexity") as span:
             span.set_attribute("AI.default_model", AI.default_model)
             the_code = self.code
