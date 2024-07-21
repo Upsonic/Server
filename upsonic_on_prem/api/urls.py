@@ -275,6 +275,6 @@ user_read_urls_ = [
 
 user_urls = user_urs_ + user_urls_endpoints
 
-scope_write_auth_urls = user_write_urls_ + scope_write_auth_endpoints
+user_write_urls = user_write_urls_ + scope_write_auth_endpoints
 
-scope_read_auth_urls = user_read_urls_ + scope_read_auth_endpoints
+user_read_urls = user_read_urls_ + scope_read_auth_endpoints
