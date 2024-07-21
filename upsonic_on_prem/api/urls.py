@@ -1,4 +1,8 @@
-from upsonic_on_prem.api.endpoints import user_urls_endpoints, scope_write_auth_endpoints, scope_read_auth_endpoints
+from upsonic_on_prem.api.endpoints import (
+    user_urls_endpoints,
+    scope_write_auth_endpoints,
+    scope_read_auth_endpoints,
+)
 
 status_url = "/status"
 

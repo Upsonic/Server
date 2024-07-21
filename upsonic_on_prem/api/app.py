@@ -1,5 +1,3 @@
-
-
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from .tracer import provider
 from upsonic_on_prem.api.utils import storage
