@@ -26,12 +26,9 @@ if sentry:
 
 app = Flask(__name__)
 
-
 database_name_caches = []
 key_name_caches = []
 
-
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
-
 
 FlaskInstrumentor().instrument_app(app, tracer_provider=provider)

@@ -19,9 +19,7 @@ def endpoint():
 
     total_size = storage.total_size()
 
-    return jsonify(
-        {
-            "status": True,
-            "result": total_size,
-        }
-    )
+    return jsonify({
+        "status": True,
+        "result": total_size,
+    })

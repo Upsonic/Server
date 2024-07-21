@@ -4,7 +4,6 @@ from upsonic_on_prem.api.endpoints import user_urls_endpoints
 
 status_url = "/status"
 
-
 # Super Admin
 get_all_ai_calls_url = "/get_all_ai_calls"
 reset_ai_calls_url = "/reset_ai_calls"
@@ -271,7 +270,6 @@ user_read_urls_ = [
     get_version_release_note_of_scope_url,
     get_code_of_scope_url,
 ]
-
 
 user_urls = user_urs_ + user_urls_endpoints
 
