@@ -3,7 +3,7 @@ from flask import Flask, request, Response, jsonify
 
 from upsonic_on_prem.api.utils import AccessKey
 
-from upsonic_on_prem.api.urls import *
+from upsonic_on_prem.api.urls import user_urls
 
 from upsonic_on_prem.api.pre_process.admin import *
 
