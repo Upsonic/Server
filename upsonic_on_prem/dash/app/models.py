@@ -167,6 +167,9 @@ class AI_Task(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     not_start_task = models.BooleanField(default=False, null=True, blank=True)
 
+    user_input = models.TextField(null=True, blank=True)
+    ai_output = models.TextField(null=True, blank=True)
+
     def sub_func(self, func):
             func(self.key)
             self.status = True

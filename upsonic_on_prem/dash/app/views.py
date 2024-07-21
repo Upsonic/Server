@@ -1403,6 +1403,9 @@ def add_ai_task(request):
     key = request.POST.get("key")
     access_key = request.POST.get("access_key")
 
+    user_input = request.POST.get("user_input", "")
+    
+
 
 
     user = models.User.objects.get(access_key=access_key)
@@ -1411,7 +1414,7 @@ def add_ai_task(request):
     if not user.can_write(key):
         redirect(to='home')
 
-    the_object = models.AI_Task(task_name=task_name, key=key, access_key=access_key, owner=user, not_start_task=True)
+    the_object = models.AI_Task(task_name=task_name, key=key, access_key=access_key, owner=user, not_start_task=True, user_input=user_input)
     the_object.save()
 
 
@@ -1428,6 +1431,8 @@ def complate_ai_task(request):
     the_id = request.POST.get("id")
     access_key = request.POST.get("access_key")
 
+    ai_output = request.POST.get("ai_output", "")
+
 
 
     user = models.User.objects.get(access_key=access_key)
@@ -1435,6 +1440,7 @@ def complate_ai_task(request):
 
 
     the_object = models.AI_Task.objects.get(id=the_id)
+    the_object.ai_output = ai_output
 
     if not user.can_write(the_object.key):
         redirect(to='home')
