@@ -240,7 +240,7 @@ Consider loops, recursive calls, and other structures that might affect the scal
         result = self.default_completion(input_text)
         return result
 
-    def code_to_documentation(self, code):
+    def code_to_documentation(self, code, return_prompt=False):
         input_text = f"""
 The task is to generate a summary of a given piece of Python code. The summary should explain the purpose of the code, the input variables and the operation it performs. High level understanding of the logic behind the code should also be provided. The code for analysis will be provided as input in string format. Here's an example:
 
@@ -264,6 +264,8 @@ And now make a summary for this code:
 
 """
 
+        if return_prompt:
+            return input_text
 
         result = self.default_completion(input_text)
         return result

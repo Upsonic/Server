@@ -401,7 +401,9 @@ class Scope:
 
 
 
-    def create_documentation(self):
+    def create_documentation(self, return_prompt=False):
+        if return_prompt:
+            return AI.code_to_documentation(self.code, return_prompt=True)
         with tracer.start_span("scope-create-documentation") as span:
             span.set_attribute("AI.default_model", AI.default_model)
             the_code = self.code
@@ -419,6 +421,7 @@ class Scope:
                     the_resource["documentation"] = document
                     self.the_storage.set(self.key, the_resource)
                 span.set_status(Status(StatusCode.OK))
+                return document
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
