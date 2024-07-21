@@ -1,5 +1,5 @@
-import os
 import importlib.util
+import os
 
 # Define the path to the pages directory
 pages_dir = os.path.dirname(__file__)
