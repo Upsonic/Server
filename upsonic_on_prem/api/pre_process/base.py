@@ -65,7 +65,7 @@ def check():
         )
 
     if not the_access_key.is_admin:
-        if not (endpoint in user_urs):
+        if not (endpoint in user_urls):
             print("endpoint", endpoint)
             print(request.endpoint)
             return Response(

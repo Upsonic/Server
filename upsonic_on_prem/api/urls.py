@@ -1,3 +1,5 @@
+from upsonic_on_prem.api.endpoints import user_urls_endpoints, scope_write_auth_endpoints, scope_read_auth_endpoints
+
 status_url = "/status"
 
 
@@ -148,7 +150,7 @@ dump_run_url = "/dump_run"
 get_last_runs_url = "/get_last_runs"
 get_run_url = "/get_run"
 
-user_urs = [
+user_urs_ = [
     # Utilites
     detect_credentials_url,
     get_dump_user_of_scope_url,
@@ -214,7 +216,7 @@ user_urs = [
     get_version_difference_of_scope_url,
     get_code_of_scope_url,
 ]
-user_write_urls = [
+user_write_urls_ = [
     dump_run_url,
     dump_url,
     dump_together_url,
@@ -235,7 +237,7 @@ user_write_urls = [
     dump_python_version_url,
     dump_type_url,
 ]
-user_read_urls = [
+user_read_urls_ = [
     get_dump_user_of_scope_url,
     get_dump_time_of_scope_url,
     get_dump_commit_message_of_scope_url,
@@ -267,3 +269,12 @@ user_read_urls = [
     get_version_release_note_of_scope_url,
     get_code_of_scope_url,
 ]
+
+
+
+
+user_urls = user_urs_ + user_urls_endpoints
+
+user_write_urls = user_write_urls_ + scope_write_auth_endpoints
+
+user_read_urls = user_read_urls_ + scope_read_auth_endpoints

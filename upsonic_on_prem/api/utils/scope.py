@@ -401,7 +401,9 @@ class Scope:
 
 
 
-    def create_documentation(self):
+    def create_documentation(self, return_prompt=False):
+        if return_prompt:
+            return AI.code_to_documentation(self.code, return_prompt=True)
         with tracer.start_span("scope-create-documentation") as span:
             span.set_attribute("AI.default_model", AI.default_model)
             the_code = self.code
@@ -419,6 +421,7 @@ class Scope:
                     the_resource["documentation"] = document
                     self.the_storage.set(self.key, the_resource)
                 span.set_status(Status(StatusCode.OK))
+                return document
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
@@ -445,7 +448,10 @@ class Scope:
         
 
 
-    def create_time_complexity(self):
+    def create_time_complexity(self, return_prompt=False):
+        if return_prompt:
+            return AI.code_to_time_complexity(self.code, return_prompt=return_prompt)
+
         with tracer.start_span("scope-create-time-complexity") as span:
             span.set_attribute("AI.default_model", AI.default_model)
             the_code = self.code
@@ -493,7 +499,10 @@ class Scope:
                 span.record_exception(e)
 
 
-    def create_commit_message(self, no_changes=False, custom_commit_message=None):
+    def create_commit_message(self, no_changes=False, custom_commit_message=None, return_prompt=False):
+        if return_prompt:
+            return AI.difference_to_commit_message(self.prev_code, self.code, return_prompt=True)
+
         with tracer.start_span("scope-create-commit-message") as span:
             span.set_attribute("no_changes", no_changes)
             span.set_attribute("AI.default_model", AI.default_model)
@@ -900,7 +909,7 @@ class Scope:
 
                     if self.prev_code != self.code:
                         if commit_message == None:
-                            create_commit_message_of_scope_(scope=self.key, version=None)
+                            create_commit_message_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
                         else:
                             self.create_commit_message(custom_commit_message=commit_message)
                         task_id = "create_documentation"+self.key

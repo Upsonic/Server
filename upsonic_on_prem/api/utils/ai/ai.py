@@ -213,7 +213,7 @@ class AI_:
         return result
 
 
-    def code_to_time_complexity(self, code):
+    def code_to_time_complexity(self, code, return_prompt=False):
         input_text = f"""
 In this task, your goal is to generate the time complexity of a given piece of Python code. The complexity should be expressed in Big-O notation which describes the worst-case scenario in terms of time complexity. The time complexity would describe how the runtime of the code scales with the size of its input. Here's an example:
 
@@ -235,12 +235,15 @@ Now, please generate the time complexity of the following code:
 
 Consider loops, recursive calls, and other structures that might affect the scalability of the code when determining the time complexity.
 """
+        
+        if return_prompt:
+            return input_text
 
 
         result = self.default_completion(input_text)
         return result
 
-    def code_to_documentation(self, code):
+    def code_to_documentation(self, code, return_prompt=False):
         input_text = f"""
 The task is to generate a summary of a given piece of Python code. The summary should explain the purpose of the code, the input variables and the operation it performs. High level understanding of the logic behind the code should also be provided. The code for analysis will be provided as input in string format. Here's an example:
 
@@ -264,6 +267,8 @@ And now make a summary for this code:
 
 """
 
+        if return_prompt:
+            return input_text
 
         result = self.default_completion(input_text)
         return result
@@ -451,7 +456,7 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
 
 
-    def difference_to_commit_message(self, code_old, code_new):
+    def difference_to_commit_message(self, code_old, code_new, return_prompt=False):
         input_text = f"""
 In this task, your goal is to generate a commit message for the differences.
 
@@ -503,7 +508,8 @@ Revise link to update it to the new URL
 Answer only with your commit message suggestion:
 """
 
-
+        if return_prompt:
+            return input_text
 
         result = self.default_completion(input_text)
 

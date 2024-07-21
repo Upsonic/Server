@@ -566,8 +566,10 @@ def create_document_of_scope_(scope,
                 "task_name": "documentation",
                 "key": scope,
                 "access_key": access_key,
+                "user_input": the_scope.create_documentation(return_prompt=True)
             },
         ).json()["id"] if create_ai_task else None)
+        work = None
         try:
             work = the_scope.create_documentation()
         except:
@@ -578,7 +580,8 @@ def create_document_of_scope_(scope,
                 "http://localhost:3001/complate_ai_task",
                 data={
                     "id": the_task_id,
-                    "access_key": access_key
+                    "access_key": access_key,
+                    "ai_output": work
                 },
             ).json()["id"] if create_ai_task else None)
         except:
@@ -622,9 +625,10 @@ def create_time_complexity_of_scope_(scope,
                 "task_name": "time_complexity",
                 "key": scope,
                 "access_key": access_key,
+                "user_input": the_scope.create_time_complexity(return_prompt=True)
             },
         ).json()["id"] if create_ai_task else None)
-
+        work = None
         try:
             work = the_scope.create_time_complexity()
         except:
@@ -635,7 +639,8 @@ def create_time_complexity_of_scope_(scope,
                 "http://localhost:3001/complate_ai_task",
                 data={
                     "id": the_task_id,
-                    "access_key": access_key
+                    "access_key": access_key,
+                    "ai_output": work
                 },
             ).json()["id"] if create_ai_task else None)
         except:
@@ -703,7 +708,7 @@ def create_mistakes_of_scope_(scope,
 commit_message_tasks = {}
 
 
-def create_commit_message_of_scope_(scope, version):
+def create_commit_message_of_scope_(scope, version, create_ai_task=False, access_key=None):
     """
 
     :param scope: param version:
@@ -722,14 +727,30 @@ def create_commit_message_of_scope_(scope, version):
     work = None
     if not task_name in commit_message_tasks:
         commit_message_tasks[task_name] = True
-
+        the_task_id = (requests.post(
+            "http://localhost:3001/add_ai_task",
+            data={
+                "task_name": "commit_message",
+                "key": scope,
+                "access_key": access_key,
+                "user_input": the_scope.create_commit_message(return_prompt=True)
+            },
+        ).json()["id"] if create_ai_task else None)
+        work = None
         try:
             work = the_scope.create_commit_message()
         except:
             pass
         try:
             commit_message_tasks.pop(task_name)
-
+            (requests.post(
+                "http://localhost:3001/complate_ai_task",
+                data={
+                    "id": the_task_id,
+                    "access_key": access_key,
+                    "ai_output": work
+                },
+            ).json()["id"] if create_ai_task else None)
         except:
             pass
 

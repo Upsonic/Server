@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: 100vh;">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                <h1 class="uk-h2 uk-margin text-foreground">
+                    {{page_title}}</h1>
+                    <span class="uk-badge" style="height: 35px;"><span uk-icon="code" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Type: {{result.task_name}}</span></span>
+
+            </div>
+
+        </div>
+        <div  class="uk-margin-small-bottom" style="margin-top: 1.5rem;">
+
+            <div class="uk-navbar-right ">
+              <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+
+              </ul>
+            </div>  
+          
+            </div>
+
+
+
+
+            <div class="uk-width-expand uk-margin-medium-top">
+
+
+    
+                <div class="scrollable_side" uk-height-viewport="offset-top: true">
+                <h1 class="uk-h2 uk-margin text-foreground">Input</h1>
+                
+                <div class="custom_code_block uk-card">
+                    <div class="custom_code_block_code"><div class="highlight"><pre class="chroma text-muted-foreground"><pre style="text-wrap: wrap;text-align: justify;"><code class="language-markdown" style="font-size: 12px;">
+{{result.user_input}}
+                    </code></pre></div></div>
+                </div>
+
+                <h1 class="uk-h2 uk-margin text-foreground">Output</h1>       
+                <div class="custom_code_block uk-card">
+                    <div class="custom_code_block_code"><div class="highlight"><pre class="chroma text-muted-foreground"><pre style="text-wrap: wrap;text-align: justify;"><code class="language-markdown" style="font-size: 12px;">
+{{result.ai_output}}
+                    </code></pre></div></div>
+                </div>
+
+
+            </div>
+            </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

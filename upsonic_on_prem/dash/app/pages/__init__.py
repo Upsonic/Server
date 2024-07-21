@@ -23,7 +23,14 @@ for subdir in os.listdir(pages_dir):
             # Assuming each page.py has an 'url' and 'location' attribute
             if hasattr(module, 'url'):
                 urls.append(module.url)
-            if hasattr(module, 'location'):
+
+            add_to_sidebar = True
+            if hasattr(module, 'hiden'):
+                if module.hiden:
+                    add_to_sidebar = False
+
+
+            if hasattr(module, 'location') and add_to_sidebar:
                 pages.append([module.name, module.location])
 
 
