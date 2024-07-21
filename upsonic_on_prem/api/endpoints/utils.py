@@ -7,6 +7,7 @@ from upsonic_on_prem.api.app import app, jsonify
 
 
 def get_current_directory_name():
+    """ """
     # Get the calling frame
     frame = inspect.stack()[1]
     # Get the file path of the calling script
@@ -27,5 +28,10 @@ def get_current_directory_name():
 
 
 def get_scope_name(request_):
+    """
+
+    :param request_: 
+
+    """
     scope = request_.form.get("scope")
     return scope
