@@ -1,8 +1,7 @@
-from upsonic_on_prem.api.app import app
-
 from .operations import *
 from .pre_process import *
 from .urls import *
+from upsonic_on_prem.api.app import app
 
 
 @app.route(status_url, methods=["GET"])

@@ -3,7 +3,8 @@ import os
 
 from flask import request
 
-from upsonic_on_prem.api.app import app, jsonify
+from upsonic_on_prem.api.app import app
+from upsonic_on_prem.api.app import jsonify
 
 
 def get_current_directory_name():

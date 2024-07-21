@@ -1,8 +1,9 @@
 # API Informations
-from upsonic_on_prem.api.endpoints.utils import (app,
-                                                 get_current_directory_name,
-                                                 get_scope_name, jsonify,
-                                                 request)
+from upsonic_on_prem.api.endpoints.utils import app
+from upsonic_on_prem.api.endpoints.utils import get_current_directory_name
+from upsonic_on_prem.api.endpoints.utils import get_scope_name
+from upsonic_on_prem.api.endpoints.utils import jsonify
+from upsonic_on_prem.api.endpoints.utils import request
 from upsonic_on_prem.api.utils.db import storage
 
 url = get_current_directory_name()

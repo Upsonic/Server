@@ -1,12 +1,14 @@
-from flask import Flask, Response, jsonify, request
+from flask import Flask
+from flask import jsonify
+from flask import request
+from flask import Response
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from waitress import serve
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from .tracer import provider
 from upsonic_on_prem.api.utils import storage
 from upsonic_on_prem.api.utils.configs import *
-
-from .tracer import provider
 
 if sentry:
     import sentry_sdk
