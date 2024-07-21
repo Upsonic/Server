@@ -900,7 +900,7 @@ class Scope:
 
                     if self.prev_code != self.code:
                         if commit_message == None:
-                            create_commit_message_of_scope_(scope=self.key, version=None)
+                            create_commit_message_of_scope_(scope=self.key, version=None, create_ai_task=True, access_key=access_key)
                         else:
                             self.create_commit_message(custom_commit_message=commit_message)
                         task_id = "create_documentation"+self.key
