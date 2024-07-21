@@ -1,12 +1,10 @@
 
 
-
-
-
-
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from .tracer import provider
+from upsonic_on_prem.api.utils import storage
 from waitress import serve
 from flask import Flask, request, Response, jsonify
-
 
 
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -29,18 +27,12 @@ if sentry:
 
 app = Flask(__name__)
 
-from upsonic_on_prem.api.utils import storage
 
 database_name_caches = []
 key_name_caches = []
 
 
-
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 
-
-
-from .tracer import provider
-from opentelemetry.instrumentation.flask import FlaskInstrumentor
 
 FlaskInstrumentor().instrument_app(app, tracer_provider=provider)

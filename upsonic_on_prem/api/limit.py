@@ -9,6 +9,7 @@ from upsonic_on_prem.api.utils.configs import *
 
 limiter = Limiter(get_remote_address, app=app, default_limits=rate_limit)
 
+
 @limiter.request_filter
 def ip_whitelist():
     return request.remote_addr == white_list_ip

@@ -1,14 +1,12 @@
+from .operations import *
+from .pre_process import *
 from upsonic_on_prem.api.app import app
 from .urls import *
-
-
 
 
 @app.route(status_url, methods=["GET"])
 def status():
     return jsonify({"status": True, "result": True})
-
-
 
 
 def version_info():
@@ -18,12 +16,3 @@ def version_info():
 
 
 version_info()
-
-
-
-
-from .pre_process import *
-
-from .operations import *
-
-
