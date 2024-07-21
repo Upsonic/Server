@@ -499,7 +499,10 @@ class Scope:
                 span.record_exception(e)
 
 
-    def create_commit_message(self, no_changes=False, custom_commit_message=None):
+    def create_commit_message(self, no_changes=False, custom_commit_message=None, return_prompt=False):
+        if return_prompt:
+            return AI.difference_to_commit_message(self.prev_code, self.code, return_prompt=True)
+
         with tracer.start_span("scope-create-commit-message") as span:
             span.set_attribute("no_changes", no_changes)
             span.set_attribute("AI.default_model", AI.default_model)

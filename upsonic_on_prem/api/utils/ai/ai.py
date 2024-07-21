@@ -456,7 +456,7 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
 
 
-    def difference_to_commit_message(self, code_old, code_new):
+    def difference_to_commit_message(self, code_old, code_new, return_prompt=False):
         input_text = f"""
 In this task, your goal is to generate a commit message for the differences.
 
@@ -508,7 +508,8 @@ Revise link to update it to the new URL
 Answer only with your commit message suggestion:
 """
 
-
+        if return_prompt:
+            return input_text
 
         result = self.default_completion(input_text)
 
