@@ -12,10 +12,10 @@
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [3000, 3001]
+	"forwardPorts": [3000, 3001],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+	"postCreateCommand": "sudo sh install_dev_container.sh",
 
 	// Configure tool-specific properties.
 	// "customizations": {},
