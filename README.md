@@ -1,7 +1,7 @@
 # Upsonic On-Prem | [Start](https://docs.upsonic.co/on-prem/getting_started)
 
-[![codecov](https://codecov.io/gh/Upsonic/On-Prem/graph/badge.svg?token=6FRKWHXYLA)](https://codecov.io/gh/Upsonic/On-Prem)
-[![Tests](https://github.com/Upsonic/On-Prem/actions/workflows/tests.yaml/badge.svg)](https://github.com/Upsonic/On-Prem/actions/workflows/tests.yaml)
+[![codecov](https://codecov.io/gh/Upsonic/Server/graph/badge.svg?token=6FRKWHXYLA)](https://codecov.io/gh/Upsonic/Server)
+[![Tests](https://github.com/Upsonic/Server/actions/workflows/tests.yaml/badge.svg)](https://github.com/Upsonic/Server/actions/workflows/tests.yaml)
 
 **Upsonic On-Prem** is our main systems that organize your modules and creating documents and managing the roles. With this you can easily create and store shared libraries with automatic documentation generation. It's will means speed and efficient for your team.
 
@@ -9,7 +9,7 @@
 
 Upsonic is solves your spaghetti codes and maintanence problems of shared libraries. Its easily store, redesign and deliver with permission based infrastructure and modern technologies. Also with elastic dependency you dont need to make decisions and sharing plans to others. Upsonic is able to using different versions of an library in same python envinronment.
 
-<a href="https://docs.upsonic.co/on-prem/getting_started"><img src="https://github.com/Upsonic/On-Prem/assets/41792982/885cedea-5bbf-4474-87bf-12b72195ea6b"></a>
+<a href="https://docs.upsonic.co/on-prem/getting_started"><img src="https://github.com/Upsonic/Server/assets/41792982/885cedea-5bbf-4474-87bf-12b72195ea6b"></a>
 
 ## Documentation | [Docs](https://docs.upsonic.co/)
 

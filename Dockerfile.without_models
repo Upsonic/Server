@@ -1,6 +1,6 @@
 FROM ubuntu
 
-LABEL org.opencontainers.image.source https://github.com/Upsonic/On-Prem
+LABEL org.opencontainers.image.source https://github.com/Upsonic/Server
 
 RUN mkdir /app
 RUN mkdir /db

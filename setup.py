@@ -21,7 +21,7 @@ setup(
     description="""Magic Cloud Layer""",
     long_description="".join(open("README.md", encoding="utf-8").readlines()),
     long_description_content_type="text/markdown",
-    url="https://github.com/Upsonic/On-Prem",
+    url="https://github.com/Upsonic/Server",
     author="Upsonic",
     author_email="onur.atakan.ulusoy@upsonic.co",
     license="MIT",
