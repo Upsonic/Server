@@ -26,6 +26,8 @@ from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode, provider
 
 from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
 
+from upsonic_on_prem.api.utils.kot_db import kot_db
+
 import traceback
 from openai import OpenAI
 
@@ -181,7 +183,7 @@ class AI_:
 
     @property
     def default_model(self):
-        return os.environ.get("default_model", "upsonic_local_model")
+        return kot_db.get("default_model")
 
 
 
