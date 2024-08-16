@@ -28,6 +28,7 @@ def view(request):
     if request.method == "POST":
         input_data = request.POST.get("model")
         result = API_Integration(request.user.access_key).change_default_ai_model(input_data)
+        default_ai_model = input_data
 
 
 
