@@ -669,6 +669,11 @@ class API_Integration:
 
 
 
+    def change_default_ai_model(self, model):
+        data = {"model": model}
+        return self._send_request("POST", "/change/default/model", data=data)
+    
+
 
     def get_dump_history(self, scope):
         data = {"scope": scope}
