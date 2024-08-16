@@ -13,7 +13,7 @@ from upsonic_on_prem.api.utils import AccessKey
 from upsonic_on_prem.api.utils import AI
 from upsonic_on_prem.api.utils import Scope
 from upsonic_on_prem.api.utils import storage_4
-from upsonic_on_prem.api.utils.configs import openai_api_key
+from upsonic_on_prem.api.utils.kot_db import kot_db
 from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
 from upsonic_on_prem.api.utils.github_sync import github
 
@@ -28,7 +28,7 @@ def forward_request_to_openai_ollama(path, method, headers, data):
 
     """
     url = f"http://localhost:11434/v1/{path}"
-    headers["Authorization"] = f"Bearer {openai_api_key}"
+    headers["Authorization"] = f"Bearer {kot_db.get("openai_apikey")}"
 
     if method == "GET":
         response = requests.get(url, headers=headers, params=data)
@@ -143,7 +143,7 @@ def forward_request_to_openai(path, method, headers, data):
 
     """
     url = f"https://api.openai.com/v1/{path}"
-    headers["Authorization"] = f"Bearer {openai_api_key}"
+    headers["Authorization"] = f"Bearer {kot_db.get("openai_apikey")}"
 
     if method == "GET":
         response = requests.get(url, headers=headers, params=data)

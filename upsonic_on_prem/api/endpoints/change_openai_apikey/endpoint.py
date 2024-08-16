@@ -20,10 +20,10 @@ from upsonic_on_prem.api.utils.kot_db import kot_db
 def endpoint():
     """ """
 
-    default_model = request.form.get("model")
+    default_model = request.form.get("api_key")
 
 
-    result = kot_db.set("default_model", default_model)
+    result = kot_db.set("openai_apikey", default_model)
 
     return jsonify(
         {

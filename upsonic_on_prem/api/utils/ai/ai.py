@@ -74,7 +74,7 @@ class AI_:
                 else:
                     oembed = OpenAIEmbeddings(
                         model=self.default_search_model,
-                        openai_api_key=os.environ.get("openai_api_key"),
+                        openai_api_key=kot_db.get("openai_apikey"),
                     )
 
                 sha256_of_model = hashlib.sha256(
@@ -228,7 +228,7 @@ class AI_:
     def gpt(self, input_text, model):
         client = OpenAI(
             # This is the default and can be omitted
-            api_key=os.environ.get("openai_api_key"),
+            api_key=kot_db.get("openai_apikey"),
         )
 
         chat_completion = client.chat.completions.create(
