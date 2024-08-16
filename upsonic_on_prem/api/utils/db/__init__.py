@@ -15,7 +15,6 @@ import time
 with tracer.start_span("redis-startup") as span:
     info("Connecting to Redis")
 
-
     def can_access_to_config():
         try:
             os.listdir("/etc/redis/")
@@ -44,7 +43,6 @@ with tracer.start_span("redis-startup") as span:
             warning("Redis configuration failed retrying in 5 seconds")
             time.sleep(5)
 
-
     if storage.status():
         successfully("Redis connection established")
         span.set_status(Status(StatusCode.OK))
@@ -54,4 +52,3 @@ with tracer.start_span("redis-startup") as span:
         span.record_exception(the_exception)
         traceback.print_exc()
         exit(1)
-

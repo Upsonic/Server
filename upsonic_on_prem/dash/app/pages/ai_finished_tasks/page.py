@@ -1,13 +1,12 @@
 # Page Informations
 from app.pages.utils import get_current_directory_name
+
 name = "AI Finished Tasks"
 location = get_current_directory_name()
 #
 
 
-
-from django.urls import path, include
-from app import views
+from django.urls import path
 from dash.logs import logger
 from django.shortcuts import render
 from app.api_integration import API_Integration
@@ -43,7 +42,4 @@ def view(request):
     return render(request, f"pages/{location}/template.html", data)
 
 
-
 url = path(location, view, name=name)
-
-

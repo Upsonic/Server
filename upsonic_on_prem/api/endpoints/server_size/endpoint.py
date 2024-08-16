@@ -1,5 +1,6 @@
 # API Informations
-from upsonic_on_prem.api.endpoints.utils import get_current_directory_name, get_scope_name, request, app, jsonify
+from upsonic_on_prem.api.endpoints.utils import get_current_directory_name, app, jsonify
+
 url = get_current_directory_name()
 name_of_endpoint = url.replace("/", "_")
 auth = "admin"
@@ -16,15 +17,13 @@ def endpoint():
     """ """
 
     total_size = storage.total_size()
-    
 
-    return jsonify({
-        "status":
-        True,
-        "result":
-        total_size,
-    })
-
+    return jsonify(
+        {
+            "status": True,
+            "result": total_size,
+        }
+    )
 
 
 endpoint.__name__ = name_of_endpoint

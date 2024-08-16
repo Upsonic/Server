@@ -13,4 +13,4 @@ if main_model_cpu != None:
         f.write(f"\nPARAMETER num_thread {main_model_cpu}")
 
     with open("Modelfile_2", "a") as f:
-        f.write(f"\nPARAMETER num_thread {main_model_cpu}")        
+        f.write(f"\nPARAMETER num_thread {main_model_cpu}")

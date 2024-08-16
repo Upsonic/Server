@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0007_ai_task_not_start_task'),
+        ("app", "0007_ai_task_not_start_task"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='dark_mode',
+            model_name="user",
+            name="dark_mode",
             field=models.BooleanField(blank=True, default=True, null=True),
         ),
     ]

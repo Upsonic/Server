@@ -1,12 +1,4 @@
-
-
-
-
-
-
-from waitress import serve
-from flask import Flask, request, Response, jsonify
-
+from flask import Flask
 
 
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -29,15 +21,12 @@ if sentry:
 
 app = Flask(__name__)
 
-from upsonic_on_prem.api.utils import storage
 
 database_name_caches = []
 key_name_caches = []
 
 
-
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
-
 
 
 from .tracer import provider

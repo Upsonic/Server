@@ -1,5 +1,11 @@
 # API Informations
-from upsonic_on_prem.api.endpoints.utils import get_current_directory_name, get_scope_name, request, app, jsonify
+from upsonic_on_prem.api.endpoints.utils import (
+    get_current_directory_name,
+    request,
+    app,
+    jsonify,
+)
+
 url = get_current_directory_name()
 name_of_endpoint = url.replace("/", "_")
 auth = "admin"
@@ -12,7 +18,6 @@ method = "POST"
 from upsonic_on_prem.api.utils.kot_db import kot_db
 
 
-
 def endpoint():
     """ """
 
@@ -21,15 +26,13 @@ def endpoint():
     print("default_model", default_model)
 
     result = kot_db.set("default_model", default_model)
-    
 
-    return jsonify({
-        "status":
-        True,
-        "result":
-        result,
-    })
-
+    return jsonify(
+        {
+            "status": True,
+            "result": result,
+        }
+    )
 
 
 endpoint.__name__ = name_of_endpoint

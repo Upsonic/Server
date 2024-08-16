@@ -15,8 +15,8 @@ import os
 load_dotenv(dotenv_path=".env")
 import time
 
-from django_currentuser.middleware import (
-    get_current_user, get_current_authenticated_user)
+from django_currentuser.middleware import get_current_user
+
 
 class TheNotifications(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -52,20 +52,19 @@ class User(AbstractUser):
     def the_register(self):
         if self.access_key == "":
             self.access_key = API_Integration.create_access_key()
-            
 
     def add_user(self, id):
         API_Integration(id).add_user(self.access_key)
         API_Integration(id).set_name(self.access_key, self.username)
+
     def delete_user(self, id):
         API_Integration(id).delete_user(self.access_key)
-
 
     def can_write(self, scope):
         if API_Integration(self.access_key).is_admin(self.access_key):
             return True
         all_scopes = API_Integration(self.access_key).get_write_scopes_of_me()
-        
+
         control = False
 
         for i in all_scopes:
@@ -76,32 +75,26 @@ class User(AbstractUser):
                 control = True
                 break
 
-        return control        
+        return control
 
     def full_access(self, scope):
-        
         if API_Integration(self.access_key).is_admin(self.access_key):
             return True
-
 
         all_scopes = API_Integration(self.access_key).get_read_scopes_of_me()
 
         control = False
-        
-        if scope+".*" in all_scopes:
+
+        if scope + ".*" in all_scopes:
             control = True
-            
 
         return control
-
-        
-
 
     def can_read(self, scope):
         if API_Integration(self.access_key).is_admin(self.access_key):
             return True
         all_scopes = API_Integration(self.access_key).get_read_scopes_of_me()
-        
+
         control = False
 
         for i in all_scopes:
@@ -112,18 +105,18 @@ class User(AbstractUser):
                 control = True
                 break
 
-        return control        
-
+        return control
 
     def __str__(self):
         return self.username
 
     def notify(self, title, message, important=False):
-        notification = TheNotifications(title=title, message=message, important=important, owner=self)
+        notification = TheNotifications(
+            title=title, message=message, important=important, owner=self
+        )
         notification.save()
         self.notifications.add(notification)
         self.save()
-
 
     @property
     def is_admin(self):
@@ -153,8 +146,9 @@ def organizer_ai_tasks():
         for i in active_tasks:
             if not i.is_alive():
                 active_tasks.remove(i)
-        
+
         time.sleep(1)
+
 
 organizer_thread = None
 
@@ -171,41 +165,53 @@ class AI_Task(models.Model):
     ai_output = models.TextField(null=True, blank=True)
 
     def sub_func(self, func):
-            func(self.key)
-            self.status = True
-            self.save()
-            if self.owner is not None:
-                self.owner.notify("Task finished", "The task " + self.task_name + " for " + self.key + " has been finished")
+        func(self.key)
+        self.status = True
+        self.save()
+        if self.owner is not None:
+            self.owner.notify(
+                "Task finished",
+                "The task "
+                + self.task_name
+                + " for "
+                + self.key
+                + " has been finished",
+            )
 
     def documentation_task(self):
         the_func = API_Integration(self.access_key).create_documentation
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
+
     def mistakes_task(self):
         the_func = API_Integration(self.access_key).create_mistakes
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
+
     def time_complexity_task(self):
         the_func = API_Integration(self.access_key).create_time_complexity
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
+
     def required_test_types_task(self):
         the_func = API_Integration(self.access_key).create_required_test_types
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
+
     def tags_task(self):
         the_func = API_Integration(self.access_key).create_tags
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
+
     def security_analysis_task(self):
         the_func = API_Integration(self.access_key).create_security_analysis
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
+
     def readme_task(self):
         the_func = API_Integration(self.access_key).create_readme
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
-
 
     def the_register(self):
         if self.status:
@@ -229,11 +235,17 @@ class AI_Task(models.Model):
             self.readme_task() if not not_start_task else None
         else:
             any_task = False
-        
+
         if any_task:
             if self.owner is not None:
-                self.owner.notify("Task started", "The task " + self.task_name + " for " + self.key + " has been started")
-
+                self.owner.notify(
+                    "Task started",
+                    "The task "
+                    + self.task_name
+                    + " for "
+                    + self.key
+                    + " has been started",
+                )
 
     def save(self, *args, **kwargs):
         global organizer_thread
@@ -241,8 +253,5 @@ class AI_Task(models.Model):
             organizer_thread = threading.Thread(target=organizer_ai_tasks)
             organizer_thread.start()
 
-
-
         self.the_register()
         super().save(*args, **kwargs)
-

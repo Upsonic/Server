@@ -1,4 +1,3 @@
-
 import os
 from dotenv import load_dotenv
 import time
@@ -13,15 +12,13 @@ load_dotenv(dotenv_path=".env")
 active_ai_history = os.environ.get("active_ai_history", "false").lower() == "true"
 
 
-
-
-
 def get_all_ai_calls():
     call_dict = {}
     for each_key in storage_ai_history.keys():
         call_dict[each_key] = storage_ai_history.get(each_key)
 
     return call_dict
+
 
 def reset_ai_calls():
     return storage_ai_history.pop()
@@ -35,4 +32,3 @@ def save_ai_call(input, output, model_name):
     call_data["timestampt"] = timestampt
 
     return storage_ai_history.set(hash_of_call, call_data)
-

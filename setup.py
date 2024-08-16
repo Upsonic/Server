@@ -3,17 +3,19 @@
 
 from setuptools import setup
 
-#find packages
+# find packages
 import setuptools
+
+
 def find_packages():
     packages = []
     for package in setuptools.find_packages():
-        if package.startswith('upsonic_on_prem'):
+        if package.startswith("upsonic_on_prem"):
             packages.append(package)
     return packages
 
 
-with open('requirements.txt') as fp:
+with open("requirements.txt") as fp:
     install_requires = fp.read()
 setup(
     name="upsonic_on_prem",
@@ -27,14 +29,10 @@ setup(
     license="MIT",
     packages=find_packages(),
     include_package_data=True,
-    #install_requires=install_requires,
+    # install_requires=install_requires,
     entry_points={
         "console_scripts": ["upsonic_on_prem=upsonic_on_prem.main:cli"],
-    },    
+    },
     python_requires=">= 3",
     zip_safe=False,
 )
-
-
-
-

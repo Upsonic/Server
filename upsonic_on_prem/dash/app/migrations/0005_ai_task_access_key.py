@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0004_ai_task'),
+        ("app", "0004_ai_task"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ai_task',
-            name='access_key',
-            field=models.CharField(default='', max_length=2000),
+            model_name="ai_task",
+            name="access_key",
+            field=models.CharField(default="", max_length=2000),
             preserve_default=False,
         ),
     ]

@@ -13,7 +13,7 @@ infrastackai_api_key = os.environ.get("infrastackai_api_key", "")
 debug_mode = os.environ.get("debug", "false").lower() == "true"
 
 
-logger = logging.getLogger(__name__) 
+logger = logging.getLogger(__name__)
 if not debug_mode:
     logger.setLevel(logging.INFO)
 else:
@@ -21,10 +21,7 @@ else:
 logger.handlers = []
 
 
-
-
 if infrastackai:
-   
     from opentelemetry._logs import set_logger_provider
     from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
     from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
@@ -37,10 +34,12 @@ if infrastackai:
     set_logger_provider(logger_provider)
 
     # Create the OTLP log exporter that sends logs to configured destination
-    exporter = OTLPLogExporter(endpoint="https://collector-us1-http.infrastack.ai/v1/logs", headers=(("infrastack-api-key", infrastackai_api_key),))
+    exporter = OTLPLogExporter(
+        endpoint="https://collector-us1-http.infrastack.ai/v1/logs",
+        headers=(("infrastack-api-key", infrastackai_api_key),),
+    )
     logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 
     # Attach OTLP handler to root logger
     handler = LoggingHandler(logger_provider=logger_provider)
     logger.addHandler(handler)
-        

@@ -53,17 +53,8 @@ maximum_key_amount_user = (
 )
 
 
-
-
-
-
-
-
-
-
-
 threads = os.environ.get("threads", 50)
-url_scheme = os.environ.get("url_scheme", 'https')
+url_scheme = os.environ.get("url_scheme", "https")
 
 
 redis_password = os.environ.get("redis_password", "Upsonic")
@@ -75,12 +66,13 @@ admin_key = os.environ.get("admin_key")
 debugging = os.environ.get("debug", "false").lower() == "true"
 
 sentry = os.environ.get("sentry", "false").lower() == "true"
-sentry_flask_key = os.environ.get("sentry_flask_key", "https://557ac9191a887032087e4054dda517c4@o4506678585786368.ingest.sentry.io/4506678591225856")
-
+sentry_flask_key = os.environ.get(
+    "sentry_flask_key",
+    "https://557ac9191a887032087e4054dda517c4@o4506678585786368.ingest.sentry.io/4506678591225856",
+)
 
 
 openai_api_key = os.environ.get("openai_api_key")
-
 
 
 infrastackai = os.environ.get("infrastackai", "false").lower() == "true"

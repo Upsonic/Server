@@ -11,10 +11,10 @@ from upsonic_on_prem.api.utils.ai.ai_history import get_all_ai_calls, reset_ai_c
 def get_all_ai_calls_view():
     return jsonify({"status": True, "result": get_all_ai_calls()})
 
+
 @app.route(reset_ai_calls_url, methods=["GET"])
 def reset_ai_calls_view():
     return jsonify({"status": True, "result": reset_ai_calls()})
-
 
 
 @app.route(get_admins_url, methods=["get"])
@@ -25,6 +25,8 @@ def get_admins():
 @app.route(get_users_url, methods=["get"])
 def get_users():
     return jsonify({"status": True, "result": AccessKey.get_users()})
+
+
 @app.route(get_users_keys_url, methods=["get"])
 def get_users_keys():
     return jsonify({"status": True, "result": AccessKey.get_users_keys()})
@@ -39,6 +41,7 @@ def add_user():
 
     return jsonify({"status": True, "result": True})
 
+
 @app.route(set_name_user_url, methods=["POST"])
 def set_name_user():
     key = request.form.get("key")
@@ -48,6 +51,7 @@ def set_name_user():
     user.set_name(name)
 
     return jsonify({"status": True, "result": True})
+
 
 @app.route(get_name_user_url, methods=["POST"])
 def get_name_user():
@@ -75,6 +79,7 @@ def disable_user():
     user.disable()
 
     return jsonify({"status": True, "result": True})
+
 
 @app.route(is_enabled_user_url, methods=["POST"])
 def is_enabled_user():
@@ -259,6 +264,3 @@ def get_all_scopes():
 def ai_code_to_document():
     code = request.form.get("code", type=str)
     return jsonify({"status": True, "result": AI.code_to_documentation(code)})
-
-
-

@@ -1,11 +1,8 @@
-
-
 import os
 
 os.environ["TRACELOOP_TRACE_CONTENT"] = "false"
 
 from dotenv import load_dotenv
-import requests
 
 load_dotenv(dotenv_path=".env")
 
@@ -22,20 +19,20 @@ from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
 from upsonic_on_prem.api.utils.ai.ai_history import active_ai_history, save_ai_call
-from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode, provider
+from upsonic_on_prem.api.tracer import tracer, Status, StatusCode, provider
 
-from upsonic_on_prem.api.utils import debug, info, warning, failed, successfully
+from upsonic_on_prem.api.utils import debug, info, failed
 
 from upsonic_on_prem.api.utils.kot_db import kot_db
 
 import traceback
 from openai import OpenAI
 
-OpenAIInstrumentor().instrument(tracer_provider = provider)
+OpenAIInstrumentor().instrument(tracer_provider=provider)
 
 from opentelemetry.instrumentation.chromadb import ChromaInstrumentor
 
-ChromaInstrumentor().instrument(tracer_provider = provider)
+ChromaInstrumentor().instrument(tracer_provider=provider)
 
 bypass_ai = os.environ.get("bypass_ai", "false").lower() == "true"
 
@@ -47,9 +44,10 @@ class AI_:
     @property
     def default_search_model(self):
         return os.environ.get("default_search_model", "nomic-embed-text-upsonic")
-    
 
-    def search_by_documentation(self, the_contents, question, min_score=0, how_many_result=10):
+    def search_by_documentation(
+        self, the_contents, question, min_score=0, how_many_result=10
+    ):
         with tracer.start_span("search") as span:
             info(f"Searching by documentation for {len(str(question))}")
             span.set_attribute("AI.default_search_model", AI.default_search_model)
@@ -61,23 +59,29 @@ class AI_:
                 for content in the_contents:
                     text = content["name"] + ":" + str(content["documentation"])
                     ids.append(content["name"])
-                    texts.append(Document(page_content=text, metadata={"name": content["name"]}))
+                    texts.append(
+                        Document(page_content=text, metadata={"name": content["name"]})
+                    )
 
                 text_salt = " ".join([text.page_content for text in texts])
 
-
                 if not self.default_search_model.startswith("text-embedding"):
-
-                    oembed = OllamaEmbeddings(base_url="http://localhost:11434", model=self.default_search_model)
+                    oembed = OllamaEmbeddings(
+                        base_url="http://localhost:11434",
+                        model=self.default_search_model,
+                    )
                 else:
+                    oembed = OpenAIEmbeddings(
+                        model=self.default_search_model,
+                        openai_api_key=os.environ.get("openai_api_key"),
+                    )
 
-                    oembed = OpenAIEmbeddings(model=self.default_search_model, openai_api_key=os.environ.get("openai_api_key"))
+                sha256_of_model = hashlib.sha256(
+                    self.default_search_model.encode()
+                ).hexdigest()
 
-                sha256_of_model = hashlib.sha256(self.default_search_model.encode()).hexdigest()
-
-                the_directory = "/db/embed_by_documents"+sha256_of_model
-                the_salt_name = ":embed_by_documents_salt"+sha256_of_model
-
+                the_directory = "/db/embed_by_documents" + sha256_of_model
+                the_salt_name = ":embed_by_documents_salt" + sha256_of_model
 
                 if not os.path.exists(the_directory):
                     debug("Creating the_directory")
@@ -85,54 +89,86 @@ class AI_:
 
                 pass_generate = False
 
-                if not os.path.exists(the_directory+"/chroma.sqlite3"):
+                if not os.path.exists(the_directory + "/chroma.sqlite3"):
                     debug("Generating new vectorstore")
-                    vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
-                    storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
+                    vectorstore = Chroma.from_documents(
+                        documents=texts,
+                        ids=ids,
+                        embedding=oembed,
+                        persist_directory=the_directory,
+                        collection_metadata={"hnsw:space": "cosine"},
+                    )
+                    storage.set(
+                        the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest()
+                    )
                     pass_generate = True
                     debug("Generated new vectorstore")
 
+                vectorstore = Chroma(
+                    persist_directory=the_directory,
+                    embedding_function=oembed,
+                    collection_metadata={"hnsw:space": "cosine"},
+                )
 
-
-                vectorstore = Chroma(persist_directory=the_directory, embedding_function=oembed, collection_metadata={"hnsw:space": "cosine"})
-
-                if (len(texts) > 0 and vectorstore._collection.count() == 0) or hashlib.sha256(text_salt.encode()).hexdigest() != storage.get(the_salt_name) and not pass_generate:
+                if (
+                    (len(texts) > 0 and vectorstore._collection.count() == 0)
+                    or hashlib.sha256(text_salt.encode()).hexdigest()
+                    != storage.get(the_salt_name)
+                    and not pass_generate
+                ):
                     debug("Regenerating vectorstore")
                     span.set_attribute("regenerated_vectorstore", True)
-                    vectorstore = Chroma.from_documents(documents=texts, ids=ids, embedding=oembed, persist_directory=the_directory, collection_metadata={"hnsw:space": "cosine"})
-                    storage.set(the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest())
+                    vectorstore = Chroma.from_documents(
+                        documents=texts,
+                        ids=ids,
+                        embedding=oembed,
+                        persist_directory=the_directory,
+                        collection_metadata={"hnsw:space": "cosine"},
+                    )
+                    storage.set(
+                        the_salt_name, hashlib.sha256(text_salt.encode()).hexdigest()
+                    )
                     debug("Regenerated vectorstore")
-                    
+
                 currenly_get = vectorstore._collection.get()
-        
+
                 currently_docs = []
                 for doc in currenly_get["documents"]:
                     index_number = currenly_get["documents"].index(doc)
-                    data = {"page_content": doc, "metadata": currenly_get["metadatas"][index_number]}
-                    currently_docs.append(Document(page_content=data["page_content"], metadata=data["metadata"]))
-        
+                    data = {
+                        "page_content": doc,
+                        "metadata": currenly_get["metadatas"][index_number],
+                    }
+                    currently_docs.append(
+                        Document(
+                            page_content=data["page_content"], metadata=data["metadata"]
+                        )
+                    )
+
                 for doc in currently_docs:
-                        
-                        if doc.metadata["name"] not in [text.metadata["name"] for text in texts]:
-                            _name = doc.metadata["name"]
-                            debug(f"Removing {_name}")
-                            vectorstore._collection.delete([doc.metadata["name"]])
-                        else:
-                            new_doc = None
-                            for text in texts:
-                                if doc.metadata["name"] == text.metadata["name"]:
-                                    new_doc = text
+                    if doc.metadata["name"] not in [
+                        text.metadata["name"] for text in texts
+                    ]:
+                        _name = doc.metadata["name"]
+                        debug(f"Removing {_name}")
+                        vectorstore._collection.delete([doc.metadata["name"]])
+                    else:
+                        new_doc = None
+                        for text in texts:
+                            if doc.metadata["name"] == text.metadata["name"]:
+                                new_doc = text
 
-                            if new_doc != None:
-                                if doc.page_content != new_doc.page_content:
-                                    _name = doc.metadata["name"]
-                                    debug(f"Updating {_name}")
-                                    vectorstore.update_document(new_doc.metadata["name"], new_doc)
+                        if new_doc != None:
+                            if doc.page_content != new_doc.page_content:
+                                _name = doc.metadata["name"]
+                                debug(f"Updating {_name}")
+                                vectorstore.update_document(
+                                    new_doc.metadata["name"], new_doc
+                                )
 
-                
-
-
-                docs = vectorstore.similarity_search_with_relevance_scores(question, k=how_many_result)
+                docs = vectorstore.similarity_search_with_relevance_scores(
+                    question, k=how_many_result
+                )
                 debug(f"Found {len(docs)} results")
                 span.set_attribute("found_results", len(docs))
 
@@ -140,7 +176,13 @@ class AI_:
 
                 for doc in docs:
                     if doc[1] >= min_score:
-                        doc = [doc[0].metadata["name"], doc[0].page_content.replace(doc[0].metadata["name"]+":", ""), doc[1]]
+                        doc = [
+                            doc[0].metadata["name"],
+                            doc[0].page_content.replace(
+                                doc[0].metadata["name"] + ":", ""
+                            ),
+                            doc[1],
+                        ]
                         results.append(doc)
 
                 results = [list(t) for t in set(tuple(element) for element in results)]
@@ -156,7 +198,6 @@ class AI_:
                 span.record_exception(ex)
             return results
 
-
     def completion(self, input_text, model):
         if bypass_ai:
             return "BYPASSED"
@@ -169,14 +210,12 @@ class AI_:
         elif model == "gpt-4":
             result = self.gpt(input_text, model=model)
         elif model == "gpt-4o":
-            result = self.gpt(input_text, model=model)              
-
+            result = self.gpt(input_text, model=model)
 
         if active_ai_history:
             save_ai_call(input_text, result, model)
-         
-        return result
 
+        return result
 
     def default_completion(self, input_text):
         return self.completion(input_text, self.default_model)
@@ -184,8 +223,6 @@ class AI_:
     @property
     def default_model(self):
         return kot_db.get("default_model")
-
-
 
     def gpt(self, input_text, model):
         client = OpenAI(
@@ -205,15 +242,11 @@ class AI_:
 
         return chat_completion.choices[0].message.content
 
-
     def gemmma(self, input_text):
-
-        response = ollama.generate(model='upsonic_local_model', prompt=input_text)
-        result = response['response']
-
+        response = ollama.generate(model="upsonic_local_model", prompt=input_text)
+        result = response["response"]
 
         return result
-
 
     def code_to_time_complexity(self, code, return_prompt=False):
         input_text = f"""
@@ -237,10 +270,9 @@ Now, please generate the time complexity of the following code:
 
 Consider loops, recursive calls, and other structures that might affect the scalability of the code when determining the time complexity.
 """
-        
+
         if return_prompt:
             return input_text
-
 
         result = self.default_completion(input_text)
         return result
@@ -275,9 +307,7 @@ And now make a summary for this code:
         result = self.default_completion(input_text)
         return result
 
-
     def code_to_mistakes(self, code):
-
         input_text = f"""
 In this task, your goal is to identify and describe potential mistakes, including syntax errors and logical errors, in a given Python code. You should provide suggestions on how to fix these errors when possible. Here's an example:
 
@@ -301,14 +331,10 @@ Note: Please identify and describe the errors in a clear and informative manner.
 
 """
 
-
         result = self.default_completion(input_text)
         return result
 
-
-
     def code_to_security_analysis(self, code):
-
         input_text = f"""
 In this task, you're required to conduct a security analysis of the provided Python code snippet. It requires you to find potential security risks, pitfalls or weak practices from a security perspective and propose enhancements to address them.
 
@@ -329,10 +355,8 @@ Now, considering a fresh scenario, please perform a security audit of the follow
 In your response, give a clear outline of potential securityissues present and elaborate on how one might strengthen the overall security. Libraries already imported. The focus is on text-based analysis, so no need to provide an actual piece of code in your response.
 """
 
-
         result = self.default_completion(input_text)
         return result
-
 
     def code_to_required_test_types(self, code):
         input_text = f"""
@@ -363,13 +387,8 @@ Now, please perform a test analysis on the following piece of Python code:
 Note down list the types of tests you would run to ensure the function behaves as expected. And just give text not code.
 """
 
-
         result = self.default_completion(input_text)
-        return result        
-
-
-
-
+        return result
 
     def code_to_tags(self, code):
         input_text = f"""
@@ -404,14 +423,9 @@ Now, analyze the Python code snippet provided below and generate descriptive tag
 Produce meaningful tags that succinctly summarize the significant components and operations illustrated in the provided code snippet. Focus on extracting essential details from the code content to generate informative tags without diving into actual code generation.
 """
 
-
         result = self.default_completion(input_text)
 
-        return result        
-
-
-
-
+        return result
 
     def generate_readme(self, top_library, summary_list):
         result = None
@@ -428,8 +442,6 @@ Hi there is an list of elements and summaries:
 Explain the purpose of this '{top_library}' library and its elements in a few sentences.
 """
 
-
-
                 summary = self.default_completion(prompt)
 
                 # Also generate the usage aim
@@ -441,22 +453,21 @@ Hi there is an list of elements and summaries:
 
 Explain the usage aim of this '{top_library}' library and its elements in a few sentences.
 """
-                
 
-                            
                 usage_aim = self.default_completion(prompt)
 
-                result = '<b class="custom_code_highlight_green">Explanation:</b><br>' + summary + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>' + usage_aim
+                result = (
+                    '<b class="custom_code_highlight_green">Explanation:</b><br>'
+                    + summary
+                    + '\n\n<b class="custom_code_highlight_green">Use Case:</b><br>'
+                    + usage_aim
+                )
                 span.set_status(Status(StatusCode.OK))
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 
-
         return result
-
-
-
 
     def difference_to_commit_message(self, code_old, code_new, return_prompt=False):
         input_text = f"""
@@ -515,9 +526,7 @@ Answer only with your commit message suggestion:
 
         result = self.default_completion(input_text)
 
-
         return result
-
 
     def commits_to_release_note(self, code):
         input_text = f"""
@@ -533,13 +542,9 @@ Generate a small release note. Maybe 1 or 2 pharagraph and a list.
 
 """
 
-
-
-
         result = self.default_completion(input_text)
 
         return result
-
 
     def generate_releate_note(self, top_library, small_parts, version):
         input_text = f"""
@@ -555,15 +560,9 @@ Release version: {version}
 Generate a small release note. Maybe 1 or 2 pharagraph and a list.
 """
 
-
-
-
         result = self.default_completion(input_text)
 
-
         return result
-
-
 
 
 AI = AI_()

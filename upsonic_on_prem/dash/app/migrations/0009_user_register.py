@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0008_user_dark_mode'),
+        ("app", "0008_user_dark_mode"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='register',
+            model_name="user",
+            name="register",
             field=models.BooleanField(blank=True, default=True, null=True),
         ),
     ]

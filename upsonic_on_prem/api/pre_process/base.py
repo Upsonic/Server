@@ -1,5 +1,5 @@
 from upsonic_on_prem.api import app
-from flask import Flask, request, Response, jsonify
+from flask import request, Response
 
 from upsonic_on_prem.api.utils import AccessKey
 
@@ -8,8 +8,8 @@ from upsonic_on_prem.api.urls import *
 from upsonic_on_prem.api.pre_process.admin import *
 
 from upsonic_on_prem.api.pre_process.user import *
-from upsonic_on_prem.api.tracer import tracer,  Status, StatusCode
 from upsonic_on_prem.api.utils.logs import warning
+
 
 @app.before_request
 def check():
@@ -21,21 +21,17 @@ def check():
     if endpoint == status_url:
         return
 
-
-
-    
-
-
     auth = request.authorization
 
     the_access_key = None
     if "Authorization" in request.headers:
         if "Bearer " in request.headers.get("Authorization"):
-            the_access_key = AccessKey(request.headers.get("Authorization").split(" ")[1])
-            
+            the_access_key = AccessKey(
+                request.headers.get("Authorization").split(" ")[1]
+            )
 
     try:
-        the_datas = request.json if request.method in ['POST', 'PUT'] else request.args
+        the_datas = request.json if request.method in ["POST", "PUT"] else request.args
         if "model" in the_datas:
             if "**" in the_datas["model"]:
                 the_access_key = AccessKey(request.json["model"].split("**")[1])
@@ -43,8 +39,6 @@ def check():
                 print("endpoint", endpoint)
     except:
         pass
-            
-    
 
     if not the_access_key:
         if not auth:
@@ -53,7 +47,7 @@ def check():
                 "You have to login with proper credentials",
                 401,
                 {"WWW-Authenticate": 'Basic realm="Login Required"'},
-            )        
+            )
         the_access_key = AccessKey(auth.password)
 
     if not the_access_key.is_enable:
@@ -65,7 +59,7 @@ def check():
         )
 
     if not the_access_key.is_admin:
-        if not (endpoint in user_urls):
+        if endpoint not in user_urls:
             print("endpoint", endpoint)
             print(request.endpoint)
             return Response(

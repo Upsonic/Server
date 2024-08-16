@@ -12,7 +12,7 @@ pages = []
 for subdir in os.listdir(pages_dir):
     subdir_path = os.path.join(pages_dir, subdir)
     if os.path.isdir(subdir_path):
-        page_file = os.path.join(subdir_path, 'page.py')
+        page_file = os.path.join(subdir_path, "page.py")
         if os.path.isfile(page_file):
             # Import the page.py file
             module_name = f"app.pages.{subdir}.page"
@@ -21,16 +21,13 @@ for subdir in os.listdir(pages_dir):
             spec.loader.exec_module(module)
 
             # Assuming each page.py has an 'url' and 'location' attribute
-            if hasattr(module, 'url'):
+            if hasattr(module, "url"):
                 urls.append(module.url)
 
             add_to_sidebar = True
-            if hasattr(module, 'hiden'):
+            if hasattr(module, "hiden"):
                 if module.hiden:
                     add_to_sidebar = False
 
-
-            if hasattr(module, 'location') and add_to_sidebar:
+            if hasattr(module, "location") and add_to_sidebar:
                 pages.append([module.name, module.location])
-
-

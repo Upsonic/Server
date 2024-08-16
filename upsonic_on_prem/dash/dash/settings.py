@@ -20,8 +20,14 @@ from django.core.management.utils import get_random_secret_key
 load_dotenv(dotenv_path=".env")
 
 sentry = os.environ.get("sentry", "false").lower() == "true"
-sentry_django_key = os.environ.get("sentry_django_key", "https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176")
-sentry_dsn = os.environ.get("sentry_dsn", "https://1040c5057fc1ad3bd322a800edf1aed2@o4506678585786368.ingest.sentry.io/4506678631858176")
+sentry_django_key = os.environ.get(
+    "sentry_django_key",
+    "https://1040c5057fc1ad3bd322a800edf1aed2@us.sentry.io/4506678631858176",
+)
+sentry_dsn = os.environ.get(
+    "sentry_dsn",
+    "https://1040c5057fc1ad3bd322a800edf1aed2@o4506678585786368.ingest.sentry.io/4506678631858176",
+)
 # settings.py
 if sentry:
     import sentry_sdk
@@ -58,7 +64,6 @@ else:
         file.write(SECRET_KEY)
 
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -70,19 +75,18 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-ACCOUNT_ADAPTER = 'app.adapter.CustomAccountAdapter'
+ACCOUNT_ADAPTER = "app.adapter.CustomAccountAdapter"
 
 ACCOUNT_FORMS = {
-    'login': 'app.forms.MyCustomLoginForm',
-
+    "login": "app.forms.MyCustomLoginForm",
 }
 
 # Application definition
 
 INSTALLED_APPS = [
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -90,7 +94,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "app",
-    'pwa'
+    "pwa",
 ]
 
 MIDDLEWARE = [
@@ -98,12 +102,12 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    'app.utils.DisableCSRF',
+    "app.utils.DisableCSRF",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    'django_currentuser.middleware.ThreadLocalUserMiddleware',
+    "django_currentuser.middleware.ThreadLocalUserMiddleware",
 ]
 
 ROOT_URLCONF = "dash.urls"
@@ -112,8 +116,11 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, 'app', ),
-            os.path.join(BASE_DIR, 'app', "templates")
+            os.path.join(
+                BASE_DIR,
+                "app",
+            ),
+            os.path.join(BASE_DIR, "app", "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -180,11 +187,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -200,67 +205,41 @@ DEBUG = debug_mode
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
+    "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
-    'allauth.account.auth_backends.AuthenticationBackend',
-
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 log_level = "INFO" if not debug_mode else "DEBUG"
 LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "loggers": {
-            "": {
-                "level": log_level,
-            },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "loggers": {
+        "": {
+            "level": log_level,
         },
-    }
-
-
-
-
+    },
+}
 
 
 PWA_APP_NAME = "Upsonic"
 PWA_APP_DESCRIPTION = "Self-Driven Autonomous Python Libraries"
 PWA_APP_THEME_COLOR = "#007bff"
 PWA_APP_BACKGROUND_COLOR = "#ffffff"
-PWA_APP_DISPLAY = 'standalone'
-PWA_APP_SCOPE = '/'
-PWA_APP_ORIENTATION = 'portrait'
-PWA_APP_START_URL = '/'
-PWA_APP_ICONS = [
-    {
-        'src': '/static/images/favicon.png',
-        'sizes': '160x160'
-    }
-]
-PWA_APP_ICONS_APPLE = [
-    {
-        'src': '/static/images/favicon.png',
-        'sizes': '160x160'
-    }
-]
-PWA_APP_DIR = 'ltr'
-PWA_APP_LANG = 'en-US'
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_SCOPE = "/"
+PWA_APP_ORIENTATION = "portrait"
+PWA_APP_START_URL = "/"
+PWA_APP_ICONS = [{"src": "/static/images/favicon.png", "sizes": "160x160"}]
+PWA_APP_ICONS_APPLE = [{"src": "/static/images/favicon.png", "sizes": "160x160"}]
+PWA_APP_DIR = "ltr"
+PWA_APP_LANG = "en-US"
 PWA_APP_SHORTCUTS = [
-    {
-        'name': 'Libraries',
-        'url': '/libraries',
-        'description': 'View all libraries'
-    },    
-
+    {"name": "Libraries", "url": "/libraries", "description": "View all libraries"},
 ]
-
 
 
 from dash.tracer import provider
 from opentelemetry.instrumentation.django import DjangoInstrumentor
 
 DjangoInstrumentor().instrument(tracer_provider=provider)
-
-
-
-

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0006_ai_task_owner'),
+        ("app", "0006_ai_task_owner"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ai_task',
-            name='not_start_task',
+            model_name="ai_task",
+            name="not_start_task",
             field=models.BooleanField(blank=True, default=False, null=True),
         ),
     ]

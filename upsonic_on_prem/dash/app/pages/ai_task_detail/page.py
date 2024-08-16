@@ -1,27 +1,22 @@
 # Page Informations
 from app.pages.utils import get_current_directory_name
+
 name = "AI Task Detail"
 location = get_current_directory_name()
 hiden = True
 #
 
 
-
-from django.urls import path, include
-from app import views
-from dash.logs import logger
+from django.urls import path
 from django.shortcuts import render
-from app.api_integration import API_Integration
 from app import models
 from django.contrib.auth.decorators import login_required
 import traceback
 
+
 @login_required
 def view(request, id):
-
     result = None
-
-
 
     try:
         the_object = models.AI_Task.objects.get(pk=id)
@@ -39,7 +34,4 @@ def view(request, id):
     return render(request, f"pages/{location}/template.html", data)
 
 
-
-url = path(location+"/<id>", view, name=name)
-
-
+url = path(location + "/<id>", view, name=name)

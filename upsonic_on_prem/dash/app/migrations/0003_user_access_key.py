@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0002_thenotifications_user_notifications'),
+        ("app", "0002_thenotifications_user_notifications"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='access_key',
-            field=models.CharField(default='', max_length=300),
+            model_name="user",
+            name="access_key",
+            field=models.CharField(default="", max_length=300),
         ),
     ]

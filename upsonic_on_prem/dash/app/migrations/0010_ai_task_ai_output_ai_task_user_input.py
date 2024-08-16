@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0009_user_register'),
+        ("app", "0009_user_register"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ai_task',
-            name='ai_output',
+            model_name="ai_task",
+            name="ai_output",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='ai_task',
-            name='user_input',
+            model_name="ai_task",
+            name="user_input",
             field=models.TextField(blank=True, null=True),
         ),
     ]

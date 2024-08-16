@@ -4,19 +4,26 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0003_user_access_key'),
+        ("app", "0003_user_access_key"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AI_Task',
+            name="AI_Task",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('task_name', models.CharField(max_length=1000)),
-                ('key', models.CharField(max_length=2000)),
-                ('status', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("task_name", models.CharField(max_length=1000)),
+                ("key", models.CharField(max_length=2000)),
+                ("status", models.BooleanField(default=False)),
             ],
         ),
     ]

@@ -14,7 +14,7 @@ from upsonic_on_prem.api import app
 from upsonic_on_prem.api.urls import *
 
 from upsonic_on_prem.api.utils import AccessKey
-from upsonic_on_prem.api.utils import storage, storage_2, Scope, AI, storage_3
+from upsonic_on_prem.api.utils import storage, storage_2, Scope, storage_3
 import time
 
 
@@ -26,16 +26,12 @@ admin_urls = [get_admins_url]
 user_urls = [dump_url, load_url]
 
 
-
-
 from cryptography.fernet import Fernet
 import base64
 import hashlib
 
 
-
 class Test_Storage(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.result = create_server(app, host="127.0.0.1", port=7777)
@@ -47,69 +43,70 @@ class Test_Storage(unittest.TestCase):
     def tearDownClass(cls):
         cls.result.close()
 
-    
     def test_unauthorized_access_status(self):
         for url in [status_url]:
-            id = "test_unauthorized_access_status"+url
-            the_access_key =  AccessKey(id)
+            id = "test_unauthorized_access_status" + url
+            the_access_key = AccessKey(id)
 
-            response = requests.get("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
             self.assertEqual(response.status_code, 200)
-
 
     def test_unauthorized_access(self):
         for url in all_urls:
-            id = "test_unauthorized_access"+url
-            the_access_key =  AccessKey(id)
+            id = "test_unauthorized_access" + url
+            the_access_key = AccessKey(id)
 
-
-            response = requests.get("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
             if url != status_url:
                 self.assertEqual(response.status_code, 403)
             else:
                 self.assertEqual(response.status_code, 200)
 
-
-
     def test_user_area_access(self):
         for url in user_urls:
-            id = "test_user_area_access"+url
-            the_access_key =  AccessKey(id)
-            
+            id = "test_user_area_access" + url
+            the_access_key = AccessKey(id)
 
-            response = requests.post("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
+            response = requests.post(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
             self.assertEqual(response.status_code, 403)
 
             the_access_key.enable()
 
+            response = requests.post(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
 
-        
-            response = requests.post("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
-  
             self.assertNotEqual(response.status_code, 403)
-
-
 
     def test_admin_area_restriction(self):
         for url in admin_urls:
-            id = "test_admin_area_restriction"+url
-            the_access_key =  AccessKey(id)
+            id = "test_admin_area_restriction" + url
+            the_access_key = AccessKey(id)
             the_access_key.enable()
 
-            response = requests.get("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
             self.assertEqual(response.status_code, 403)
 
             the_access_key.set_is_admin(True)
-            response = requests.get("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
             self.assertEqual(response.status_code, 200)
 
             the_access_key.set_is_admin(False)
 
-            response = requests.get("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id)
+            )
             self.assertEqual(response.status_code, 403)
-
-
-
 
     def test_user_dump_load(self):
         dumped_data = None
@@ -120,10 +117,11 @@ class Test_Storage(unittest.TestCase):
 
         for url in [dump_url]:
             id = "test_user_dump_load"
-            the_access_key =  AccessKey(id)
+            the_access_key = AccessKey(id)
 
-
-            dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(cloudpickle.dumps(my_function))
+            dumped_data = Fernet(
+                base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+            ).encrypt(cloudpickle.dumps(my_function))
 
             scope = "onur.my_function"
             data = {"scope": scope, "data": dumped_data}
@@ -132,41 +130,35 @@ class Test_Storage(unittest.TestCase):
             the_access_key.set_scope_write(scope)
             the_access_key.set_scope_read(scope)
 
-
-        
-            response = requests.post("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id), data=data)
+            response = requests.post(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id), data=data
+            )
             time.sleep(2)
-
-
-
 
         for url in [load_url]:
             id = "test_user_dump_load"
-            the_access_key =  AccessKey(id)
+            the_access_key = AccessKey(id)
 
             dumped_data = cloudpickle.dumps(my_function)
             scope = "onur.my_function"
-            data = {"scope": scope,}
+            data = {
+                "scope": scope,
+            }
 
             the_access_key.enable()
 
-
-        
-            response = requests.post("http://127.0.0.1:7777"+url, auth=HTTPBasicAuth("", id), data=data)
+            response = requests.post(
+                "http://127.0.0.1:7777" + url, auth=HTTPBasicAuth("", id), data=data
+            )
 
             loaded_data = response.json()["result"]
 
-            loaded_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).decrypt(loaded_data)
-
-
-
+            loaded_data = Fernet(
+                base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+            ).decrypt(loaded_data)
 
         self.assertEqual(dumped_data, loaded_data)
         self.assertEqual(cloudpickle.loads(loaded_data)(), True)
-
-
-
-
 
     def test_add_user(self):
         id = "test_add_user"
@@ -175,20 +167,19 @@ class Test_Storage(unittest.TestCase):
         self.assertEqual(the_user.is_enable, False)
 
         id_admin = "test_add_user_admin"
-        the_admin_access_key =  AccessKey(id_admin)
+        the_admin_access_key = AccessKey(id_admin)
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777"+add_user_url, auth=HTTPBasicAuth("", id_admin), data=data)
-        
-
-
+        response = requests.post(
+            "http://127.0.0.1:7777" + add_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.is_enable, True)
-
 
     def test_enable_user(self):
         id = "test_enable_user"
@@ -196,22 +187,20 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(the_user.is_enable, False)
 
-
         id_admin = "test_enable_user_admin"
-        the_admin_access_key =  AccessKey(id_admin)
+        the_admin_access_key = AccessKey(id_admin)
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777"+enable_user_url, auth=HTTPBasicAuth("", id_admin), data=data)
-        
-
-
+        response = requests.post(
+            "http://127.0.0.1:7777" + enable_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.is_enable, True)
-
 
     def test_disable_user(self):
         id = "test_disable_user"
@@ -220,19 +209,18 @@ class Test_Storage(unittest.TestCase):
 
         self.assertEqual(the_user.is_enable, True)
 
-
         id_admin = "test_disable_user_admin"
-        the_admin_access_key =  AccessKey(id_admin)
+        the_admin_access_key = AccessKey(id_admin)
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777"+disable_user_url, auth=HTTPBasicAuth("", id_admin), data=data)
-        
-
-
+        response = requests.post(
+            "http://127.0.0.1:7777" + disable_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.is_enable, False)
 
@@ -249,11 +237,13 @@ class Test_Storage(unittest.TestCase):
 
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777" + enable_admin_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + enable_admin_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.is_admin, True)
-
 
     def test_disable_admin(self):
         id = "test_disable_admin"
@@ -269,8 +259,11 @@ class Test_Storage(unittest.TestCase):
 
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777" + disable_admin_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + disable_admin_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.is_admin, False)
 
@@ -289,12 +282,14 @@ class Test_Storage(unittest.TestCase):
 
         # Adding the id as user with add_admin_url endpoint
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777" + delete_user_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + delete_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.is_enable, False)
         self.assertEqual(the_user.is_admin, False)
-
 
     def test_total_size(self):
         id = "test_total_size"
@@ -306,7 +301,10 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        response = requests.get("http://127.0.0.1:7777" + total_size_url, auth=HTTPBasicAuth("", id_admin),)
+        response = requests.get(
+            "http://127.0.0.1:7777" + total_size_url,
+            auth=HTTPBasicAuth("", id_admin),
+        )
 
         mb = response.json()["result"]
 
@@ -323,13 +321,19 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id, "scope": "onur.*"}
-        response = requests.post("http://127.0.0.1:7777" + scope_write_add_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + scope_write_add_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.can_access_write("onur.ulusoy"), True)
 
-        response = requests.post("http://127.0.0.1:7777" + scope_write_delete_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + scope_write_delete_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.can_access_write("onur.ulusoy"), False)
 
@@ -344,13 +348,19 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id, "scope": "onur.*"}
-        response = requests.post("http://127.0.0.1:7777" + scope_read_add_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + scope_read_add_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.can_access_read("onur.ulusoy"), True)
 
-        response = requests.post("http://127.0.0.1:7777" + scope_read_delete_url, auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + scope_read_delete_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(the_user.can_access_read("onur.ulusoy"), False)
 
@@ -360,7 +370,9 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        response = requests.get("http://127.0.0.1:7777" + get_admins_url, auth=HTTPBasicAuth("", id_admin))
+        response = requests.get(
+            "http://127.0.0.1:7777" + get_admins_url, auth=HTTPBasicAuth("", id_admin)
+        )
 
         the_admins_list = response.json()["result"]
         self.assertEqual(the_admins_list, AccessKey.get_admins())
@@ -371,7 +383,9 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        response = requests.get("http://127.0.0.1:7777" + get_users_url, auth=HTTPBasicAuth("", id_admin))
+        response = requests.get(
+            "http://127.0.0.1:7777" + get_users_url, auth=HTTPBasicAuth("", id_admin)
+        )
 
         the_admins_list = response.json()["result"]
         self.assertEqual(the_admins_list, AccessKey.get_users())
@@ -382,7 +396,10 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        response = requests.get("http://127.0.0.1:7777" + get_len_of_users_url, auth=HTTPBasicAuth("", id_admin))
+        response = requests.get(
+            "http://127.0.0.1:7777" + get_len_of_users_url,
+            auth=HTTPBasicAuth("", id_admin),
+        )
 
         the_admins_list = response.json()["result"]
         self.assertEqual(the_admins_list, AccessKey.get_len_of_users())
@@ -393,11 +410,13 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        response = requests.get("http://127.0.0.1:7777" + get_len_of_admins_url, auth=HTTPBasicAuth("", id_admin))
+        response = requests.get(
+            "http://127.0.0.1:7777" + get_len_of_admins_url,
+            auth=HTTPBasicAuth("", id_admin),
+        )
 
         the_admins_list = response.json()["result"]
         self.assertEqual(the_admins_list, AccessKey.get_len_of_admins())
-
 
     def test_get_write_scopes_of_user(self):
         id = "test_get_write_scopes_of_user"
@@ -411,13 +430,17 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777" + get_write_scopes_of_user_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + get_write_scopes_of_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
         self.assertEqual(the_user.scopes_write, response.json()["result"])
 
-        response_2 = requests.get("http://127.0.0.1:7777" + get_write_scopes_of_me_url,
-                                  auth=HTTPBasicAuth("", id))
+        response_2 = requests.get(
+            "http://127.0.0.1:7777" + get_write_scopes_of_me_url,
+            auth=HTTPBasicAuth("", id),
+        )
         self.assertEqual(response.json()["result"], response_2.json()["result"])
 
     def test_get_read_scopes_of_user(self):
@@ -432,15 +455,18 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id}
-        response = requests.post("http://127.0.0.1:7777" + get_read_scopes_of_user_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + get_read_scopes_of_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
         self.assertEqual(the_user.scopes_read, response.json()["result"])
 
-        response_2 = requests.get("http://127.0.0.1:7777" + get_read_scopes_of_me_url,
-                                  auth=HTTPBasicAuth("", id))
+        response_2 = requests.get(
+            "http://127.0.0.1:7777" + get_read_scopes_of_me_url,
+            auth=HTTPBasicAuth("", id),
+        )
         self.assertEqual(response.json()["result"], response_2.json()["result"])
-
 
     def test_can_access_read(self):
         id = "test_can_access_read"
@@ -454,18 +480,26 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id, "scope": "onur.atakan"}
-        response = requests.post("http://127.0.0.1:7777" + can_access_read_user_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + can_access_read_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
-        self.assertEqual(the_user.can_access_read("onur.atakan"), response.json()["result"])
+        self.assertEqual(
+            the_user.can_access_read("onur.atakan"), response.json()["result"]
+        )
 
         data = {"key": id, "scope": "ahmet.atakan"}
-        response = requests.post("http://127.0.0.1:7777" + can_access_read_user_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + can_access_read_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
-        self.assertEqual(the_user.can_access_read("ahmet.atakan"), response.json()["result"])
+        self.assertEqual(
+            the_user.can_access_read("ahmet.atakan"), response.json()["result"]
+        )
 
     def test_can_access_write(self):
         id = "test_can_access_write"
@@ -479,18 +513,26 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id, "scope": "onur.atakan"}
-        response = requests.post("http://127.0.0.1:7777" + can_access_write_user_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + can_access_write_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
-        self.assertEqual(the_user.can_access_write("onur.atakan"), response.json()["result"])
+        self.assertEqual(
+            the_user.can_access_write("onur.atakan"), response.json()["result"]
+        )
 
         data = {"key": id, "scope": "ahmet.atakan"}
-        response = requests.post("http://127.0.0.1:7777" + can_access_write_user_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + can_access_write_user_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
-        self.assertEqual(the_user.can_access_write("ahmet.atakan"), response.json()["result"])
+        self.assertEqual(
+            the_user.can_access_write("ahmet.atakan"), response.json()["result"]
+        )
 
     def test_scope_read_clear(self):
         id = "test_scope_read_clear"
@@ -506,10 +548,14 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        data = {"key": id, }
-        response = requests.post("http://127.0.0.1:7777" + scopes_read_clear_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        data = {
+            "key": id,
+        }
+        response = requests.post(
+            "http://127.0.0.1:7777" + scopes_read_clear_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(accesskey.scopes_read, [])
 
@@ -527,10 +573,14 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        data = {"key": id, }
-        response = requests.post("http://127.0.0.1:7777" + scopes_write_clear_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        data = {
+            "key": id,
+        }
+        response = requests.post(
+            "http://127.0.0.1:7777" + scopes_write_clear_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(accesskey.scopes_write, [])
 
@@ -546,14 +596,27 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.enable()
         the_admin_access_key.set_is_admin(True)
 
-        data = {"key": id, "event": "Test a", "target":"target", "detail":"detail"}
-        response = requests.post("http://127.0.0.1:7777" + event_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        data = {"key": id, "event": "Test a", "target": "target", "detail": "detail"}
+        response = requests.post(
+            "http://127.0.0.1:7777" + event_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         the_events = [value for value in accesskey.events.values()]
 
-        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}])
+        self.assertEqual(
+            the_events,
+            [
+                {
+                    "event": "Test a",
+                    "target": "target",
+                    "detail": "detail",
+                    "scope_target": False,
+                    "meta": {},
+                }
+            ],
+        )
 
         storage.pop()
 
@@ -575,9 +638,11 @@ class Test_Storage(unittest.TestCase):
         the_admin_access_key.set_is_admin(True)
 
         data = {"key": id, "x": 2}
-        response = requests.post("http://127.0.0.1:7777" + get_last_x_event_url,
-                                 auth=HTTPBasicAuth("", id_admin),
-                                 data=data)
+        response = requests.post(
+            "http://127.0.0.1:7777" + get_last_x_event_url,
+            auth=HTTPBasicAuth("", id_admin),
+            data=data,
+        )
 
         self.assertEqual(response.json()["result"], accesskey.get_last_x_events(2))
 
@@ -594,14 +659,19 @@ class Test_Storage(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope("onur.my_function")
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         def get_document():
-            data = {"scope": "onur.my_function", }
-            response = requests.post("http://127.0.0.1:7777" + get_document_of_scope_url,
-                                     auth=HTTPBasicAuth("", id),
-                                     data=data)
+            data = {
+                "scope": "onur.my_function",
+            }
+            response = requests.post(
+                "http://127.0.0.1:7777" + get_document_of_scope_url,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()["result"]
 
         the_scope.dump(dumped_data, accesskey)
@@ -622,28 +692,36 @@ class Test_Storage(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope("onur.my_function")
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         def get_document():
-            data = {"scope": "onur.my_function", }
-            response = requests.post("http://127.0.0.1:7777" + get_document_of_scope_url,
-                                     auth=HTTPBasicAuth("", id),
-                                     data=data)
+            data = {
+                "scope": "onur.my_function",
+            }
+            response = requests.post(
+                "http://127.0.0.1:7777" + get_document_of_scope_url,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()["result"]
 
         def create_document():
-            data = {"scope": "onur.my_function", }
-            response = requests.post("http://127.0.0.1:7777" + create_document_of_scope_url_old,
-                                     auth=HTTPBasicAuth("", id),
-                                     data=data)
+            data = {
+                "scope": "onur.my_function",
+            }
+            response = requests.post(
+                "http://127.0.0.1:7777" + create_document_of_scope_url_old,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()
 
         the_scope.dump(dumped_data, accesskey)
         time.sleep(2)
         first = get_document()
         self.assertEqual(first, the_scope.documentation)
-
 
         storage_2.pop()
 
@@ -659,14 +737,19 @@ class Test_Storage(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope("onur.my_function")
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         def get_document():
-            data = {"scope": "onur.my_function", }
-            response = requests.post("http://127.0.0.1:7777" + get_type_of_scope_url,
-                                     auth=HTTPBasicAuth("", id),
-                                     data=data)
+            data = {
+                "scope": "onur.my_function",
+            }
+            response = requests.post(
+                "http://127.0.0.1:7777" + get_type_of_scope_url,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()["result"]
 
         the_scope.dump(dumped_data, accesskey)
@@ -689,12 +772,14 @@ class Test_Storage(unittest.TestCase):
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         def get_document():
-            response = requests.get("http://127.0.0.1:7777" + get_all_scopes_url,
-                                    auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + get_all_scopes_url, auth=HTTPBasicAuth("", id)
+            )
             return response.json()["result"]
 
         self.assertEqual(the_scope.get_all_scopes(), [])
@@ -705,8 +790,10 @@ class Test_Storage(unittest.TestCase):
         Scope(id3).dump(dumped_data, AccessKey(id2))
         time.sleep(2)
 
-        self.assertEqual(the_scope.get_all_scopes(),
-                         ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
+        self.assertEqual(
+            the_scope.get_all_scopes(),
+            ["onur.my_function", "onur.sub.my_awesome", "onur.sub.my_sub_function"],
+        )
         self.assertEqual(the_scope.get_all_scopes(), get_document())
         storage_2.pop()
 
@@ -740,16 +827,19 @@ class Test_Storage(unittest.TestCase):
         user.enable()
 
         def get_document():
-            response = requests.get("http://127.0.0.1:7777" + get_all_scopes_user_url,
-                                    auth=HTTPBasicAuth("", id))
+            response = requests.get(
+                "http://127.0.0.1:7777" + get_all_scopes_user_url,
+                auth=HTTPBasicAuth("", id),
+            )
             return response.json()["result"]
 
         def my_function():
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         self.assertEqual(Scope.get_all_scopes_name(user), [])
 
@@ -766,13 +856,11 @@ class Test_Storage(unittest.TestCase):
 
         user.set_scope_read("aa.sub.my_awesome")
 
-        self.assertEqual(Scope.get_all_scopes_name(user),
-                         get_document())
+        self.assertEqual(Scope.get_all_scopes_name(user), get_document())
 
         user.set_scope_read("test_accesskey_get_all_scopes_name.sub.my_sub_function")
 
-        self.assertEqual(Scope.get_all_scopes_name(user),
-                         get_document())
+        self.assertEqual(Scope.get_all_scopes_name(user), get_document())
 
         storage.pop()
         storage_2.pop()
@@ -790,16 +878,20 @@ class Test_Storage(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
 
         def get_document():
             data = {"scope": id}
-            response = requests.post("http://127.0.0.1:7777" + delete_scope_url,
-                                     auth=HTTPBasicAuth("", id), data=data)
+            response = requests.post(
+                "http://127.0.0.1:7777" + delete_scope_url,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()["result"]
 
         get_document()
@@ -827,8 +919,9 @@ class Test_Storage(unittest.TestCase):
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         self.assertEqual(the_scope.dump_history, [])
 
@@ -836,35 +929,45 @@ class Test_Storage(unittest.TestCase):
         time.sleep(2)
         self.assertNotEqual(the_scope.dump_history, [])
         self.assertEqual(len(the_scope.dump_history), 1)
-        self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
+        self.assertEqual(
+            Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source
+        )
 
         def my_function():
             return False
 
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
 
         def get_document():
             data = {"scope": id}
-            response = requests.post("http://127.0.0.1:7777" + get_dump_history_url,
-                                     auth=HTTPBasicAuth("", id), data=data)
+            response = requests.post(
+                "http://127.0.0.1:7777" + get_dump_history_url,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()["result"]
 
         def get_document_get_dump(spec_id):
             data = {"scope": id, "dump_id": spec_id}
-            response = requests.post("http://127.0.0.1:7777" + load_specific_dump_url,
-                                     auth=HTTPBasicAuth("", id), data=data)
+            response = requests.post(
+                "http://127.0.0.1:7777" + load_specific_dump_url,
+                auth=HTTPBasicAuth("", id),
+                data=data,
+            )
             return response.json()["result"]
 
         the_api_return = get_document()
         self.assertEqual(the_api_return, the_scope.dump_history)
         print(get_document_get_dump("dsad"))
-        self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, get_document_get_dump(the_api_return[0]))
-
-
+        self.assertEqual(
+            Scope.get_dump(the_scope.dump_history[0]).source,
+            get_document_get_dump(the_api_return[0]),
+        )
 
         storage_2.pop()
         storage_3.pop()
@@ -874,4 +977,3 @@ backup = sys.argv
 sys.argv = [sys.argv[0]]
 unittest.main(exit=False)
 sys.argv = backup
-

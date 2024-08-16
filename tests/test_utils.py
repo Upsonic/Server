@@ -1,23 +1,16 @@
-import contextlib
 import time
 import unittest
 import os
 import sys
-import shutil
-import copy
-from unittest.mock import patch
-import threading
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from upsonic_on_prem.api.utils import storage, storage_2, storage_3
 from upsonic_on_prem.api.utils import AccessKey
 from upsonic_on_prem.api.utils import Scope
-from upsonic_on_prem.api.utils import AI
 from upsonic_on_prem.api.utils.credential_detection.main import detect_credentials
 
 import cloudpickle
-import dill
 
 from cryptography.fernet import Fernet
 import base64
@@ -25,15 +18,12 @@ import hashlib
 
 
 class Test_Storage(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         storage.pop()
 
     def test_status(self):
         self.assertTrue(storage.status())
-
-
 
     def test_set(self):
         storage.set("test", "test")
@@ -42,29 +32,21 @@ class Test_Storage(unittest.TestCase):
     def test_total_size(self):
         self.assertTrue(storage.total_size() > 0)
 
-
     def test_delete(self):
         storage.delete("test")
         self.assertEqual(storage.get("test"), None)
-
 
     def test_pop(self):
         storage.set("test", "test")
         self.assertEqual(storage.get("test"), "test")
         storage.pop()
         self.assertEqual(storage.get("test"), None)
-        
-
-
 
 
 class Test_Accesskey(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
-            storage.pop()
-    
-
+        storage.pop()
 
     def test_name(self):
         id = "test_name"
@@ -72,7 +54,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.name, None)
         accesskey.set_name("test")
         self.assertEqual(accesskey.name, "test")
-
 
     def test_scope_write(self):
         id = "test_scope"
@@ -87,7 +68,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.scopes_write, ["onur.mehmet.*"])
         accesskey.delete_scope_write("onur.mehmet.*")
         self.assertEqual(accesskey.scopes_write, [])
-
 
     def test_scope_read(self):
         id = "test_scope"
@@ -134,8 +114,6 @@ class Test_Accesskey(unittest.TestCase):
         accesskey.set_is_admin(True)
         self.assertEqual(accesskey.is_admin, True)
 
-
-
     def test_can_access_write_star(self):
         id = "test_can_access"
         accesskey = AccessKey(id)
@@ -148,7 +126,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_write("ahmet.mehmet"), True)
         self.assertEqual(accesskey.can_access_write("ahmet.mehmet.cengiz"), False)
 
-
         self.assertEqual(accesskey.can_access_write("oo.aa.bb.cc"), False)
         accesskey.set_scope_write("oo.aa.bb")
         self.assertEqual(accesskey.can_access_write("oo.aa.bb.cc"), False)
@@ -156,8 +133,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_write("oo.aa.bb.cc"), False)
         self.assertEqual(accesskey.can_access_write("oo.aa.bb.dd"), True)
         self.assertEqual(accesskey.can_access_write("oo.aa"), False)
-
-
 
         self.assertEqual(accesskey.can_access_write("nn.aa.bb.cc"), False)
         accesskey.set_scope_write("nn.aa.bb.*")
@@ -171,14 +146,11 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_write("tt.aa.bb.dd"), True)
         self.assertEqual(accesskey.can_access_write("tt.aa"), True)
 
-
-
         self.assertEqual(accesskey.can_access_write("ee.aa.bb.cc"), False)
         accesskey.set_scope_write("*")
         self.assertEqual(accesskey.can_access_write("ee.aa.bb.cc"), True)
         self.assertEqual(accesskey.can_access_write("ee.aa.bb.dd"), True)
         self.assertEqual(accesskey.can_access_write("ee.aa"), True)
-
 
     def test_can_access_read_star(self):
         id = "test_can_access"
@@ -192,7 +164,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_read("ahmet.mehmet"), True)
         self.assertEqual(accesskey.can_access_read("ahmet.mehmet.cengiz"), False)
 
-
         self.assertEqual(accesskey.can_access_read("oo.aa.bb.cc"), False)
         accesskey.set_scope_read("oo.aa.bb")
         self.assertEqual(accesskey.can_access_read("oo.aa.bb.cc"), False)
@@ -200,8 +171,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_read("oo.aa.bb.cc"), False)
         self.assertEqual(accesskey.can_access_read("oo.aa.bb.dd"), True)
         self.assertEqual(accesskey.can_access_read("oo.aa"), False)
-
-
 
         self.assertEqual(accesskey.can_access_read("nn.aa.bb.cc"), False)
         accesskey.set_scope_read("nn.aa.bb.*")
@@ -214,8 +183,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.can_access_read("tt.aa.bb.cc"), True)
         self.assertEqual(accesskey.can_access_read("tt.aa.bb.dd"), True)
         self.assertEqual(accesskey.can_access_read("tt.aa"), True)
-
-
 
         self.assertEqual(accesskey.can_access_read("ee.aa.bb.cc"), False)
         accesskey.set_scope_read("*")
@@ -235,8 +202,6 @@ class Test_Accesskey(unittest.TestCase):
         self.assertEqual(accesskey.is_enable, False)
         self.assertEqual(accesskey.scopes_write, [])
         self.assertEqual(accesskey.scopes_read, [])
-
-
 
     def test_get_admins(self):
         id = "test_get_admins"
@@ -322,7 +287,18 @@ class Test_Accesskey(unittest.TestCase):
 
         the_events = [value for value in accesskey.events.values()]
 
-        self.assertEqual(the_events, [{"event": "Test a", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}])
+        self.assertEqual(
+            the_events,
+            [
+                {
+                    "event": "Test a",
+                    "target": "target",
+                    "detail": "detail",
+                    "scope_target": False,
+                    "meta": {},
+                }
+            ],
+        )
 
         storage.pop()
 
@@ -340,7 +316,25 @@ class Test_Accesskey(unittest.TestCase):
 
         the_events = [value for value in accesskey.get_last_x_events(2).values()]
 
-        self.assertEqual(the_events, [{"event": "Test d", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}, {"event": "Test c", "target":"target", "detail":"detail", "scope_target": False, "meta": {}}])
+        self.assertEqual(
+            the_events,
+            [
+                {
+                    "event": "Test d",
+                    "target": "target",
+                    "detail": "detail",
+                    "scope_target": False,
+                    "meta": {},
+                },
+                {
+                    "event": "Test c",
+                    "target": "target",
+                    "detail": "detail",
+                    "scope_target": False,
+                    "meta": {},
+                },
+            ],
+        )
 
         storage.pop()
 
@@ -352,8 +346,9 @@ class Test_Accesskey(unittest.TestCase):
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -370,8 +365,9 @@ class Test_Accesskey(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -388,8 +384,9 @@ class Test_Accesskey(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -407,8 +404,9 @@ class Test_Accesskey(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -457,8 +455,9 @@ class Test_Accesskey(unittest.TestCase):
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         self.assertEqual(the_scope.dump_history, [])
 
@@ -466,17 +465,22 @@ class Test_Accesskey(unittest.TestCase):
         time.sleep(2)
         self.assertNotEqual(the_scope.dump_history, [])
         self.assertEqual(len(the_scope.dump_history), 1)
-        self.assertEqual(Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source)
+        self.assertEqual(
+            Scope.get_dump(the_scope.dump_history[0]).source, the_scope.source
+        )
 
         def my_function():
             return False
 
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
-        self.assertNotEqual(Scope.get_dump(the_scope.dump_history[-1]).source, the_scope.source)
+        self.assertNotEqual(
+            Scope.get_dump(the_scope.dump_history[-1]).source, the_scope.source
+        )
 
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[0]).python(), True)
         self.assertNotEqual(Scope.get_dump(the_scope.dump_history[1]).python(), False)
@@ -494,8 +498,9 @@ class Test_Accesskey(unittest.TestCase):
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         self.assertEqual(the_scope.get_all_scopes(), [])
 
@@ -504,11 +509,12 @@ class Test_Accesskey(unittest.TestCase):
         Scope(id3).dump(dumped_data, AccessKey(id2))
         time.sleep(2)
 
-        self.assertEqual(the_scope.get_all_scopes(),
-                         ['onur.my_function', 'onur.sub.my_awesome', 'onur.sub.my_sub_function'])
+        self.assertEqual(
+            the_scope.get_all_scopes(),
+            ["onur.my_function", "onur.sub.my_awesome", "onur.sub.my_sub_function"],
+        )
 
         storage_2.pop()
-
 
     def test_accesskey_get_all_scopes_name_and_prefix(self):
         storage.pop()
@@ -524,8 +530,9 @@ class Test_Accesskey(unittest.TestCase):
             return True
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         self.assertEqual(Scope.get_all_scopes_name(user), [])
 
@@ -538,24 +545,41 @@ class Test_Accesskey(unittest.TestCase):
 
         user.set_scope_read("test_accesskey_get_all_scopes_name.my_function")
 
-        self.assertEqual(Scope.get_all_scopes_name(user), ['test_accesskey_get_all_scopes_name.my_function'])
+        self.assertEqual(
+            Scope.get_all_scopes_name(user),
+            ["test_accesskey_get_all_scopes_name.my_function"],
+        )
 
         user.set_scope_read("aa.sub.my_awesome")
 
-        self.assertEqual(Scope.get_all_scopes_name(user),
-                         ['aa.sub.my_awesome', 'test_accesskey_get_all_scopes_name.my_function'])
+        self.assertEqual(
+            Scope.get_all_scopes_name(user),
+            ["aa.sub.my_awesome", "test_accesskey_get_all_scopes_name.my_function"],
+        )
 
         user.set_scope_read("test_accesskey_get_all_scopes_name.sub.my_sub_function")
 
-        self.assertEqual(Scope.get_all_scopes_name(user),
-                         ['aa.sub.my_awesome', 'test_accesskey_get_all_scopes_name.my_function',
-                          "test_accesskey_get_all_scopes_name.sub.my_sub_function"])
+        self.assertEqual(
+            Scope.get_all_scopes_name(user),
+            [
+                "aa.sub.my_awesome",
+                "test_accesskey_get_all_scopes_name.my_function",
+                "test_accesskey_get_all_scopes_name.sub.my_sub_function",
+            ],
+        )
 
-        self.assertEqual(Scope.get_all_scopes_name_prefix(user, "test_accesskey_get_all_scopes_name"),
-                         ['test_accesskey_get_all_scopes_name.my_function',
-                          "test_accesskey_get_all_scopes_name.sub.my_sub_function"])
-        self.assertEqual(Scope.get_all_scopes_name_prefix(user, "aa"),
-                         ['aa.sub.my_awesome'])
+        self.assertEqual(
+            Scope.get_all_scopes_name_prefix(
+                user, "test_accesskey_get_all_scopes_name"
+            ),
+            [
+                "test_accesskey_get_all_scopes_name.my_function",
+                "test_accesskey_get_all_scopes_name.sub.my_sub_function",
+            ],
+        )
+        self.assertEqual(
+            Scope.get_all_scopes_name_prefix(user, "aa"), ["aa.sub.my_awesome"]
+        )
 
         storage.pop()
         storage_2.pop()
@@ -569,8 +593,9 @@ class Test_Accesskey(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -596,8 +621,9 @@ class Test_Accesskey(unittest.TestCase):
             return "aaa"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
@@ -611,42 +637,41 @@ class Test_Accesskey(unittest.TestCase):
             return "bbbb"
 
         the_scope = Scope(id)
-        dumped_data = Fernet(base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())).encrypt(
-            cloudpickle.dumps(my_function))
+        dumped_data = Fernet(
+            base64.urlsafe_b64encode(hashlib.sha256("u".encode()).digest())
+        ).encrypt(cloudpickle.dumps(my_function))
 
         the_scope.dump(dumped_data, AccessKey(id))
         time.sleep(2)
 
         self.assertEqual(the_scope.python(), "bbbb")
 
-        self.assertEqual(Scope.get_version(the_scope.version_history[0]).python(), "aaa")
+        self.assertEqual(
+            Scope.get_version(the_scope.version_history[0]).python(), "aaa"
+        )
 
         storage_2.pop()
         storage_3.pop()
 
-
-
-
     def test_detect_credentials(self):
-
         # Testing the function
-        test_code_1 = '''
+        test_code_1 = """
         def my_function():
             password = "my_secret_password"
             print(password)
-        '''
+        """
 
-        test_code_2 = '''
+        test_code_2 = """
         def another_function():
             api_key = "my_api_key"
             print(api_key)
-        '''
+        """
 
-        test_code_3 = '''
+        test_code_3 = """
         def safe_function():
             api_key = os.getenv("api_key")
             print("This is safe code")
-        '''
+        """
 
         r_1 = detect_credentials(test_code_1)  # Should return True
         r_2 = detect_credentials(test_code_2)  # Should return True
