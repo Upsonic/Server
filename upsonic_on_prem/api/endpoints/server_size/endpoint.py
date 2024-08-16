@@ -1,7 +1,7 @@
 # API Informations
 from upsonic_on_prem.api.endpoints.utils import get_current_directory_name
 from upsonic_on_prem.api.app import app
-from flask import jsonify, request
+from flask import jsonify
 
 
 url = get_current_directory_name()
