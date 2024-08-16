@@ -15,6 +15,7 @@ admin_pass = 123
 admin_key = 123
 admin_username = user
 debug = True
+custom_connection_url = 'http://localhost:3000'
 " > .env
 
 cd ..
@@ -25,4 +26,5 @@ admin_pass = 123
 admin_key = 123
 admin_username = user
 debug = True
+custom_connection_url = 'http://localhost:3000'
 " > .env
