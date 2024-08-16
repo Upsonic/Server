@@ -6,7 +6,8 @@ import difflib
 from upsonic_on_prem.api.utils import storage_2, AI, storage_3, AccessKey, storage_5
 
 
-from upsonic_on_prem.api.tracer import tracer, Status, StatusCode
+from upsonic_on_prem.api.tracer import tracer
+from opentelemetry.trace import Status, StatusCode
 
 from upsonic_on_prem.api.utils.github_sync import github
 

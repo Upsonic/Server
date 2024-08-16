@@ -6,7 +6,8 @@ import traceback
 
 from upsonic_on_prem.api.utils.configs import redis_password, redis_host, redis_port
 from upsonic_on_prem.api.utils.logs import *
-from upsonic_on_prem.api.tracer import tracer, Status, StatusCode
+from upsonic_on_prem.api.tracer import tracer
+from opentelemetry.trace import Status, StatusCode
 import threading
 
 import time

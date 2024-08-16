@@ -19,7 +19,8 @@ from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
 from upsonic_on_prem.api.utils.ai.ai_history import active_ai_history, save_ai_call
-from upsonic_on_prem.api.tracer import tracer, Status, StatusCode, provider
+from upsonic_on_prem.api.tracer import tracer, provider
+from opentelemetry.trace import Status, StatusCode
 
 from upsonic_on_prem.api.utils import debug, info, failed
 
