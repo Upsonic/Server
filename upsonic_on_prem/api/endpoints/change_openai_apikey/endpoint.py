@@ -22,7 +22,6 @@ def endpoint():
 
     default_model = request.form.get("api_key")
 
-    print("openai_apikey", default_model)
 
 
     result = kot_db.set("openai_apikey", default_model)
