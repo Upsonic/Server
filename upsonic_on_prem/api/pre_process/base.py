@@ -20,6 +20,9 @@ def check():
 
     if endpoint == status_url:
         return
+    
+    if endpoint.startswith("/_ldap"):
+        return
 
     auth = request.authorization
 
