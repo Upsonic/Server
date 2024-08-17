@@ -16,4 +16,31 @@ if not kot_db_.get("default_model"):
 if not kot_db_.get("openai_apikey"):
     kot_db_.set("openai_apikey", os.environ.get("openai_api_key"))
 
+
+
+
+
+
+# Ldap Settings
+if not kot_db_.get("LDAP_SERVER"):
+    kot_db_.set("LDAP_SERVER", os.environ.get("LDAP_SERVER"))
+if not kot_db_.get("LDAP_PORT"):
+    kot_db_.set("LDAP_PORT", int(os.environ.get("LDAP_PORT")))
+if not kot_db_.get("LDAP_SEARCH"):
+    kot_db_.set("LDAP_SEARCH", os.environ.get("LDAP_SEARCH"))
+if not kot_db_.get("LDAP_BIND_USER"):
+    kot_db_.set("LDAP_BIND_USER", os.environ.get("LDAP_BIND_USER"))
+if not kot_db_.get("LDAP_BIND_PASSWORD"):
+    kot_db_.set("LDAP_BIND_PASSWORD", os.environ.get("LDAP_BIND_PASSWORD"))
+
+if not kot_db_.get("LDAP_USE_SSL"):
+    kot_db_.set("LDAP_USE_SSL", os.environ.get("LDAP_USE_SSL", "false").lower() == "true")
+
+
+if not kot_db_.get("LDAP_ACTIVE"):
+    kot_db_.set("LDAP_ACTIVE", os.environ.get("LDAP_ACTIVE", "false").lower() == "true")
+
+
+
+
 kot_db = kot_db_
