@@ -41,7 +41,6 @@ def is_user_in_group(username, group_name):
     # Bind as read-only admin
     conn = Connection(server, user=LDAP_BIND_USER, password=LDAP_BIND_PASSWORD)
     if not conn.bind():
-        print("Failed to bind as read-only admin")
         return False
 
     # Comprehensive search filter to check membership
@@ -49,10 +48,8 @@ def is_user_in_group(username, group_name):
     conn.search(LDAP_SEARCH, group_filter, attributes=['cn'])
 
     if len(conn.entries) > 0:
-        print(f"User {username} is a member of group {group_name}")
         result = True
     else:
-        print(f"User {username} is NOT a member of group {group_name}")
         result = False
     
     conn.unbind()

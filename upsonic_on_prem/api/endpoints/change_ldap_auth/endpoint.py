@@ -10,7 +10,7 @@ name_of_endpoint = url.replace("/", "_")
 auth = "admin"
 scope_write_auth = False
 scope_read_auth = False
-method = "GET"
+method = "POST"
 #
 
 
@@ -20,7 +20,10 @@ from upsonic_on_prem.api.utils.kot_db import kot_db
 def endpoint():
     """ """
 
-    result = kot_db.get("LDAP_ACTIVE")
+    status = True if request.form.get("status").lower() == "true" else False
+
+
+    result = kot_db.set("LDAP_ACTIVE", status)
 
     return jsonify(
         {
