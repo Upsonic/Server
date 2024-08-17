@@ -28,7 +28,8 @@ def forward_request_to_openai_ollama(path, method, headers, data):
 
     """
     url = f"http://localhost:11434/v1/{path}"
-    headers["Authorization"] = f"Bearer {kot_db.get("openai_apikey")}"
+    the_api_key = kot_db.get("openai_apikey")
+    headers["Authorization"] = f"Bearer {the_api_key}"
 
     if method == "GET":
         response = requests.get(url, headers=headers, params=data)
@@ -143,7 +144,8 @@ def forward_request_to_openai(path, method, headers, data):
 
     """
     url = f"https://api.openai.com/v1/{path}"
-    headers["Authorization"] = f"Bearer {kot_db.get("openai_apikey")}"
+    the_api_key = kot_db.get("openai_apikey")
+    headers["Authorization"] = f"Bearer {the_api_key}"
 
     if method == "GET":
         response = requests.get(url, headers=headers, params=data)

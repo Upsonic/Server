@@ -686,6 +686,13 @@ class API_Integration:
     def change_default_ai_model(self, model):
         data = {"model": model}
         return self._send_request("POST", "/change/default/model", data=data)
+    
+    def change_openai_api_key(self, openai_api_key):
+        data = {"api_key": openai_api_key}
+        return self._send_request("POST", "/change/openai/apikey", data=data)
+
+    def view_openai_api_key(self):
+        return self._send_request("GET", "/view/openai/apikey")
 
     def get_dump_history(self, scope):
         data = {"scope": scope}

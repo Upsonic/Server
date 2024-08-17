@@ -10,7 +10,7 @@ name_of_endpoint = url.replace("/", "_")
 auth = "admin"
 scope_write_auth = False
 scope_read_auth = False
-method = "POST"
+method = "GET"
 #
 
 
@@ -20,12 +20,8 @@ from upsonic_on_prem.api.utils.kot_db import kot_db
 def endpoint():
     """ """
 
-    default_model = request.form.get("api_key")
 
-    print("openai_apikey", default_model)
-
-
-    result = kot_db.set("openai_apikey", default_model)
+    result = kot_db.get("openai_apikey")
 
     return jsonify(
         {
