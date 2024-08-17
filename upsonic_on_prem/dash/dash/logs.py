@@ -20,6 +20,10 @@ else:
     logger.setLevel(logging.DEBUG)
 logger.handlers = []
 
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logger.level)
+logger.addHandler(console_handler)
+
 
 if infrastackai:
     from opentelemetry._logs import set_logger_provider
