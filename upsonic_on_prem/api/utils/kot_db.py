@@ -6,7 +6,7 @@ load_dotenv(dotenv_path=".env")
 
 from kot import KOT
 
-kot_db_ = KOT("api", folder="/db/")
+kot_db_ = KOT("api", folder="/db/", enable_hashing=True)
 
 
 if not kot_db_.get("default_model"):
