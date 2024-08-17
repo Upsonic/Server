@@ -204,6 +204,7 @@ DEBUG = debug_mode
 # TODO: Adding csrf protection
 
 AUTHENTICATION_BACKENDS = [
+    'app.auth_backends.LdapBackend',
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
