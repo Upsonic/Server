@@ -95,7 +95,11 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
       <hr style="margin-top: auto;" class="uk-divider-icon" />
 
-      <li class=" uk-margin-small-top uk-margin-small-right uk-margin-small-left uk-margin-small-bottom">
+      <li class=" uk-margin-small-top uk-margin-small-right uk-margin-small-left uk-margin-small-bottom" style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+">
 
         <a href="#" onclick="page_load('{% url 'profile' %}');event.preventDefault();" class="uk-button uk-button-{% if page_title != 'Profile' %}ghost{% else %}primary{% endif %}" style="display: inline-grid;" uk-tooltip="Profile"><span uk-icon="user"></span></a>
         {% if request.user.dark_mode %}
