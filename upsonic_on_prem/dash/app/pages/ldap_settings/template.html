@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: 100vh;">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                <h1 class="uk-h2 uk-margin text-foreground">
+                    {{page_title}}</h1>
+
+            </div>
+
+        </div>
+        <div  class="uk-margin-small-bottom" style="margin-top: 1.5rem;">
+
+            <div class="uk-navbar-right ">
+              <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+
+              </ul>
+            </div>  
+          
+            </div>
+
+
+            <div class="uk-width-expand uk-margin-medium-top">
+
+
+    
+                <div class="scrollable_side" uk-height-viewport="offset-top: true">
+
+
+                  <div class=" uk-grid-small uk-grid-match" uk-grid>
+                  
+
+                    <div class="uk-width-auto">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Active</h3>
+
+      
+
+
+                        <ul class="uk-subnav uk-subnav-primary" >
+                          <li  {% if not currently_status %}class="uk-active"{% endif %}><a href="{% url 'Change LDAP Status' status='false' %}">Off</a></li>
+                          <li {% if currently_status %}class="uk-active"{% endif %}  ><a href="{% url 'Change LDAP Status' status='true' %}">On</a></li>
+
+                        </ul>
+                        
+
+
+                      </div>
+                    </div>
+
+
+
+
+
+                    
+                  </div>
+
+
+                </div>
+
+            </div>
+
+</div>
+
+{% endblock content %}

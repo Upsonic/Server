@@ -691,6 +691,13 @@ class API_Integration:
         data = {"api_key": openai_api_key}
         return self._send_request("POST", "/change/openai/apikey", data=data)
 
+    def change_ldap_auth(self, status):
+        data = {"status": status}
+        return self._send_request("POST", "/change/ldap/auth", data=data)
+
+    def ldap_active(self):
+        return self._send_request("GET", "/ldap/active")
+
     def view_openai_api_key(self):
         return self._send_request("GET", "/view/openai/apikey")
 
