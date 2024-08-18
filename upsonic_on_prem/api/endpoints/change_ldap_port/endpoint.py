@@ -20,7 +20,7 @@ from upsonic_on_prem.api.utils.kot_db import kot_db
 def endpoint():
     """ """
 
-    port = request.form.get("port")
+    port = int(request.form.get("port"))
 
 
     result = kot_db.set("LDAP_PORT", port)

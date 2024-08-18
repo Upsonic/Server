@@ -22,6 +22,7 @@ def endpoint():
 
     use_ssl = request.form.get("use_ssl")
 
+    use_ssl = True if use_ssl.lower() == "true" else False
 
     result = kot_db.set("LDAP_USE_SSL", use_ssl)
 

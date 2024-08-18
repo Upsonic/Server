@@ -722,6 +722,13 @@ class API_Integration:
     def ldap_active(self):
         return self._send_request("GET", "/ldap/active")
     
+    def ldap_auth(self, username, password):
+        data = {"username": username, "password": password}
+        return self._send_request("POST", "/ldap/auth", data=data)
+    
+    def ldap_check(self, username, group_name):
+        data = {"username": username, "group_name": group_name}
+        return self._send_request("POST", "/ldap/check", data=data)
 
 
     def view_ldap_server(self):
