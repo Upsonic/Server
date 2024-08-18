@@ -721,7 +721,24 @@ class API_Integration:
 
     def ldap_active(self):
         return self._send_request("GET", "/ldap/active")
+    
 
+
+    def view_ldap_server(self):
+        return self._send_request("GET", "/view/ldap/server")
+    def view_ldap_port(self):
+        return self._send_request("GET", "/view/ldap/port")
+    def view_ldap_search(self):
+        return self._send_request("GET", "/view/ldap/search")
+    def view_ldap_use_ssl(self):
+        return self._send_request("GET", "/view/ldap/usessl")
+    def view_ldap_bind_user(self):
+        return self._send_request("GET", "/view/ldap/binduser")
+    def view_ldap_bind_password(self):
+        return self._send_request("GET", "/view/ldap/bindpassword")
+
+
+    
     def view_openai_api_key(self):
         return self._send_request("GET", "/view/openai/apikey")
 
