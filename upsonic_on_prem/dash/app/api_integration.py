@@ -695,6 +695,30 @@ class API_Integration:
         data = {"status": status}
         return self._send_request("POST", "/change/ldap/auth", data=data)
 
+    def change_ldap_server(self, server):
+        data = {"server": server}
+        return self._send_request("POST", "/change/ldap/server", data=data)
+
+    def change_ldap_port(self, port):
+        data = {"port": port}
+        return self._send_request("POST", "/change/ldap/port", data=data)
+
+    def change_ldap_search(self, search):
+        data = {"search": search}
+        return self._send_request("POST", "/change/ldap/search", data=data)
+
+    def change_ldap_bind_user(self, bind_user):
+        data = {"bind_user": bind_user}
+        return self._send_request("POST", "/change/ldap/binduser", data=data)
+
+    def change_ldap_bind_password(self, bind_password):
+        data = {"bind_password": bind_password}
+        return self._send_request("POST", "/change/ldap/bindpassword", data=data)
+
+    def change_ldap_use_ssl(self, status):
+        data = {"use_ssl": status}
+        return self._send_request("POST", "/change/ldap/usessl", data=data)
+
     def ldap_active(self):
         return self._send_request("GET", "/ldap/active")
 
