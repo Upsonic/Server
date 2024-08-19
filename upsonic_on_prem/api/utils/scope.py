@@ -62,6 +62,9 @@ class Scope:
         self.the_storage = storage_2
         self.specific = specific
 
+
+        self.set_settings({"usage_analyses": "True"})
+
     def get_last_runs(self, n=10):
         result = []
         for i in self.run_history[-n:]:
