@@ -51,6 +51,7 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
 
 
+      {% if request.user.is_admin %}
       <li class="uk-margin-small-left uk-margin-small-top uk-margin-small-right">
 
         <button href="#" onclick="page_load('{% url 'community' %}');event.preventDefault();" class="uk-button active uk-button-{% if page_title != 'Community' %}ghost{% else %}primary{% endif %} uk-width-1-1 " style="  display: flex;
@@ -63,6 +64,8 @@ border-color: hsl(var(--border) / .4);" uk-height-viewport="offset-top: true">
 
         
       </li>
+      {% endif %}
+
 
       {% pages as pages %}
       {% pages_len as pages_len %}
