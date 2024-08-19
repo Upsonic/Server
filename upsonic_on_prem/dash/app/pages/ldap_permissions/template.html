@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top uk-margin-medium-left scrollable_side" style="height: 100vh;">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                {% if result != None %}
+                {% if result != False %}
+                <div class="uk-margin-medium-bottom uk-alert uk-alert-success" uk-alert>{{result}}</div>
+                {% else %}
+                <div class="uk-margin-medium-bottom uk-alert uk-alert-danger">{{result}}</div>
+                {% endif %}
+                {% endif %}
+                <h1 class="uk-h2 uk-margin text-foreground">
+                    {{page_title}}</h1>
+
+            </div>
+
+        </div>
+        <div  class="uk-margin-small-bottom" style="margin-top: 1.5rem;">
+
+            <div class="uk-navbar-right ">
+              <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+
+              </ul>
+            </div>  
+          
+            </div>
+
+
+            <div class="uk-width-expand uk-margin-medium-top">
+
+
+    
+                <div class="scrollable_side" uk-height-viewport="offset-top: true">
+
+
+
+
+                  <div class=" uk-grid-small uk-grid-match" uk-grid>
+
+
+                    {% for key, value in the_permissions.items  %}
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-h3">Scope: {{key}}</h3>
+
+                        <hr class="uk-margin-small-top uk-margin-small-bottom">
+
+
+                        <h5 class="uk-h5 uk-margin-small-bottom">Available for these groups:</h5>
+
+                        <ul class="uk-list uk-list-bullet">
+                          {% for item in value %}
+                          <li>{{item}}</li>
+                          {% endfor %}
+                        </ul>
+                        
+      
+      
+
+
+                      </div>
+                    </div>
+                    {% endfor %}
+
+
+
+                  </div>
+
+
+                  <h1 class="uk-h2 uk-margin text-foreground uk-margin-large-top">Control Permissions</h1>
+
+
+
+
+                  <div class=" uk-grid-small uk-grid-match" uk-grid>
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Add</h3>
+
+
+
+
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'LDAP Permissions' %}" method="post" autocomplete="off" id="save">
+                            <div class="uk-margin-small-top uk-margin-small-bottom">
+                              <div class="uk-inline" style="width: 100%;">
+                                <input class="uk-input" style="width: 200%;" type="text" placeholder="Scope" name="scope_add" required/>
+                                <input class="uk-input uk-margin-small-top" style="width: 200%;" type="text" placeholder="Group Name" name="group_name" required/>
+                              </div>
+                            </div>
+                            <button type="submit" class="uk-button uk-button-primary uk-margin-small-top uk-width-1-1">Add</button>
+                          </form>
+                        </li>
+      
+      
+
+
+                      </div>
+                    </div>
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Remove</h3>
+
+
+
+
+
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'LDAP Permissions' %}" method="post" autocomplete="off" id="check">
+                            <div class="uk-margin-small-top uk-margin-small-bottom">
+                              <div class="uk-inline" style="width: 100%;">
+                                <input class="uk-input" style="width: 200%;" type="text" placeholder="Scope" name="scope_remove" required/>
+                                <input class="uk-input uk-margin-small-top" style="width: 200%;" type="text" placeholder="Group Name" name="group_name" required/>
+                              </div>
+                            </div>
+                            <button type="submit" class="uk-button uk-button-primary uk-margin-small-top uk-width-1-1">Remove</button>
+                          </form>
+                        </li>
+      
+      
+      
+
+
+                      </div>
+                    </div>
+
+
+
+
+
+
+                  </div>
+
+
+
+                </div>
+
+            </div>
+
+</div>
+
+{% endblock content %}

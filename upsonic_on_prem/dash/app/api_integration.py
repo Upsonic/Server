@@ -745,6 +745,23 @@ class API_Integration:
         return self._send_request("GET", "/view/ldap/bindpassword")
 
 
+
+    def ldap_add_permission(self, scope_name, group_name):
+        data = {"scope_name": scope_name, "group_name": group_name}
+        return self._send_request("POST", "/control/ldap/add/permission", data=data)
+    
+    def ldap_remove_permission(self, scope_name, group_name):
+        data = {"scope_name": scope_name, "group_name": group_name}
+        return self._send_request("POST", "/control/ldap/remove/permission", data=data)
+    
+    def ldap_get_groups(self, scope_name):
+        data = {"scope_name": scope_name}
+        return self._send_request("POST", "/control/ldap/get/groups", data=data)
+    
+    def ldap_get_all_scopes(self):
+        return self._send_request("GET", "/control/ldap/get/scopes")
+
+
     
     def view_openai_api_key(self):
         return self._send_request("GET", "/view/openai/apikey")
