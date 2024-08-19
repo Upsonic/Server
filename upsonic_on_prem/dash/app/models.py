@@ -37,6 +37,8 @@ class User(AbstractUser):
     access_key = models.CharField(max_length=300, default="")
     dark_mode = models.BooleanField(default=True, blank=True, null=True)
     register = models.BooleanField(default=True, blank=True, null=True)
+    ldap = models.BooleanField(default=False, blank=True, null=True)
+
 
     def save(self, *args, **kwargs):
         self.the_register()
