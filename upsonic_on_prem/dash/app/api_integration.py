@@ -538,14 +538,17 @@ class API_Integration:
             the_name = self.get_name(i)
             if the_name == None:
                 the_name = "Robust Admin"
-            result.append(
-                [
-                    the_name,
-                    self.is_enabed_user(i),
-                    self.is_admin(i),
-                    models.User.objects.get(access_key=i).id,
-                ]
-            )
+            try:
+                result.append(
+                    [
+                        the_name,
+                        self.is_enabed_user(i),
+                        self.is_admin(i),
+                        models.User.objects.get(access_key=i).id,
+                    ]
+                )
+            except:
+                pass
 
         # sort
         result.sort(key=lambda x: x[0])
