@@ -26,6 +26,30 @@ def view(request):
 
         group_name = request.POST.get("group_name")
 
+        write_permission = request.POST.get("write_permission")
+
+
+        write_permission = True if write_permission.lower() == "true" else False
+
+        if write_permission == True:
+            if scope_name_add:
+                scope_name_add += "- WRITE"
+
+            if scope_name_remove:
+                scope_name_remove += "- WRITE"
+        
+        if write_permission == False:
+            if scope_name_add:
+                scope_name_add += "- READ"
+            
+            if scope_name_remove:
+                scope_name_remove += "- READ"
+
+
+
+
+
+
         if scope_name_add and group_name:
             API_Integration(request.user.access_key).ldap_add_permission(scope_name_add, group_name)
             result = "Group Added"

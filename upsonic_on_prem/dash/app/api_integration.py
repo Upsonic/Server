@@ -761,7 +761,9 @@ class API_Integration:
     def ldap_get_all_scopes(self):
         return self._send_request("GET", "/control/ldap/get/scopes")
 
-
+    def set_username(self, username, access_key):
+        data = {"username": username, "access_key": access_key}
+        return self._send_request("POST", "/control/user/username", data=data)
     
     def view_openai_api_key(self):
         return self._send_request("GET", "/view/openai/apikey")

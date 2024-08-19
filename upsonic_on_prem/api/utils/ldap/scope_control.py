@@ -40,15 +40,8 @@ def remove_group_from_scope(scope_name, group_name):
     return save_conf(conf)
 
 
-def is_group_in_scope(scope_name, group_name):
-    conf = get_conf()
-    if scope_name not in conf:
-        return False
 
-    if group_name in conf[scope_name]:
-        return True
 
-    return False
 
 def get_groups_in_scope(scope_name):
     conf = get_conf()
@@ -61,3 +54,12 @@ def get_all_scopes():
     conf = get_conf()
     return list(conf.keys())
 
+
+
+def get_all_groups():
+    conf = get_conf()
+    all_groups = []
+    for scope in conf:
+        all_groups += conf[scope]
+
+    return list(set(all_groups))

@@ -27,6 +27,7 @@ class LdapBackend(ModelBackend):
                 # Get the first user in the database
                 first_user = User.objects.first()
                 user.add_user(first_user.access_key)
+                API_Integration(first_user.access_key).set_username(user.username, user.access_key)
                 logger.info(f"User {username} created in the database")
 
             if is_user_valid and user is not None:

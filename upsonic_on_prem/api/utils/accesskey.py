@@ -6,12 +6,27 @@ from upsonic_on_prem.api.utils import storage
 
 from upsonic_on_prem.api.utils.configs import admin_key
 
+from upsonic_on_prem.api.utils.kot_db import kot_db
+
+from upsonic_on_prem.api.utils.caching import cache_response
+
+from upsonic_on_prem.api.utils.ldap.scope_control import get_all_groups, get_all_scopes, get_groups_in_scope
+from upsonic_on_prem.api.utils.ldap.ldap import is_user_in_group
 
 class AccessKey:
     def __init__(self, key):
         self.key = key
 
         self.robust_allowed = [self.key + ":events"]
+
+
+    def set_username(self, username):
+        return self._set(self.key + ":username", username)
+    
+    @property
+    def username(self):
+        return self._get(self.key + ":username")
+
 
     def set_robust(self, robust):
         return self._set(self.key + ":robust", robust)
@@ -109,12 +124,110 @@ class AccessKey:
     def scopes_read_clear(self):
         return self._set(self.key + ":scopes_read", [])
 
+
+    @property
+    @cache_response(60)
+    def is_ldap_active(self):
+        print("Calling is_ldap_active")
+        return kot_db.get("LDAP_ACTIVE")
+
+
+    
+
+    @property
+    @cache_response(60)
+    def ldap_groups(self):
+        print("Calling ldap_groups")
+        all_groups = get_all_groups()
+        the_username = self.username
+        
+        the_groups = []
+
+        for i in all_groups:
+            if is_user_in_group(the_username, i):
+                the_groups.append(i)
+        return the_groups
+
+
+    @property
+    def ldap_scopes_read(self):
+
+        all_groups = self.ldap_groups
+    
+        
+        all_scopes = get_all_scopes()
+
+        # Select "- READ" scopes
+
+        the_selected_scopes = []
+        for i in all_scopes:
+            if i.endswith("- READ"):
+                the_selected_scopes.append(i.split("- READ")[0])
+
+        all_scopes = the_selected_scopes
+
+
+
+        the_scopes = []
+        
+        for i in all_scopes:
+            the_all_groups_of_scope = get_groups_in_scope(i + "- READ")
+
+            for each_group in all_groups:
+
+                if each_group in the_all_groups_of_scope:
+                    the_scopes.append(i)
+                    break
+
+
+  
+        return the_scopes
+
+
+
+    @property
+    def ldap_scopes_write(self):
+        all_groups = self.ldap_groups
+        
+        all_scopes = get_all_scopes()
+
+        # Select "- READ" scopes
+        
+        the_selected_scopes = []
+        for i in all_scopes:
+            if i.endswith("- WRITE"):
+                the_selected_scopes.append(i.split("- WRITE")[0])
+
+        all_scopes = the_selected_scopes
+
+
+        the_scopes = []
+        
+        for i in all_scopes:
+            the_all_groups_of_scope = get_groups_in_scope(i + "- WRITE")
+            
+            for each_group in all_groups:
+                if each_group in the_all_groups_of_scope:
+                    the_scopes.append(i)
+                    break
+
+        return the_scopes
+
+
+
+
     @property
     def scopes_write(self):
+        if self.is_ldap_active:
+            return self.ldap_scopes_write
+
         return self._get(self.key + ":scopes_write") or []
 
     @property
     def scopes_read(self):
+        if self.is_ldap_active:
+            return self.ldap_scopes_read
+
         return self._get(self.key + ":scopes_read") or []
 
     @property
