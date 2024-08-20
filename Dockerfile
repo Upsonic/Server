@@ -14,19 +14,19 @@ RUN apt-get install curl -y
 
 WORKDIR /app/
 
-COPY On-Prem/requirements.txt /requirements.txt
-COPY On-Prem/ollama_install.sh /ollama_install.sh
+COPY Server/requirements.txt /requirements.txt
+COPY Server/ollama_install.sh /ollama_install.sh
 RUN pip3 install -r /requirements.txt --break-system-packages
 RUN sh /ollama_install.sh
 RUN (ollama serve &) && sleep 30 && ollama pull phi3 && ollama pull nomic-embed-text
 
 COPY On-Prem On-Prem
 
-COPY On-Prem/the.conf /etc/nginx/conf.d/the.conf
+COPY Server/the.conf /etc/nginx/conf.d/the.conf
 
-COPY On-Prem/run.sh /
+COPY Server/run.sh /
 
-COPY models On-Prem/upsonic_on_prem/api/utils/ai/
+COPY models Server/upsonic_on_prem/api/utils/ai/
 
 WORKDIR /app/On-Prem
 
