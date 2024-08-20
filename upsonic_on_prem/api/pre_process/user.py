@@ -8,6 +8,9 @@ def free_operation(scope):
 
 def user_pre_process(the_access_key: access_key, request):
     scope = request.form.get("scope")
+    the_version = request.form.get("version")
+    if the_version and not scope:
+        scope = the_version.split(":")[0]
     endpoint = "/" + request.endpoint
 
     operation_type = None
