@@ -25,7 +25,10 @@ if not kot_db_.get("openai_apikey"):
 if not kot_db_.get("LDAP_SERVER"):
     kot_db_.set("LDAP_SERVER", os.environ.get("LDAP_SERVER"))
 if not kot_db_.get("LDAP_PORT"):
-    kot_db_.set("LDAP_PORT", int(os.environ.get("LDAP_PORT")))
+    port = os.environ.get("LDAP_PORT")
+    if port:
+        port = int(port)
+    kot_db_.set("LDAP_PORT", port)
 if not kot_db_.get("LDAP_SEARCH"):
     kot_db_.set("LDAP_SEARCH", os.environ.get("LDAP_SEARCH"))
 if not kot_db_.get("LDAP_BIND_USER"):
