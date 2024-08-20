@@ -161,13 +161,13 @@ jobs:
           mkdir models          
           
 
-          docker buildx build --platform linux/amd64 -f On-Prem/Dockerfile --push -t upsonic/on-prem:latest -t upsonic/on-prem:$VERSION \
+          docker buildx build --platform linux/amd64 -f Server/Dockerfile --push -t upsonic/on-prem:latest -t upsonic/on-prem:$VERSION \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
 
 
           
-          docker buildx build --platform linux/amd64 -f On-Prem/Dockerfile.without_models --push -t upsonic/on-prem_without_models:latest -t upsonic/on-prem_without_models:$VERSION \
+          docker buildx build --platform linux/amd64 -f Server/Dockerfile.without_models --push -t upsonic/on-prem_without_models:latest -t upsonic/on-prem_without_models:$VERSION \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
           
