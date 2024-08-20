@@ -186,6 +186,7 @@ user_urs_ = [
     get_time_complexity_of_scope_url,
     create_version_url,
     create_version_prefix_url,
+    delete_version_prefix_url,
     search_by_documentation_url,
     ai_completion_url,
     get_dump_history_url,

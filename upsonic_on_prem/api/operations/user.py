@@ -1553,8 +1553,16 @@ def create_version_prefix():
     version = request.form.get("version")
     all_scopes = Scope.get_all_scopes_name_prefix(user, top_library)
     write_scopes = user.scopes_write
+    no_permission = False
     for each_scope in all_scopes:
-        if each_scope in write_scopes or user.is_admin:
+        if user.can_access_write(each_scope, write_scopes) or user.is_admin:
+            pass
+        else:
+            no_permission = True
+            break
+
+    if not no_permission:
+        for each_scope in all_scopes:
             Scope(each_scope).create_version(version, user)
 
     return jsonify({"status": True, "result": True})
@@ -1563,14 +1571,24 @@ def create_version_prefix():
 @app.route(delete_version_prefix_url, methods=["post"])
 def delete_version_prefix():
     """ """
+    print("In delete version prefixxx")
     user = AccessKey(request.authorization.password)
     top_library = request.form.get("top_library")
     version = request.form.get("version")
 
     all_scopes = Scope.get_all_scopes_name_prefix(user, top_library)
     write_scopes = user.scopes_write
+    no_permission = False
     for each_scope in all_scopes:
-        if each_scope in write_scopes or user.is_admin:
+        if user.can_access_write(each_scope, write_scopes) or user.is_admin:
+            pass
+        else:
+            print("No permission for: ", each_scope)
+            no_permission = True
+            break
+
+    if not no_permission:
+        for each_scope in all_scopes:
             try:
                 Scope(each_scope).delete_version(each_scope + ":" + version)
             except:

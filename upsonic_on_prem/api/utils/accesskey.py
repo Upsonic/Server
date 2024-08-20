@@ -309,8 +309,10 @@ class AccessKey:
         self._delete(self.key + ":events")
         self._delete(self.key + ":openai_api_key")
 
-    def can_access_write(self, scope):
-        all_scopes = self.scopes_write
+    def can_access_write(self, scope, custom_scopes_write=None):
+        all_scopes = (
+            self.scopes_write if custom_scopes_write is None else custom_scopes_write
+        )
 
         control = False
 
