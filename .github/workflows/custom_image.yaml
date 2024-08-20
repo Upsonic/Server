@@ -283,6 +283,7 @@ jobs:
 
   manifest_build_with_model:
     if: github.event.inputs.docker_type == 'with_model'
+    needs: [ with_model, with_model_arm ]
     runs-on: x64linux
     environment: Deploys
 
@@ -345,6 +346,7 @@ jobs:
   
   manifest_build_without_models:
     if: github.event.inputs.docker_type == 'without_models'
+    needs: [without_models, without_models_arm]
     runs-on: self-hosted
     environment: Deploys
 
