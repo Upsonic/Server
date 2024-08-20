@@ -31,6 +31,6 @@ COPY models Server/upsonic_on_prem/api/utils/ai/
 WORKDIR /app/Server
 
 EXPOSE 7340
-
+EXPOSE 7341
 
 CMD ["bash", "/run.sh"]

@@ -29,6 +29,7 @@ COPY Server/run_without_models.sh /
 WORKDIR /app/Server
 
 EXPOSE 7340
+EXPOSE 7341
 
 
 CMD ["bash", "/run_without_models.sh"]
