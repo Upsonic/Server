@@ -6,7 +6,7 @@ from dash import settings
 User = settings.AUTH_USER_MODEL
 import uuid
 from app.api_integration import API_Integration
-
+from dash.logs import logger
 import threading
 
 from dotenv import load_dotenv
@@ -86,6 +86,21 @@ class User(AbstractUser):
         all_scopes = API_Integration(self.access_key).get_read_scopes_of_me()
 
         control = False
+
+        if scope + ".*" in all_scopes:
+            control = True
+
+        return control
+
+    def full_access_write(self, scope):
+        if API_Integration(self.access_key).is_admin(self.access_key):
+            return True
+
+        all_scopes = API_Integration(self.access_key).get_write_scopes_of_me()
+
+        control = False
+
+        logger.info(all_scopes)
 
         if scope + ".*" in all_scopes:
             control = True
