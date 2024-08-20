@@ -218,17 +218,33 @@ class AccessKey:
 
     @property
     def scopes_write(self):
+        ldap_list = []
         if self.is_ldap_active:
-            return self.ldap_scopes_write
+            ldap_list = self.ldap_scopes_write
 
-        return self._get(self.key + ":scopes_write") or []
+        main_list = []
+        the_get = self._get(self.key + ":scopes_write")
+        if the_get:
+            main_list = self._get(self.key + ":scopes_write")
+
+        combined_list = main_list + ldap_list
+
+        return combined_list
 
     @property
     def scopes_read(self):
+        ldap_list = []
         if self.is_ldap_active:
-            return self.ldap_scopes_read
+            ldap_list = self.ldap_scopes_read
 
-        return self._get(self.key + ":scopes_read") or []
+        main_list = []
+        the_get = self._get(self.key + ":scopes_read")
+        if the_get:
+            main_list = self._get(self.key + ":scopes_read")
+
+        combined_list = main_list + ldap_list
+
+        return combined_list
 
     @property
     def events(self):
