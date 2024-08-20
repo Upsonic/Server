@@ -20,7 +20,7 @@ RUN pip3 install -r /requirements.txt --break-system-packages
 RUN sh /ollama_install.sh
 RUN (ollama serve &) && sleep 30 && ollama pull phi3 && ollama pull nomic-embed-text
 
-COPY On-Prem On-Prem
+COPY Server Server
 
 COPY Server/the.conf /etc/nginx/conf.d/the.conf
 
@@ -28,7 +28,7 @@ COPY Server/run.sh /
 
 COPY models Server/upsonic_on_prem/api/utils/ai/
 
-WORKDIR /app/On-Prem
+WORKDIR /app/Server
 
 EXPOSE 7340
 
