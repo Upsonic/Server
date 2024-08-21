@@ -1,25 +1,21 @@
 {% load tags %}
-
-
 <nav class="uk-navbar-container " uk-navbar style="">
     <div class="uk-navbar-left uk-margin-small-left" style="width: 70%;">
         <ul class="uk-navbar-nav uk-margin-small-left uk-margin-small-top uk-margin-small-bottom" style="width: 100%;">
           <a class="uk-navbar-item uk-logo" href="{% url 'home' %}"><img src="/static/images/logo_name{% if request.user.dark_mode %}_dark.svg{% else %}.svg{% endif %}" alt="Logo" style="width: 124px; max-width: unset;"
               class="d-inline-block align-text-top align-middle"></a>
-
           <li style="width: 100%;" id="header_search_div">
             <form action="{% url 'search' %}" method="post">
               <div class="uk-margin-small-top ">
-                <div class="uk-inline" style="width: 30%;">
-                  
-                  <input class="uk-input" style="width: 200%;" type="text" placeholder="Search" aria-label="Search" name="question" required/>
+                <div class="uk-inline" style="width: 30%; position: relative;">
+                  <input id="search-input" class="uk-input" style="width: 200%;" type="text" aria-label="Search" name="question" required/>
+                  <span id="search-placeholder" style="position: absolute; left: 10px; top: 0; padding: 8px; pointer-events: none; font-size: smaller; color: gray;">
+                    AI Search <span style="color: green;">[⌘+K]</span>
+                  </span>
                 </div>
               </div>
-             
-
-            </form></li>
-
-            
+            </form>
+          </li>
         </ul>
       </div>
       <div class="uk-navbar-center">
@@ -27,19 +23,28 @@
       </div>
       <div class="uk-navbar-right">
         <ul class="uk-navbar-nav uk-margin-medium-right">
-
           
-
-
-
         <a  href="https://docs.upsonic.co/" target="_blank" class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Docs</a>
         <a  href="https://docs.upsonic.co/support" target="_blank" class="uk-button uk-button-default"><span uk-icon="receiver" class="uk-margin-small-right"></span>Support</a>
-
-
         </ul>
       </div>
   </nav>
-
-
-
-
+  <script>
+    document.addEventListener('keydown', function(event) {
+        if (event.metaKey && event.key === 'k') {
+            event.preventDefault();
+            document.getElementById('search-input').focus();
+        }
+    });
+    
+    const searchInput = document.getElementById('search-input');
+    const searchPlaceholder = document.getElementById('search-placeholder');
+    
+    searchInput.addEventListener('input', function() {
+        if (searchInput.value) {
+            searchPlaceholder.style.display = 'none';
+        } else {
+            searchPlaceholder.style.display = 'block';
+        }
+    });
+    </script>
