@@ -44,7 +44,8 @@ class AI_:
 
     @property
     def default_search_model(self):
-        return os.environ.get("default_search_model", "nomic-embed-text-upsonic")
+        return kot_db.get("default_search_model")
+    
 
     def search_by_documentation(
         self, the_contents, question, min_score=0, how_many_result=10

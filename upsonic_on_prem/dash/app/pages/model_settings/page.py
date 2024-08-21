@@ -1,7 +1,7 @@
 # Page Informations
 from app.pages.utils import get_current_directory_name
 
-name = "LLM Settings"
+name = "Model Settings"
 location = get_current_directory_name()
 #
 
@@ -18,18 +18,30 @@ def view(request):
     logger.debug("Hi")
     result = None
 
-    default_ai_model = API_Integration(request.user.access_key).get_default_ai_model()
+    
 
     if request.method == "POST":
         input_data = request.POST.get("model")
-        result = API_Integration(request.user.access_key).change_default_ai_model(
-            input_data
-        )
-        default_ai_model = input_data
+        search_model = request.POST.get("search_model")
+        if search_model:
+            result = API_Integration(request.user.access_key).change_default_search_model(
+                search_model
+            )
+            result = "Search Model Changed"
+
+        if input_data:
+            result = API_Integration(request.user.access_key).change_default_ai_model(input_data)
+            result = "AI Model Changed"
+
+
+
+    default_ai_model = API_Integration(request.user.access_key).get_default_ai_model()
+    default_search_model = API_Integration(request.user.access_key).get_default_search_model()
 
     data = {
         "page_title": name,
         "default_ai_model": default_ai_model,
+        "default_search_model": default_search_model,
         "result": result,
     }
     return render(request, f"pages/{location}/template.html", data)

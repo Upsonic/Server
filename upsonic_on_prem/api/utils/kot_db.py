@@ -12,6 +12,9 @@ kot_db_ = KOT("api", folder="/db/", enable_hashing=True)
 if not kot_db_.get("default_model"):
     kot_db_.set("default_model", os.environ.get("default_model", "upsonic_local_model"))
 
+if not kot_db_.get("default_search_model"):
+    kot_db_.set("default_search_model", os.environ.get("default_search_model", "nomic-embed-text-upsonic"))
+
 
 if not kot_db_.get("openai_apikey"):
     kot_db_.set("openai_apikey", os.environ.get("openai_api_key"))
