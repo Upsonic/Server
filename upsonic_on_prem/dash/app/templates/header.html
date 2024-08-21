@@ -10,7 +10,7 @@
                 <div class="uk-inline" style="width: 30%; position: relative;">
                   <input id="search-input" class="uk-input" style="width: 200%;" type="text" aria-label="Search" name="question" required/>
                   <span id="search-placeholder" style="position: absolute; left: 10px; top: 0; padding: 8px; pointer-events: none; font-size: smaller; color: gray;">
-                    AI Search <span style="color: green;">[⌘+K]</span>
+                    AI Search <span id="shortcut-text" style="color: green;">[⌘+K]</span>
                   </span>
                 </div>
               </div>
@@ -25,26 +25,33 @@
         <ul class="uk-navbar-nav uk-margin-medium-right">
           
         <a  href="https://docs.upsonic.co/" target="_blank" class="uk-button uk-button-default"><span uk-icon="file-text" class="uk-margin-small-right"></span>Docs</a>
-        <a  href="https://docs.upsonic.co/support" target="_blank" class="uk-button uk-button-default"><span uk-icon="receiver" class="uk-margin-small-right"></span>Support</a>
-        </ul>
-      </div>
-  </nav>
-  <script>
-    document.addEventListener('keydown', function(event) {
-        if (event.metaKey && event.key === 'k') {
-            event.preventDefault();
-            document.getElementById('search-input').focus();
-        }
-    });
-    
-    const searchInput = document.getElementById('search-input');
-    const searchPlaceholder = document.getElementById('search-placeholder');
-    
-    searchInput.addEventListener('input', function() {
-        if (searchInput.value) {
-            searchPlaceholder.style.display = 'none';
-        } else {
-            searchPlaceholder.style.display = 'block';
-        }
-    });
-    </script>
+      <a  href="https://docs.upsonic.co/support" target="_blank" class="uk-button uk-button-default"><span uk-icon="receiver" class="uk-margin-small-right"></span>Support</a>
+      </ul>
+    </div>
+</nav>
+<script>
+  document.addEventListener('keydown', function(event) {
+      if (event.metaKey && event.key === 'k') {
+          event.preventDefault();
+          document.getElementById('search-input').focus();
+      }
+  });
+  
+  const searchInput = document.getElementById('search-input');
+  const searchPlaceholder = document.getElementById('search-placeholder');
+  const shortcutText = document.getElementById('shortcut-text');
+  
+  searchInput.addEventListener('input', function() {
+      if (searchInput.value) {
+          searchPlaceholder.style.display = 'none';
+      } else {
+          searchPlaceholder.style.display = 'block';
+      }
+  });
+
+  // Detect OS and update shortcut text
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  if (!isMac) {
+      shortcutText.style.display = 'none';
+  }
+</script>
