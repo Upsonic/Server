@@ -1089,6 +1089,26 @@ class Scope:
         return scopes
 
     @staticmethod
+    def get_all_scopes_len():
+        scopes = []
+        with tracer.start_span("scope-get-all-scopes") as span:
+            try:
+                keys = storage_2.keys()
+
+                for i in keys:
+                    if ":" not in i and i != "":
+                        scopes.append(i)
+
+                scopes.sort()
+                span.set_attribute("total_scopes", len(scopes))
+                span.set_status(Status(StatusCode.OK))
+            except Exception as ex:
+                span.set_status(Status(StatusCode.ERROR))
+                span.record_exception(ex)
+        return len(scopes)
+
+
+    @staticmethod
     def get_all_scopes_name(user: AccessKey):
         all_scopes = Scope.get_all_scopes()
 
