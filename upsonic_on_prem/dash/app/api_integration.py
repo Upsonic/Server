@@ -867,7 +867,7 @@ class API_Integration:
             "POST", "/get_dump_commit_message_of_scope", data=data
         )
         print("Commit message ", result)
-        if result == [None] or result == None or result == "No Changes Made":
+        if result == [None] or result == None:
             result = "No Commit Message"
         else:
             result = bold_first_word(result)
