@@ -419,7 +419,10 @@ def control_element(request, id):
             the_upper = the_upper + ":" + version
 
     using_code = ""
-    using_code = f'upsonic.load("{id}")()'
+    if version == None:
+        using_code = f'upsonic.load("{id}")()'
+    else:
+        using_code = f'upsonic.load("{id}", version="{version}")()'
 
     documentation = API_Integration(request.user.access_key).get_documentation(
         id, version=version

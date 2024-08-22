@@ -10,6 +10,8 @@
       {{control_library}}
   </h1>
   {% if version != "" %}
+  <a href="#" onclick="page_load('{% url 'control_library' id=control_library %}');event.preventDefault();" ><span class="uk-button uk-button-default" style="height: 35px;"><span uk-icon="calendar" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Return to Latest Version</span></span></a>
+      
   <span class="uk-badge" style="height: 35px;"><span uk-icon="history" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Version {{version}}</span></span>
   {% endif %}
   <span class="uk-badge" style="height: 35px;"><span uk-icon="code" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Total Object Number {{total_sub_amount}}</span></span>
