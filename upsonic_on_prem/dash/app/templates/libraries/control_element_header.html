@@ -37,7 +37,7 @@
     <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Home' %}-primary{% else %}-default{% endif %}"><span uk-icon="home" class="uk-margin-small-right"></span>Home</a>
 
 
-    <a href="#" onclick="page_load('{% url 'control_element_version' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Version' %}-primary{% else %}-default{% endif %}"><span uk-icon="history" class="uk-margin-small-right"></span>Versions</a>
+
                 
     <a href="#" onclick="page_load('{% url 'control_element_commits' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Commits' %}-primary{% else %}-default{% endif %}"><span uk-icon="push" class="uk-margin-small-right"></span>Commits</a>
     <a href="#" onclick="page_load('{% url 'control_element_runs' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Runs' %}-primary{% else %}-default{% endif %}"><span uk-icon="server" class="uk-margin-small-right"></span>Run History</a>
