@@ -892,3 +892,6 @@ class API_Integration:
         data["run_sha"] = run_sha
 
         return self._send_request("POST", "/get_run", data=data)
+
+    def diagnostic(self):
+        return self._send_request("GET", "/diagnostic")
