@@ -63,7 +63,6 @@ class Scope:
         self.specific = specific
 
 
-        self.set_settings({"usage_analyses": "True"})
 
     def get_last_runs(self, n=10):
         result = []
@@ -834,6 +833,13 @@ class Scope:
 
             if the_resource != None:
                 source = self.the_storage.get(self.key)["settings"]
+
+        if source == None:
+            source = {}
+
+        if "usage_analyses" not in source:
+            source["usage_analyses"] = "True"
+
 
         return source
 
