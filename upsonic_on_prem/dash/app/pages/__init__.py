@@ -9,7 +9,9 @@ urls = []
 pages = []
 
 # List all subdirectories in the pages directory
-for subdir in os.listdir(pages_dir):
+the_list = os.listdir(pages_dir)
+the_list.sort()
+for subdir in the_list:
     subdir_path = os.path.join(pages_dir, subdir)
     if os.path.isdir(subdir_path):
         page_file = os.path.join(subdir_path, "page.py")
