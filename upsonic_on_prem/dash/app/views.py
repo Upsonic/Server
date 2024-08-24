@@ -467,39 +467,8 @@ def control_element(request, id):
             # models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         time_complexity = "Time Complexity is generating, it will be ready soon."
 
-    mistakes = API_Integration(request.user.access_key).get_mistakes(
-        id, version=version
-    )
-    if mistakes == None:
-        if version == None:
-            the_id = id
-        else:
-            the_id = id + ":" + version
-        tasks = models.AI_Task.objects.filter(
-            task_name="mistakes", key=the_id, status=False
-        )
-        if len(tasks) == 0:
-            pass
-            # models.AI_Task(task_name="mistakes", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        mistakes = "Mistakes are generating, it will be ready soon."
 
-    required_test_types = API_Integration(
-        request.user.access_key
-    ).get_required_test_types(id, version=version)
-    if required_test_types == None:
-        if version == None:
-            the_id = id
-        else:
-            the_id = id + ":" + version
-        tasks = models.AI_Task.objects.filter(
-            task_name="required_test_types", key=the_id, status=False
-        )
-        if len(tasks) == 0:
-            pass
-            # models.AI_Task(task_name="required_test_types", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        required_test_types = (
-            "Required Test Types are generating, it will be ready soon."
-        )
+
 
     tags = API_Integration(request.user.access_key).get_tags(id, version=version)
     if tags == None:
@@ -581,8 +550,8 @@ def control_element(request, id):
         "using_code": using_code,
         "documentation": documentation,
         "time_complexity": time_complexity,
-        "mistakes": mistakes,
-        "required_test_types": required_test_types,
+
+    
         "tags": tags,
         "security_analysis": security_analysis,
         "requirements": requirements,
@@ -665,18 +634,8 @@ def regenerate_documentation(request, id):
         access_key=request.user.access_key,
         owner=request.user,
     ).save()
-    models.AI_Task(
-        task_name="mistakes",
-        key=id,
-        access_key=request.user.access_key,
-        owner=request.user,
-    ).save()
-    models.AI_Task(
-        task_name="required_test_types",
-        key=id,
-        access_key=request.user.access_key,
-        owner=request.user,
-    ).save()
+
+
     models.AI_Task(
         task_name="tags", key=id, access_key=request.user.access_key, owner=request.user
     ).save()

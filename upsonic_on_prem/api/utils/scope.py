@@ -189,8 +189,8 @@ class Scope:
         self.the_storage.delete(self.key + ":documentation")
         self.the_storage.delete(self.key + "github_sha")
         self.the_storage.delete(self.key + ":time_complexity")
-        self.the_storage.delete(self.key + ":mistakes")
-        self.the_storage.delete(self.key + ":required_test_types")
+
+
         self.the_storage.delete(self.key + ":tags")
         self.the_storage.delete(self.key + ":security_analysis")
         self.the_storage.delete(self.key + ":code")
@@ -273,8 +273,8 @@ class Scope:
                 "documentation": self.documentation,
                 "github_sha": self.github_sha,
                 "time_complexity": self.time_complexity,
-                "mistakes": self.mistakes,
-                "required_test_types": self.required_test_types,
+
+
                 "security_analysis": self.security_analysis,
             }
 
@@ -346,18 +346,7 @@ class Scope:
 
         return source
 
-    @property
-    def mistakes(self):
-        source = None
-        if not self.specific:
-            source = self.the_storage.get(self.key + ":mistakes")
-        else:
-            the_resource = self.the_storage.get(self.key)
 
-            if the_resource != None:
-                source = self.the_storage.get(self.key)["mistakes"]
-
-        return source
 
     @property
     def commit_message(self):
@@ -390,18 +379,7 @@ class Scope:
 
         return source
 
-    @property
-    def required_test_types(self):
-        source = None
-        if not self.specific:
-            source = self.the_storage.get(self.key + ":required_test_types")
-        else:
-            the_resource = self.the_storage.get(self.key)
 
-            if the_resource != None:
-                source = self.the_storage.get(self.key)["required_test_types"]
-
-        return source
 
     @property
     def tags(self):
@@ -485,26 +463,7 @@ class Scope:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 
-    def create_mistakes(self):
-        with tracer.start_span("scope-create-mistakes") as span:
-            span.set_attribute("AI.default_model", AI.default_model)
-            the_code = self.code
-            span.set_attribute("code_len", len(str(the_code)))
-            try:
-                document = AI.code_to_mistakes(self.code)
 
-                if not self.specific:
-                    self.the_storage.set(self.key + ":mistakes", document)
-                else:
-                    the_resource = self.the_storage.get(self.key)
-
-                    the_resource["mistakes"] = document
-                    self.the_storage.set(self.key, the_resource)
-
-                span.set_status(Status(StatusCode.OK))
-            except Exception as e:
-                span.set_status(Status(StatusCode.ERROR))
-                span.record_exception(e)
 
     def create_commit_message(
         self, no_changes=False, custom_commit_message=None, return_prompt=False
@@ -545,25 +504,7 @@ class Scope:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 
-    def create_required_test_types(self):
-        with tracer.start_span("scope-create-required-test-types") as span:
-            span.set_attribute("AI.default_model", AI.default_model)
-            the_code = self.code
-            span.set_attribute("code_len", len(str(the_code)))
-            try:
-                document = AI.code_to_required_test_types(the_code)
 
-                if not self.specific:
-                    self.the_storage.set(self.key + ":required_test_types", document)
-                else:
-                    the_resource = self.the_storage.get(self.key)
-
-                    the_resource["required_test_types"] = document
-                    self.the_storage.set(self.key, the_resource)
-                span.set_status(Status(StatusCode.OK))
-            except Exception as e:
-                span.set_status(Status(StatusCode.ERROR))
-                span.record_exception(e)
 
     def create_tags(self):
         with tracer.start_span("scope-create-tags") as span:
@@ -890,8 +831,8 @@ class Scope:
                         "documentation": self.documentation,
                         "github_sha": self.github_sha,
                         "time_complexity": self.time_complexity,
-                        "mistakes": self.mistakes,
-                        "required_test_types": self.required_test_types,
+
+
                         "security_analysis": self.security_analysis,
                     }
                     self.the_storage.set(self.key, temp_data)
@@ -900,8 +841,8 @@ class Scope:
                         create_commit_message_of_scope_,
                         create_document_of_scope_,
                         create_time_complexity_of_scope_,
-                        create_mistakes_of_scope_,
-                        create_required_test_types_of_scope_,
+
+
                         create_tags_of_scope_,
                         create_security_analyses_of_scope_,
                         create_readme_,
@@ -936,18 +877,8 @@ class Scope:
                             create_ai_task=True,
                             access_key=access_key,
                         )
-                        create_mistakes_of_scope_(
-                            scope=self.key,
-                            version=None,
-                            create_ai_task=True,
-                            access_key=access_key,
-                        )
-                        create_required_test_types_of_scope_(
-                            scope=self.key,
-                            version=None,
-                            create_ai_task=True,
-                            access_key=access_key,
-                        )
+
+
                         create_tags_of_scope_(
                             scope=self.key,
                             version=None,
@@ -994,8 +925,8 @@ class Scope:
                         "documentation": self.documentation,
                         "github_sha": self.github_sha,
                         "time_complexity": self.time_complexity,
-                        "mistakes": self.mistakes,
-                        "required_test_types": self.required_test_types,
+
+
                         "security_analysis": self.security_analysis,
                     }
 

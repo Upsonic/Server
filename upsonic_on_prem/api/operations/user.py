@@ -373,30 +373,8 @@ def get_time_complexity_of_scope():
     return jsonify({"status": True, "result": the_scope.time_complexity})
 
 
-@app.route(get_mistakes_of_scope_url, methods=["POST"])
-def get_mistakes_of_scope():
-    """ """
-    scope = request.form.get("scope")
-    version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    return jsonify({"status": True, "result": the_scope.mistakes})
 
 
-@app.route(get_required_test_types_of_scope_url, methods=["POST"])
-def get_required_test_types_of_scope():
-    """ """
-    scope = request.form.get("scope")
-    version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    return jsonify({"status": True, "result": the_scope.required_test_types})
 
 
 @app.route(get_tags_of_scope_url, methods=["POST"])
@@ -641,58 +619,6 @@ def create_time_complexity_of_scope_(
     return work
 
 
-mistakes_tasks = {}
-
-
-def create_mistakes_of_scope_(scope, version, create_ai_task=False, access_key=None):
-    """
-
-    :param scope: param version:
-    :param create_ai_task: Default value = False)
-    :param access_key: Default value = None)
-    :param version:
-
-    """
-    task_name = scope
-    if version != None:
-        task_name = scope + ":" + version
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    while task_name in mistakes_tasks:
-        time.sleep(1)
-
-    if task_name not in mistakes_tasks:
-        mistakes_tasks[task_name] = True
-        the_task_id = (
-            requests.post(
-                "http://localhost:3001/add_ai_task",
-                data={"task_name": "mistakes", "key": scope, "access_key": access_key},
-            ).json()["id"]
-            if create_ai_task
-            else None
-        )
-        try:
-            work = the_scope.create_mistakes()
-        except:
-            pass
-        try:
-            mistakes_tasks.pop(task_name)
-            (
-                requests.post(
-                    "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key},
-                ).json()["id"]
-                if create_ai_task
-                else None
-            )
-        except:
-            pass
-
-    print("Complated mistakes_tasks  task: ", scope)
-    return work
-
 
 commit_message_tasks = {}
 
@@ -756,64 +682,6 @@ def create_commit_message_of_scope_(
     print("Complated commit_message_tasks  task: ", scope)
     return work
 
-
-required_test_types_tasks = {}
-
-
-def create_required_test_types_of_scope_(
-    scope, version, create_ai_task=False, access_key=None
-):
-    """
-
-    :param scope: param version:
-    :param create_ai_task: Default value = False)
-    :param access_key: Default value = None)
-    :param version:
-
-    """
-    task_name = scope
-    if version != None:
-        task_name = scope + ":" + version
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    while task_name in required_test_types_tasks:
-        time.sleep(1)
-
-    if task_name not in required_test_types_tasks:
-        required_test_types_tasks[task_name] = True
-        the_task_id = (
-            requests.post(
-                "http://localhost:3001/add_ai_task",
-                data={
-                    "task_name": "required_test_types",
-                    "key": scope,
-                    "access_key": access_key,
-                },
-            ).json()["id"]
-            if create_ai_task
-            else None
-        )
-        try:
-            work = the_scope.create_required_test_types()
-        except:
-            pass
-        try:
-            required_test_types_tasks.pop(task_name)
-            (
-                requests.post(
-                    "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key},
-                ).json()["id"]
-                if create_ai_task
-                else None
-            )
-        except:
-            pass
-
-    print("Complated required_test_types_tasks  task: ", scope)
-    return work
 
 
 tags_tasks = {}
@@ -893,26 +761,9 @@ def create_time_complexity_of_scope():
     )
 
 
-@app.route(create_mistakes_of_scope_url, methods=["POST"])
-def create_mistakes_of_scope():
-    """ """
-    scope = request.form.get("scope")
-    version = request.form.get("version")
-
-    return jsonify(
-        {"status": True, "result": create_mistakes_of_scope_(scope, version)}
-    )
 
 
-@app.route(create_required_test_types_of_scope_url, methods=["POST"])
-def create_required_test_types_of_scope():
-    """ """
-    scope = request.form.get("scope")
-    version = request.form.get("version")
 
-    return jsonify(
-        {"status": True, "result": create_required_test_types_of_scope_(scope, version)}
-    )
 
 
 @app.route(create_tags_of_scope_url, methods=["POST"])

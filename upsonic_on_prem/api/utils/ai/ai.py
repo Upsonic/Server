@@ -309,32 +309,6 @@ And now make a summary for this code:
         result = self.default_completion(input_text)
         return result
 
-    def code_to_mistakes(self, code):
-        input_text = f"""
-In this task, your goal is to identify and describe potential mistakes, including syntax errors and logical errors, in a given Python code. You should provide suggestions on how to fix these errors when possible. Here's an example:
-
-**Input:**
-```python
-deff add_numbers(a, b)
-    return a ++ b
-```
-
-**Output:** 
-Two mistakes are identified in this code. First, the function definition uses 'deff', which is not a valid keyword in Python. This should be corrected to 'def'. Second, the operation '++' is not valid in Python. To add two numbers in Python, the '+' operator is used.
-
-Now, please identify potential mistakes in the following code:
-
-
-```python
-{code}
-```
-
-Note: Please identify and describe the errors in a clear and informative manner. Libraries already imported. There is no `Missing Imports`
-
-"""
-
-        result = self.default_completion(input_text)
-        return result
 
     def code_to_security_analysis(self, code):
         input_text = f"""
@@ -360,37 +334,7 @@ In your response, give a clear outline of potential securityissues present and e
         result = self.default_completion(input_text)
         return result
 
-    def code_to_required_test_types(self, code):
-        input_text = f"""
-In this task, you're asked to critically evaluate the Python code provided below from a testing perspective. You're expected to identify the critical sections which would require testing, recommend types of tests (unit tests, functional tests, integration tests, etc.) that would be appropriate, and highlight any potential edge cases that need to be addressed.
 
-Additionally, please comment on the overall testability of the code: is it structured in a way that's conducive to testing? Where relevant, suggest any alterations that could be made to enhance test coverage and ease testing efforts.
-
-Let's illustrate with an example:
-
-**Input:**
-```python
-def add(a, b):
-    return a + b
-```
-
-**Output:**
-This is a simple function, add, which returns the sum of two inputs. In terms of testing, different types of tests could be used:
-  - **Unit tests** to confirm that the function correctly adds numbers together.
-  - **Edge case testing** to verify its behavior with edge inputs like very large numbers, zero, or negative numbers.
-Furthermore, attention should be given to test whether the function handles non-numeric input gracefully, potentially raising an appropriate error.
-
-Now, please perform a test analysis on the following piece of Python code:
-
-```python
-{code}
-```
-
-Note down list the types of tests you would run to ensure the function behaves as expected. And just give text not code.
-"""
-
-        result = self.default_completion(input_text)
-        return result
 
     def code_to_tags(self, code):
         input_text = f"""

@@ -78,9 +78,9 @@ get_dependency_of_scope_url = "/get_dependency_of_scope"
 
 get_time_complexity_of_scope_url = "/get_time_complexity_of_scope"
 
-get_mistakes_of_scope_url = "/get_mistakes_of_scope"
 
-get_required_test_types_of_scope_url = "/get_required_test_types_of_scope"
+
+
 get_tags_of_scope_url = "/get_tags_of_scope"
 get_security_analysis_of_scope_url = "/get_security_analysis_of_scope"
 
@@ -99,10 +99,10 @@ get_dump_commit_message_of_scope_url = "/get_dump_commit_message_of_scope"
 create_document_of_scope_url = "/create_document_of_scope"
 create_time_complexity_of_scope_url = "/create_time_complexity_of_scope"
 
-create_mistakes_of_scope_url = "/create_mistakes_of_scope"
+
 create_commit_message_of_scope_url = "/create_commit_message_of_scope"
 
-create_required_test_types_of_scope_url = "/create_required_test_types_of_scope"
+
 create_tags_of_scope_url = "/create_tags_of_scope"
 create_security_analysis_of_scope_url = "/create_security_analysis_of_scope"
 
@@ -180,9 +180,9 @@ user_urs_ = [
     get_dependency_of_scope_url,
     get_requirements_of_scope_url,
     get_security_analysis_of_scope_url,
-    get_required_test_types_of_scope_url,
+
     get_tags_of_scope_url,
-    get_mistakes_of_scope_url,
+
     get_time_complexity_of_scope_url,
     create_version_url,
     create_version_prefix_url,
@@ -198,10 +198,10 @@ user_urs_ = [
     get_python_version_of_scope_url,
     create_document_of_scope_url,
     create_security_analysis_of_scope_url,
-    create_required_test_types_of_scope_url,
+
     create_tags_of_scope_url,
     create_commit_message_of_scope_url,
-    create_mistakes_of_scope_url,
+
     create_time_complexity_of_scope_url,
     create_document_of_scope_url_old,
     get_all_scopes_user_url,
@@ -227,10 +227,10 @@ user_write_urls_ = [
     dump_together_url,
     create_document_of_scope_url,
     create_security_analysis_of_scope_url,
-    create_required_test_types_of_scope_url,
+
     create_tags_of_scope_url,
     create_commit_message_of_scope_url,
-    create_mistakes_of_scope_url,
+
     create_time_complexity_of_scope_url,
     create_document_of_scope_url_old,
     delete_scope_url,
@@ -256,9 +256,9 @@ user_read_urls_ = [
     get_requirements_of_scope_url,
     get_settings_of_scope_url,
     get_security_analysis_of_scope_url,
-    get_required_test_types_of_scope_url,
+
     get_tags_of_scope_url,
-    get_mistakes_of_scope_url,
+
     get_time_complexity_of_scope_url,
     get_dump_history_url,
     get_type_of_scope_url,

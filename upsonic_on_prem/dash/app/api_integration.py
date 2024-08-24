@@ -352,21 +352,8 @@ class API_Integration:
             self._send_request("POST", "/get_time_complexity_of_scope", data=data)
         )
 
-    def get_mistakes(self, scope, version=None):
-        data = {"scope": scope}
-        if version != None:
-            data["version"] = version
-        return transform_to_html_bold(
-            self._send_request("POST", "/get_mistakes_of_scope", data=data)
-        )
 
-    def get_required_test_types(self, scope, version=None):
-        data = {"scope": scope}
-        if version != None:
-            data["version"] = version
-        return transform_to_html_bold(
-            self._send_request("POST", "/get_required_test_types_of_scope", data=data)
-        )
+
 
     def get_tags(self, scope, version=None):
         data = {"scope": scope}
@@ -405,27 +392,9 @@ class API_Integration:
             data["version"] = version
         return self._send_request("POST", "/create_time_complexity_of_scope", data=data)
 
-    def create_mistakes(self, scope):
-        version = None
-        if ":" in scope:
-            version = scope.split(":")[1]
-            scope = scope.split(":")[0]
-        data = {"scope": scope}
-        if version != None:
-            data["version"] = version
-        return self._send_request("POST", "/create_mistakes_of_scope", data=data)
 
-    def create_required_test_types(self, scope):
-        version = None
-        if ":" in scope:
-            version = scope.split(":")[1]
-            scope = scope.split(":")[0]
-        data = {"scope": scope}
-        if version != None:
-            data["version"] = version
-        return self._send_request(
-            "POST", "/create_required_test_types_of_scope", data=data
-        )
+
+
 
     def create_tags(self, scope):
         version = None

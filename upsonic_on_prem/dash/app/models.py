@@ -200,20 +200,14 @@ class AI_Task(models.Model):
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
 
-    def mistakes_task(self):
-        the_func = API_Integration(self.access_key).create_mistakes
-        the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        pending_tasks.append(the_thread)
+
 
     def time_complexity_task(self):
         the_func = API_Integration(self.access_key).create_time_complexity
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
 
-    def required_test_types_task(self):
-        the_func = API_Integration(self.access_key).create_required_test_types
-        the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        pending_tasks.append(the_thread)
+
 
     def tags_task(self):
         the_func = API_Integration(self.access_key).create_tags
@@ -238,12 +232,10 @@ class AI_Task(models.Model):
         print("FROM MODEL: ", not_start_task)
         if self.task_name == "documentation":
             self.documentation_task() if not not_start_task else None
-        elif self.task_name == "mistakes":
-            self.mistakes_task() if not not_start_task else None
+
         elif self.task_name == "time_complexity":
             self.time_complexity_task() if not not_start_task else None
-        elif self.task_name == "required_test_types":
-            self.required_test_types_task() if not not_start_task else None
+
         elif self.task_name == "tags":
             self.tags_task() if not not_start_task else None
         elif self.task_name == "security_analysis":
