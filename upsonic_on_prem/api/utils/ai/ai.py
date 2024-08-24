@@ -378,13 +378,13 @@ Produce meaningful tags that succinctly summarize the significant components and
 
         return result
 
-    def generate_readme(self, top_library, summary_list):
+    def generate_readme(self, top_library, summary_list, return_prompt=False):
         result = None
         with tracer.start_span("readme-generate") as span:
             try:
                 span.set_attribute("AI.default_model", AI.default_model)
                 span.set_attribute("summary_list_len", len(str(summary_list)))
-                prompt = f"""
+                prompt_1 = f"""
 Hi there is an list of elements and summaries:
 
 {summary_list}
@@ -393,10 +393,10 @@ Hi there is an list of elements and summaries:
 Explain the purpose of this '{top_library}' library and its elements in a few sentences.
 """
 
-                summary = self.default_completion(prompt)
+                
 
                 # Also generate the usage aim
-                prompt = f"""
+                prompt_2 = f"""
 Hi there is an list of elements and summaries:
 
 {summary_list}
@@ -405,7 +405,12 @@ Hi there is an list of elements and summaries:
 Explain the usage aim of this '{top_library}' library and its elements in a few sentences.
 """
 
-                usage_aim = self.default_completion(prompt)
+
+                if return_prompt:
+                    return prompt_1 + "\n---------SECOND STEP---------\n" + prompt_2
+
+                summary = self.default_completion(prompt_1)
+                usage_aim = self.default_completion(prompt_2)
 
                 result = (
                     '<b class="custom_code_highlight_green">Explanation:</b><br>'

@@ -1122,18 +1122,7 @@ def create_readme_(
 
     try:
         readme_tasks[task_name] = True
-        the_task_id = (
-            requests.post(
-                "http://localhost:3001/add_ai_task",
-                data={
-                    "task_name": "readme",
-                    "key": top_library,
-                    "access_key": access_key,
-                },
-            ).json()["id"]
-            if create_ai_task
-            else None
-        )
+
 
         all_scopes_response = (
             Scope.get_all_scopes_name_prefix(
@@ -1186,6 +1175,21 @@ def create_readme_(
 
         # Create sha256 hash of the result
         sha256 = hashlib.sha256((summary_list + top_library).encode()).hexdigest()
+
+
+        the_task_id = (
+            requests.post(
+                "http://localhost:3001/add_ai_task",
+                data={
+                    "task_name": "readme",
+                    "key": top_library,
+                    "access_key": access_key,
+                    "user_input": AI.generate_readme(top_library, summary_list, return_prompt=True),
+                },
+            ).json()["id"]
+            if create_ai_task
+            else None
+        )
 
         result = AI.generate_readme(top_library, summary_list)
 
