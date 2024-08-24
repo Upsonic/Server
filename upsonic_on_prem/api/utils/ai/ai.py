@@ -336,7 +336,7 @@ In your response, give a clear outline of potential securityissues present and e
 
 
 
-    def code_to_tags(self, code):
+    def code_to_tags(self, code, return_prompt=False):
         input_text = f"""
 Your objective is to develop an automated system that can extract and generate informative tags based on the functionality and characteristics of the provided Python code snippets. The generated tags should succinctly summarize the key aspects and features of each code segment.
 
@@ -368,6 +368,8 @@ Now, analyze the Python code snippet provided below and generate descriptive tag
 
 Produce meaningful tags that succinctly summarize the significant components and operations illustrated in the provided code snippet. Focus on extracting essential details from the code content to generate informative tags without diving into actual code generation.
 """
+        if return_prompt:
+            return input_text
 
         result = self.default_completion(input_text)
 

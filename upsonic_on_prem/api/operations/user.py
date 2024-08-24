@@ -711,7 +711,12 @@ def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None)
         the_task_id = (
             requests.post(
                 "http://localhost:3001/add_ai_task",
-                data={"task_name": "tags", "key": scope, "access_key": access_key},
+                data={
+                    "task_name": "tags",
+                    "key": scope,
+                    "access_key": access_key,
+                    "user_input": the_scope.create_tags(return_prompt=True),
+                },
             ).json()["id"]
             if create_ai_task
             else None

@@ -506,7 +506,14 @@ class Scope:
 
 
 
-    def create_tags(self):
+    def create_tags(self, return_prompt=False):
+        if return_prompt:
+            return AI.code_to_tags(
+                self.code, return_prompt=True
+            )
+
+
+
         with tracer.start_span("scope-create-tags") as span:
             span.set_attribute("AI.default_model", AI.default_model)
             the_code = self.code
