@@ -459,6 +459,7 @@ class Scope:
                     self.the_storage.set(self.key, the_resource)
 
                 span.set_status(Status(StatusCode.OK))
+                return document
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
@@ -500,6 +501,7 @@ class Scope:
                     the_resource["commit_message"] = document
                     self.the_storage.set(self.key, the_resource)
                 span.set_status(Status(StatusCode.OK))
+                return document
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
@@ -529,6 +531,7 @@ class Scope:
                     the_resource["tags"] = document
                     self.the_storage.set(self.key, the_resource)
                 span.set_status(Status(StatusCode.OK))
+                return document
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
@@ -554,6 +557,7 @@ class Scope:
                     the_resource["security_analysis"] = document
                     self.the_storage.set(self.key, the_resource)
                 span.set_status(Status(StatusCode.OK))
+                return document
             except Exception as e:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)

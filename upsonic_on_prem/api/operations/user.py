@@ -730,7 +730,7 @@ def create_tags_of_scope_(scope, version, create_ai_task=False, access_key=None)
             (
                 requests.post(
                     "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key},
+                    data={"id": the_task_id, "access_key": access_key, "ai_output": work},
                 ).json()["id"]
                 if create_ai_task
                 else None
@@ -1082,7 +1082,7 @@ def create_security_analyses_of_scope_(
             (
                 requests.post(
                     "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key},
+                    data={"id": the_task_id, "access_key": access_key, "ai_output": work},
                 ).json()["id"]
                 if create_ai_task
                 else None
@@ -1238,7 +1238,7 @@ def create_readme_(
             (
                 requests.post(
                     "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key},
+                    data={"id": the_task_id, "access_key": access_key, "ai_output": result},
                 ).json()["id"]
                 if create_ai_task
                 else None
@@ -1257,7 +1257,7 @@ def create_readme_(
             (
                 requests.post(
                     "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key},
+                    data={"id": the_task_id, "access_key": access_key, "ai_output": None},
                 ).json()["id"]
                 if create_ai_task
                 else None
