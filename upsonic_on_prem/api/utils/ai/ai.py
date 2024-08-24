@@ -310,7 +310,7 @@ And now make a summary for this code:
         return result
 
 
-    def code_to_security_analysis(self, code):
+    def code_to_security_analysis(self, code, return_prompt=False):
         input_text = f"""
 In this task, you're required to conduct a security analysis of the provided Python code snippet. It requires you to find potential security risks, pitfalls or weak practices from a security perspective and propose enhancements to address them.
 
@@ -330,6 +330,9 @@ Now, considering a fresh scenario, please perform a security audit of the follow
 
 In your response, give a clear outline of potential securityissues present and elaborate on how one might strengthen the overall security. Libraries already imported. The focus is on text-based analysis, so no need to provide an actual piece of code in your response.
 """
+        
+        if return_prompt:
+            return input_text
 
         result = self.default_completion(input_text)
         return result

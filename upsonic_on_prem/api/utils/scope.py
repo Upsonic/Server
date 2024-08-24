@@ -533,7 +533,12 @@ class Scope:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 
-    def create_security_analysis(self):
+    def create_security_analysis(self, return_prompt=False):
+        if return_prompt:
+            return AI.code_to_security_analysis(
+                self.code, return_prompt=True
+            )
+        
         with tracer.start_span("scope-create-security-analysis") as span:
             span.set_attribute("AI.default_model", AI.default_model)
             the_code = self.code

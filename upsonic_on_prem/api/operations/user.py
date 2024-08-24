@@ -1067,6 +1067,7 @@ def create_security_analyses_of_scope_(
                     "task_name": "security_analyses",
                     "key": scope,
                     "access_key": access_key,
+                    "user_input": the_scope.create_security_analysis(return_prompt=True),
                 },
             ).json()["id"]
             if create_ai_task
