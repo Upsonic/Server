@@ -1,4 +1,5 @@
 import os
+import json
 
 os.environ["TRACELOOP_TRACE_CONTENT"] = "false"
 
@@ -427,9 +428,39 @@ Explain the usage aim of this '{top_library}' library and its elements in a few 
 
     def difference_to_commit_message(self, code_old, code_new, return_prompt=False):
         input_text = f"""
-In this task, your goal is to generate a commit message for the differences.
+Generate a small commit message. The output should be one sentence. There is an information about conventional commit message. 
 
 
+Conventional Commits
+The Conventional Commits specification is a lightweight convention for commit messages. It provides a set of rules for adding human—and machine-readable meaning to commit messages. Thus, the main purpose is to make it easier to create automated tools on top of commit messages.
+
+In this sense, this convention adds some specific elements to commit messages. One main element is the commit type. The table below shows the most common commit types included in the specification:
+
+Type	Description
+feat	Introduce a new feature to the codebase
+fix	Fix a bug in the codebase
+docs	Create/update documentation
+style	Feature and updates related to styling
+refactor	Refactor a specific section of the codebase
+test	Add or update code related to testing
+chore	Regular code maintenance
+
+
+
+Steps to do this task:
+1) Read and understand conventional commits
+
+2) Find the change of old version and new_version they are between of <user_input> and </user_input>
+
+3) Chose the type of change by conventional commits
+
+4) Return the commit message inside of an json
+
+
+
+Trick for return type, you return should be an json only. You should think before of the result. Your return should like """+"{'commit_message': 'Answer'}"+f""". You should not responsible to explain your json return. Only return json answer
+
+<user_input>
 ```python old version
 {code_old}
 ```
@@ -437,50 +468,25 @@ In this task, your goal is to generate a commit message for the differences.
 ```python new version
 {code_new}
 ```
-
-Generate a smalll commit message. Maybe 1 or 2 sentence.
-
-```
-Example commit messages:
-Add feature for a user to like a post
-
-Drop feature for a user to like a post
-
-Fix association between a user and a post
-
-Bump dependency library to current version
-
-Make build process use caches for speed
-
-Start feature flag for a user to like a post
-
-Stop feature flag for a user to like a post
-
-Optimize search speed for a user to see posts
-
-Document community guidelines for post content
-
-Refactor user model to new language syntax
-
-Reformat home page text to use more whitespace
-
-Rearrange buttons so OK is on the lower right
-
-Redraw diagram of how our web app works
-
-Reword home page text to be more welcoming
-  
-Revise link to update it to the new URL
-```
+</user_input>
 
 
-Answer only with your commit message suggestion:
+Don't forget the before prompt of <user_input>. Return only the json
+
+
+
+
 """
 
         if return_prompt:
             return input_text
 
         result = self.default_completion(input_text)
+        try:
+            result = json.loads(result)
+            result = result["commit_message"]
+        except:
+            pass
 
         return result
 
