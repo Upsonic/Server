@@ -35,7 +35,7 @@ class TheNotifications(models.Model):
 class User(AbstractUser):
     notifications = models.ManyToManyField(TheNotifications, blank=True)
     access_key = models.CharField(max_length=300, default="")
-    dark_mode = models.BooleanField(default=True, blank=True, null=True)
+    dark_mode = models.BooleanField(default=False, blank=True, null=True)
     register = models.BooleanField(default=True, blank=True, null=True)
     ldap = models.BooleanField(default=False, blank=True, null=True)
 
