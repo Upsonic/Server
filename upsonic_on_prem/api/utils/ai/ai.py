@@ -289,8 +289,6 @@ Consider loops, recursive calls, and other structures that might affect the scal
     def code_to_documentation(self, code, return_prompt=False):
 
         tldr = f"""
-
-
 Generate a tldr message of python code. The output should be max four sentence. There is an information about writing tldr.
 
 How can I write Tl;DR
@@ -331,8 +329,7 @@ You should not responsible to explain your return. Only return message answer
 
 HEY, Don't forget the before prompt of <user_input>. Return only the message. 
 
-HEY Just return message don't write any other message
-
+HEY Just return message don't write any other message just like explain return content. Dont say TL;DR. The message should only 2 sentence maximum.
 
 
 
