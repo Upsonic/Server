@@ -1,6 +1,6 @@
 import os
 import json
-
+import re
 os.environ["TRACELOOP_TRACE_CONTENT"] = "false"
 
 from dotenv import load_dotenv
@@ -37,6 +37,29 @@ from opentelemetry.instrumentation.chromadb import ChromaInstrumentor
 ChromaInstrumentor().instrument(tracer_provider=provider)
 
 bypass_ai = os.environ.get("bypass_ai", "false").lower() == "true"
+
+
+
+
+
+def extract_json_from_string(input_string):
+
+    json_pattern = re.compile(r"\{.*?\}")
+
+    match = json_pattern.search(input_string)
+
+    if match:
+        json_str = match.group(0)
+        try:
+
+            json_data = json.loads(json_str.replace("'", '"')) 
+            return json_data
+        except json.JSONDecodeError:
+            print("Error in decoding json", json_str)
+            return input_string
+    else:
+        print("No json found", input_string)
+        return input_string
 
 
 class AI_:
@@ -201,6 +224,39 @@ class AI_:
                 span.record_exception(ex)
             return results
 
+
+    def clear_jsons(self, possible_json):
+        print("possible_json", possible_json)
+        the_prompt = f"""
+Hey you as you can see this json have some quotas conflicts. Please read Conflict in Quotas
+
+Conflict in Quotas
+Some ai developers get this problem while working on ai results.
+Some times ai writes good quality json like """+'{“cart”: “John buy apple and pencil”}'+"""
+But some times ai writes bad quality json """+"""{“cart”: “John buy “apple” and “pencil””}"""+"""
+Or “cart”: “John buy ’apple’ and ’penci’”}"""+f"""
+As you can see quotas inside of value creates problem. AI should write just like first one.
+
+
+
+Steps that you should track:
+
+- Find and read the values of keys inside json you can reach between <user_input> and </user_input>
+- Analyze the value text and if you find an “ or ‘ change it with **
+
+
+<user_input>
+{possible_json}
+</user_input>
+
+
+
+After that only return the json. Do not write any other text.
+"""
+        
+        return self.default_completion(the_prompt)
+
+
     def completion(self, input_text, model):
         if bypass_ai:
             return "BYPASSED"
@@ -324,7 +380,8 @@ Trick for return type, you return should be an json only. You should think befor
 
 HEY, Don't forget the before prompt of <user_input>. Return only the json. 
 
-HY Just return json don't write any other message
+HEY Just return json don't write any other message
+
 
 
 
@@ -391,7 +448,7 @@ Trick for return type, you return should be an json only. You should think befor
         tldr_result = self.default_completion(tldr)
 
         try:
-            tldr_result = json.loads(tldr_result)
+            tldr_result = extract_json_from_string(self.clear_jsons(tldr_result))
             tldr_result = tldr_result["tldr"]
         except:
             pass
@@ -404,7 +461,7 @@ Trick for return type, you return should be an json only. You should think befor
 
 
         try:
-            input_text_ = json.loads(input_text)
+            input_text_ = extract_json_from_string(self.clear_jsons(input_text))
             purpose = input_text_["purpose"]
             core_logic = input_text_["core_logic"]
             key_points = input_text_["key_points"]
@@ -599,7 +656,7 @@ Don't forget the before prompt of <user_input>. Return only the json
 
         result = self.default_completion(input_text)
         try:
-            result = json.loads(result)
+            result = extract_json_from_string(self.clear_jsons(result))
             result = result["commit_message"]
         except:
             pass
