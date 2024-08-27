@@ -824,7 +824,7 @@ class Scope:
 
 
                         create_tags_of_scope_,
-                        create_security_analyses_of_scope_,
+
                         create_readme_,
                     )
 
@@ -865,12 +865,7 @@ class Scope:
                             create_ai_task=True,
                             access_key=access_key,
                         )
-                        create_security_analyses_of_scope_(
-                            scope=self.key,
-                            version=None,
-                            create_ai_task=True,
-                            access_key=access_key,
-                        )
+
                         readmes = split_dotted_string(self.key)
                         for i in readmes:
                             task_id = "create_readme_" + i
