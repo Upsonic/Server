@@ -5,8 +5,12 @@
         
     <h1 class="uk-h2 uk-margin text-foreground">
         {% if have_upper %}
+        {% if sub_page_title == 'Home' %}
         <a href="#" onclick="page_load('{% url 'control_library' id=the_upper %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="chevron-left"></span></a>
-        
+        {% else %}
+        <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;"><span uk-icon="chevron-left"></span></a>
+        {% endif %}
+
   
         {% endif %}
         {{control_library}}
