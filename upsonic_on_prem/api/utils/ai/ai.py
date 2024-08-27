@@ -336,25 +336,51 @@ HY Just return json don't write any other message
 
 
         input_text = f"""
-The task is to generate a summary of a given piece of Python code. The summary should explain the purpose of the code, the input variables and the operation it performs. High level understanding of the logic behind the code should also be provided. The code for analysis will be provided as input in string format. Here's an example:
+Generate a code Summary of python code. The output should be max eight sentence. There is an information about code summaries. 
 
-Input: 
-```python
-def add_numbers(a, b):
-  return a + b
-```
+Code Summaries
+To write a summary of a Python function (other than the docstring, inputs, and outputs), you can focus on its purpose, logic, and any important algorithms or decisions it makes. Here’s a general approach you can follow:
 
-Output: 
-This code defines a function named 'add_numbers' that takes two arguments, a and b. It returns the sum of these two numbers. The logic behind this code is to utilize the built-in '+' operator to add the values of a and b together.
+1. **Function Purpose:** Briefly describe what the function is intended to do.
+2. **Core Logic:** Summarize the main steps or logic the function employs to achieve its purpose.
+3. **Key Algorithms or Decisions:** Highlight any significant algorithms, data structures, or decision points within the function.
+4. **Side Effects:** Note any side effects or changes to the state (e.g., modifying global variables, I/O operations).
 
-Try to make your explanations as clear, concise, and accessible as possible to a wide range of users.
 
-And now make a summary for this code:
 
+
+Steps to do this task:
+1) Read and understand Code Summaries
+
+2) Analyze the python code its in <user_input> and </user_input>
+
+3) Understant function purpose
+
+4) Understant core logic
+
+5) Understant Key Algorithms or Decisions
+
+6) Understant Side Effects
+
+7) Write Function Purpose
+
+8) Write core logic
+
+9) Write Key Algorithms or Decisions
+
+10) Write Side Effects
+
+12) Return the code summary message inside of an json
+
+
+<user_input>
 ```python
 {code}
-    
 ```
+</user_input>
+
+
+Trick for return type, you return should be an json only. You should think before of the result. Your return should like """+"{“purpose”: “Answer”, “core_logic”:”Answer”, “key_points”:”Answer”, “side_effect”:””Answer}"+""". You should not responsible to explain your json return. Only return json answer. Only return the json. Don't write any other text
 
 """
 
@@ -365,15 +391,55 @@ And now make a summary for this code:
         tldr_result = self.default_completion(tldr)
 
         try:
-            print("tldr_result", tldr_result)
             tldr_result = json.loads(tldr_result)
             tldr_result = tldr_result["tldr"]
         except:
-            print("Exception")
             pass
 
 
-        result = self.default_completion(input_text)
+
+        input_text = self.default_completion(input_text)
+        
+
+
+
+        try:
+            input_text_ = json.loads(input_text)
+            purpose = input_text_["purpose"]
+            core_logic = input_text_["core_logic"]
+            key_points = input_text_["key_points"]
+            side_effect = input_text_["side_effect"]
+
+            last_step = f"""
+Hi, please make a summary of this code analyses:
+
+Funtion Purpose = {purpose}
+Core Logic = {core_logic}
+Key Algorithms or Decisions = {key_points}
+Side Effects = {side_effect}
+
+Generate a summary with 4 sentences and retur it. Only return summar no other text
+
+"""
+            result = self.default_completion(last_step)
+            
+
+
+        except:
+
+            last_step = f"""
+Hi, please make a summary of this code analyses:
+
+{input_text}
+
+Generate a summary with 4 sentences and retur it. Only return summar no other text
+
+"""
+            result = self.default_completion(last_step)
+
+
+
+    
 
 
         total_result = f"""
