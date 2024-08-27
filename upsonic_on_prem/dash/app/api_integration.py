@@ -65,8 +65,10 @@ def transform_to_html_bold(text):
     except:
         print("Error in transform_to_html_bold")
 
-    # remove first  <br>
-    text = text.replace("<br>", "", 2)
+    try:
+        text = text.replace("<br>", "", 2)
+    except:
+        pass
     return text
 
 
