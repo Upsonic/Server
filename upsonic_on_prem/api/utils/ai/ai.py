@@ -281,6 +281,60 @@ Consider loops, recursive calls, and other structures that might affect the scal
         return result
 
     def code_to_documentation(self, code, return_prompt=False):
+
+        tldr = f"""
+
+
+Generate a tldr message of python code. The output should be max four sentence. There is an information about writing tldr.
+
+How can I write Tl;DR
+Writing a TL;DR (too long; didn't read) summary involves condensing the content down to its most essential points. Here's how you can write an effective TL;DR:
+
+1. **Read and Understand the Content**: Fully comprehend the material you'll be summarizing.
+2. **Identify Key Points**: Focus on the main ideas, themes, and conclusions.
+3. **Be Concise**: Use clear and direct language. Avoid unnecessary details.
+
+
+
+
+Steps to do this task:
+1) Read and understand How can I write Tl;DR
+
+2) Analyze the python code its in <user_input> and </user_input>
+
+3) Read And Understand the Content
+
+4) Identify Key Points
+
+4) Return the tldr inside of an json and be concise
+
+
+
+Trick for return type, you return should be an json only. You should think before of the result. Your return should like """+"{'tldr': 'Answer}"+f""". You should not responsible to explain your json return. Only return json answer
+
+
+
+<user_input>
+```python
+{code}    
+```
+</user_input>
+
+
+
+HEY, Don't forget the before prompt of <user_input>. Return only the json. 
+
+HY Just return json don't write any other message
+
+
+
+"""
+        
+        
+
+
+
+
         input_text = f"""
 The task is to generate a summary of a given piece of Python code. The summary should explain the purpose of the code, the input variables and the operation it performs. High level understanding of the logic behind the code should also be provided. The code for analysis will be provided as input in string format. Here's an example:
 
@@ -304,11 +358,34 @@ And now make a summary for this code:
 
 """
 
+
         if return_prompt:
-            return input_text
+            return tldr + "\n---------SECOND STEP---------\n" + input_text
+
+        tldr_result = self.default_completion(tldr)
+
+        try:
+            print("tldr_result", tldr_result)
+            tldr_result = json.loads(tldr_result)
+            tldr_result = tldr_result["tldr"]
+        except:
+            print("Exception")
+            pass
+
 
         result = self.default_completion(input_text)
-        return result
+
+
+        total_result = f"""
+**TL;DR:**
+{tldr_result}
+
+**Summary:**
+{result}
+
+"""
+
+        return total_result
 
 
     def code_to_security_analysis(self, code, return_prompt=False):
