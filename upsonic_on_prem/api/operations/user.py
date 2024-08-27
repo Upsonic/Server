@@ -392,19 +392,6 @@ def get_tags_of_scope():
     scope = request.form.get("scope")
 
 
-@app.route(get_security_analysis_of_scope_url, methods=["POST"])
-def get_security_analysis_of_scope():
-    """ """
-    scope = request.form.get("scope")
-    version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    return jsonify({"status": True, "result": the_scope.security_analysis})
-
-
 @app.route(get_code_of_scope_url, methods=["POST"])
 def get_code_of_scope():
     """ """
@@ -783,19 +770,6 @@ def create_tags_of_scope():
     return jsonify({"status": True, "result": create_tags_of_scope_(scope, version)})
 
 
-@app.route(create_security_analysis_of_scope_url, methods=["POST"])
-def create_security_analysis_of_scope():
-    """ """
-    scope = request.form.get("scope")
-    version = request.form.get("version")
-    if version != None:
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    return jsonify(
-        {"status": True, "result": create_security_analyses_of_scope_(scope, version)}
-    )
 
 
 @app.route(create_document_of_scope_url_old, methods=["POST"])
@@ -1034,64 +1008,6 @@ def get_default_ai_model():
     return jsonify({"status": True, "result": AI.default_model})
 
 
-security_analyses_tasks = {}
-
-
-def create_security_analyses_of_scope_(
-    scope, version, create_ai_task=False, access_key=None
-):
-    """
-
-    :param scope: param version:
-    :param create_ai_task: Default value = False)
-    :param access_key: Default value = None)
-    :param version:
-
-    """
-    task_name = scope
-    if version != None:
-        task_name = scope + ":" + version
-        the_scope = Scope.get_version(scope + ":" + version)
-    else:
-        the_scope = Scope(scope)
-
-    while task_name in security_analyses_tasks:
-        time.sleep(1)
-
-    if task_name not in security_analyses_tasks:
-        security_analyses_tasks[task_name] = True
-        the_task_id = (
-            requests.post(
-                "http://localhost:3001/add_ai_task",
-                data={
-                    "task_name": "security_analyses",
-                    "key": scope,
-                    "access_key": access_key,
-                    "user_input": the_scope.create_security_analysis(return_prompt=True),
-                },
-            ).json()["id"]
-            if create_ai_task
-            else None
-        )
-        try:
-            work = the_scope.create_security_analysis()
-        except:
-            pass
-        try:
-            security_analyses_tasks.pop(task_name)
-            (
-                requests.post(
-                    "http://localhost:3001/complate_ai_task",
-                    data={"id": the_task_id, "access_key": access_key, "ai_output": work},
-                ).json()["id"]
-                if create_ai_task
-                else None
-            )
-        except:
-            pass
-
-    print("Complated security_analyses_tasks  task: ", scope)
-    return work
 
 
 readme_tasks = {}

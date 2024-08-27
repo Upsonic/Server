@@ -192,7 +192,7 @@ class Scope:
 
 
         self.the_storage.delete(self.key + ":tags")
-        self.the_storage.delete(self.key + ":security_analysis")
+
         self.the_storage.delete(self.key + ":code")
         self.the_storage.delete(self.key + ":requirements")
 
@@ -275,7 +275,6 @@ class Scope:
                 "time_complexity": self.time_complexity,
 
 
-                "security_analysis": self.security_analysis,
             }
 
             storage_3.set(key, data)
@@ -394,18 +393,7 @@ class Scope:
 
         return source
 
-    @property
-    def security_analysis(self):
-        source = None
-        if not self.specific:
-            source = self.the_storage.get(self.key + ":security_analysis")
-        else:
-            the_resource = self.the_storage.get(self.key)
 
-            if the_resource != None:
-                source = self.the_storage.get(self.key)["security_analysis"]
-
-        return source
 
     def create_documentation(self, return_prompt=False):
         if return_prompt:
@@ -536,31 +524,7 @@ class Scope:
                 span.set_status(Status(StatusCode.ERROR))
                 span.record_exception(e)
 
-    def create_security_analysis(self, return_prompt=False):
-        if return_prompt:
-            return AI.code_to_security_analysis(
-                self.code, return_prompt=True
-            )
-        
-        with tracer.start_span("scope-create-security-analysis") as span:
-            span.set_attribute("AI.default_model", AI.default_model)
-            the_code = self.code
-            span.set_attribute("code_len", len(str(the_code)))
-            try:
-                document = AI.code_to_security_analysis(self.code)
 
-                if not self.specific:
-                    self.the_storage.set(self.key + ":security_analysis", document)
-                else:
-                    the_resource = self.the_storage.get(self.key)
-
-                    the_resource["security_analysis"] = document
-                    self.the_storage.set(self.key, the_resource)
-                span.set_status(Status(StatusCode.OK))
-                return document
-            except Exception as e:
-                span.set_status(Status(StatusCode.ERROR))
-                span.record_exception(e)
 
     def create_documentation_old(self):
         with tracer.start_span("scope-create-documentation-old") as span:
@@ -849,7 +813,7 @@ class Scope:
                         "time_complexity": self.time_complexity,
 
 
-                        "security_analysis": self.security_analysis,
+
                     }
                     self.the_storage.set(self.key, temp_data)
 
@@ -943,7 +907,7 @@ class Scope:
                         "time_complexity": self.time_complexity,
 
 
-                        "security_analysis": self.security_analysis,
+
                     }
 
                     storage_3.set(key, data)

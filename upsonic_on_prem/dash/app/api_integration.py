@@ -51,7 +51,7 @@ def transform_to_html_bold(text):
             # Replace content with HTML <b> tags
             text = (
                 text[:start_idx]
-                + '<br><b class="custom_code_highlight_green">'
+                + '<br><br><b class="custom_code_highlight_green">'
                 + content
                 + "</b><br>"
                 + text[end_idx + 2 :]
@@ -65,6 +65,8 @@ def transform_to_html_bold(text):
     except:
         print("Error in transform_to_html_bold")
 
+    # remove first  <br>
+    text = text.replace("<br>", "", 2)
     return text
 
 
@@ -363,13 +365,6 @@ class API_Integration:
             self._send_request("POST", "/get_tags_of_scope", data=data)
         )
 
-    def get_security_analysis(self, scope, version=None):
-        data = {"scope": scope}
-        if version != None:
-            data["version"] = version
-        return transform_to_html_bold(
-            self._send_request("POST", "/get_security_analysis_of_scope", data=data)
-        )
 
     def create_documentation(self, scope):
         version = None
@@ -406,17 +401,6 @@ class API_Integration:
             data["version"] = version
         return self._send_request("POST", "/create_tags_of_scope", data=data)
 
-    def create_security_analysis(self, scope):
-        version = None
-        if ":" in scope:
-            version = scope.split(":")[1]
-            scope = scope.split(":")[0]
-        data = {"scope": scope}
-        if version != None:
-            data["version"] = version
-        return self._send_request(
-            "POST", "/create_security_analysis_of_scope", data=data
-        )
 
     def get_last_x_events(self, user, x=10):
         data = {"key": user}

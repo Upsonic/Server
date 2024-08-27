@@ -484,21 +484,7 @@ def control_element(request, id):
             # models.AI_Task(task_name="tags", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         tags = "Tags are generating, it will be ready soon."
 
-    security_analysis = API_Integration(request.user.access_key).get_security_analysis(
-        id, version=version
-    )
-    if security_analysis == None:
-        if version == None:
-            the_id = id
-        else:
-            the_id = id + ":" + version
-        tasks = models.AI_Task.objects.filter(
-            task_name="security_analysis", key=the_id, status=False
-        )
-        if len(tasks) == 0:
-            pass
-            # models.AI_Task(task_name="security_analysis", key=the_id, access_key=request.user.access_key, owner=request.user).save()
-        security_analysis = "Security Analysis is generating, it will be ready soon."
+
 
     requirements = API_Integration(request.user.access_key).get_requirements(
         id, version=version
@@ -553,7 +539,7 @@ def control_element(request, id):
 
     
         "tags": tags,
-        "security_analysis": security_analysis,
+
         "requirements": requirements,
         "type": capitalize_first_letter(the_type),
         "python_version": python_version,
@@ -639,12 +625,7 @@ def regenerate_documentation(request, id):
     models.AI_Task(
         task_name="tags", key=id, access_key=request.user.access_key, owner=request.user
     ).save()
-    models.AI_Task(
-        task_name="security_analysis",
-        key=id,
-        access_key=request.user.access_key,
-        owner=request.user,
-    ).save()
+
     request.user.notify(
         "Documentation Generated",
         f"Documentation for {id} is generated, you can access it now.",

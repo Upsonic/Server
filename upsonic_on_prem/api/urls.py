@@ -82,7 +82,7 @@ get_time_complexity_of_scope_url = "/get_time_complexity_of_scope"
 
 
 get_tags_of_scope_url = "/get_tags_of_scope"
-get_security_analysis_of_scope_url = "/get_security_analysis_of_scope"
+
 
 get_code_of_scope_url = "/get_code_of_scope"
 get_version_code_of_scope_url = "/get_version_code_of_scope"
@@ -104,7 +104,7 @@ create_commit_message_of_scope_url = "/create_commit_message_of_scope"
 
 
 create_tags_of_scope_url = "/create_tags_of_scope"
-create_security_analysis_of_scope_url = "/create_security_analysis_of_scope"
+
 
 create_document_of_scope_url_old = "/create_document_of_scope_old"
 
@@ -179,7 +179,7 @@ user_urs_ = [
     get_settings_of_scope_url,
     get_dependency_of_scope_url,
     get_requirements_of_scope_url,
-    get_security_analysis_of_scope_url,
+
 
     get_tags_of_scope_url,
 
@@ -197,7 +197,7 @@ user_urs_ = [
     get_lock_of_scope_url,
     get_python_version_of_scope_url,
     create_document_of_scope_url,
-    create_security_analysis_of_scope_url,
+
 
     create_tags_of_scope_url,
     create_commit_message_of_scope_url,
@@ -226,7 +226,7 @@ user_write_urls_ = [
     dump_url,
     dump_together_url,
     create_document_of_scope_url,
-    create_security_analysis_of_scope_url,
+
 
     create_tags_of_scope_url,
     create_commit_message_of_scope_url,
@@ -255,7 +255,7 @@ user_read_urls_ = [
     get_dependency_of_scope_url,
     get_requirements_of_scope_url,
     get_settings_of_scope_url,
-    get_security_analysis_of_scope_url,
+
 
     get_tags_of_scope_url,
 

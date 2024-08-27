@@ -214,10 +214,6 @@ class AI_Task(models.Model):
         the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
         pending_tasks.append(the_thread)
 
-    def security_analysis_task(self):
-        the_func = API_Integration(self.access_key).create_security_analysis
-        the_thread = threading.Thread(target=self.sub_func, args=(the_func,))
-        pending_tasks.append(the_thread)
 
     def readme_task(self):
         the_func = API_Integration(self.access_key).create_readme
@@ -238,8 +234,7 @@ class AI_Task(models.Model):
 
         elif self.task_name == "tags":
             self.tags_task() if not not_start_task else None
-        elif self.task_name == "security_analysis":
-            self.security_analysis_task() if not not_start_task else None
+
         elif self.task_name == "readme":
             self.readme_task() if not not_start_task else None
         else:
