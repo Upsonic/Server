@@ -259,32 +259,116 @@ class AI_:
 
     def code_to_time_complexity(self, code, return_prompt=False):
         input_text = f"""
-In this task, your goal is to generate the time complexity of a given piece of Python code. The complexity should be expressed in Big-O notation which describes the worst-case scenario in terms of time complexity. The time complexity would describe how the runtime of the code scales with the size of its input. Here's an example:
+Hi, in this task you will find the time complexity of python code. In start please read the knowledge between <knowledge> </knowledge>
 
-**Input:**
+<knowledge>
+To write a time complexity analysis of a Python function, you need to follow these steps:
+
+1. **Identify the input size**: Determine the variable that represents the size of the input. This is usually `n`.
+
+2. **Analyze the function**: Break down the function into its individual operations and understand how these operations relate to the input size. Focus on loops, recursive calls, and non-constant time operations.
+
+3. **Determine the time complexity for each part**: Evaluate the time complexity of each part of the function separately.
+
+4. **Combine the complexities**: Combine the time complexities of all parts of the function to get an overall time complexity.
+
+5. **Express the result**: Use Big-O notation to express the time complexity in the simplest form.
+
+Here's a step-by-step example:
+
+### Example Function
+
 ```python
-def add_numbers(a, b):
-    return a + b
+def example_function(arr):
+    total = 0
+    for i in range(len(arr)):
+        for j in range(i, len(arr)):
+            total += arr[j]
+    return total
 ```
 
-**Output:** 
-O(1) - The time complexity is constant because the code does not contain any loops or recursive calls, thus the runtime does not change with the size of the input.
+### Steps for Analyzing Time Complexity
 
-Now, please generate the time complexity of the following code:
+1. **Identify the input size**:
+   - The input is `arr` and its size is `n` (i.e., `len(arr) = n`).
 
-```python
+2. **Analyze the function**:
+   ```python
+   total = 0  # O(1) time
+   for i in range(len(arr)):  # Outer loop runs n times
+       for j in range(i, len(arr)):  # Inner loop runs (n - i) times
+           total += arr[j]  # O(1) time for each operation
+   return total  # O(1) time
+   ```
+
+3. **Determine the time complexity for each part**:
+   - Initialization (`total = 0`): O(1)
+   - Outer loop (`for i in range(len(arr))`): Runs `n` times.
+   - Inner loop (`for j in range(i, len(arr))`): Runs `(n - i)` times for each `i`.
+     - When `i = 0`: Inner loop runs `n` times.
+     - When `i = 1`: Inner loop runs `n - 1` times.
+     - Continue until `i = n-1`: Inner loop runs 1 time.
+
+4. **Combine the complexities**:
+   - Summing up all iterations of the inner loop:
+     \[
+     \sum_"""+"""{i=0}^{n-1} (n - i) = n + (n - 1) + (n - 2) + ... + 1
+     \]
+     This is an arithmetic series that sums up to:
+     \[
+     \frac{n(n + 1)}{2}"""+f"""
+     \]
+     The dominant term is `n^2`, so the complexity is O(n²).
+
+5. **Express the result**:
+   - The overall time complexity of the `example_function` is **O(n²)**.
+
+
+<knowledge>
+
+
+
+Okey now track the <task_steps> </task_steps>
+
+<task_steps>
+
+- Analyze the given python function that in <python> </python>
+- Decide to time complexity with time time complexity knowledge steps
+
+- Return ONLY time complexity no any other text.
+
+
+</task_steps>
+
+
+<python>
 {code}
+</python>
 
-```
 
-Consider loops, recursive calls, and other structures that might affect the scalability of the code when determining the time complexity.
+Return only the time complexity
 """
+        
+
+
+
+
 
         if return_prompt:
             return input_text
 
         result = self.default_completion(input_text)
-        return result
+
+
+        explaination = f"""
+Hi, in this task you should explain given time complexity in just two sentences.
+
+Time Complexity: {result}
+
+Return the meaning of this time complexity in just two sentences. Don’t write any other text. Just return meaning.
+"""
+
+        return result + " - " + self.default_completion(explaination).replace(result, "this")
 
     def code_to_documentation(self, code, return_prompt=False):
 
