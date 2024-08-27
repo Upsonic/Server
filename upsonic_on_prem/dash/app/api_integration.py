@@ -51,7 +51,7 @@ def transform_to_html_bold(text):
             # Replace content with HTML <b> tags
             text = (
                 text[:start_idx]
-                + '<br><br><b class="custom_code_highlight_green">'
+                + '<br><b class="custom_code_highlight_green">'
                 + content
                 + "</b><br>"
                 + text[end_idx + 2 :]
