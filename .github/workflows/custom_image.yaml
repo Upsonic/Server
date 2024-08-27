@@ -14,7 +14,9 @@ on:
         default: 'with_model'
         options:
           - with_model
+          - with_model_arm
           - without_models
+          - without_models_arm
 
 
 
@@ -87,7 +89,7 @@ jobs:
           
 
   with_model_arm:
-    if: github.event.inputs.docker_type == 'with_model'
+    if: github.event.inputs.docker_type == 'with_model_arm'
     runs-on: armlinux
     environment: Deploys
 
@@ -214,7 +216,7 @@ jobs:
           
 
   without_models_arm:
-    if: github.event.inputs.docker_type == 'without_models'
+    if: github.event.inputs.docker_type == 'without_models_arm'
     runs-on: armlinux
     environment: Deploys
 
