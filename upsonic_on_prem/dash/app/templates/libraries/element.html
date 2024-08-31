@@ -59,6 +59,9 @@
 
             <div class="uk-width-1-2 uk-margin-medium-top">
 
+                {% if any_task %}
+                <span class="uk-badge" style="height: 35px;"><span uk-icon="refresh" class="uk-margin-small-left uk-margin-small-right"></span><span class="uk-margin-small-right">Docs Regenerating...</span></span>
+                {% endif %}
                 
                 <h2 class="uk-h2 uk-margin" style="color: hsl(var(--primary));;">Intro</h2>
                 <div class="custom_pharagraph_for_documentations">{{documentation|safe}}</div>
