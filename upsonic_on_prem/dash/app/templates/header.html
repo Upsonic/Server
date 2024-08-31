@@ -1,4 +1,13 @@
 {% load tags %}
+
+
+
+
+
+
+
+
+
 <nav class="uk-navbar-container" uk-navbar style="">
     <div class="uk-navbar-left uk-margin-small-left" style="width: 30%;">
         <ul class="uk-navbar-nav uk-margin-small-left uk-margin-small-top uk-margin-small-bottom" style="width: 100%;">
@@ -11,12 +20,21 @@
           <li id="header_search_div" style="width: 60%;">
             <form action="{% url 'search' %}" method="post">
               <div class="uk-margin-small-top">
+                <uk-glow
+        border-width="1px"
+        border-color="light: #e5e7eb; dark: #27272a"
+        background-color="light: #fff; dark: #09090b"
+        glow-width="2px"
+        glow-color="light: #fde047; dark: #4ade80"
+        uk-cloak
+      >
                 <div class="uk-inline" style="width: 100%; position: relative;">
-                  <input id="search-input" class="uk-input" style="width: 100%;" type="text" aria-label="Search" name="question" autocomplete="off" required/>
+                  <input id="search-input" class="uk-input" style="width: 100%; border-width: 0px;" type="text" aria-label="Search" name="question" autocomplete="off" required/>
                   <span id="search-placeholder" style="position: absolute; left: 10px; top: 0; padding: 8px; pointer-events: none; font-size: smaller; color: gray;">
                     AI Search <span id="shortcut-text" style="color: #01ee8a;">[⌘+K]</span>
                   </span>
                 </div>
+                </uk-glow>
               </div>
             </form>
           </li>

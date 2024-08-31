@@ -8,34 +8,6 @@
 <div id="this_url" style="display: none;">https://{{request.get_host}}:7341{{request.get_full_path_info}}</div>
 
 
-<script>
-  var themeToggleBtn = document.getElementById("theme-toggle");
- 
-  themeToggleBtn.addEventListener("click", function () {
-    // if set via local storage previously
-    if (localStorage.getItem("color-theme")) {
-      if (localStorage.getItem("color-theme") === "light") {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("color-theme", "dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("color-theme", "light");
-      }
- 
-      // if NOT set via local storage previously
-    } else {
-      if (document.documentElement.classList.contains("dark")) {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("color-theme", "light");
-      } else {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("color-theme", "dark");
-      }
-    }
-  });
-</script>
-
-
 
 
 
@@ -129,7 +101,22 @@
           visibility: hidden;
       }
   </style>
-    <link href='/static/css/franken.css' rel='stylesheet' type='text/css'>
+
+<link href='/static/css/franken.css' rel='stylesheet' type='text/css'>
+<script src="/static/js/uikit.min.js"></script>
+<script src="/static/js/uikit-icons.min.js"></script>
+<script
+type="module"
+src="/static/js/wc.iife.js"
+></script>
+<script
+  type="module"
+  src="/static/js/lucide.iife.js"
+></script>
+
+
+
+
     <link href='/static/css/gabarito.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/poppins.css' rel='stylesheet' type='text/css'>
     <link href='/static/css/site.css' rel='stylesheet' type='text/css'>
