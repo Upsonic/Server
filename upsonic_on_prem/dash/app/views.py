@@ -226,10 +226,19 @@ def delete_read_scope(request, id, scope):
 
 @login_required
 def libraries(request):
+    the_top_scopes = []
+    for each in API_Integration(request.user.access_key).top_scopes:
+        all_scopes_source = API_Integration(
+            request.user.access_key
+        ).get_all_scopes_name_prefix(each)
+        total_sub_amount = len(all_scopes_source)
+        the_top_scopes.append({"name": each, "total_sub_amount": total_sub_amount})
+
     data = {
         "page_title": "Libraries",
         "libraries": API_Integration(request.user.access_key).top_scopes,
         "the_connection_code": the_connection_code(request),
+        "top_scopes": the_top_scopes,
     }
 
     return render(request, "templates/libraries/libraries.html", data)
@@ -466,6 +475,13 @@ def control_element(request, id):
             pass
             # models.AI_Task(task_name="time_complexity", key=the_id, access_key=request.user.access_key, owner=request.user).save()
         time_complexity = "Time Complexity is generating, it will be ready soon."
+    
+
+    any_task = False
+    if len(models.AI_Task.objects.filter(task_name="documentation", key=id, status=False)) > 0:
+        any_task = True
+    if len(models.AI_Task.objects.filter(task_name="time_complexity", key=id, status=False)) > 0:
+        any_task = True
 
 
 
@@ -536,6 +552,7 @@ def control_element(request, id):
         "using_code": using_code,
         "documentation": documentation,
         "time_complexity": time_complexity,
+        "any_task": any_task,
 
     
         "tags": tags,
