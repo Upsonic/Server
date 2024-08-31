@@ -3,6 +3,7 @@
 <script>
 
 
+
     function page_load(url) {
         window.history.pushState("", "", url);
         _page_load(url)
@@ -46,7 +47,17 @@
                 }
 
 
-
+                const glowElement = document.querySelector('uk-glow');
+                console.log(url)
+                if (url !== '/home') {
+                    const normalDiv = document.createElement('div');
+                    normalDiv.style.borderWidth = '2px';
+                    normalDiv.style.borderRadius = '0.6rem';
+                    normalDiv.style.borderColor = '	#27272a';
+                    normalDiv.style.height = 'auto';
+                    normalDiv.innerHTML = glowElement.innerHTML;
+                    glowElement.replaceWith(normalDiv);
+                }
 
             }
         });
