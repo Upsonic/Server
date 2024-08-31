@@ -35,6 +35,41 @@
   });
 </script>
 
+
+
+
+
+<script>
+  // Auto switch based on system preferences
+  function applyTheme(theme) {
+    const currentTheme = localStorage.getItem("color-theme");
+    if (currentTheme !== theme) {
+      if (theme === "dark") {
+        window.location.href = "{% url 'settings_dark_mode' %}";
+      } else {
+        window.location.href = "{% url 'settings_light_mode' %}";
+      }
+    }
+  }
+
+  // Check system preference
+  const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const savedTheme = localStorage.getItem("color-theme");
+
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else {
+    applyTheme(systemPrefersDark ? "dark" : "light");
+  }
+
+  // Listen for changes in system preferences
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    applyTheme(e.matches ? "dark" : "light");
+  });
+</script>
+
+
+
 {% if request.user.dark_mode %}
 <html lang="en" data-bs-theme="dark" style="color-scheme: dark;">
 {% else %}
