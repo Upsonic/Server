@@ -16,11 +16,15 @@
   function applyTheme(theme) {
     const currentTheme = localStorage.getItem("color-theme");
     if (currentTheme !== theme) {
+      {% if not request.user.dark_mode %}
       if (theme === "dark") {
         window.location.href = "{% url 'settings_dark_mode' %}";
-      } else {
+      }
+      {% else %
+      if (theme === "light") {
         window.location.href = "{% url 'settings_light_mode' %}";
       }
+      {% endif %}
     }
   }
 
@@ -48,44 +52,7 @@
 <html lang="en" data-bs-theme="light">
 {% endif %}
 
-{% if request.user.dark_mode %}
-<script>
-  if (localStorage.getItem("color-theme")) {
-        
-        document.documentElement.classList.remove("light");
-        localStorage.setItem("color-theme", "dark");
-      
-  
-      // if NOT set via local storage previously
-    } else {
-  
-        document.documentElement.classList.remove("light");
-        localStorage.setItem("color-theme", "dark");
-      
-    }
-  
-    </script>
 
-{% else %}
-<script>
-
-  if (localStorage.getItem("color-theme")) {
-        
-          document.documentElement.classList.remove("dark");
-          localStorage.setItem("color-theme", "light");
-        
-   
-        // if NOT set via local storage previously
-      } else {
-    
-          document.documentElement.classList.remove("dark");
-          localStorage.setItem("color-theme", "light");
-        
-      }
-  
-  
-  </script>
-{% endif %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
