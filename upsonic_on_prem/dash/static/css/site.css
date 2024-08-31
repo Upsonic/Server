@@ -1,8 +1,8 @@
 .scrollable_side {
   overflow: overlay;
 
-  height: calc(100vh - 90px);
-  padding-bottom: 185px;
+  height: 50vh;
+
   padding-right: 1rem;
 }
 

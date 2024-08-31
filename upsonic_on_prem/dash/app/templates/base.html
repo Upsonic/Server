@@ -196,39 +196,14 @@ src="/static/js/wc.iife.js"
 
     {% progressive_web_app_meta %}
 </head>
-<style>
-body, html {
-    height: 100%;
-    width: 100%;
-    margin: 0;
 
-
-}
-
-.dashboard-wrapper {
-    width: 100%;
-    height: 88%;
-
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.dashboard-container {
-    transform: scale(0.8);
-    transform-origin: top left;
-    width: calc(100% / 0.8);  /* Adjust width to counteract the scale */
-    height: calc(100% / 0.8); /* Adjust height to counteract the scale */
-}
-
-</style>
 <body class="bg-background">
 
   {% include 'header.html' %}
   
-  <main id="the_content" class="dashboard-wrapper" uk-height-viewport="offset-top: true">
+  <main id="the_content" >
   
-    <div uk-grid class="bg-background dashboard-container">
+    <div uk-grid class="bg-backgroundr">
       {% include 'sidebar.html' %}
   
       {% if page_title == 'Search' %}
