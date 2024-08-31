@@ -51,9 +51,15 @@
                 console.log(url)
                 if (url !== '/home') {
                     const normalDiv = document.createElement('div');
-                    normalDiv.style.borderWidth = '2px';
+                    
                     normalDiv.style.borderRadius = '0.6rem';
-                    normalDiv.style.borderColor = '	#27272a';
+                    if (localStorage.getItem("color-theme") === "light") {
+                        normalDiv.style.borderColor = '#e4e4e7';
+                        normalDiv.style.borderWidth = '1px';
+                    } else {
+                        normalDiv.style.borderColor = '#27272a';
+                        normalDiv.style.borderWidth = '2px';
+                    }
                     normalDiv.style.height = 'auto';
                     normalDiv.innerHTML = glowElement.innerHTML;
                     glowElement.replaceWith(normalDiv);
