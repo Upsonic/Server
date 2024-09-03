@@ -70,6 +70,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Run Version Bump Script
+        env:
+          VERSION: ${{ inputs.name }}
+        run: python dev_bump.py $VERSION
+
 
       - name: Build and Publish Docker Images
         env:
@@ -133,6 +138,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Run Version Bump Script
+        env:
+          VERSION: ${{ inputs.name }}
+        run: python dev_bump.py $VERSION
 
       - name: Build and Publish Docker Images
         env:
@@ -198,6 +207,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Run Version Bump Script
+        env:
+          VERSION: ${{ inputs.name }}
+        run: python dev_bump.py $VERSION
+
       - name: Build and Publish Docker Images
         env:
           VERSION: ${{ inputs.name }}
@@ -260,6 +274,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Run Version Bump Script
+        env:
+          VERSION: ${{ inputs.name }}
+        run: python dev_bump.py $VERSION
 
       - name: Build and Publish Docker Images
         env:
