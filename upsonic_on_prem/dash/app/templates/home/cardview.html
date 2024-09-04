@@ -5,7 +5,7 @@
 <div class="uk-grid ">
     {% for scope in top_scopes %}
     <a href="#" onclick="page_load('{% url 'control_library' id=scope.name %}');event.preventDefault();" class="uk-width-1-4">
-    <div class=" uk-card uk-margin-medium-right uk-card uk-margin-medium-bottom" style="padding: 0 !important;border-bottom: 2px solid #01ee8a;">
+    <div class=" uk-card uk-card uk-margin-medium-bottom" style="padding: 0 !important">
         <div class="uk-card-header">
           <span uk-icon="menu" style="fill: #01ee8a;"></span>
           <div class="uk-flex uk-margin-small-top">
