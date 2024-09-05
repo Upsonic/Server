@@ -115,6 +115,14 @@ def is_admin():
     user = AccessKey(key)
     return jsonify({"status": True, "result": user.is_admin})
 
+@app.route(is_robust_admin_url, methods=["POST"])
+def is_robust_admin():
+    key = request.form.get("key")
+
+    user = AccessKey(key)
+    return jsonify({"status": True, "result": user.robust})
+
+
 
 @app.route(delete_user_url, methods=["POST"])
 def delete_user():

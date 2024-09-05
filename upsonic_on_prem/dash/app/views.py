@@ -151,6 +151,9 @@ def control_user(request, id):
             "is_admin": API_Integration(request.user.access_key).is_admin(
                 the_user.access_key
             ),
+            "is_robust_admin": API_Integration(request.user.access_key).is_robust_admin(
+                the_user.access_key
+            ),
         }
         return render(request, "templates/control_user.html", data)
 
@@ -669,13 +672,16 @@ def regenerate_readme(request, id):
 def delete_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    the_user = models.User.objects.get(id=id)
-    the_user.delete_user(request.user.access_key)
-    the_user.delete()
-    request.user.notify(
-        "User Deleted", f"User {the_user.username} deleted successfully"
-    )
-    return redirect(to="community")
+    if not API_Integration(request.user.access_key).is_robust_admin(id) == False:
+        the_user = models.User.objects.get(id=id)
+        the_user.delete_user(request.user.access_key)
+        the_user.delete()
+        request.user.notify(
+            "User Deleted", f"User {the_user.username} deleted successfully"
+        )
+        return redirect(to="community")
+    else:
+        return redirect(to="community")
 
 
 @login_required

@@ -35,6 +35,7 @@ disable_user_url = "/disable_user"
 is_enabled_user_url = "/is_enabled_user"
 
 id_admin_url = "/is_admin"
+is_robust_admin_url = "/is_robust_admin"
 
 enable_admin_url = "/enable_admin"
 

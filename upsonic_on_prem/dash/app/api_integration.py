@@ -560,6 +560,11 @@ class API_Integration:
         result = self._send_request("POST", "/is_admin", data=data)
         return True if result == True else False
 
+    def is_robust_admin(self, key):
+        data = {"key": key}
+        result = self._send_request("POST", "/is_robust_admin", data=data)
+        return True if result == True else False
+
     def enable_admin(self, key):
         data = {"key": key}
         return self._send_request("POST", "/enable_admin", data=data)

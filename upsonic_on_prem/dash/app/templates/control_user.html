@@ -34,7 +34,9 @@
                 <a href="#" onclick="page_load('{% url 'enable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="check" class="uk-margin-small-right"></span>Set Admin</a>
                 {% endif %}   
 
+                {% if not is_robust_admin %}
                 <a href="#" onclick="page_load('{% url 'delete_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-danger"><span uk-icon="close" class="uk-margin-small-right"></span>Delete User</a>
+                {% endif %}
                 
 
               </ul>
