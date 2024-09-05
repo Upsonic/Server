@@ -161,13 +161,13 @@ jobs:
           mkdir models          
           
 
-          docker buildx build --platform linux/amd64 -f Server/Dockerfile --push -t upsonic/on-prem:latest-x64 -t upsonic/on-prem:$VERSION-x64 \
+          docker buildx build --platform linux/amd64 -f Server/Dockerfile --push -t upsonic/on-prem:latest-AMD64 -t upsonic/on-prem:$VERSION-AMD64 \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
 
 
           
-          docker buildx build --platform linux/amd64 -f Server/Dockerfile.without_models --push -t upsonic/on-prem_without_models:latest-x64 -t upsonic/on-prem_without_models:$VERSION-x64 \
+          docker buildx build --platform linux/amd64 -f Server/Dockerfile.without_models --push -t upsonic/on-prem_without_models:latest-AMD64 -t upsonic/on-prem_without_models:$VERSION-AMD64 \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
           
@@ -230,13 +230,13 @@ jobs:
           mkdir models          
           
 
-          docker buildx build --platform linux/arm64 -f Server/Dockerfile --push -t upsonic/on-prem:latest-arm64 -t upsonic/on-prem:$VERSION-arm64 \
+          docker buildx build --platform linux/arm64 -f Server/Dockerfile --push -t upsonic/on-prem:latest-ARM64 -t upsonic/on-prem:$VERSION-ARM64 \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
 
 
           
-          docker buildx build --platform linux/arm64 -f Server/Dockerfile.without_models --push -t upsonic/on-prem_without_models:latest-arm64 -t upsonic/on-prem_without_models:$VERSION-arm64 \
+          docker buildx build --platform linux/arm64 -f Server/Dockerfile.without_models --push -t upsonic/on-prem_without_models:latest-ARM64 -t upsonic/on-prem_without_models:$VERSION-ARM64 \
           --cache-to type=gha,mode=max \
           --cache-from type=gha .
           
