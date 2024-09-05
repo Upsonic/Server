@@ -281,12 +281,15 @@ class AccessKey:
 
     def set_scope_write(self, scope):
         currently_list = self.scopes_write
-        currently_list.append(scope)
+        if scope not in currently_list:
+            currently_list.append(scope)
         return self._set(self.key + ":scopes_write", currently_list)
-
+    
+    
     def set_scope_read(self, scope):
         currently_list = self.scopes_read
-        currently_list.append(scope)
+        if scope not in currently_list:
+            currently_list.append(scope)
         return self._set(self.key + ":scopes_read", currently_list)
 
     def delete_scope_write(self, scope):
