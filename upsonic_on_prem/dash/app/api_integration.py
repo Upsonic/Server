@@ -668,6 +668,11 @@ class API_Integration:
     def change_azureopenai(self, status):
         data = {"status": status}
         return self._send_request("POST", "/change/azureopenai", data=data)
+    def change_openai(self, status):
+        data = {"status": status}
+        return self._send_request("POST", "/change/openai", data=data)
+
+
 
     def change_azureopenai_baseurl(self, baseurl):
         data = {"baseurl": baseurl}
@@ -761,6 +766,9 @@ class API_Integration:
 
     def view_azureopenai(self):
         return self._send_request("GET", "/view/azureopenai")
+
+    def view_openai(self):
+        return self._send_request("GET", "/view/openai")
 
     def view_azureopenai_baseurl(self):
         return self._send_request("GET", "/view/azureopenai/baseurl")

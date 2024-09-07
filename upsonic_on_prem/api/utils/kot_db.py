@@ -21,6 +21,10 @@ if not kot_db_.get("openai_apikey"):
 
 
 
+
+if not kot_db_.get("openai"):
+    kot_db_.set("openai", os.environ.get("openai", "false").lower() == "true")
+
 if not kot_db_.get("azureopenai"):
     kot_db_.set("azureopenai", os.environ.get("azureopenai", "false").lower() == "true")
 

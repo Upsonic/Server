@@ -15,28 +15,38 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def view(request):
-    logger.debug("Hi")
+
     result = None
 
-    default_ai_model = API_Integration(request.user.access_key).get_default_ai_model()
+
 
     if request.method == "POST":
-        input_data = request.POST.get("api_key")
-        result = API_Integration(request.user.access_key).change_openai_api_key(
-            input_data
-        )
-        default_ai_model = input_data
+
+        api_key_ = request.POST.get("api_key")
 
 
+
+        if api_key_:
+            API_Integration(request.user.access_key).change_openai_api_key(api_key_)
+            result = "OpenAI Key Updated"
+
+
+
+
+    openai = API_Integration(request.user.access_key).view_openai()
     currently_api_key = API_Integration(request.user.access_key).view_openai_api_key()
+
+
     if currently_api_key:
-        currently_api_key = currently_api_key[:10] + "..." + currently_api_key[-4:]
+        the_length = len(currently_api_key)
+        currently_api_key = "*" * the_length
 
     data = {
         "page_title": name,
-        "default_ai_model": default_ai_model,
+
         "result": result,
         "currently_api_key": currently_api_key,
+        "openai": openai
     }
     return render(request, f"pages/{location}/template.html", data)
 
