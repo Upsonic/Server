@@ -36,6 +36,9 @@ if not kot_db_.get("azureopenai_key"):
 if not kot_db_.get("azureopenai_modelname"):
     kot_db_.set("azureopenai_modelname", os.environ.get("azureopenai_modelname"))
 
+if not kot_db_.get("azureopenai_version"):
+    kot_db_.set("azureopenai_version", os.environ.get("azureopenai_version"))
+
 # Ldap Settings
 if not kot_db_.get("LDAP_SERVER"):
     kot_db_.set("LDAP_SERVER", os.environ.get("LDAP_SERVER"))
