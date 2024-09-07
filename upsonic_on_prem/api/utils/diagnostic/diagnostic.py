@@ -9,7 +9,9 @@ start_time = time.time()
 
 def uptime():
     # Return the time since the server started
-    return time.time() - start_time
+    result =  time.time() - start_time
+    result = str(result).split(".")[0]
+    return result
 
 
 
