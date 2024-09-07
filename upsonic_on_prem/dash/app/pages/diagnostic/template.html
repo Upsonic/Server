@@ -9,8 +9,13 @@
         <div uk-grid class="uk-margin-medium-bottom">
             <div class="uk-width-expand">
 
-                <h1 class="uk-h2 uk-margin text-foreground">
-                    {{page_title}}</h1>
+              {% if ai_result != None %}
+
+              <div class="uk-margin-medium-bottom uk-alert uk-alert-success" uk-alert>{{ai_result}}</div>
+
+              {% endif %}
+              <h1 class="uk-h2 uk-margin text-foreground">
+                  {{page_title}}</h1>
 
             </div>
 
@@ -140,8 +145,41 @@
                   </div>
 
 
-      
+                  <h1 class="uk-h2 uk-margin-medium-top uk-margin-bottom text-foreground">
+                    Test</h1>
+                  <div class=" uk-grid-small uk-grid-match" uk-grid>
 
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Test AI</h3>
+                    
+                    
+                    
+                    
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'Diagnostic' %}" method="post" autocomplete="off">
+                            <div class="uk-margin-small-top ">
+                              <div class="uk-inline" style="width: 100%;">
+                                
+                                <input class="uk-input" style="width: 200%;" type="text" placeholder="Ask anything" aria-label="Search" name="ai_prompt" value="{{ai_prompt_}}" required/>
+                              </div>
+                            </div>
+                           
+                    
+                          </form></li>
+                    
+                    
+                    
+                    
+                      </div>
+                    </div>
+                    
+
+
+
+
+                  </div>
 
 
                 </div>
@@ -151,3 +189,5 @@
 </div>
 
 {% endblock content %}
+
+
