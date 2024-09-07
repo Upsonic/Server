@@ -21,7 +21,6 @@ def view(request):
     if request.method == "POST":
         azureopenai_baseurl_ = request.POST.get("azureopenai_baseurl")
         azureopenai_key_ = request.POST.get("azureopenai_key")
-        azureopenai_modelname_ = request.POST.get("azureopenai_modelname")
         azureopenai_version_ = request.POST.get("azureopenai_version")
 
         if azureopenai_baseurl_:
@@ -31,10 +30,7 @@ def view(request):
         if azureopenai_key_:
             API_Integration(request.user.access_key).change_azureopenai_key(azureopenai_key_)
             result = "Azure OpenAI Key Updated"
-        
-        if azureopenai_modelname_:
-            API_Integration(request.user.access_key).change_azureopenai_modelname(azureopenai_modelname_)
-            result = "Azure OpenAI Model Name Updated"
+
         
         if azureopenai_version_:
             logger.info("verison")
@@ -45,7 +41,7 @@ def view(request):
     azureopenai = API_Integration(request.user.access_key).view_azureopenai()
     azureopenai_baseurl = API_Integration(request.user.access_key).view_azureopenai_baseurl()
     azureopenai_key = API_Integration(request.user.access_key).view_azureopenai_key()
-    azureopenai_modelname = API_Integration(request.user.access_key).view_azureopenai_modelname()
+
     azureopenai_version = API_Integration(request.user.access_key).view_azureopenai_version()
 
     if azureopenai_key:
@@ -57,7 +53,6 @@ def view(request):
         "azureopenai": azureopenai,
         "azureopenai_baseurl": azureopenai_baseurl, 
         "azureopenai_key": azureopenai_key,         
-        "azureopenai_modelname": azureopenai_modelname, 
         "azureopenai_version": azureopenai_version, 
         "result": result,
     }
