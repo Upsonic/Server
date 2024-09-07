@@ -20,7 +20,7 @@ from upsonic_on_prem.api.utils.kot_db import kot_db
 def endpoint():
     """ """
 
-    azureopenai_baseurl = request.form.get("azureopenai_baseurl")
+    azureopenai_baseurl = request.form.get("baseurl")
 
 
 
