@@ -28,7 +28,7 @@ from upsonic_on_prem.api.utils import debug, info, failed
 from upsonic_on_prem.api.utils.kot_db import kot_db
 
 import traceback
-from openai import OpenAI
+from openai import OpenAI, AzureOpenAI
 
 OpenAIInstrumentor().instrument(tracer_provider=provider)
 
@@ -234,22 +234,42 @@ class AI_:
         return kot_db.get("default_model")
 
     def gpt(self, input_text, model):
-        client = OpenAI(
-            # This is the default and can be omitted
-            api_key=kot_db.get("openai_apikey"),
-        )
+        if kot_db.get("openai") == True:
+            client = OpenAI(
+                # This is the default and can be omitted
+                api_key=kot_db.get("openai_apikey"),
+            )
 
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": input_text,
-                }
-            ],
-            model=model,
-        )
+            chat_completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": input_text,
+                    }
+                ],
+                model=model,
+            )
 
-        return chat_completion.choices[0].message.content
+            return chat_completion.choices[0].message.content
+    
+        if kot_db.get("azureopenai") == True:
+            client = AzureOpenAI(
+                azure_endpoint=kot_db.get("azureopenai_baseurl"),
+                api_version=kot_db.get("azureopenai_version"),
+                api_key=kot_db.get("azureopenai_key")
+            )
+
+            completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": input_text,
+                    }
+                ],
+                model=model,
+            )
+
+            return completion.choices[0].message.content
 
     def gemmma(self, input_text):
         response = ollama.generate(model="upsonic_local_model", prompt=input_text)
