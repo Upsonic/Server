@@ -21,7 +21,7 @@ def endpoint():
     """ """
 
 
-    result = kot_db.get("azureopenai_modelname")
+    result = kot_db.get("azureopenai_version")
 
     return jsonify(
         {
