@@ -30,6 +30,9 @@ if not kot_db_.get("azureopenai_baseurl"):
     kot_db_.set("azureopenai_baseurl", os.environ.get("azureopenai_baseurl"))
 
 
+if not kot_db_.get("azureopenai_key"):
+    kot_db_.set("azureopenai_key", os.environ.get("azureopenai_key"))
+
 
 # Ldap Settings
 if not kot_db_.get("LDAP_SERVER"):

@@ -673,6 +673,10 @@ class API_Integration:
         data = {"baseurl": baseurl}
         return self._send_request("POST", "/change/azureopenai/baseurl", data=data)
 
+    def change_azureopenai_key(self, key):
+        data = {"key": key}
+        return self._send_request("POST", "/change/azureopenai/key", data=data)
+
     def change_ldap_auth(self, status):
         data = {"status": status}
         return self._send_request("POST", "/change/ldap/auth", data=data)
@@ -755,6 +759,9 @@ class API_Integration:
 
     def view_azureopenai_baseurl(self):
         return self._send_request("GET", "/view/azureopenai/baseurl")
+
+    def view_azureopenai_key(self):
+        return self._send_request("GET", "/view/azureopenai/key")
 
     def get_dump_history(self, scope):
         data = {"scope": scope}
