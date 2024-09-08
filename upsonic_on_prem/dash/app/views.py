@@ -9,6 +9,8 @@ from app.api_integration import API_Integration
 from app import models
 from app import forms
 
+from dash.logs import logger
+
 import os
 from dotenv import load_dotenv
 
@@ -672,7 +674,9 @@ def regenerate_readme(request, id):
 def delete_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-    if not API_Integration(request.user.access_key).is_robust_admin(id) == False:
+
+    if API_Integration(request.user.access_key).is_robust_admin(id) == False:
+        logger.info("55555")
         the_user = models.User.objects.get(id=id)
         the_user.delete_user(request.user.access_key)
         the_user.delete()
@@ -681,6 +685,7 @@ def delete_user(request, id):
         )
         return redirect(to="community")
     else:
+        logger.info("1111111")
         return redirect(to="community")
 
 
