@@ -1,7 +1,7 @@
 # Page Informations
 from app.pages.utils import get_current_directory_name
 
-name = "AI Finished Tasks"
+name = "AI Status"
 location = get_current_directory_name()
 #
 
@@ -23,15 +23,16 @@ def view(request):
         input_data = request.POST.get("ai_input")
         result = API_Integration(request.user.access_key).ai_completion(input_data)
 
-    the_list = models.AI_Task.objects.filter(status=True)
+    the_list = models.AI_Task.objects.filter()
     tasks = []
     for task in the_list:
         if request.user.can_read(task.key):
             tasks.append(task)
 
-    tasks.reverse()
 
     task_len = len(tasks)
+
+    tasks = reversed(tasks)
 
     data = {
         "page_title": name,

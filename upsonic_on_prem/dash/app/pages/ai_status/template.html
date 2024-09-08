@@ -34,6 +34,8 @@
                 <table class="uk-table uk-table-divider">
                     <thead>
                       <tr>
+                        <th class="uk-table-shrink"></th>
+                        <th class="uk-table-shrink">Name</th>
                         <th class="uk-table-shrink">Name</th>
                         <th class="uk-table-expand">Object</th>
                       </tr>
@@ -44,6 +46,7 @@
                     {% for task in tasks%}
                
                       <tr>
+                        <td>{{task.id}}</td>
                         <td>
 
                             <span class="uk-badge">{{task.task_name}}</span>
@@ -51,6 +54,12 @@
                         </td>
 
                         <td class="text-foreground"><a href="{% url 'AI Task Detail' id=task.id %}">{{task.key}}</a></td>
+
+                        <td>
+
+                          <span class="uk-badge">{{task.status}}</span>
+
+                      </td>
 
 
                       </tr>
