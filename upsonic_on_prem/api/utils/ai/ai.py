@@ -15,7 +15,7 @@ import hashlib
 import ollama
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 from langchain_community.embeddings import OllamaEmbeddings
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings, AzureOpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 from upsonic_on_prem.api.utils import storage
@@ -77,10 +77,18 @@ class AI_:
                         model=self.default_search_model,
                     )
                 else:
-                    oembed = OpenAIEmbeddings(
-                        model=self.default_search_model,
-                        openai_api_key=kot_db.get("openai_apikey"),
-                    )
+                    if kot_db.get("openai") == True:
+                        oembed = OpenAIEmbeddings(
+                            model=self.default_search_model,
+                            openai_api_key=kot_db.get("openai_apikey"),
+                        )
+                    if kot_db.get("azureopenai") == True:
+                        oembed = AzureOpenAIEmbeddings(
+                            model=self.default_search_model,
+                            azure_endpoint=kot_db.get("azureopenai_baseurl"),
+                            api_key=kot_db.get("azureopenai_key"),
+                            openai_api_version=kot_db.get("azureopenai_version"),
+                        )     
 
                 sha256_of_model = hashlib.sha256(
                     self.default_search_model.encode()
