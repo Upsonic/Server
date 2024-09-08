@@ -674,10 +674,8 @@ def regenerate_readme(request, id):
 def delete_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
-
-    if API_Integration(request.user.access_key).is_robust_admin(id) == False:
-        logger.info("55555")
-        the_user = models.User.objects.get(id=id)
+    the_user = models.User.objects.get(id=id)
+    if API_Integration(request.user.access_key).is_robust_admin(the_user.access_key) == False:
         the_user.delete_user(request.user.access_key)
         the_user.delete()
         request.user.notify(
