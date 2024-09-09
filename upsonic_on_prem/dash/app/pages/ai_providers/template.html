@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% load tags %}
+
+{% block content %}
+
+
+      <div class="uk-container uk-width-expand uk-margin-medium-top scrollable_side">
+        <div uk-grid class="uk-margin-medium-bottom">
+            <div class="uk-width-expand">
+                {% if result != None %}
+                {% if result != False %}
+                <div class="uk-margin-medium-bottom uk-alert uk-alert-success" uk-alert>{{result}}</div>
+                {% else %}
+                <div class="uk-margin-medium-bottom uk-alert uk-alert-danger">{{result}}</div>
+                {% endif %}
+                {% endif %}
+                <h1 class="uk-h2 uk-margin text-foreground">
+                    {{page_title}}</h1>
+
+            </div>
+
+        </div>
+        <div  class="uk-margin-small-bottom" style="margin-top: 1.5rem;">
+
+            <div class="uk-navbar-right ">
+              <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
+
+              </ul>
+            </div>  
+          
+            </div>
+
+
+            <div class="uk-width-expand uk-margin-medium-top">
+
+
+    
+                <div class="scrollable_side" uk-height-viewport="offset-top: true">
+
+                  <h1 class="uk-h2 uk-margin text-foreground">
+                    Azure OpenAI</h1>
+                  <div class=" uk-grid-small uk-grid-match" uk-grid>
+                    
+
+                    <div class="uk-width-auto">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Active</h3>
+
+      
+
+
+                        <ul class="uk-subnav uk-subnav-primary" >
+                          <li  {% if not azureopenai %}class="uk-active"{% endif %}><a id="off" href="{% url 'Change AzureOpenAI Status' status='false' %}">Off</a></li>
+                          <li {% if azureopenai %}class="uk-active"{% endif %}  ><a id="on" href="{% url 'Change AzureOpenAI Status' status='true' %}">On</a></li>
+
+                        </ul>
+                        
+
+
+                      </div>
+                    </div>
+
+
+
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Base URL</h3>
+
+      
+
+
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'Azure OpenAI Settings' %}" method="post" autocomplete="off">
+                            <div class="uk-margin-small-top ">
+                              <div class="uk-inline" style="width: 100%;">
+                                
+                                <input id="azureopenai_baseurl" class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_baseurl}}" aria-label="Search" name="azureopenai_baseurl" value="{{azureopenai_baseurl}}" required/>
+                              </div>
+                            </div>
+                           
+                
+                          </form></li>
+      
+      
+
+
+                      </div>
+                    </div>
+
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Key</h3>
+
+      
+
+
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'Azure OpenAI Settings' %}" method="post" autocomplete="off">
+                            <div class="uk-margin-small-top ">
+                              <div class="uk-inline" style="width: 100%;">
+                                
+                                <input id="azureopenai_key" class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_key}}" aria-label="Search" name="azureopenai_key" value="{{azureopenai_key}}" required/>
+                              </div>
+                            </div>
+                           
+                
+                          </form></li>
+      
+      
+
+
+                      </div>
+                    </div>
+
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Version</h3>
+
+      
+
+
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'Azure OpenAI Settings' %}" method="post" autocomplete="off">
+                            <div class="uk-margin-small-top ">
+                              <div class="uk-inline" style="width: 100%;">
+                                
+                                <input id="azureopenai_version" class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_version}}" aria-label="Search" name="azureopenai_version" value="{{azureopenai_version}}" required/>
+                              </div>
+                            </div>
+                           
+                
+                          </form></li>
+      
+      
+
+
+                      </div>
+                    </div>
+
+
+                    
+                  </div>
+
+                  <h1 class="uk-h2 uk-margin text-foreground uk-margin-medium-top">
+                    OpenAI</h1>
+                  <div class=" uk-grid-small uk-grid-match" uk-grid>
+
+
+                    <div class="uk-width-auto">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Active</h3>
+
+      
+
+
+                        <ul class="uk-subnav uk-subnav-primary" >
+                          <li  {% if not openai %}class="uk-active"{% endif %}><a href="{% url 'Change OpenAI Status' status='false' %}">Off</a></li>
+                          <li {% if openai %}class="uk-active"{% endif %}  ><a href="{% url 'Change OpenAI Status' status='true' %}">On</a></li>
+
+                        </ul>
+                        
+
+
+                      </div>
+                    </div>
+
+
+
+
+  
+
+                    <div class="uk-width-1-6">
+                      <div class="uk-card uk-card-body uk-card-default">
+                        <h3 class="uk-card-title uk-margin-bottom">Key</h3>
+
+      
+
+
+                        <li style="width: 100%;" id="header_search_div">
+                          <form action="{% url 'OpenAI Settings' %}" method="post" autocomplete="off">
+                            <div class="uk-margin-small-top ">
+                              <div class="uk-inline" style="width: 100%;">
+                                
+                                <input class="uk-input" style="width: 200%;" type="text" placeholder="{{currently_api_key}}" aria-label="Search" name="api_key" value="{{currently_api_key}}" required/>
+                              </div>
+                            </div>
+                           
+                
+                          </form></li>
+      
+      
+
+
+                      </div>
+                    </div>
+
+
+                    
+                  </div>
+
+
+                </div>
+
+            </div>
+
+</div>
+
+{% endblock content %}

@@ -3,12 +3,14 @@ from app.pages.utils import get_current_directory_name
 
 name = "OpenAI Settings"
 location = get_current_directory_name()
+hiden = True
 #
 
 
 from django.urls import path
 from dash.logs import logger
 from django.shortcuts import render
+from django.shortcuts import redirect
 from app.api_integration import API_Integration
 from django.contrib.auth.decorators import login_required
 
@@ -48,7 +50,7 @@ def view(request):
         "currently_api_key": currently_api_key,
         "openai": openai
     }
-    return render(request, f"pages/{location}/template.html", data)
+    return redirect(to="AI Providers")
 
 
 url = path(location, view, name=name)

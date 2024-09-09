@@ -1,7 +1,7 @@
 # Page Informations
 from app.pages.utils import get_current_directory_name
 
-name = "Model Settings"
+name = "AI Settings"
 location = get_current_directory_name()
 #
 
