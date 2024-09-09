@@ -50,8 +50,8 @@
 
 
                         <ul class="uk-subnav uk-subnav-primary" >
-                          <li  {% if not azureopenai %}class="uk-active"{% endif %}><a href="{% url 'Change AzureOpenAI Status' status='false' %}">Off</a></li>
-                          <li {% if azureopenai %}class="uk-active"{% endif %}  ><a href="{% url 'Change AzureOpenAI Status' status='true' %}">On</a></li>
+                          <li  {% if not azureopenai %}class="uk-active"{% endif %}><a id="off" href="{% url 'Change AzureOpenAI Status' status='false' %}">Off</a></li>
+                          <li {% if azureopenai %}class="uk-active"{% endif %}  ><a id="on" href="{% url 'Change AzureOpenAI Status' status='true' %}">On</a></li>
 
                         </ul>
                         
@@ -75,7 +75,7 @@
                             <div class="uk-margin-small-top ">
                               <div class="uk-inline" style="width: 100%;">
                                 
-                                <input class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_baseurl}}" aria-label="Search" name="azureopenai_baseurl" value="{{azureopenai_baseurl}}" required/>
+                                <input id="azureopenai_baseurl" class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_baseurl}}" aria-label="Search" name="azureopenai_baseurl" value="{{azureopenai_baseurl}}" required/>
                               </div>
                             </div>
                            
@@ -101,7 +101,7 @@
                             <div class="uk-margin-small-top ">
                               <div class="uk-inline" style="width: 100%;">
                                 
-                                <input class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_key}}" aria-label="Search" name="azureopenai_key" value="{{azureopenai_key}}" required/>
+                                <input id="azureopenai_key" class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_key}}" aria-label="Search" name="azureopenai_key" value="{{azureopenai_key}}" required/>
                               </div>
                             </div>
                            
@@ -127,7 +127,7 @@
                             <div class="uk-margin-small-top ">
                               <div class="uk-inline" style="width: 100%;">
                                 
-                                <input class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_version}}" aria-label="Search" name="azureopenai_version" value="{{azureopenai_version}}" required/>
+                                <input id="azureopenai_version" class="uk-input" style="width: 200%;" type="text" placeholder="{{azureopenai_version}}" aria-label="Search" name="azureopenai_version" value="{{azureopenai_version}}" required/>
                               </div>
                             </div>
                            
