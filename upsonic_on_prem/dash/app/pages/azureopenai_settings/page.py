@@ -48,6 +48,19 @@ def view(request):
         the_length = len(azureopenai_key)
         azureopenai_key = "*" * the_length
 
+
+
+    if azureopenai_baseurl == None:
+        azureopenai_baseurl = ""
+
+    if azureopenai_key == None:
+        azureopenai_key = ""
+
+    if azureopenai_version == None:
+        azureopenai_version = ""
+
+    
+
     data = {
         "page_title": name,
         "azureopenai": azureopenai,
