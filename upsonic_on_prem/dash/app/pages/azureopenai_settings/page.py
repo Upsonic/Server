@@ -23,6 +23,7 @@ def view(request):
     if request.method == "POST":
         azureopenai_baseurl_ = request.POST.get("azureopenai_baseurl")
         azureopenai_key_ = request.POST.get("azureopenai_key")
+        azureopenai_searchdeployment_ = request.POST.get("azureopenai_searchdeployment")
         azureopenai_version_ = request.POST.get("azureopenai_version")
 
         if azureopenai_baseurl_:
@@ -32,6 +33,10 @@ def view(request):
         if azureopenai_key_:
             API_Integration(request.user.access_key).change_azureopenai_key(azureopenai_key_)
             result = "Azure OpenAI Key Updated"
+
+        if azureopenai_searchdeployment_:
+            API_Integration(request.user.access_key).change_azureopenai_searchdeployment(azureopenai_searchdeployment_)
+            result = "Azure OpenAI Search Deployment Updated"
 
         
         if azureopenai_version_:

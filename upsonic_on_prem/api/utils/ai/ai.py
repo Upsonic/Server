@@ -84,10 +84,11 @@ class AI_:
                         )
                     if kot_db.get("azureopenai") == True:
                         oembed = AzureOpenAIEmbeddings(
+                            deployment="embedding",
                             model=self.default_search_model,
                             azure_endpoint=kot_db.get("azureopenai_baseurl"),
                             api_key=kot_db.get("azureopenai_key"),
-                            openai_api_version=kot_db.get("azureopenai_version"),
+                            openai_api_type="azure",
                         )     
 
                 sha256_of_model = hashlib.sha256(

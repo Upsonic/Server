@@ -678,6 +678,12 @@ class API_Integration:
         data = {"baseurl": baseurl}
         return self._send_request("POST", "/change/azureopenai/baseurl", data=data)
 
+
+    def change_azureopenai_searchdeployment(self, searchdeployment):
+        data = {"searchdeployment": searchdeployment}
+        return self._send_request("POST", "/change/azureopenai/searchdeployment", data=data)
+
+
     def change_azureopenai_key(self, key):
         data = {"key": key}
         return self._send_request("POST", "/change/azureopenai/key", data=data)
@@ -772,6 +778,9 @@ class API_Integration:
 
     def view_azureopenai_baseurl(self):
         return self._send_request("GET", "/view/azureopenai/baseurl")
+
+    def view_azureopenai_searchdeployment(self):
+        return self._send_request("GET", "/view/azureopenai/searchdeployment")
 
     def view_azureopenai_key(self):
         return self._send_request("GET", "/view/azureopenai/key")
