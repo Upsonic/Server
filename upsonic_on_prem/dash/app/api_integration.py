@@ -786,6 +786,10 @@ class API_Integration:
         return self._send_request("GET", "/view/azureopenai/key")
 
 
+    def view_version(self):
+        return self._send_request("GET", "/view/version")
+
+
     def view_azureopenai_version(self):
         return self._send_request("GET", "/view/azureopenai/version")
 
