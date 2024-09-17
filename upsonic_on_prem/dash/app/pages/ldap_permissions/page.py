@@ -2,6 +2,7 @@
 from app.pages.utils import get_current_directory_name
 
 name = "LDAP Permissions"
+hiden = True
 location = get_current_directory_name()
 #
 
