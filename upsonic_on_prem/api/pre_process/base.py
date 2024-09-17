@@ -18,7 +18,8 @@ def check():
         the_endpoint = ""
     endpoint = "/" + the_endpoint
 
-    if endpoint == status_url:
+    
+    if endpoint == status_url or endpoint == "/_view_version":
         return
     
     if endpoint.startswith("/_ldap"):
