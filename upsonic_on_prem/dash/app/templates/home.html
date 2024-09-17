@@ -22,21 +22,27 @@
         {% include 'home/tableview.html' %}
     {% endif %}
 
-          <div uk-grid class="uk-margin-medium-bottom uk-margin-large-top">
-            <div class="uk-width-expand">
-            <h1 class="uk-h2 uk-margin text-foreground">Connection Code</h1>
-            </div>
-
+      <div uk-grid class="uk-margin-medium-bottom uk-margin-large-top">
+        <div class="uk-width-expand">
+        <h1 class="uk-h2 uk-margin text-foreground">Connection Code</h1>
         </div>
 
+    </div>
 
 
-        <div class="custom_code_block uk-card">
-          <div class="custom_code_block_code">
+
+    <div class="custom_code_block uk-card">
+        <div class="custom_code_block_code">
+<div class="highlight"><pre class="chroma"><pre><code class="language-python">pip3 install upsonic=={{version}}</code></pre></div>
+        </div>
+    </div>
+
+
+    <div class="custom_code_block uk-card">
+      <div class="custom_code_block_code">
 <div class="highlight"><pre class="chroma"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
-          </div>
       </div>
-
+  </div>
 
 
 </div>

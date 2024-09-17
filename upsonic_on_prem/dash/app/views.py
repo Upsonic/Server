@@ -53,11 +53,16 @@ def home(request, exception=None):
         total_sub_amount = len(all_scopes_source)
         the_top_scopes.append({"name": each, "total_sub_amount": total_sub_amount})
 
+
+    version = API_Integration(request.user.access_key).view_version()
+
+
     data = {
         "page_title": "Home",
         "top_scopes": the_top_scopes,
         "the_connection_code": the_connection_code(request),
         "the_view": the_view,
+        "version": version,
     }
 
     return render(request, "templates/home.html", data)
