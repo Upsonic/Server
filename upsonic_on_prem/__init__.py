@@ -1,6 +1,6 @@
 import traceback
 
-__version__ = '0.30.4'  # fmt: skip
+__version__ = '0.30.5'  # fmt: skip
 
 from .api.utils import *
 
