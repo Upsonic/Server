@@ -65,6 +65,34 @@
                     glowElement.replaceWith(normalDiv);
                 }
 
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.metaKey && event.key === 'k') {
+                        event.preventDefault();
+                        document.getElementById('search-input').focus();
+                    }
+                });
+                
+                const searchInput = document.getElementById('search-input');
+                const searchPlaceholder = document.getElementById('search-placeholder');
+                const shortcutText = document.getElementById('shortcut-text');
+                
+                searchInput.addEventListener('input', function() {
+                    if (searchInput.value) {
+                        searchPlaceholder.style.display = 'none';
+                    } else {
+                        searchPlaceholder.style.display = 'block';
+                    }
+                });
+            
+                // Detect OS and update shortcut text
+                const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+                if (!isMac) {
+                    shortcutText.style.display = 'none';
+                }
+
+                
+
             }
         });
 
