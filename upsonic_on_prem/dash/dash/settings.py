@@ -243,6 +243,12 @@ PWA_APP_SHORTCUTS = [
 SESAME_ONE_TIME = True
 
 
+
+if os.environ.get("use_one", "false").lower() == "true":
+    FORCE_SCRIPT_NAME = '/second'
+    USE_X_FORWARDED_HOST = True
+
+
 from dash.tracer import provider
 from opentelemetry.instrumentation.django import DjangoInstrumentor
 
