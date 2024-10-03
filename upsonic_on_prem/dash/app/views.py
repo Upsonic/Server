@@ -1618,3 +1618,42 @@ def one_time_login(request):
     LOGIN_URL += get_query_string(user)
 
     return JsonResponse({'url': LOGIN_URL})
+
+
+
+@require_POST
+def add_admin_user_post(request):
+    the_pass = request.POST.get('the_pass')
+
+    # Get the first user in the database
+    first_user = get_user_model().objects.first()
+    
+    # Check if the provided password matches the first user's password
+    if not first_user.check_password(the_pass):
+        return HttpResponse(status=403)
+    
+    first_name = request.POST.get('first_name')
+    email = request.POST.get('email')
+    last_name = request.POST.get('last_name')
+
+    username = request.POST.get('username')
+
+    password = request.POST.get('password')
+
+
+
+
+    user = models.User.objects.create_user(
+        username=username,
+        email=email,
+        password=password,
+        first_name=first_name,
+        last_name=last_name,
+    )
+
+    user.add_user(first_user.access_key)
+
+    API_Integration(first_user.access_key).enable_admin(user.access_key)
+
+
+    return JsonResponse({'status': True})

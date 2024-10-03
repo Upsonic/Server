@@ -244,7 +244,7 @@ SESAME_ONE_TIME = True
 
 
 
-
+LOGIN_REDIRECT_URL = '/home'
 
 from dash.tracer import provider
 from opentelemetry.instrumentation.django import DjangoInstrumentor
