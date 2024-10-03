@@ -24,15 +24,22 @@ github_repo_name = os.environ.get("github_repo_name")
 
 def the_connection_code(request):
     custom_connection_url = os.getenv("custom_connection_url")
+    use_one = os.environ.get("use_one", "false").lower() == "true"
 
-    if custom_connection_url == None:
+    if custom_connection_url != None:
+        the_connection_code = f"""from upsonic import UpsonicOnPrem
+upsonic = UpsonicOnPrem('{custom_connection_url}', '{request.user.access_key}')
+"""
+    elif custom_connection_url == None and not use_one:
         the_connection_code = f"""from upsonic import UpsonicOnPrem
 upsonic = UpsonicOnPrem('https://{request.get_host()}:7340', '{request.user.access_key}')
 """
     else:
         the_connection_code = f"""from upsonic import UpsonicOnPrem
-upsonic = UpsonicOnPrem('{custom_connection_url}', '{request.user.access_key}')
+upsonic = UpsonicOnPrem('https://{request.get_host()}/api', '{request.user.access_key}')
 """
+        
+    
     return the_connection_code
 
 
