@@ -244,8 +244,6 @@ SESAME_ONE_TIME = True
 
 
 
-USE_ONE = os.environ.get("use_one", "false").lower() == "true"
-
 
 
 from dash.tracer import provider

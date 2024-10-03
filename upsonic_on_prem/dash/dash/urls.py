@@ -37,5 +37,3 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-if settings.USE_ONE:
-    urlpatterns = [path(r'^second/', include(urlpatterns))]
