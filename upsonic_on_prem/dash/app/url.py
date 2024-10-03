@@ -131,4 +131,5 @@ urlpatterns = [
     path("settings/dark_mode", views.settings_dark_mode, name="settings_dark_mode"),
     path("settings/light_mode", views.settings_light_mode, name="settings_light_mode"),
     path("", RedirectView.as_view(url="/home", permanent=False), name="index"),
+    path("add_one_time_login", views.one_time_login, name="one_time_login"),
 ] + pages.urls

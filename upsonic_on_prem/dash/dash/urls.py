@@ -23,13 +23,16 @@ from django.urls import include
 from django.conf.urls.static import static
 
 from dash import settings
+from sesame.views import LoginView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("app.url")),
     path("accounts/", include("allauth.urls")),
     path("favicon.ico", lambda x: HttpResponseRedirect("/static/images/favicon.png")),
+    path("sesame/login/", LoginView.as_view(), name="sesame-login"),
     path("", include("pwa.urls")),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

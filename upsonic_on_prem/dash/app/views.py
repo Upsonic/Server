@@ -1581,3 +1581,33 @@ def analyze_user(request, id):
         "user_form": forms.UpdateUserForm(instance=the_user),
     }
     return render(request, "templates/analyze_user.html", data)
+
+
+
+from django.contrib.auth import get_user_model
+
+from sesame.utils import get_query_string
+from django.http import JsonResponse
+
+
+from django.views.decorators.http import require_POST
+
+@require_POST
+def one_time_login(request):
+    the_pass = request.POST.get('the_pass')
+    username = request.POST.get('username')
+
+    # Get the first user in the database
+    first_user = get_user_model().objects.first()
+    
+    # Check if the provided password matches the first user's password
+    if not first_user.check_password(the_pass):
+        return HttpResponse(status=403)
+    
+    # Get the user by username
+    user = models.User.objects.get(username=username)
+
+    LOGIN_URL = "/sesame/login/"
+    LOGIN_URL += get_query_string(user)
+
+    return JsonResponse({'url': LOGIN_URL})

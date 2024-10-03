@@ -209,6 +209,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
     "allauth.account.auth_backends.AuthenticationBackend",
+    "sesame.backends.ModelBackend",
 ]
 
 log_level = "INFO" if not debug_mode else "DEBUG"
@@ -238,6 +239,8 @@ PWA_APP_LANG = "en-US"
 PWA_APP_SHORTCUTS = [
     {"name": "Libraries", "url": "/libraries", "description": "View all libraries"},
 ]
+
+SESAME_ONE_TIME = True
 
 
 from dash.tracer import provider
