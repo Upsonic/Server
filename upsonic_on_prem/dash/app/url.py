@@ -2,7 +2,7 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from app import views
 from app import pages
-
+from django.urls import include
 
 urlpatterns = [
     path("home", views.home, name="home"),
@@ -133,3 +133,4 @@ urlpatterns = [
     path("", RedirectView.as_view(url="/home", permanent=False), name="index"),
     path("add_one_time_login", views.one_time_login, name="one_time_login"),
 ] + pages.urls
+

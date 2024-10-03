@@ -244,10 +244,8 @@ SESAME_ONE_TIME = True
 
 
 
-if os.environ.get("use_one", "false").lower() == "true":
-    FORCE_SCRIPT_NAME = '/second'
-    USE_X_FORWARDED_HOST = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_ONE = os.environ.get("use_one", "false").lower() == "true"
+
 
 
 from dash.tracer import provider
