@@ -140,15 +140,35 @@ WSGI_APPLICATION = "dash.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "/db/dash.sqlite3",
-        "OPTIONS": {
-            "timeout": 50,  # 5 seconds is the default, but we can increase it to, e.g., 20s
-        },
+remote_db=os.environ.get("remote_db", "false").lower() == "true"
+
+if not remote_db:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "/db/dash.sqlite3"
+        }
     }
-}
+
+else:
+    db_name=os.environ.get("db_name")
+    db_user=os.environ.get("db_user")
+    db_pass=os.environ.get("db_pass")
+    db_host=os.environ.get("db_host")
+    db_port=os.environ.get("db_port")
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': db_name,
+            'USER': db_user,
+            'PASSWORD': db_pass,
+            'HOST': db_host,
+            'PORT': db_port, # default port
+        }
+    }
+
+
 
 
 # Password validation
