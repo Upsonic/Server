@@ -144,6 +144,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": "/db/dash.sqlite3",
+        "OPTIONS": {
+            "timeout": 50,  # 5 seconds is the default, but we can increase it to, e.g., 20s
+        },
     }
 }
 
