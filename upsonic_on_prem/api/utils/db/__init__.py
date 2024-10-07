@@ -23,7 +23,7 @@ with tracer.start_span("redis-startup") as span:
         except:
             return False
 
-    if can_access_to_config():
+    if can_access_to_config() and redis_host == "localhost":
         threading.Thread(target=redis_config).start()
         time.sleep(2)
 
