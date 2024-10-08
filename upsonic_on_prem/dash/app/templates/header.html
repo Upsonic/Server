@@ -8,7 +8,7 @@
 
 
 
-<nav class="uk-navbar-container" uk-navbar style="background-color: #fbfbfb;">
+<nav class="uk-navbar-container light_mode_bg" uk-navbar >
     <div class="uk-navbar-left uk-margin-small-left" style="width: 30%;">
         <ul class="uk-navbar-nav uk-margin-small-left uk-margin-small-top uk-margin-small-bottom" style="width: 100%;">
           <a id="logo_button" class="uk-navbar-item uk-logo" href="{% url 'home' %}"><img src="/static/images/logo_name{% if request.user.dark_mode %}_dark.svg{% else %}.svg{% endif %}" alt="Logo" style="width: 124px; max-width: unset;"

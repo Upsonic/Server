@@ -19,25 +19,29 @@
               <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
           
            
+                {% if user.access_key != request.user.access_key %}
                 {% if is_enabled %}
                 <a href="#" onclick="page_load('{% url 'disable_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="close" class="uk-margin-small-right"></span>Disable</a>
                 {% else %}
                 <a href="#" onclick="page_load('{% url 'enable_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="check" class="uk-margin-small-right"></span>Enable</a>
                 {% endif %}
+                {% endif %}
 
           
                  
-
-                {% if is_admin %}
+                {% if user.access_key != request.user.access_key %}
+                {% if is_admin and %}
                 <a href="#" onclick="page_load('{% url 'disable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="close" class="uk-margin-small-right"></span>Unset Admin</a>
                 {% else %}
                 <a href="#" onclick="page_load('{% url 'enable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="check" class="uk-margin-small-right"></span>Set Admin</a>
                 {% endif %}   
+                {% endif %}
 
 
                 {% debug_mode as debug_mode %}
                 {% if not debug_mode %}
 
+                {% if user.access_key != request.user.access_key %}
                 {% if not is_robust_admin %}
                 <a href="#" onclick="page_load('{% url 'delete_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-danger"><span uk-icon="close" class="uk-margin-small-right"></span>Delete User</a>
                 {% endif %}
@@ -47,6 +51,7 @@
                 <a href="#" onclick="page_load('{% url 'delete_user' id=user.id %}');event.preventDefault();" class="uk-button uk-button-danger"><span uk-icon="close" class="uk-margin-small-right"></span>Delete User</a>
 
                 {% endif %}
+                {% endif %}
 
 
 
@@ -55,13 +60,7 @@
           
             </div>
 
-        {% if not is_robust_admin %}   
-        <div class="custom_code_block uk-card">
-            <div class="custom_code_block_code">
-                <div class="highlight"><pre><code class="language-python">{{user.access_key}}</code></pre></div>
-            </div>
-        </div>
-        {% endif %}
+
         
         <div class=" uk-card uk-card-body uk-card-default uk-margin-small-top">
             <h3 class="uk-card-title">Edit</h3>
