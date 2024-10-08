@@ -26,7 +26,7 @@ database_name_caches = []
 key_name_caches = []
 
 
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 
 from .tracer import provider
