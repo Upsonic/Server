@@ -55,13 +55,13 @@
           
             </div>
 
-                
+        {% if not is_robust_admin %}   
         <div class="custom_code_block uk-card">
             <div class="custom_code_block_code">
                 <div class="highlight"><pre><code class="language-python">{{user.access_key}}</code></pre></div>
             </div>
         </div>
-
+        {% endif %}
         
         <div class=" uk-card uk-card-body uk-card-default uk-margin-small-top">
             <h3 class="uk-card-title">Edit</h3>
