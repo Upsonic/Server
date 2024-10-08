@@ -687,6 +687,11 @@ def delete_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
+
+    if the_user.access_key == request.user.access_key:
+        return HttpResponse(status=403)
+
+
     if API_Integration(request.user.access_key).is_robust_admin(the_user.access_key) == False:
         the_user.delete_user(request.user.access_key)
         the_user.delete()
@@ -725,6 +730,11 @@ def disable_user(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
+
+    if the_user.access_key == request.user.access_key:
+        return HttpResponse(status=403)
+
+
     API_Integration(request.user.access_key).disable_user(the_user.access_key)
     request.user.notify(
         "User Disabled", f"User {the_user.username} disabled successfully"
@@ -746,7 +756,13 @@ def enable_admin(request, id):
 def disable_admin(request, id):
     if not request.user.is_admin:
         return HttpResponse(status=403)
+    
     the_user = models.User.objects.get(id=id)
+
+    if the_user.access_key == request.user.access_key:
+        return HttpResponse(status=403)
+
+    
     API_Integration(request.user.access_key).disable_admin(the_user.access_key)
     request.user.notify(
         "Admin Disabled", f"User {the_user.username} is no longer an admin"
