@@ -140,9 +140,10 @@ WSGI_APPLICATION = "dash.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-remote_db=os.environ.get("remote_db", "false").lower() == "true"
 
-if not remote_db:
+db_host=os.environ.get("db_host", "localhost")
+
+if db_host == "localhost":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -154,7 +155,7 @@ else:
     db_name=os.environ.get("db_name")
     db_user=os.environ.get("db_user")
     db_pass=os.environ.get("db_pass")
-    db_host=os.environ.get("db_host")
+    
     db_port=os.environ.get("db_port")
 
     DATABASES = {
