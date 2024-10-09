@@ -1,0 +1,55 @@
+{% load tags %}
+
+
+<div class="uk-flex uk-flex-column ">
+
+{% notifications as notifications %}
+
+{% for notif in notifications %}
+
+
+{% if notif.type == "info" or notif.type == "danger" %}
+
+
+
+{% if notif.type == "info" %}
+<div class="uk-alert uk-margin-small-bottom" uk-alert>
+
+{% elif notif.type == "danger" %}
+<div class="uk-alert uk-alert-danger uk-margin-small-bottom" uk-alert>
+
+
+
+{% endif %}
+
+
+    {% if notif.section == "ai" %}
+    <svg uk-icon="nut" style="top: 0.8rem;"></svg>
+    {% endif %}
+    {% if notif.section == "edit" %}
+    <svg uk-icon="file-edit" style="top: 0.8rem;"></svg>
+    {% endif %}
+
+
+    <a href class="uk-alert-close" uk-close></a>
+
+
+
+    <div class="uk-alert-title">{{notif.title}}</div>
+
+
+
+    <div class="uk-alert-description">
+    {{notif.message}}
+    </div>
+  </div>
+
+  {% endif %}
+
+{% endfor %}
+
+
+
+
+
+</div>

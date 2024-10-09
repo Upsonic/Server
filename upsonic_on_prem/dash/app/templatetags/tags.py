@@ -40,6 +40,16 @@ def pages_tag(context):
         return []
 
 
+@register.simple_tag(name="notifications", takes_context=True)
+def notifications_tag(context):
+    request = context["request"]
+    the_notifications = request.user.notifications.filter(read=False)
+    for each in the_notifications:
+        each.read = True
+        each.save()
+    return the_notifications
+
+
 @register.simple_tag(name="pages_len", takes_context=True)
 def pages_len(context):
     request = context["request"]

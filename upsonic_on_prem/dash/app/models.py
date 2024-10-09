@@ -27,9 +27,13 @@ class TheNotifications(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     important = models.BooleanField(default=False)
+    section = models.CharField(max_length=1000, blank=True, null=True)
+    type = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return self.title + " - " + str(self.date)
+    class Meta:
+        ordering = ['-date']
 
 
 class User(AbstractUser):
@@ -127,9 +131,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    def notify(self, title, message, important=False):
+    def notify(self, title, message, type=None,  important=False):
         notification = TheNotifications(
-            title=title, message=message, important=important, owner=self
+            title=title, message=message, type=type, important=important, owner=self
         )
         notification.save()
         self.notifications.add(notification)

@@ -130,6 +130,7 @@ def control_user(request, id):
             request.user.notify(
                 "User Updated",
                 f"User {the_user.username} updated successfully, the user must login again to access",
+                "info"
             )
             return redirect(to="control_user", id=id)
 
@@ -189,6 +190,7 @@ def add_write_scope(request, id):
             request.user.notify(
                 "Write Scope Added",
                 f"Scope {request.POST.get('scope')} added to user {the_user.username}",
+                "info"
             )
             return redirect(to="control_user", id=id)
 
@@ -204,7 +206,8 @@ def delete_write_scope(request, scope, id):
         scope, the_user.access_key
     )
     request.user.notify(
-        "Write Scope Deleted", f"Scope {scope} deleted from user {the_user.username}"
+        "Write Scope Deleted", f"Scope {scope} deleted from user {the_user.username}",
+                "info"
     )
     return redirect(to="control_user", id=id)
 
@@ -223,6 +226,7 @@ def add_read_scope(request, id):
             request.user.notify(
                 "Read Scope Added",
                 f"Scope {request.POST.get('scope')} added to user {the_user.username}",
+                "info"
             )
             return redirect(to="control_user", id=id)
 
@@ -238,7 +242,8 @@ def delete_read_scope(request, id, scope):
         scope, the_user.access_key
     )
     request.user.notify(
-        "Read Scope Deleted", f"Scope {scope} deleted from user {the_user.username}"
+        "Read Scope Deleted", f"Scope {scope} deleted from user {the_user.username}",
+                "info"
     )
     return redirect(to="control_user", id=id)
 
@@ -643,6 +648,7 @@ def regenerate_documentation(request, id):
     request.user.notify(
         "Documentation is Generating",
         f"Documentation for {id} is generating, it will be ready soon.",
+                "info"
     )
     models.AI_Task(
         task_name="documentation",
@@ -665,6 +671,7 @@ def regenerate_documentation(request, id):
     request.user.notify(
         "Documentation Generated",
         f"Documentation for {id} is generated, you can access it now.",
+                "info"
     )
     return redirect(to="control_element", id=id)
 
@@ -698,7 +705,8 @@ def delete_user(request, id):
         the_user.delete_user(request.user.access_key)
         the_user.delete()
         request.user.notify(
-            "User Deleted", f"User {the_user.username} deleted successfully"
+            "User Deleted", f"User {the_user.username} deleted successfully",
+                "info"
         )
         return redirect(to="community")
     else:
@@ -709,7 +717,8 @@ def delete_user(request, id):
 @login_required
 def delete_scope(request, id):
     API_Integration(request.user.access_key).delete_code(id)
-    request.user.notify("Scope Deleted", f"Scope {id} deleted successfully")
+    request.user.notify("Scope Deleted", f"Scope {id} deleted successfully",
+                "info")
     if "." in id:
         return redirect(to="control_library", id=".".join(id.split(".")[:-1]))
     return redirect(to="libraries")
@@ -722,7 +731,8 @@ def enable_user(request, id):
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).enable_user(the_user.access_key)
     request.user.notify(
-        "User Enabled", f"User {the_user.username} enabled successfully"
+        "User Enabled", f"User {the_user.username} enabled successfully",
+                "info"
     )
     return redirect(to="community")
 
@@ -739,7 +749,8 @@ def disable_user(request, id):
 
     API_Integration(request.user.access_key).disable_user(the_user.access_key)
     request.user.notify(
-        "User Disabled", f"User {the_user.username} disabled successfully"
+        "User Disabled", f"User {the_user.username} disabled successfully",
+                "info"
     )
     return redirect(to="community")
 
@@ -750,7 +761,8 @@ def enable_admin(request, id):
         return HttpResponse(status=403)
     the_user = models.User.objects.get(id=id)
     API_Integration(request.user.access_key).enable_admin(the_user.access_key)
-    request.user.notify("Admin Enabled", f"User {the_user.username} is now an admin")
+    request.user.notify("Admin Enabled", f"User {the_user.username} is now an admin",
+                "info")
     return redirect(to="community")
 
 
@@ -767,7 +779,8 @@ def disable_admin(request, id):
     
     API_Integration(request.user.access_key).disable_admin(the_user.access_key)
     request.user.notify(
-        "Admin Disabled", f"User {the_user.username} is no longer an admin"
+        "Admin Disabled", f"User {the_user.username} is no longer an admin",
+                "info"
     )
     return redirect(to="community")
 
@@ -786,6 +799,7 @@ def add_user(request):
             request.user.notify(
                 "User Added",
                 f"User {user_form.cleaned_data.get('username')} added successfully",
+                "info"
             )
             return redirect(to="community")
         else:

@@ -5,13 +5,17 @@
 
 
 <div class="uk-container uk-width-expand " uk-height-viewport="offset-top: true" >
+
+
     <div  uk-grid>
         <div class="uk-width-auto" style=" padding-left: 0px;">
 
           {% include 'cloud_side_bar_other.html' %}
         </div>
     
+
         <div class="uk-width-expand uk-margin-medium-top scrollable_side" style="height: 80vh;">
+          {% include 'notifications.html' %}
 
           {% include 'home/cardview.html' %}
 
