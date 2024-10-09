@@ -700,7 +700,7 @@ def delete_user(request, id):
         )
         return redirect(to="community")
     else:
-        logger.info("1111111")
+
         return redirect(to="community")
 
 
