@@ -30,7 +30,7 @@
           
                  
                 {% if user.access_key != request.user.access_key %}
-                {% if is_admin and %}
+                {% if is_admin %}
                 <a href="#" onclick="page_load('{% url 'disable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="close" class="uk-margin-small-right"></span>Unset Admin</a>
                 {% else %}
                 <a href="#" onclick="page_load('{% url 'enable_admin' id=user.id %}');event.preventDefault();" class="uk-button uk-button-default"><span uk-icon="check" class="uk-margin-small-right"></span>Set Admin</a>
@@ -40,6 +40,7 @@
 
                 {% debug_mode as debug_mode %}
                 {% if not debug_mode %}
+
 
                 {% if user.access_key != request.user.access_key %}
                 {% if not is_robust_admin %}
