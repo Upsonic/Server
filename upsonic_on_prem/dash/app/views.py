@@ -106,9 +106,11 @@ def notification_read_id(request, id):
 def community(request):
     if not request.user.is_admin:
         return HttpResponse(status=403)
+    the_users = API_Integration(request.user.access_key).get_users()
+    the_users.pop(0)
     data = {
         "page_title": "Community",
-        "users": API_Integration(request.user.access_key).get_users(),
+        "users": the_users,
     }
     return render(request, "templates/community.html", data)
 
