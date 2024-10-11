@@ -55,13 +55,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Write a function that generates a secret key and storing in /db/dash.secret and if it exists, read it from there
 # If it does not exist, generate a new one and store it there
 
-if os.path.exists("/db/dash.secret"):
-    with open("/db/dash.secret", "r") as file:
-        SECRET_KEY = file.readlines()[0]
-else:
-    with open("/db/dash.secret", "w") as file:
-        SECRET_KEY = get_random_secret_key()
-        file.write(SECRET_KEY)
+SECRET_KEY = os.environ.get("SECRET_KEY", None)
+
+if not SECRET_KEY:
+    if os.path.exists("/db/dash.secret"):
+        with open("/db/dash.secret", "r") as file:
+            SECRET_KEY = file.readlines()[0]
+    else:
+        with open("/db/dash.secret", "w") as file:
+            SECRET_KEY = get_random_secret_key()
+            file.write(SECRET_KEY)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
