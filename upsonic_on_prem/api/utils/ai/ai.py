@@ -229,6 +229,8 @@ class AI_:
             result = self.gpt(input_text, model=model)
         elif model == "gpt-4o":
             result = self.gpt(input_text, model=model)
+        elif model == "gpt-4o-mini":
+            result = self.gpt(input_text, model=model)
 
         if active_ai_history:
             save_ai_call(input_text, result, model)
