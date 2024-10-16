@@ -61,6 +61,10 @@ def home(request, exception=None):
         the_top_scopes.append({"name": each, "total_sub_amount": total_sub_amount})
 
 
+    zero_scope = False
+    if len(the_top_scopes) == 0:
+        zero_scope = True
+
     version = API_Integration(request.user.access_key).view_version()
 
 
@@ -70,9 +74,42 @@ def home(request, exception=None):
         "the_connection_code": the_connection_code(request),
         "the_view": the_view,
         "version": version,
+        "zero_scope": zero_scope
     }
 
     return render(request, "templates/home.html", data)
+
+@login_required
+def quic_start_disabled(request, exception=None):
+
+
+    the_top_scopes = []
+    for each in API_Integration(request.user.access_key).top_scopes:
+        all_scopes_source = API_Integration(
+            request.user.access_key
+        ).get_all_scopes_name_prefix(each)
+        total_sub_amount = len(all_scopes_source)
+        the_top_scopes.append({"name": each, "total_sub_amount": total_sub_amount})
+
+
+    zero_scope = False
+    if len(the_top_scopes) == 0:
+        zero_scope = True
+
+
+    if not zero_scope:
+        request.user.notify(
+            "Congrats",
+            "Your first function sent. Now you can start to use Upsonic",
+            "info",
+            section="edit"
+        )
+
+
+    the_json = {"zero_scope": zero_scope}
+
+    return JsonResponse(the_json, safe=False)
+
 
 
 def notifications(request):

@@ -131,9 +131,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    def notify(self, title, message, type=None,  important=False):
+    def notify(self, title, message, type=None, section=None, important=False):
         notification = TheNotifications(
-            title=title, message=message, type=type, important=important, owner=self
+            title=title, message=message, type=type, section=section, important=important, owner=self
         )
         notification.save()
         self.notifications.add(notification)

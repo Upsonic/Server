@@ -6,6 +6,7 @@ from django.urls import include
 
 urlpatterns = [
     path("home", views.home, name="home"),
+    path("quic_start_disabled", views.quic_start_disabled, name="quic_start_disabled"),
     path("libraries", views.libraries, name="libraries"),
     path("control_library/<id>", views.control_library, name="control_library"),
     path(
