@@ -490,7 +490,12 @@ def control_element(request, id):
 
     using_code = ""
     if version == None:
-        using_code = f'upsonic.load("{id}")()'
+        first_thing = id.split(".")[0]
+        using_code = f'''
+{first_thing} = upsonic.load_module("{first_thing}")
+
+{id}()
+'''
     else:
         using_code = f'upsonic.load("{id}", version="{version}")()'
 
