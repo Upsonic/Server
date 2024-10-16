@@ -28,10 +28,6 @@ jobs:
           
           if [[ $commit_msg == *"Changed version number with"* ]]; then
             echo "release_type=patch" >> "$GITHUB_OUTPUT"
-          elif [[ $commit_msg == *"[MINOR]" ]]; then
-            echo "release_type=minor" >> "$GITHUB_OUTPUT"
-          elif [[ $commit_msg == *"[MAJOR]" ]]; then
-            echo "release_type=major" >> "$GITHUB_OUTPUT"
           else
             echo "Commit message does not include 'Changed version number with', [MINOR], or [MAJOR]"
           fi
