@@ -134,5 +134,6 @@ urlpatterns = [
     path("", RedirectView.as_view(url="/home", permanent=False), name="index"),
     path("add_one_time_login", views.one_time_login, name="one_time_login"),
     path("add_admin_user_post", views.add_admin_user_post, name="add_admin_user_post"),
+    path("get_username_of_ak", views.get_username_of_ak, name="get_username_of_ak"),
 ] + pages.urls
 

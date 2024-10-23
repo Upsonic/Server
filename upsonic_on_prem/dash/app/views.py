@@ -1731,3 +1731,17 @@ def add_admin_user_post(request):
 
 
     return JsonResponse({'status': True})
+
+
+
+
+
+@require_POST
+def get_username_of_ak(request):
+    access_key = request.POST.get('access_key')
+    try:
+        the_user = get_user_model().objects.get(access_key=access_key)
+        the_username = the_user.username
+        return JsonResponse({'status': True, "result":the_username})
+    except:
+        return JsonResponse({'status': True, "result":None})
