@@ -51,8 +51,14 @@
            
                   <tr>
                     <td>{{run.data.time}}</td>
+
+                    {% if run.data.version_short != None %}
                     <td><a href="#" onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="library_item_a">
                       <span class="uk-badge">{{run.data.version_short}}</span></a></td>
+                    {% else %}
+                    <td><a href="#" onclick="page_load('{% url 'control_element_runs_analyze' id=control_library run_sha=run.id %}');event.preventDefault();" class="library_item_a">
+                      <span class="uk-badge">No Version</span></a></td>
+                    {% endif %}
                   
                     <td>{{run.data.cpu_usage}}%</td>
                     <td>{{run.data.memory_usage}}mb</td>

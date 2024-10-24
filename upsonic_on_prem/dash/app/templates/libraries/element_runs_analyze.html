@@ -108,7 +108,11 @@
                     align-items: center;
                     justify-content: flex-start; /* Align items to the left */" >
                       <span uk-icon="server" class="uk-margin-small-right uk-icon"></span>
+                      {% if run.version_short != None %}
                       {{run.version_short}}
+                      {% else %}
+                      No Version
+                      {% endif %}
                   </button>
 
                   <button Server class="uk-button  uk-button-primary uk-width-1-1 " style="  display: flex;

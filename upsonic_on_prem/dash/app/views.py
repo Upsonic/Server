@@ -1215,11 +1215,14 @@ def control_element_runs(request, id):
             each_run["data"]["version_short"] = "Latest"
             each_run["data"]["version_tag"] = "Latest"
         else:
-            each_run["data"]["version_short"] = (
-                each_run["data"]["version"][:4]
-                + "..."
-                + each_run["data"]["version"][-4:]
-            )
+            try:
+                each_run["data"]["version_short"] = (
+                    each_run["data"]["version"][:4]
+                    + "..."
+                    + each_run["data"]["version"][-4:]
+                )
+            except:
+                pass
 
         number = float(each_run["data"]["cpu_usage"])
         each_run["data"]["cpu_usage"] = float(f"{number:.1f}")
@@ -1292,11 +1295,14 @@ def control_element_runs_analyze(request, id, run_sha):
         get_last_run["data"]["version_short"] = "Latest"
         get_last_run["data"]["version_tag"] = "Latest"
     else:
-        get_last_run["data"]["version_short"] = (
-            get_last_run["data"]["version"][:4]
-            + "..."
-            + get_last_run["data"]["version"][-4:]
-        )
+        try:
+            get_last_run["data"]["version_short"] = (
+                get_last_run["data"]["version"][:4]
+                + "..."
+                + get_last_run["data"]["version"][-4:]
+            )
+        except:
+            pass
 
     number = float(get_last_run["data"]["cpu_usage"])
     get_last_run["data"]["cpu_usage"] = float(f"{number:.1f}")
