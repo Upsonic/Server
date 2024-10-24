@@ -159,7 +159,7 @@
 
                     <div class="custom_code_block uk-card">
                       <div class="custom_code_block_code">
-                          <div class="highlight"><pre><code class="language-python">{% if run.exception %}{{run.exception_log}}{% else %}No Exception Found{% endif %}</code></pre></div>
+                          <div class="highlight"><pre><code class="language-python">{% if run.type == 'Failed' %}{{run.exception_log}}{% else %}No Exception Found{% endif %}</code></pre></div>
                       </div>
                   </div>
 
