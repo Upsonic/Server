@@ -100,11 +100,18 @@
                             
                         </div>
                 
+
+                        {% debug_mode as debug_mode %}
+                        {% if not debug_mode %}
                         <div class="custom_code_block uk-card">
                             <div class="custom_code_block_code">
                                 <div class="highlight"><pre><code class="language-python">{{using_code}}</code></pre></div>
                             </div>
                         </div>
+
+                        {% endif %}
+
+                       
                         {% if requirements != "" %}
                         
                         

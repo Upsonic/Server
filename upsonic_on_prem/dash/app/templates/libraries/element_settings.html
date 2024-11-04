@@ -55,7 +55,8 @@
                
 
           
-                    
+              {% demo_mode as demo_mode %}
+              {% if not demo_mode %}
                   <div class=" uk-card" style="padding-left: 0px;">
                     <div class="uk-card-header">
                       <h3 class="uk-card-title">Object Settings</h3>
@@ -73,6 +74,7 @@
                       <a href="{% url 'delete_scope' id=control_library %}"class="uk-button uk-button-danger">Delete Object</a>
                     </div>
                   </div>
+              {% endif %}
 
 
 

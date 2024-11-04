@@ -228,6 +228,9 @@ ALLOWED_HOSTS = ["*"]
 debug_mode = os.environ.get("debug", "false").lower() == "true"
 DEBUG = debug_mode
 
+DEMO_MODE = os.environ.get("demo_mode", "false").lower() == "true"
+
+
 # TODO: Adding csrf protection
 
 AUTHENTICATION_BACKENDS = [

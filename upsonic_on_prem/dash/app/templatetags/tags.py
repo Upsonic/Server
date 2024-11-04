@@ -15,6 +15,11 @@ def debug_mode():
     return settings.DEBUG
 
 
+@register.simple_tag(name="demo_mode")
+def demo_mode():
+    return settings.DEMO_MODE
+
+
 @register.simple_tag(name="sentry")
 def sentry():
     return settings.sentry
