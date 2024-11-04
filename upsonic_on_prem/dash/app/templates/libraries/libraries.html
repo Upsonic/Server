@@ -19,6 +19,10 @@
 
           {% include 'home/cardview.html' %}
 
+
+          {% demo_mode as demo_mode %}
+
+          {% if not demo_mode %}
           <div uk-grid class="uk-margin-medium-bottom">
             <div class="uk-width-expand">
             <h1 class="uk-h2 uk-margin text-foreground">Connection Code</h1>
@@ -33,6 +37,8 @@
 <div class="highlight"><pre class="chroma"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
           </div>
       </div>
+
+      {% endif %}
 
 
 
