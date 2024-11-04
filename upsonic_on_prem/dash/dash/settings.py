@@ -267,7 +267,7 @@ PWA_APP_SHORTCUTS = [
     {"name": "Libraries", "url": "/libraries", "description": "View all libraries"},
 ]
 
-SESAME_ONE_TIME = True
+SESAME_ONE_TIME = os.environ.get("SESAME_ONE_TIME", "true").lower() == "true"
 
 
 
