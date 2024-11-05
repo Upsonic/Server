@@ -119,9 +119,11 @@ border-color: hsl(var(--border) / .4);">
 
 
 
+        {% demo_mode as demo_mode %}
 
+        {% if not demo_mode %}
         <a href="{% url 'account_logout' %}" class="uk-button uk-button-default " style="display: inline-grid;" uk-tooltip="Logout" id="signout_button"><span uk-icon="sign-out"></span></a>
-
+        {% endif %}
 
       </li>
 
