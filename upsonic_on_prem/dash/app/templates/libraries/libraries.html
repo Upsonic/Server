@@ -2,7 +2,7 @@
 
 {% block content %}
 
-
+{% load tags %}
 
 <div class="uk-container uk-width-expand " uk-height-viewport="offset-top: true" >
 
@@ -19,9 +19,7 @@
 
           {% include 'home/cardview.html' %}
 
-
           {% demo_mode as demo_mode %}
-
           {% if not demo_mode %}
           <div uk-grid class="uk-margin-medium-bottom">
             <div class="uk-width-expand">
@@ -37,8 +35,9 @@
 <div class="highlight"><pre class="chroma"><pre><code class="language-python">{{the_connection_code}}</code></pre></div>
           </div>
       </div>
+        {% endif %}
 
-      {% endif %}
+
 
 
 
