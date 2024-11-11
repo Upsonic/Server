@@ -38,8 +38,8 @@
   <div class="uk-navbar-right ">
     <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
 
-    {% yc_demo as yc_demo %}
-    {% if not yc_demo %}
+    {% yc_mode as yc_mode %}
+    {% if not yc_mode %}
 
     <a href="#" onclick="page_load('{% url 'control_element' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Home' %}-primary{% else %}-default{% endif %}"><span uk-icon="home" class="uk-margin-small-right"></span>Home</a>
 

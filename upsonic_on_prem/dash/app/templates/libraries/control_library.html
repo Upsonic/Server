@@ -59,8 +59,8 @@
                             
 
 
-                            {% yc_demo as yc_demo %}
-                            {% if not yc_demo %}
+                            {% yc_mode as yc_mode %}
+                            {% if not yc_mode %}
                             <a href="#" onclick="page_load('{% url 'control_element_commits' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;" uk-tooltip="Commits"><span uk-icon="push"></span></a>
                             <a href="#" onclick="page_load('{% url 'control_element_runs' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;" uk-tooltip="Run History"><span uk-icon="server"></span></a>
                             <a href="#" onclick="page_load('{% url 'control_element_dependency' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;" uk-tooltip="Dependency"><span uk-icon="thumbnails"></span></a>
@@ -70,8 +70,8 @@
                             {% else %}
                             <a href="#" onclick="page_load('{% url 'control_library' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;" uk-tooltip="Home"><span uk-icon="home"></span></a>
 
-                            {% yc_demo as yc_demo %}
-                            {% if not yc_demo %}
+                            {% yc_mode as yc_mode %}
+                            {% if not yc_mode %}
                             <a href="#" onclick="page_load('{% url 'control_library_settings' id=key %}');event.preventDefault();" class="uk-button uk-button-default" style="width: 1px;" uk-tooltip="Settings"><span uk-icon="settings"></span></a>
                             {% endif %}
 
