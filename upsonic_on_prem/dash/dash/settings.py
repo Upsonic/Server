@@ -229,7 +229,7 @@ debug_mode = os.environ.get("debug", "false").lower() == "true"
 DEBUG = debug_mode
 
 DEMO_MODE = os.environ.get("demo_mode", "false").lower() == "true"
-
+YC_MODE = os.environ.get("YC_MODE", "false").lower() == "true"
 
 # TODO: Adding csrf protection
 

@@ -19,6 +19,10 @@ def debug_mode():
 def demo_mode():
     return settings.DEMO_MODE
 
+@register.simple_tag(name="yc_mode")
+def yc_mode():
+    return settings.YC_MODE
+
 
 @register.simple_tag(name="sentry")
 def sentry():

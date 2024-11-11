@@ -30,6 +30,10 @@
   <div class="uk-navbar-right">
       <ul class="uk-navbar-nav uk-margin-medium-right" style="gap: 0.5rem;">
 
+    {% yc_demo as yc_demo %}
+    {% if not yc_demo %}
+    
+
       <a href="#" onclick="page_load('{% url 'control_library' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Home' %}-primary{% else %}-default{% endif %}"><span uk-icon="home" class="uk-margin-small-right"></span>home</a>
 
 
@@ -40,7 +44,7 @@
       <a href="#" onclick="page_load('{% url 'control_library_settings' id=control_library_with_version %}');event.preventDefault();" class="uk-button uk-button{% if sub_page_title == 'Settings' %}-primary{% else %}-default{% endif %}"><span uk-icon="settings" class="uk-margin-small-right"></span>Settings</a>
 
 
-
+    {%endif%}
 
 
       </ul>
